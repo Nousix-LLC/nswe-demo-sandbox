@@ -1,0 +1,102 @@
+# Contract manifest — review-containerize (PR #22 / work-item #12)
+#
+# Kind: taxonomy. This is a REVIEW decomposition: the shared seam between the
+# parallel analysis spokes is (a) a common findings vocabulary, (b) a strict
+# concern->spoke ownership partition so every brief concern is covered exactly
+# once, and (c) the verdict-derivation rule the synthesis gate applies.
+#
+# This contract is READ-ONLY for every descendant. A spoke composes its
+# findings against findings_schema.md; it does not redefine the schema.
+
+kind: taxonomy
+artifact: contracts/findings_schema.md   # the structural declaration all spokes compose against
+
+# -------------------------------------------------------------------------
+# Ownership — every one of the 8 brief concerns is owned by EXACTLY ONE spoke.
+# finding_id_prefix is the namespace each spoke tags its findings with, so the
+# synthesis gate can attribute every finding to its owner with no collision.
+# -------------------------------------------------------------------------
+ownership:
+  SUBTASK_dockerfile_build:
+    finding_id_prefix: BUILD
+    owns_concerns:
+      - 1   # Dockerfile build correctness & reproducibility
+      - 2   # Runtime image hygiene & size (LAYER COMPOSITION + SIZE only; see identity I2 seam)
+    owns_concern_6_slice: "Dockerfile and shell idiom"
+    output: SUBTASK_dockerfile_build/findings.md
+
+  SUBTASK_security_supplychain:
+    finding_id_prefix: SEC
+    owns_concerns:
+      - 3   # Container security posture + supply-chain / dependency trust boundary
+    owns_concern_2_slice: "secret/credential leakage into runtime layers (the security face of concern 2)"
+    output: SUBTASK_security_supplychain/findings.md
+
+  SUBTASK_operability_docs:
+    finding_id_prefix: OPS
+    owns_concerns:
+      - 4   # Operability: HEALTHCHECK, one-knob port, config, logging, out-of-box
+    owns_concern_6_slice: "documentation clarity AND docs-match-real-behavior (deploy/README.md + README section)"
+    output: SUBTASK_operability_docs/findings.md
+
+  SUBTASK_rustcode_sigterm:
+    finding_id_prefix: RUST
+    owns_concerns:
+      - 5   # SIGTERM handling in crates/chirp-server/src/main.rs: correctness, unix-gating, no regression, scope fit
+    owns_concern_6_slice: "Rust idiom of the SIGTERM change AND the std-only probe (healthcheck.rs)"
+    output: SUBTASK_rustcode_sigterm/findings.md
+
+  SUBTASK_scope_verification:
+    finding_id_prefix: SCOPE
+    owns_concerns:
+      - 7   # Testing / verification depth: does the machine gate's evidence actually demonstrate the acceptance criteria
+      - 8   # Scope conformance: containerization only (no #11 .github CI, no #13 k8s/ArgoCD, no live deploy)
+    output: SUBTASK_scope_verification/findings.md
+
+  SUBTASK_verdict_synthesis:
+    role: integration_gate   # NOT an owner of a primary concern; it integrates and renders the verdict
+    output: SYNTHESIS.md      # written at the DAG ROOT (the fold location) + a posted review on PR #22
+
+# -------------------------------------------------------------------------
+# Identities — invariants the synthesis gate evaluates as assertions.
+# A failing identity is reported, never silently plugged.
+# -------------------------------------------------------------------------
+identities:
+  I1_coverage: >
+    Every brief concern 1..8 is addressed by exactly one spoke's findings.md with an explicit
+    per-concern disposition (PASS | PASS-WITH-NOTES | FAIL). No concern is unaddressed (hole) and
+    no concern's PRIMARY ownership is claimed by two spokes (race).
+  I2_concern6_and_concern2_seam: >
+    Concern 6 (code quality & idiom) is partitioned by ARTIFACT, never duplicated:
+    Dockerfile/shell idiom -> dockerfile_build; Rust (SIGTERM + probe) idiom -> rustcode_sigterm;
+    documentation clarity/accuracy -> operability_docs. Concern 2 has a declared seam: image LAYER
+    COMPOSITION + SIZE -> dockerfile_build; secret/credential LEAKAGE -> security_supplychain. A
+    single defect is reported by exactly one owner; the other spoke may cross-reference but not re-file it.
+  I3_verdict_rule: >
+    Root verdict = REQUEST-CHANGES if and only if >=1 OPEN finding tagged `block` exists across all
+    spokes. Otherwise APPROVE. APPROVE additionally REQUIRES that every OPEN finding tagged `major`
+    carries an explicit synthesis-level disposition (accept-as-non-blocking with rationale, or
+    reclassify). Exactly one verdict is rendered.
+  I4_severity_discipline: >
+    No finding is tagged `block` or `major` unless it names a CONCRETE, LANDABLE defect (a specific
+    thing that is wrong and fixable in this diff). A hardening wish, a "would-be-nice", or a posture
+    preference is NOT a block/major; it is `minor` or `nit`. The synthesis gate MUST downgrade any
+    block/major that is merely a hardening wish.
+  I5_read_only: >
+    No spoke and no synthesis task edits, stages, commits, pushes, rebases, relocks, force-pushes, or
+    merges anything in Nousix-LLC/nswe-demo; neither `main` nor `work/containerize` is touched. The
+    ONLY permitted write to GitHub is the synthesis gate's single posted review (or review comment) on
+    PR #22. All diff access is read-only `gh`/`git`.
+  I6_acceptance_criteria_map: >
+    The synthesis gate emits an explicit pass/fail for EACH work-item #12 acceptance criterion (the
+    nine criteria enumerated in taskflow/dags/containerize/SYNTHESIS.md "Acceptance criteria"),
+    traceable to the spoke findings that support each call.
+
+# -------------------------------------------------------------------------
+# Severity taxonomy (authoritative vocabulary; full definitions in findings_schema.md)
+# -------------------------------------------------------------------------
+severity_levels: [block, major, minor, nit]
+
+# No mechanical derived artifacts (mocks/stubs/validators) are generated for a review taxonomy.
+# The synthesis gate is the integration step that evaluates the identities above.
+derived_artifacts: []

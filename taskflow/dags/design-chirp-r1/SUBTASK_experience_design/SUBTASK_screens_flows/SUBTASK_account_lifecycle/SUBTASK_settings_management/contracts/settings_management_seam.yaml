@@ -1,0 +1,124 @@
+# settings_management_seam.yaml — the account-settings subtree seam.
+# READ-ONLY. Spokes compose against this and MUST NOT redefine it (extend additively via amendment only).
+# It fixes WHICH spoke designs WHICH surface, WHICH REQ-UX sub-range each spoke mints from, HOW spokes
+# compose against the frozen upstream vocabularies, the per-screen<->global-pattern cross-reference, the
+# trace rule every REQ-UX-* obeys, and the sub-section link list the Settings hub references without
+# designing. It EXTENDS ../../contracts/, ../../../contracts/, and ../../../../contracts/; never overrides.
+
+# --- The one owned section-part and how it splits across spokes -----------------------------------
+# This subtree owns the settings_management surfaces of the parent's account_lifecycle part. Assembled
+# order in screens-settings-management.md follows the screen inventory's own order:
+# Settings hub, Account & contact, Notification preferences, Sessions & devices.
+section_part:
+  account_lifecycle/settings_management:
+    assembled_from_spokes_in_inventory_order:
+      - spoke: SUBTASK_settings_hub
+        source: "SUBTASK_settings_hub/outputs/screen-settings-hub.md"
+        surfaces: [settings_hub]
+      - spoke: SUBTASK_account_contact
+        source: "SUBTASK_account_contact/outputs/screen-account-contact.md"
+        surfaces: [account_and_contact]
+      - spoke: SUBTASK_notification_prefs
+        source: "SUBTASK_notification_prefs/outputs/screen-notification-prefs.md"
+        surfaces: [notification_preferences]
+      - spoke: SUBTASK_sessions_devices
+        source: "SUBTASK_sessions_devices/outputs/screen-sessions-devices.md"
+        surfaces: [sessions_and_devices]
+
+# --- REQ-UX-069..074 sub-range partition (ancestor scheme: REQ-UX-NNN, 3-digit, unique within area) -
+req_ux_id_ranges:
+  SUBTASK_settings_hub:        { from: "REQ-UX-069", to: "REQ-UX-069" }   # 1 id
+  SUBTASK_account_contact:     { from: "REQ-UX-070", to: "REQ-UX-071" }   # 2 ids
+  SUBTASK_notification_prefs:  { from: "REQ-UX-072", to: "REQ-UX-072" }   # 1 id
+  SUBTASK_sessions_devices:    { from: "REQ-UX-073", to: "REQ-UX-074" }   # 2 ids
+
+# Each REQ-UX-* carries exactly the ancestor field set (../../contracts/ then ../../../../contracts/):
+req_ux_fields: [id, statement, acceptance_criteria, release_gating]
+
+# --- Surface -> owning spoke ---------------------------------------------------------------------
+# Covers every surface this node owns. Each owner designs the surface with its happy path AND its
+# empty/error/loading states, mapping it to the named journey/REQ-PROD. Screen names in parentheses are
+# the IA screen-inventory names (and routes) the spoke MUST use.
+surface_ownership:
+  settings_hub:             SUBTASK_settings_hub         # Settings (/settings), settings archetype, signed-in — J6 / REQ-PROD-017
+  account_and_contact:      SUBTASK_account_contact      # Account & contact (/settings/account), settings archetype, signed-in — J6 / REQ-PROD-017,018,012
+  notification_preferences: SUBTASK_notification_prefs   # Notification preferences (/settings/notifications), settings archetype, signed-in — J6 / REQ-PROD-017,029
+  sessions_and_devices:     SUBTASK_sessions_devices     # Sessions & devices (/settings/sessions), settings archetype, signed-in — J6 / REQ-PROD-017,014
+
+# --- Sub-sections the Settings hub LINKS to but does NOT design (owned elsewhere) ----------------
+# The Settings hub lists every settings sub-section. Four it links to are owned outside this subtree or
+# by sibling spokes; the hub references them by their inventory name/route and does not design contents.
+hub_links_not_designed_here:
+  edit_profile:
+    inventory: "Edit profile (/settings/profile)"
+    owner: "../../SUBTASK_onboarding_profile (sibling spoke under account_lifecycle)"
+  blocked_and_muted:
+    inventory: "Blocked & muted (/settings/blocks)"
+    owner: "../../../SUBTASK_safety_notifications (sibling of this subtree, under screens_flows)"
+  data_export:
+    inventory: "Export your data (/settings/export)"
+    owner: "../../SUBTASK_leaving (sibling spoke under account_lifecycle)"
+  account_deletion:
+    inventory: "Delete account (/settings/delete)"
+    owner: "../../SUBTASK_leaving (sibling spoke under account_lifecycle)"
+# The hub also links to the three sub-sections designed WITHIN this subtree (account_and_contact,
+# notification_preferences, sessions_and_devices); those it references by name and the owning spoke designs.
+
+# --- Not owned here (cross-reference, do not redesign) -------------------------------------------
+not_owned_cross_references:
+  notifications_activity_surface:
+    inventory: "Notifications (/notifications)"
+    owner: "../../../SUBTASK_safety_notifications (sibling of this subtree, under screens_flows)"
+    note: "This subtree owns the notification PREFERENCES settings sub-section only; the notifications activity list itself is designed there. The preferences screen references it, does not redesign it."
+
+# --- Shared-vocabulary composition rule ----------------------------------------------------------
+shared_vocabulary_rule:
+  screen_inventory:
+    inherited_from: "../../../../SUBTASK_ia_interaction/outputs/ia-interaction.md"
+    rule: "Every screen a spoke designs is a screen named in the inventory, referred to by that name and route. A spoke MUST NOT introduce a screen absent from the inventory; if one is genuinely needed, request an additive amendment to this contract rather than inventing it silently."
+  component_library:
+    inherited_from: "../../../../SUBTASK_visual_system/outputs/visual-system.md"
+    rule: >
+      Every screen is described as an arrangement of named components (NavShell, ListView, SettingRow,
+      Toggle, TextField, PrimaryButton, SecondaryButton, IconButton, Dialog [confirmation variant],
+      InlineFeedback, InlineError, EmptyState, LoadingState, Toast). A screen's empty/error/loading
+      states are the relevant components' own named states (and a component's 'does not apply' decision
+      is honoured with its reason), not new inventions. Refer to tokens and components by name; introduce
+      no ad-hoc value. The settings archetype is furnished by a list of SettingRows inside the signed-in
+      NavShell (per the component library's archetype-coverage table).
+
+# --- The per-screen <-> global-pattern cross-reference (the one external seam) --------------------
+states_cross_reference:
+  global_patterns_owner: "../../SUBTASK_considered_states (sibling of this node's parent, under screens_flows)"
+  rule: >
+    The product-wide empty / loading / error PATTERNS and the expired-session / transient-error recovery
+    (keep-the-draft) behaviour are owned by the sibling SUBTASK_considered_states as the
+    empty_error_loading_states section. The four spokes here design each screen's OWN empty/error/loading
+    states by composing the component library's named states and that global treatment — they do not
+    invent a conflicting per-screen pattern. Because all spokes compose against the same already-frozen
+    component library and IA conventions (settings-as-secondary-nav, destructive-confirmation, the
+    sign-out transition), the spokes run in parallel; SUBTASK_synthesis asserts STATES_CONSISTENT across
+    the assembled whole, and the ancestor syntheses assert it across the full deliverable.
+
+# --- IA conventions these settings screens design into (inventory, do not restate as new rules) --
+ia_conventions_in_use:
+  settings_as_secondary_nav: "Settings is a small secondary navigation: a hub listing its sub-sections, each a screen a person can open directly by its URL and return from to the hub (REQ-UX-017)."
+  destructive_confirmation: "Every irreversible/destructive action is confirmed via the Dialog confirmation variant that names the consequence and offers a cancel (REQ-UX-011). Applies here to ending a session on another device and signing out of all sessions."
+  sign_out_transition: "Signing out ends the session and returns to the signed-out landing; after sign-out the browser back control does not re-expose a protected screen (REQ-UX-016). Sessions & devices designs the sign-out entry into this transition; it does not redesign the transition."
+  session_expiry: "An action on an expired/invalid session routes to Sign in with the reason stated, preserves in-progress input, and returns the person after sign-in (REQ-UX-008). Spokes compose this convention; considered_states owns the pattern."
+
+# --- The trace rule every REQ-UX-* obeys ---------------------------------------------------------
+trace_rule:
+  references_req_prod: ">=1"                 # every REQ-UX-* names at least one REQ-PROD-* it serves
+  acceptance_criteria: "testable by someone who never met the author, exercisable on the live product"
+  release_gating: "true | false  (false carries a one-line reason)"
+  product_requirements_source: "../../../../../SUBTASK_product_requirements/outputs/product-requirements.md"
+  note: >
+    Honour the product requirements' own release_gating where a REQ-UX implements a non-gating REQ-PROD.
+    The handle-change position rides REQ-PROD-018 (release_gating:false — a first release may state
+    handles as fixed, provided the position is stated in the product). Notification preferences ride
+    REQ-PROD-029 (false — a first release may ship without notifications; the preferences ship when
+    notifications ship). The settings hub (REQ-PROD-017), the verified-contact view/update
+    (REQ-PROD-012/017), viewing/ending sessions (REQ-PROD-017), and sign-out (REQ-PROD-014) are gated.
+    A gated screen that also exposes a non-gating behaviour gates only the parts its gated REQ-PROD
+    requires.

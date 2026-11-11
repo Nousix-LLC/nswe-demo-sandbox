@@ -1,0 +1,120 @@
+# Contract manifest for the chirp-server subtree (work-item #8).
+#
+# kind: yaml_schema — a thin convention/seam manifest. The cross-sibling edges are SERIALIZED by the
+# dependency chain (each spoke reads the real committed clone of its predecessor), so the repository
+# trait and error type are NOT frozen here as compilable Rust; the consumer reads the real code. What
+# IS frozen below: the stable shared conventions, the repository-trait capability seam, the
+# error-mapping table, and the gate assertion set. READ-ONLY for every descendant.
+
+kind: yaml_schema
+work_item: 8
+crate:
+  name: chirp-server
+  path: crates/chirp-server
+  edition: "2021"
+  rust_version: "1.82"
+  kind: "library + binary (lib.rs exposes the app/router + repository for integration tests; main.rs is the server entrypoint)"
+  depends_on:
+    chirp-types: "workspace path dependency — the SINGLE source of truth for all wire types; never re-declare a DTO"
+
+# ---------------------------------------------------------------------------------------------------
+# Stable shared conventions (forced; every child conforms, none re-litigates)
+# ---------------------------------------------------------------------------------------------------
+conventions:
+  clone_path: /home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-server/checkout
+  branch: work/chirp-server
+  base_branch: main
+  workspace_member: "add 'crates/chirp-server' via the existing members = [\"crates/*\"] glob (confirm it is picked up); inherit [workspace.package] + [lints] workspace = true"
+  pr:
+    title: "chirp-server: axum REST API + persistence + static serving"
+    body_must_end_with: "Closes #8"
+    into: main
+    never: "commit to or force-push main; add commit-attribution trailers"
+  demo_runs_without_infra: "in-memory repository behind the trait is the DEFAULT; SQLite/sqlx is optional + documented only, never a cargo test prerequisite"
+
+# Module-layout skeleton (the scaffold spoke establishes this; later spokes slot into it). Indicative,
+# not binding in detail — a child may refine internal module names, but the lib/bin split and the
+# repository-trait seam MUST hold so integration tests can import the app + repo.
+module_layout:
+  "crates/chirp-server/Cargo.toml": "deps: axum, tokio (rt-multi-thread, macros), tower, tower-http (fs, trace), tracing, tracing-subscriber; chirp-types path dep; serde/serde_json as needed. dev-deps for integration tests (e.g. tower util / http-body-util / reqwest or axum test harness)."
+  "crates/chirp-server/src/lib.rs": "crate root: re-exports the app builder (e.g. build_router(state)) + repository module so tests/ can import them."
+  "crates/chirp-server/src/repository/": "the ChirpRepository trait + in-memory impl (owner: scaffold_and_repository)."
+  "crates/chirp-server/src/error.rs": "the server error enum + mapping to ApiError/ErrorCode/HTTP status (enum owner: scaffold_and_repository; IntoResponse owner: api_layer)."
+  "crates/chirp-server/src/api/ or handlers": "axum handlers + router + AppState + static/SPA serving + health (owner: api_layer)."
+  "crates/chirp-server/src/main.rs": "binary entrypoint: init tracing, build state + router, bind + serve (owner: api_layer)."
+  "crates/chirp-server/tests/": "end-to-end API integration tests (owner: integration_tests_and_docs)."
+  "crates/chirp-server/README.md": "endpoints + how to run + repository-choice rationale (owner: integration_tests_and_docs)."
+  "crates/chirp-server/static/ (or dist/)": "placeholder static dir the SPA fallback serves from (#9 lands the real SPA later)."
+
+# ---------------------------------------------------------------------------------------------------
+# Repository-trait seam spec — the CAPABILITY SET the trait MUST cover so api_layer composes with no gap.
+# scaffold_and_repository OWNS the exact signatures (names/async/error type are its design call); this
+# list fixes WHAT operations must exist, expressed in terms of the chirp-types surface.
+# ---------------------------------------------------------------------------------------------------
+repository_seam:
+  note: "Trait abstracts persistence; in-memory impl is the default backing. Choose sync-behind-Mutex or async — document the choice. Operations return Result<_, ServerError> (the shared error enum). Maintain denormalized counts (follower/following/like) and the documented chirp-types invariants (no self-follow; at most one like per (user,chirp); timeline reverse-chronological)."
+  operations:
+    - "create_user(CreateUserRequest) -> User  (assigns id/timestamp/zeroed counts; Conflict on duplicate username)"
+    - "get_user(UserId) -> User  (NotFound if absent)"
+    - "authenticate/login(LoginRequest) -> AuthResponse  (handle-based; issues a SessionToken; Unauthorized/NotFound if no such handle)"
+    - "create_chirp(author: UserId, CreateChirpRequest) -> Chirp  (assigns id/timestamp/zeroed like_count; NotFound if reply_to target absent)"
+    - "timeline(viewer: UserId, TimelineQuery) -> Page<Chirp>  (reverse-chronological; honor limit clamp + cursor pagination)"
+    - "follow(follower: UserId, followee: UserId) -> FollowResponse  (idempotent; Forbidden/ValidationError on self-follow; updates counts)"
+    - "unfollow(follower: UserId, followee: UserId) -> FollowResponse  (idempotent; updates counts)"
+    - "like(user: UserId, chirp: ChirpId) -> LikeResponse  (idempotent; NotFound if chirp absent; updates like_count)"
+    - "unlike(user: UserId, chirp: ChirpId) -> LikeResponse  (idempotent; updates like_count)"
+  auth_note: "Authn for this demo is handle/token-based and deliberately light (see chirp-types LoginRequest/SessionToken docs). A simple in-memory token->UserId map behind the trait (or an extractor that resolves the bearer token) is sufficient; do not build real credential exchange."
+
+# ---------------------------------------------------------------------------------------------------
+# Error-mapping table — server-error variant -> chirp-types ErrorCode -> HTTP status.
+# The error ENUM is owned by scaffold_and_repository; the IntoResponse mapping is owned by api_layer.
+# Both conform to this table so errors surface consistently as ApiError on the wire.
+# ---------------------------------------------------------------------------------------------------
+error_mapping:
+  - { condition: "input/DTO validation failure (incl. chirp-types ValidationError)", error_code: VALIDATION_ERROR, http_status: 400 }
+  - { condition: "missing/invalid session token",                                    error_code: UNAUTHORIZED,     http_status: 401 }
+  - { condition: "authenticated but not permitted (e.g. self-follow if modeled so)", error_code: FORBIDDEN,        http_status: 403 }
+  - { condition: "addressed resource absent (user/chirp)",                           error_code: NOT_FOUND,        http_status: 404 }
+  - { condition: "state conflict (e.g. duplicate username)",                         error_code: CONFLICT,         http_status: 409 }
+  - { condition: "unexpected server-side failure",                                   error_code: INTERNAL,         http_status: 500 }
+  note: "ApiError { code, message, details }. Populate details (Vec<FieldError>) for validation failures. ErrorCode + ApiError are imported from chirp-types::api — never re-declared."
+
+# ---------------------------------------------------------------------------------------------------
+# Ownership — every artifact has exactly one producer (a hole has none; a race has two).
+# ---------------------------------------------------------------------------------------------------
+ownership:
+  SUBTASK_scaffold_and_repository:
+    - "checkout/ clone + work/chirp-server branch"
+    - "crates/chirp-server/Cargo.toml + workspace members entry"
+    - "src/lib.rs skeleton + module declarations"
+    - "src/repository/** (ChirpRepository trait + in-memory impl + unit tests)"
+    - "src/error.rs ServerError enum definition"
+  SUBTASK_api_layer:
+    - "src/api (handlers, router, AppState)"
+    - "src/error.rs IntoResponse impl (error -> ApiError JSON + HTTP status)"
+    - "static/SPA serving + SPA fallback route"
+    - "GET /healthz handler"
+    - "tracing init + middleware"
+    - "src/main.rs binary entrypoint"
+  SUBTASK_integration_tests_and_docs:
+    - "tests/** (end-to-end API integration tests)"
+    - "crates/chirp-server/README.md"
+    - "rustdoc polish on public items"
+  SUBTASK_synthesis_gate:
+    - "the PR into main"
+    - "SYNTHESIS.md verdict at the hub (fold location)"
+
+# ---------------------------------------------------------------------------------------------------
+# Gate assertion set — the synthesis gate runs these; each has a runnable command. No silent plug.
+# ---------------------------------------------------------------------------------------------------
+identities:
+  - { id: build,      assert: "cargo build --workspace succeeds",                      command: "cargo build --workspace" }
+  - { id: test,       assert: "unit + integration tests pass, no DB running",          command: "cargo test" }
+  - { id: fmt,        assert: "formatting clean",                                      command: "cargo fmt --check" }
+  - { id: clippy,     assert: "no clippy warnings",                                    command: "cargo clippy --all-targets -- -D warnings" }
+  - { id: wiring,     assert: "every in-scope endpoint routed + reachable; handlers call through ChirpRepository (no bypass); no detached dead code", command: "review router + handler wiring against the endpoint set" }
+  - { id: contract,   assert: "all wire types imported from chirp-types (no DTO re-declared); errors surface as ApiError/ErrorCode", command: "grep/review: no struct/enum in chirp-server duplicating a chirp-types DTO" }
+  - { id: pr,         assert: "a PR into main exists with body ending 'Closes #8'",    command: "gh pr view" }
+
+derived_artifacts:
+  note: "None auto-generated. The serialized clone chain means each consumer reads the real committed code of its predecessor; no mocks/stubs are delivered into child workspaces."

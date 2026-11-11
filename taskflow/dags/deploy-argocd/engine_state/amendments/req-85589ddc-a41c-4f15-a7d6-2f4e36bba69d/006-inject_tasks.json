@@ -1,0 +1,80 @@
+{
+  "sequence": 6,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-08T17:23:02.406831521Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_deploy_reach"
+      ],
+      "placement_parent_task_id": "SUBTASK_synthesis"
+    },
+    "resulting_version": 6,
+    "summary": "inject tasks: SUBTASK_deploy_reach",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the deploy + reachability stage: deploy onto the live k3d nswe cluster (ArgoCD sync and/or kubectl apply), handle the private-GHCR imagePullSecret out-of-band, drive rollout to Synced/Healthy, and prove reachability with a captured HTTP request/response. Depends on the static gate's GO/NO-GO. Cluster-only side effects; disjoint from the git-only landing stage.",
+        "task_id": "SUBTASK_synthesis"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_app_manifests": [
+        "SUBTASK_discovery"
+      ],
+      "SUBTASK_argocd_gitops": [
+        "SUBTASK_discovery"
+      ],
+      "SUBTASK_deploy_reach": [
+        "SUBTASK_static_gate"
+      ],
+      "SUBTASK_discovery": [],
+      "SUBTASK_static_gate": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_app_manifests",
+        "SUBTASK_argocd_gitops",
+        "SUBTASK_discovery"
+      ],
+      "deploy-argocd": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_discovery",
+          "SUBTASK_static_gate",
+          "deploy-argocd"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_app_manifests",
+          "SUBTASK_argocd_gitops",
+          "SUBTASK_deploy_reach"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

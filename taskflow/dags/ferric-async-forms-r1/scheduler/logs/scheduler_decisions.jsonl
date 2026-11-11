@@ -1,0 +1,21 @@
+{"timestamp":"2026-11-04T03:41:08.536596610Z","action":{"Dispatch":{"task_ids":["ferric-async-forms-r1"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-04T03:42:05.588971906Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r1"]}},"reason":"task ferric-async-forms-r1 transitioned to Ready"}
+{"timestamp":"2026-11-04T03:42:05.589374887Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r1"]}},"reason":"task ferric-async-forms-r1 transitioned to Running"}
+{"timestamp":"2026-11-04T03:48:59.926153813Z","action":{"Dispatch":{"task_ids":["SUBTASK_walking_skeleton"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-04T03:49:29.048123398Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r1"]}},"reason":"task ferric-async-forms-r1 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-04T03:49:50.511081353Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_walking_skeleton"]}},"reason":"task SUBTASK_walking_skeleton transitioned to Ready"}
+{"timestamp":"2026-11-04T03:49:50.511365680Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_walking_skeleton"]}},"reason":"task SUBTASK_walking_skeleton transitioned to Running"}
+{"timestamp":"2026-11-04T04:00:28.651790380Z","action":{"Dispatch":{"task_ids":["SUBTASK_form_binding","SUBTASK_dom_events","SUBTASK_async_resource"],"group_index":1}},"reason":"task SUBTASK_walking_skeleton completed, dispatching ready successors"}
+{"timestamp":"2026-11-04T04:01:18.752452985Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_dom_events"]}},"reason":"task SUBTASK_dom_events transitioned to Ready"}
+{"timestamp":"2026-11-04T04:01:18.753039413Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_dom_events"]}},"reason":"task SUBTASK_dom_events transitioned to Running"}
+{"timestamp":"2026-11-04T04:01:24.991766866Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_form_binding"]}},"reason":"task SUBTASK_form_binding transitioned to Ready"}
+{"timestamp":"2026-11-04T04:01:24.991996125Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_form_binding"]}},"reason":"task SUBTASK_form_binding transitioned to Running"}
+{"timestamp":"2026-11-04T04:05:14.770137324Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_async_resource"]}},"reason":"task SUBTASK_async_resource transitioned to Ready"}
+{"timestamp":"2026-11-04T04:05:14.770265349Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_async_resource"]}},"reason":"task SUBTASK_async_resource transitioned to Running"}
+{"timestamp":"2026-11-04T04:09:06.946133842Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r1","SUBTASK_form_binding","SUBTASK_dom_events"]}},"reason":"task SUBTASK_async_resource completed, waiting for remaining tasks"}
+{"timestamp":"2026-11-04T04:10:55.985037940Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r1","SUBTASK_dom_events"]}},"reason":"task SUBTASK_form_binding completed, waiting for remaining tasks"}
+{"timestamp":"2026-11-04T04:12:41.581676621Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":2}},"reason":"task SUBTASK_dom_events completed, dispatching ready successors"}
+{"timestamp":"2026-11-04T04:13:54.108051393Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-11-04T04:13:54.108451130Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-11-04T04:19:45.119388527Z","action":{"SubtreeResolved":{"parent_task_id":"ferric-async-forms-r1","child_task_ids":["SUBTASK_walking_skeleton","SUBTASK_async_resource","SUBTASK_dom_events","SUBTASK_form_binding","SUBTASK_synthesis"],"success":true}},"reason":"all children of ferric-async-forms-r1 reached terminal state (success=true)"}
+{"timestamp":"2026-11-04T04:19:45.119957526Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

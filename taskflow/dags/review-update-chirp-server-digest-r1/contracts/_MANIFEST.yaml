@@ -1,0 +1,35 @@
+kind: review-concern-contract
+version: "1"
+
+# Shared seam for the review-update-chirp-server-digest-r1 DAG.
+# Every concern spoke MUST write its output to FINDINGS.md at its own workspace.
+# The synthesis hub reads all four FINDINGS.md files by their declared paths.
+
+ownership:
+  - concern: correctness
+    owner: review-correctness
+    output: taskflow/dags/review-update-chirp-server-digest-r1/review-correctness/FINDINGS.md
+  - concern: safety
+    owner: review-safety
+    output: taskflow/dags/review-update-chirp-server-digest-r1/review-safety/FINDINGS.md
+  - concern: hygiene
+    owner: review-hygiene
+    output: taskflow/dags/review-update-chirp-server-digest-r1/review-hygiene/FINDINGS.md
+  - concern: security
+    owner: review-security
+    output: taskflow/dags/review-update-chirp-server-digest-r1/review-security/FINDINGS.md
+
+findings_schema:
+  # Required fields in every FINDINGS.md
+  verdict: "PASS | FAIL"          # single word on its own line after "## Verdict"
+  evidence: |                      # under "## Evidence": what was read and what it showed
+    <prose>
+  findings: |                      # under "## Findings": list of findings, or "None."
+    <markdown list or "None.">
+  # Optional: "## Severity" section present only if verdict is FAIL, with "blocker | non-blocking"
+
+identities:
+  # Invariants the synthesis gate checks before accepting an output
+  - "verdict is exactly PASS or FAIL (no other value)"
+  - "evidence section is non-empty"
+  - "FAIL verdict implies at least one finding is listed"

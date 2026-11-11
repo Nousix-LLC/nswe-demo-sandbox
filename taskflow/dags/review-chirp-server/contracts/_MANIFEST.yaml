@@ -1,0 +1,71 @@
+# contracts/_MANIFEST.yaml — review-chirp-server findings seam
+# READ-ONLY for every descendant. The thin seam the four review spokes share so the
+# synthesis gate integrates their findings mechanically and derives the verdict.
+kind: review_findings_schema
+version: 1
+
+# ── Per-spoke ownership: exactly one producer per findings artifact ──────────────
+ownership:
+  findings_rust_soundness.md:        SUBTASK_rust_soundness_review
+  findings_architecture_contract.md: SUBTASK_architecture_contract_review
+  findings_test_adequacy.md:         SUBTASK_test_adequacy_review
+  findings_code_review_quality.md:   SUBTASK_code_review_quality_review
+  ../SYNTHESIS.md:                   SUBTASK_synthesis_verdict   # fold record (root observation seam)
+  gh_pr_review_post:                 SUBTASK_synthesis_verdict   # posts COMMENTED (self-review block)
+
+# ── Acceptance criteria (from the root _BRIEF rubric). Each AC has a PRIMARY owner
+#    spoke; any spoke MAY raise a finding against any AC, but the primary owner MUST
+#    render an explicit verdict (finding, or "conforms — no finding") for it. ──────
+acceptance_criteria:
+  AC1_full_rest_surface:
+    desc: "9 /api/... routes (create user, login/session, get profile, post chirp, home timeline [reverse-chron, cursor + limit-clamp], follow/unfollow, like/unlike) mounted in one build_router composition root; plus GET /healthz and a static-file service with SPA fallback."
+    owner: SUBTASK_architecture_contract_review
+  AC2_layering_and_repo_seam:
+    desc: "Layered transport -> service -> repository; persistence behind ChirpRepository trait with an in-memory default (Arc<dyn ChirpRepository> seam); boots and whole suite runs with NO database; SQLite/sqlx only documented optional backing, never a test prerequisite."
+    owner: SUBTASK_architecture_contract_review
+  AC3_typed_error_discipline:
+    desc: "ServerError enum -> ApiError/ErrorCode wire contract + HTTP status via IntoResponse: 400 VALIDATION_ERROR, 401 UNAUTHORIZED, 403 FORBIDDEN, 404 NOT_FOUND, 409 CONFLICT, 500 INTERNAL. Errors surface as ApiError, never swallowed/panicked."
+    owner: SUBTASK_architecture_contract_review   # mapping correctness; Rust spoke co-reviews the enum/IntoResponse idiom
+  AC4_tracing_and_lib_exposure:
+    desc: "Structured logging via tracing; lib.rs exposes router + repository so integration tests drive the real app against the in-memory repo."
+    owner: SUBTASK_architecture_contract_review
+  AC5_no_dto_redefinition:
+    desc: "DTOs imported from chirp-types, never redefined. Wire shape (base /api, camelCase JSON, Authorization: Bearer, ErrorCode SCREAMING_SNAKE_CASE) honored by composition, not re-declaration."
+    owner: SUBTASK_architecture_contract_review
+  AC6_no_panic_no_unsafe:
+    desc: "No runtime panic/unsafe on request paths (a thin-entry expect in main/bootstrap is the documented exception)."
+    owner: SUBTASK_rust_soundness_review
+  AC7_fmt_clippy_rustdoc_readme:
+    desc: "fmt --check clean; clippy --all-targets -- -D warnings clean; rustdoc on public items (missing_docs satisfied); README present."
+    owner: SUBTASK_code_review_quality_review
+  AC8_test_adequacy:
+    desc: "44-test suite (24 unit + 20 integration, no DB) exercises the real app via lib.rs against the in-memory repo and covers the contract error rows + timeline clamp."
+    owner: SUBTASK_test_adequacy_review
+
+# ── F1 remediation sub-questions (from root _BRIEF §F1). Each has an owning spoke
+#    that MUST answer it; the gate renders the consolidated F1 verdict. ────────────
+f1_checklist:
+  F1_1_live_not_dead_code:
+    q: "Fix is live on the HTTP surface: the three body handlers (create_user, login, create_chirp) extract via ValidatedJson<T>, the 400 arm is routed, clippy -D warnings corroborates no orphaned items."
+    owner: SUBTASK_architecture_contract_review
+  F1_2_flipped_test_and_no_422_pin:
+    q: "tests/api.rs::errors::invalid_dto_field_is_rejected_as_400_validation_error genuinely asserts 400 / ErrorCode::ValidationError / !details.is_empty(); NO test pins 422 anywhere (remaining 422 strings are doc/comment only)."
+    owner: SUBTASK_test_adequacy_review
+  F1_3_details_limitation_judgment:
+    q: "details carries a single generic FieldError{field:\"body\", message:<rejection text>} because the offending field name is not structurally recoverable from axum JsonRejection without serde_path_to_error. Does this satisfy the contract's 'populate details (Vec<FieldError>)' requirement? Acceptable trade-off or blocking weakening of the wire contract?"
+    owner: SUBTASK_architecture_contract_review   # contract-satisfaction call; gate makes the final acceptable/blocking ruling
+  F1_4_no_regression:
+    q: "No regression in the other error rows (401/403/404/409 integration tests) and the timeline limit-clamp."
+    owner: SUBTASK_test_adequacy_review
+
+# ── Identities the synthesis gate asserts (no silent plugs) ───────────────────────
+identities:
+  - coverage: "every AC1..AC8 has an explicit verdict from its owner spoke (finding or conforms-no-finding)"
+  - f1_complete: "each F1_1..F1_4 answered by its owner spoke"
+  - severity_vocabulary: "every finding uses exactly one of block|major|minor|nit"
+  - verdict_rule: "verdict=REQUEST-CHANGES iff any block finding is open; gate decides with reasoning whether any open major also forces REQUEST-CHANGES; else APPROVE"
+  - details_ruling_is_gate_decision: "the F1_3 details-limitation acceptable-vs-blocking call is an explicit gate decision, not a spoke unilateral call"
+  - f2_disposition: "code DAG tracked minor F2 confirmed non-gating & recommended as tracked CI issue (#10-#13), or escalated with reasoning"
+
+derived_artifacts:
+  - "none generated; this is a declarative seam (schema + ownership + identities), consumed by the gate"

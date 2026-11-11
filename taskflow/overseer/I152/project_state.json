@@ -1,0 +1,85 @@
+{
+  "current_pointer": "overseer/I152",
+  "checked_at": "2026-11-03T18:02:00Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "CLEARED",
+      "label": "Bug5 dispatch fault — frozen DAGs never real-dispatched",
+      "cleared_at": "2026-11-03T05:08:16Z",
+      "cleared_by": "review-epic-persist-r2 Dispatch entry in scheduler/logs/scheduler_decisions.jsonl",
+      "cleared_in": "overseer/I145",
+      "recorded_in": "overseer/I146",
+      "github_issue": "none filed"
+    }
+  },
+  "prs": {
+    "PR113": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T17:46:59Z",
+      "merge_commit": "0d5917dc6b10d25b15e47a867f41a450239007f6",
+      "issues_closed": ["#65", "#66", "#67"],
+      "issues_staying_open": ["#64"],
+      "review_dag": "review-epic-persist-r2",
+      "note": "Squash-merged. Epic #56 and issues #65/#66/#67 moved to Done."
+    },
+    "PR128": {
+      "status": "OPEN",
+      "branch": "work/design-ferric-1_0",
+      "title": "design: Ferric 1.0 framework design",
+      "head": "ade5bdde424638b9f993c5699219c638d02e0e59",
+      "ci_all_green": true,
+      "mergeable": true,
+      "review_dag": "design-ferric-1_0-r3",
+      "review_dag_status": "REQUEST-CHANGES (superseded)",
+      "blocking_findings": 0,
+      "remediation_dag": "remediate-design-ferric-1_0-r1",
+      "remediation_dag_status": "COMPLETE (APPROVE — all 5 findings fixed in commit ade5bdd)",
+      "re_review_dag": "review-design-ferric-1_0-r4",
+      "re_review_dag_status": "RUNNING",
+      "note": "Remediation complete. Re-review dag forked in I152. Landing on APPROVE under delegated authority."
+    }
+  },
+  "dags_in_flight": [
+    {
+      "slug": "review-design-ferric-1_0-r4",
+      "goal": "Re-review PR#128 after remediation; confirm 5 fixes; post review; land on APPROVE",
+      "issues": [],
+      "kind": "review",
+      "state": "RUNNING",
+      "forked_in": "overseer/I152",
+      "launch_agent": "swe-reviewer"
+    },
+    {
+      "slug": "pin-image-digest-r1",
+      "goal": "Pin chirp-server image digest sha256:adaa4c26... in deploy/chirp/10-deployment.yaml",
+      "issues": ["#180"],
+      "kind": "code",
+      "state": "RUNNING",
+      "forked_in": "overseer/I151",
+      "launch_agent": "swe-coder"
+    }
+  ],
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-11-03T18:02:00Z",
+    "total_items": "~166"
+  },
+  "main_sha": "0d5917dc6b10d25b15e47a867f41a450239007f6",
+  "deployment_check": {
+    "status": "OutOfSync",
+    "reason": "chirp-server placeholder image digest (sha256:0000...) — pin-image-digest-r1 DAG in flight",
+    "argocd_sync": "OutOfSync",
+    "argocd_health": "Progressing",
+    "argocd_revision": "0d5917dc6b10d25b15e47a867f41a450239007f6",
+    "postgres_pod": "chirp-postgres-0 1/1 Running",
+    "chirp_server_old": "chirp-server-7895ffcd44-r4qkr 1/1 Running (old in-memory image)",
+    "chirp_server_new": "chirp-server-b98566669-lgwr9 0/1 ImagePullBackOff (placeholder digest)",
+    "appproject_fix": "APPLIED overseer/I151 — StatefulSet/PVC/CronJob now permitted",
+    "secret_fix": "CREATED overseer/I151 — chirp-db-credentials in chirp namespace",
+    "checked_at": "2026-11-03T18:02:00Z"
+  },
+  "free_dag_slots": 0,
+  "forward_series": {
+    "I153": "Observe review-design-ferric-1_0-r4 and pin-image-digest-r1; process verdicts; update board"
+  }
+}

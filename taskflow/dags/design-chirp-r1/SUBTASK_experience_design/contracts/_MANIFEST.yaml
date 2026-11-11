@@ -1,0 +1,62 @@
+# Contract manifest — SUBTASK_experience_design (internal seam for the experience-design subtree)
+# kind: yaml_schema. READ-ONLY for every descendant. Extends the PARENT contract
+# (../../contracts/) ADDITIVELY — it sub-ranges the REQ-UX id space and maps sections to owners;
+# it never overrides the parent's REQ-<AREA>-NNN format, field set, or the experience-design.md
+# required-section list. Where this manifest and the parent disagree, the parent wins.
+
+kind: yaml_schema
+
+extends: "../../contracts/"   # parent design-chirp-r1 contract: REQ-UX scheme + experience-design.md sections
+
+artifacts:
+  - file: ux_section_and_id_map.yaml
+    declares: "Section->owning child, REQ-UX id-range partition, the two shared vocabularies (screen inventory, component vocabulary) and their producers, and the per-REQ-UX trace rule."
+
+# One producer per artifact / id range. An unowned section is a hole; a double-written one is a race.
+ownership:
+  "section:information_architecture_and_interaction": SUBTASK_ia_interaction
+  "section:visual_language_and_design_system":        SUBTASK_visual_system
+  "section:screens_and_flows":                         SUBTASK_screens_flows
+  "section:empty_error_loading_states":                SUBTASK_screens_flows
+  "section:responsive_layout":                         SUBTASK_responsive
+  "section:accessibility":                             SUBTASK_accessibility
+  "section:requirements_and_acceptance_criteria":      SUBTASK_synthesis   # consolidated from all children's REQ-UX
+  "vocab:screen_inventory":                            SUBTASK_ia_interaction
+  "vocab:component_library":                           SUBTASK_visual_system
+  "file:outputs/experience-design.md":                 SUBTASK_synthesis
+  "file:SYNTHESIS.md":                                 SUBTASK_synthesis
+
+req_ux_id_ranges:          # REQ-UX-NNN, 3-digit, unique within area (parent scheme); sub-ranged here
+  SUBTASK_ia_interaction: "REQ-UX-001..REQ-UX-019"
+  SUBTASK_visual_system:  "REQ-UX-020..REQ-UX-039"
+  SUBTASK_screens_flows:  "REQ-UX-040..REQ-UX-089"
+  SUBTASK_responsive:     "REQ-UX-090..REQ-UX-099"
+  SUBTASK_accessibility:  "REQ-UX-100..REQ-UX-119"
+
+# Invariants SUBTASK_synthesis asserts with recorded evidence; a failing identity is reported and
+# remediated by decomposing a remediation subtree — never silently plugged.
+identities:
+  - id: SECTION_COVERAGE
+    statement: "Every required section of experience-design.md (per ../../contracts/design_artifact_map.yaml) is present, in order, written by exactly one child."
+  - id: ID_UNIQUE_IN_RANGE
+    statement: "Every REQ-UX-* id is unique and within its owning child's assigned range; no collisions, no out-of-range ids."
+  - id: UX_TESTABLE_AND_GATED
+    statement: "Every REQ-UX-* has a statement, an acceptance_criteria a stranger could check on the live product, and a release_gating flag."
+  - id: UX_TRACES_TO_PROD
+    statement: "Every REQ-UX-* references >=1 REQ-PROD-*; every REQ-PROD-* with a user-facing UX surface is covered by >=1 REQ-UX-* or recorded as having no distinct UX requirement with a reason."
+  - id: COMPOSES_AGAINST_PARENT
+    statement: "The parent REQ-UX format, field set, and section list are used, not redefined; this contract only sub-ranges ids and maps sections."
+  - id: SURFACE_COVERAGE
+    statement: "Every account/operational surface with a user-facing UX (sign-up/in/recovery/sign-out, onboarding, settings, edit profile, data export, account deletion, notifications, report/block, help/support entry) is designed with its empty/error/loading states OR recorded out-of-scope with a reason."
+  - id: NOT_SKELETAL
+    statement: "Each designed screen specifies layout/content/primary action and its empty, error, and loading states — not a bare route name."
+  - id: HYGIENE
+    statement: "Nothing in experience-design.md carries host/system/taskflow detail, workspace paths, agent/DAG/run ids, or an attribution trailer."
+
+derived_artifacts:
+  - name: req_ux_register
+    generated_from: "each child's REQ-UX entries (ia/visual/screens/responsive/accessibility)"
+    consumed_by: SUBTASK_synthesis
+  - name: "outputs/experience-design.md"
+    assembled_from: "ia-interaction.md + visual-system.md + screens-flows.md + responsive.md + accessibility.md + consolidated REQ-UX register"
+    produced_by: SUBTASK_synthesis

@@ -1,0 +1,120 @@
+{
+  "sequence": 25,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T02:18:27.746785441Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_q3_gen_counter"
+      ],
+      "placement_parent_task_id": "SUBTASK_concern2_code_quality"
+    },
+    "resulting_version": 25,
+    "summary": "inject tasks: SUBTASK_q3_gen_counter",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_concern2_code_quality: spoke task Q3 examines generation counter clarity and self-documentation in async_resource.rs.",
+        "task_id": "SUBTASK_concern2_code_quality"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1_concurrency": [],
+      "SUBTASK_b2_event": [],
+      "SUBTASK_b3_form": [],
+      "SUBTASK_concern2_code_quality": [],
+      "SUBTASK_concern3_tests": [],
+      "SUBTASK_concern6_idiom": [],
+      "SUBTASK_concern7_api_stability": [],
+      "SUBTASK_correctness_concurrency": [],
+      "SUBTASK_findings_synthesis": [
+        "SUBTASK_b1_concurrency",
+        "SUBTASK_b2_event",
+        "SUBTASK_b3_form"
+      ],
+      "SUBTASK_produce_partial_findings": [],
+      "SUBTASK_q1_coupling": [],
+      "SUBTASK_q2_eventhandler": [],
+      "SUBTASK_q3_gen_counter": [],
+      "SUBTASK_qti_synthesis": [
+        "SUBTASK_concern2_code_quality",
+        "SUBTASK_concern3_tests",
+        "SUBTASK_concern6_idiom",
+        "SUBTASK_concern7_api_stability"
+      ],
+      "SUBTASK_quality_tests_idiom": [],
+      "SUBTASK_sec_event": [],
+      "SUBTASK_sec_event_downcast": [],
+      "SUBTASK_sec_event_forget": [],
+      "SUBTASK_sec_event_synthesis": [
+        "SUBTASK_sec_event_downcast",
+        "SUBTASK_sec_event_forget"
+      ],
+      "SUBTASK_sec_injection": [],
+      "SUBTASK_sec_secrets": [],
+      "SUBTASK_sec_synthesis": [
+        "SUBTASK_sec_event",
+        "SUBTASK_sec_injection",
+        "SUBTASK_sec_secrets",
+        "SUBTASK_sec_unsafe"
+      ],
+      "SUBTASK_sec_unsafe": [],
+      "SUBTASK_security": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_correctness_concurrency",
+        "SUBTASK_quality_tests_idiom",
+        "SUBTASK_security"
+      ],
+      "review-ferric-async-forms-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1_concurrency",
+          "SUBTASK_b2_event",
+          "SUBTASK_b3_form",
+          "SUBTASK_concern2_code_quality",
+          "SUBTASK_concern3_tests",
+          "SUBTASK_concern6_idiom",
+          "SUBTASK_concern7_api_stability",
+          "SUBTASK_correctness_concurrency",
+          "SUBTASK_produce_partial_findings",
+          "SUBTASK_q1_coupling",
+          "SUBTASK_q2_eventhandler",
+          "SUBTASK_q3_gen_counter",
+          "SUBTASK_quality_tests_idiom",
+          "SUBTASK_sec_event",
+          "SUBTASK_sec_event_downcast",
+          "SUBTASK_sec_event_forget",
+          "SUBTASK_sec_injection",
+          "SUBTASK_sec_secrets",
+          "SUBTASK_sec_unsafe",
+          "SUBTASK_security",
+          "review-ferric-async-forms-r3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_findings_synthesis",
+          "SUBTASK_qti_synthesis",
+          "SUBTASK_sec_event_synthesis",
+          "SUBTASK_sec_synthesis",
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

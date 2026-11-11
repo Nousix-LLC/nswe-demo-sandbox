@@ -1,0 +1,57 @@
+# Sub-contract manifest — SUBTASK_release_and_distribution (concern 7)
+# READ-ONLY for every spoke in this subtree. Spokes compose against it; they do not modify it.
+# It EXTENDS the parent contract (../../contracts/) — it does NOT redefine the REQ-<AREA>-NNN scheme, the
+# verification_method vocabulary, or the stage vocabulary. It partitions the REQ-REL-* number space across the
+# three spokes, fixes per-spoke ownership + output filenames, and declares the merge identities the synthesis
+# gate asserts. Amendments are additive only.
+
+kind: yaml_schema            # extends the parent yaml_schema
+
+extends:
+  parent_contract: ../../contracts/
+  inherits:
+    - "REQ-<AREA>-<NNN> id scheme and requirement_fields (id, statement, rationale, acceptance_criteria, stage, release_gating, references)"
+    - "verification_method closed vocabulary (automated_test, example_build, doc_inspection, benchmark_run, publishability)"
+    - "stage vocabulary (usable_early, one_oh, post_one_oh) and release_gating semantics"
+  must_not_override: "Any parent declaration. This sub-contract only partitions the REL area and adds merge identities."
+
+purpose: >
+  Fix the one seam the three spokes share — a single REQ-REL-* register that must not collide or contradict —
+  by assigning each spoke a disjoint REQ-REL number range, so the synthesis gate can merge the three partials
+  into one register mechanically. Narrative lives in ../_GLOBAL.md; this is structure only.
+
+# ---------------------------------------------------------------------------
+# REQ-REL-* number-space partition (identity J1 — disjoint ranges)
+# ---------------------------------------------------------------------------
+# The parent owns the REL area as a whole (REQ-REL-*, owner SUBTASK_release_and_distribution). Within this
+# subtree the number space is split so the spokes never collide. Ranges are generous; a spoke need not fill its
+# range, but MUST NOT mint an id outside it.
+req_rel_partition:
+  SUBTASK_publishing:        { range: "REQ-REL-001 .. REQ-REL-019", covers: "crates.io publishing readiness per crate; licensing + metadata; path->version dependency conversion; multi-crate workspace release" }
+  SUBTASK_semver_changelog:  { range: "REQ-REL-020 .. REQ-REL-039", covers: "semver contract over the frozen prelude surfaces; breaking-vs-additive classification; changelog practice" }
+  SUBTASK_versioning_compat: { range: "REQ-REL-040 .. REQ-REL-059", covers: "1.0 versioning & compatibility policy: MSRV, frozen-prelude stability guarantee, additive-only evolution, cross-crate version coordination" }
+
+# ---------------------------------------------------------------------------
+# Ownership: every artifact has exactly one producer.
+# ---------------------------------------------------------------------------
+ownership:
+  "REQ-REL-001..019 + publishing.md":        SUBTASK_publishing
+  "REQ-REL-020..039 + semver-changelog.md":  SUBTASK_semver_changelog
+  "REQ-REL-040..059 + versioning-compat.md": SUBTASK_versioning_compat
+  "release-and-distribution.md (merged register) + SYNTHESIS.md": SUBTASK_rel_synthesis
+
+# ---------------------------------------------------------------------------
+# Identities the synthesis task evaluates as assertions. A failure is a structured signal, never a silent plug.
+# ---------------------------------------------------------------------------
+identities:
+  J1_disjoint_ranges:   "Each spoke mints only REQ-REL-* ids inside its assigned range; no id used twice, no collision."
+  J2_schema_conformance: "Every REQ-REL-* carries the parent requirement_fields and conforms to ../../contracts/id_and_traceability_schema.yaml."
+  J3_framework_verification: "Every acceptance_criteria uses a verification_method from the parent closed vocabulary (expected: publishability, doc_inspection, automated_test, example_build)."
+  J4_all_concerns_covered: "At least one REQ-REL-* each for: publishing readiness; the semver contract; the changelog practice; the versioning/compatibility policy."
+  J5_one_oh_promise:    "At least one REQ-REL-* states the MSRV promise; at least one states the frozen-prelude stability promise for 1.0."
+  J6_peers_named:       "The merged doc compares release/semver practice to named peers (Leptos, Dioxus, Yew) and cites the Rust SemVer / API-evolution reference by name."
+  J7_placed_once_repo_shape: "The merged release-and-distribution.md carries the complete register with no range gaps/overlaps, has a Metadata section (owning task + conforms_to), and matches the repo design-doc shape."
+
+derived_artifacts:
+  - "publishing.md, semver-changelog.md, versioning-compat.md are the sources SUBTASK_synthesis merges."
+  - "release-and-distribution.md is the single doc SUBTASK_design_pr (parent level) places at design/ferric/release-and-distribution.md."

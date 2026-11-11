@@ -1,0 +1,318 @@
+{
+  "sequence": 43,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T02:30:23.889022288Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_settings_hub"
+      ],
+      "placement_parent_task_id": "SUBTASK_settings_management"
+    },
+    "resulting_version": 43,
+    "summary": "inject tasks: SUBTASK_settings_hub",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the Settings hub surface spoke — one of four distinct account-settings surfaces the scope trigger required decomposing.",
+        "task_id": "SUBTASK_settings_management"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_abuse_privacy": [],
+      "SUBTASK_accessibility": [
+        "SUBTASK_ia_interaction",
+        "SUBTASK_visual_system"
+      ],
+      "SUBTASK_account_lifecycle": [],
+      "SUBTASK_account_lifecycle/SUBTASK_synthesis": [
+        "SUBTASK_leaving",
+        "SUBTASK_onboarding_profile",
+        "SUBTASK_settings_management"
+      ],
+      "SUBTASK_accounts_lifecycle": [],
+      "SUBTASK_auth_sessions": [],
+      "SUBTASK_authorization": [],
+      "SUBTASK_component_library": [
+        "SUBTASK_visual_language"
+      ],
+      "SUBTASK_compose_post": [],
+      "SUBTASK_considered_states": [],
+      "SUBTASK_core_loop": [],
+      "SUBTASK_core_loop_synthesis": [
+        "SUBTASK_posting_conversation",
+        "SUBTASK_profiles_discovery",
+        "SUBTASK_social_actions",
+        "SUBTASK_timeline_reading"
+      ],
+      "SUBTASK_dad_synthesis": [
+        "SUBTASK_domain_model",
+        "SUBTASK_module_structure",
+        "SUBTASK_persistence_state"
+      ],
+      "SUBTASK_delivery_backlog": [
+        "SUBTASK_design_pr",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_design_pr": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_domain_app_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_domain_model": [],
+      "SUBTASK_experience_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_experience_synthesis": [
+        "SUBTASK_accessibility",
+        "SUBTASK_ia_interaction",
+        "SUBTASK_responsive",
+        "SUBTASK_screens_flows",
+        "SUBTASK_visual_system"
+      ],
+      "SUBTASK_get_in": [],
+      "SUBTASK_ia_interaction": [],
+      "SUBTASK_identity_trust": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_identity_trust/SUBTASK_synthesis": [
+        "SUBTASK_abuse_privacy",
+        "SUBTASK_accounts_lifecycle",
+        "SUBTASK_auth_sessions",
+        "SUBTASK_authorization"
+      ],
+      "SUBTASK_leaving": [],
+      "SUBTASK_module_structure": [
+        "SUBTASK_domain_model"
+      ],
+      "SUBTASK_onboarding_profile": [],
+      "SUBTASK_operational_readiness": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design"
+      ],
+      "SUBTASK_ops_backups_recovery": [
+        "SUBTASK_ops_durable_data"
+      ],
+      "SUBTASK_ops_durable_data": [],
+      "SUBTASK_ops_limits_quotas": [],
+      "SUBTASK_ops_observability": [],
+      "SUBTASK_ops_status_incident": [
+        "SUBTASK_ops_observability"
+      ],
+      "SUBTASK_ops_synthesis": [
+        "SUBTASK_ops_backups_recovery",
+        "SUBTASK_ops_durable_data",
+        "SUBTASK_ops_limits_quotas",
+        "SUBTASK_ops_observability",
+        "SUBTASK_ops_status_incident"
+      ],
+      "SUBTASK_persistence_state": [
+        "SUBTASK_domain_model"
+      ],
+      "SUBTASK_posting_conversation": [],
+      "SUBTASK_posting_conversation_synthesis": [
+        "SUBTASK_compose_post",
+        "SUBTASK_reply_conversation"
+      ],
+      "SUBTASK_product_requirements": [],
+      "SUBTASK_product_requirements/SUBTASK_pr_synthesis": [
+        "SUBTASK_product_requirements/SUBTASK_product_definition",
+        "SUBTASK_product_requirements/SUBTASK_users_and_journeys",
+        "SUBTASK_product_requirements/SUBTASK_requirements"
+      ],
+      "SUBTASK_product_requirements/SUBTASK_product_definition": [],
+      "SUBTASK_product_requirements/SUBTASK_requirements": [
+        "SUBTASK_product_requirements/SUBTASK_product_definition",
+        "SUBTASK_product_requirements/SUBTASK_users_and_journeys"
+      ],
+      "SUBTASK_product_requirements/SUBTASK_users_and_journeys": [],
+      "SUBTASK_profiles_discovery": [],
+      "SUBTASK_release_bar": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness"
+      ],
+      "SUBTASK_reply_conversation": [],
+      "SUBTASK_responsive": [
+        "SUBTASK_ia_interaction",
+        "SUBTASK_visual_system"
+      ],
+      "SUBTASK_safety_notifications": [],
+      "SUBTASK_screens_flows": [
+        "SUBTASK_ia_interaction",
+        "SUBTASK_visual_system"
+      ],
+      "SUBTASK_screens_flows_synthesis": [
+        "SUBTASK_account_lifecycle",
+        "SUBTASK_considered_states",
+        "SUBTASK_core_loop",
+        "SUBTASK_get_in",
+        "SUBTASK_safety_notifications"
+      ],
+      "SUBTASK_settings_hub": [],
+      "SUBTASK_settings_management": [],
+      "SUBTASK_social_actions": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_design_pr",
+        "SUBTASK_delivery_backlog",
+        "SUBTASK_release_bar",
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness"
+      ],
+      "SUBTASK_timeline_reading": [],
+      "SUBTASK_visual_language": [],
+      "SUBTASK_visual_system": [
+        "SUBTASK_ia_interaction"
+      ],
+      "SUBTASK_visual_system/SUBTASK_synthesis": [
+        "SUBTASK_component_library",
+        "SUBTASK_visual_language"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_abuse_privacy",
+          "SUBTASK_account_lifecycle",
+          "SUBTASK_accounts_lifecycle",
+          "SUBTASK_auth_sessions",
+          "SUBTASK_authorization",
+          "SUBTASK_compose_post",
+          "SUBTASK_considered_states",
+          "SUBTASK_core_loop",
+          "SUBTASK_domain_model",
+          "SUBTASK_get_in",
+          "SUBTASK_ia_interaction",
+          "SUBTASK_leaving",
+          "SUBTASK_onboarding_profile",
+          "SUBTASK_ops_durable_data",
+          "SUBTASK_ops_limits_quotas",
+          "SUBTASK_ops_observability",
+          "SUBTASK_posting_conversation",
+          "SUBTASK_product_requirements",
+          "SUBTASK_product_requirements/SUBTASK_product_definition",
+          "SUBTASK_product_requirements/SUBTASK_users_and_journeys",
+          "SUBTASK_profiles_discovery",
+          "SUBTASK_reply_conversation",
+          "SUBTASK_safety_notifications",
+          "SUBTASK_settings_hub",
+          "SUBTASK_settings_management",
+          "SUBTASK_social_actions",
+          "SUBTASK_timeline_reading",
+          "SUBTASK_visual_language"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_account_lifecycle/SUBTASK_synthesis",
+          "SUBTASK_component_library",
+          "SUBTASK_core_loop_synthesis",
+          "SUBTASK_domain_app_design",
+          "SUBTASK_experience_design",
+          "SUBTASK_identity_trust",
+          "SUBTASK_identity_trust/SUBTASK_synthesis",
+          "SUBTASK_module_structure",
+          "SUBTASK_ops_backups_recovery",
+          "SUBTASK_ops_status_incident",
+          "SUBTASK_persistence_state",
+          "SUBTASK_posting_conversation_synthesis",
+          "SUBTASK_product_requirements/SUBTASK_requirements",
+          "SUBTASK_screens_flows_synthesis",
+          "SUBTASK_visual_system"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_accessibility",
+          "SUBTASK_dad_synthesis",
+          "SUBTASK_operational_readiness",
+          "SUBTASK_ops_synthesis",
+          "SUBTASK_product_requirements/SUBTASK_pr_synthesis",
+          "SUBTASK_responsive",
+          "SUBTASK_screens_flows",
+          "SUBTASK_visual_system/SUBTASK_synthesis"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_experience_synthesis",
+          "SUBTASK_release_bar"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "SUBTASK_design_pr"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "group_index": 5,
+        "task_ids": [
+          "SUBTASK_delivery_backlog"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "group_index": 6,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "sequence": 4,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T03:23:25.524709706Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "CHILD_skeleton"
+      ],
+      "placement_parent_task_id": "SUBTASK_server_public_timeline"
+    },
+    "resulting_version": 4,
+    "summary": "inject tasks: CHILD_skeleton",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "CHILD_skeleton establishes the public_timeline capability seam (trait method, stubs, handler, route) so cargo build passes before the real implementations are written.",
+        "task_id": "SUBTASK_server_public_timeline"
+      }
+    },
+    "updated_graph_edges": {
+      "CHILD_skeleton": [],
+      "SUBTASK_frontend_logged_out": [
+        "SUBTASK_server_public_timeline"
+      ],
+      "SUBTASK_server_public_timeline": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_frontend_logged_out"
+      ],
+      "chirp-logged-out": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "CHILD_skeleton",
+          "SUBTASK_server_public_timeline",
+          "chirp-logged-out"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_frontend_logged_out"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,35 @@
+# req_dom_partition.yaml — the REQ-DOM-* partition + entity-vocabulary seam for this subtree.
+# READ-ONLY. Extends the inherited id schema (../../contracts/id_and_traceability_schema.yaml); does not redefine
+# the REQ-<AREA>-NNN format, the area->owner map, or the per-requirement fields.
+
+req_dom_number_ranges:                       # disjoint ranges so the three parts never collide on an id
+  SUBTASK_domain_model:      "REQ-DOM-001 .. REQ-DOM-049"
+  SUBTASK_persistence_state: "REQ-DOM-100 .. REQ-DOM-149"
+  SUBTASK_module_structure:  "REQ-DOM-200 .. REQ-DOM-249"
+  # SUBTASK_dad_synthesis mints no new REQ-DOM-*; it consolidates the three parts' requirements verbatim.
+
+section_ownership:                           # required sections of domain-application-design.md, one owner each
+  domain_model:                     SUBTASK_domain_model
+  persistence_requirement:          SUBTASK_persistence_state
+  modules_and_responsibilities:     SUBTASK_module_structure
+  interfaces_and_entry_points:      SUBTASK_module_structure
+  requirements_and_acceptance_criteria: SUBTASK_dad_synthesis   # the union of all REQ-DOM-*, consolidated
+
+entity_vocabulary_seam:
+  owner: SUBTASK_domain_model
+  rule: >
+    SUBTASK_domain_model defines the canonical entity names, relationships, and invariants in an
+    "entity vocabulary" that domain-model.md makes explicit. SUBTASK_persistence_state and
+    SUBTASK_module_structure reference entities ONLY by those canonical names (e.g. the thing a user posts,
+    the follow relationship, the like) — they do not coin new entity names or redefine the model. If a part
+    needs an entity the model does not name, that is a gap to report, not a license to invent one.
+  held_to: >
+    The canonical model is held to the existing chirp-types crate shapes and the current chirp-server domain;
+    name entities by what they are in the product, and note where an existing crate type already carries them.
+
+per_requirement_fields:                      # inherited verbatim from id_and_traceability_schema.yaml (not redefined)
+  - id                                       # REQ-DOM-NNN within the owning part's range
+  - statement                                # what must be true, from the user's/operator's side
+  - acceptance_criteria                      # testable by someone who never met the author
+  - release_gating                           # true | false
+  - traces_to                                # optional: REQ-PROD-* this refines, when applicable

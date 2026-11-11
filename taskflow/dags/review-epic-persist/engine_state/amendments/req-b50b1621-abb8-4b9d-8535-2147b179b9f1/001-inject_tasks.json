@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T01:47:35.430333580Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_correctness"
+      ],
+      "placement_parent_task_id": "review-epic-persist"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_correctness",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the correctness concern spoke of the PR #113 review decomposition.",
+        "task_id": "review-epic-persist"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_correctness": [],
+      "review-epic-persist": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_correctness",
+          "review-epic-persist"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

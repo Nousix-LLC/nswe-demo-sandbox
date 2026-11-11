@@ -1,0 +1,68 @@
+# Contract manifest — SUBTASK_posting_conversation (internal seam for the writing-and-reading subtree)
+# kind: yaml_schema. READ-ONLY for every descendant. Extends the ANCESTOR contracts
+# (../../contracts/ core-loop seam; ../../../contracts/ screens-&-flows seam; ../../../../contracts/
+# experience-design seam) ADDITIVELY — it sub-ranges the REQ-UX-054..058 id space between the two spokes
+# and maps the two posting/conversation surfaces to owners; it never overrides the ancestors' REQ-<AREA>-NNN
+# format, field set, required_surfaces checklist, or trace rule. Where this manifest and an ancestor
+# disagree, the ancestor wins.
+
+kind: yaml_schema
+
+extends:
+  - "../../contracts/"        # core-loop seam: the posting_conversation surfaces + REQ-UX-054..058 range + vocabularies + trace rule + per-screen<->global-pattern cross-reference
+  - "../../../contracts/"     # screens-&-flows seam: REQ-UX-NNN format + field set + core_loop section-part
+  - "../../../../contracts/"  # experience-design seam: REQ-<AREA>-NNN scheme + experience-design.md section list
+
+artifacts:
+  - file: posting_conversation_seam.yaml
+    declares: "Surface->owning spoke (both posting/conversation surfaces); the REQ-UX-054..058 sub-range per spoke; the shared-vocabulary composition rule; the shared-ComposeBox ownership note; the per-screen<->global-pattern cross-reference; the per-REQ-UX trace rule."
+
+# One producer per surface / id sub-range. An unowned surface is a hole; a double-written one is a race.
+ownership:
+  "surface:compose_and_post":           SUBTASK_compose_post
+  "surface:reply_and_conversation":     SUBTASK_reply_conversation
+  "register:req_ux_054_058":            SUBTASK_synthesis   # consolidated from both spokes
+  "file:outputs/screens-posting-conversation.md":  SUBTASK_synthesis
+  "file:SYNTHESIS.md":                  SUBTASK_synthesis
+
+req_ux_id_ranges:          # REQ-UX-NNN, 3-digit, unique within area (ancestor scheme); sub-ranged here within 054..058
+  SUBTASK_compose_post:         "REQ-UX-054..REQ-UX-056"   # 3 ids
+  SUBTASK_reply_conversation:   "REQ-UX-057..REQ-UX-058"   # 2 ids
+
+# Inherited, NOT redefined — the frozen upstream vocabularies every spoke composes against by name.
+inherited_vocabularies:
+  screen_inventory:
+    source: "../../../../SUBTASK_ia_interaction/outputs/ia-interaction.md (heading: Screen inventory)"
+    surfaces: ["Compose (/compose + overlay dialog)", "Chirp / conversation (/@:handle/chirp/:id)"]
+    rule: "Refer to screens by their inventory names and routes. Do not invent a screen outside the inventory without an additive amendment to this contract."
+  component_library:
+    source: "../../../../SUBTASK_visual_system/outputs/visual-system.md (heading: Component library)"
+    rule: "Build each surface from named components; use each component's own named states (default/empty/error/loading/disabled). Do not invent a component outside the library without an additive amendment to this contract."
+
+# Invariants SUBTASK_synthesis asserts with recorded evidence; a failing identity is reported and
+# remediated by decomposing a remediation subtree — never silently plugged.
+identities:
+  - id: SURFACE_COVERAGE
+    statement: "The compose/post surface and the Chirp/conversation surface are each designed with their empty/error/loading states by their owning spoke OR a state recorded out-of-scope with a reason; each surface maps to exactly one spoke (no hole, no double-write)."
+  - id: ID_UNIQUE_IN_RANGE
+    statement: "Every REQ-UX-054..058 id is unique and within its owning spoke's sub-range (compose 054..056, conversation 057..058); no collisions, no out-of-range ids."
+  - id: NOT_SKELETAL
+    statement: "Each designed surface specifies layout, content, and a primary action, and its empty, error, and loading states — not a bare route name."
+  - id: UX_TESTABLE_AND_GATED
+    statement: "Every REQ-UX-* has a statement, an acceptance_criteria a stranger could check on the live product, and a release_gating flag (false carries a one-line reason)."
+  - id: UX_TRACES_TO_PROD
+    statement: "Every REQ-UX-* references >=1 REQ-PROD-*."
+  - id: COMPOSES_AGAINST_VOCAB
+    statement: "Every screen refers to screen-inventory screens by name and is built from component-library components by name; nothing redefined; no new screen/component without an additive contract amendment. Both spokes compose the frozen ComposeBox rather than redefining it."
+  - id: STATES_CONSISTENT
+    statement: "Each per-screen empty/error/loading state is consistent with the global patterns in the empty_error_loading_states section (owned by SUBTASK_considered_states, outside this subtree) and with the components' own named states — in particular the keep-the-draft recovery on a failed publish."
+  - id: HYGIENE
+    statement: "Nothing in the output carries host/system/taskflow detail, workspace paths, agent/DAG/run ids, or an attribution trailer."
+
+derived_artifacts:
+  - name: req_ux_register_054_058
+    generated_from: "each spoke's REQ-UX entries (compose_post 054..056 / reply_conversation 057..058)"
+    consumed_by: SUBTASK_synthesis
+  - name: "outputs/screens-posting-conversation.md"
+    assembled_from: "screens-compose-post.md + screens-reply-conversation.md + consolidated REQ-UX register"
+    produced_by: SUBTASK_synthesis

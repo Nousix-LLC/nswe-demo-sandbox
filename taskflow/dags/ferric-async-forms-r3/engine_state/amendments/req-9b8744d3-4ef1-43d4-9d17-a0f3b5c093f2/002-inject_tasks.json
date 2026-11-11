@@ -1,0 +1,57 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T22:33:10.040315229Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [
+        "SUBTASK_b1_reactive_resource"
+      ],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_b2_b3_event_dom"
+      ],
+      "placement_parent_task_id": "ferric-async-forms-r3"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_b2_b3_event_dom",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "B2 and B3 are entangled through the DOM event dispatch path in dom.rs — the Bind DOM plumbing fix (B3) requires the event-carrying EventHandler (B2) — so they form one task. This task depends on SUBTASK_b1_reactive_resource because both tasks commit to the same branch and must run sequentially.",
+        "task_id": "ferric-async-forms-r3"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1_reactive_resource": [],
+      "SUBTASK_b2_b3_event_dom": [
+        "SUBTASK_b1_reactive_resource"
+      ],
+      "ferric-async-forms-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1_reactive_resource",
+          "ferric-async-forms-r3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_b2_b3_event_dom"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

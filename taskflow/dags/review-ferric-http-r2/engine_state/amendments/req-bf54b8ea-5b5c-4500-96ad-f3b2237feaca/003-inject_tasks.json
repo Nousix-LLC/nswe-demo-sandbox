@@ -1,0 +1,47 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T20:15:41.041297438Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_security"
+      ],
+      "placement_parent_task_id": "review-ferric-http-r2"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_security",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing review-ferric-http-r2: SUBTASK_security is the information hygiene spoke — checks committed content for path/network leaks. No dependencies; can run immediately in parallel with the other spokes.",
+        "task_id": "review-ferric-http-r2"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_security": [],
+      "review-ferric-http-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "SUBTASK_security",
+          "review-ferric-http-r2"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

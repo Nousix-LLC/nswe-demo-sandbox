@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T01:22:23.991100033Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_correctness_concurrency"
+      ],
+      "placement_parent_task_id": "review-ferric-async-forms-r3"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_correctness_concurrency",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing review-ferric-async-forms-r3 into concern-scoped spokes. SUBTASK_correctness_concurrency covers B1/B2/B3 correctness verification and concurrency/async hazards (review concerns 1 and 4).",
+        "task_id": "review-ferric-async-forms-r3"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_correctness_concurrency": [],
+      "review-ferric-async-forms-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_correctness_concurrency",
+          "review-ferric-async-forms-r3"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

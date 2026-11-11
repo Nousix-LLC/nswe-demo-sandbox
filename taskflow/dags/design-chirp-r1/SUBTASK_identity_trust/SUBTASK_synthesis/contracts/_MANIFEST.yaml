@@ -1,0 +1,39 @@
+# Contract manifest — SUBTASK_synthesis subtree (identity-security.md verification gate)
+# kind: yaml_schema. EXTENDS the SUBTASK_identity_trust and design-chirp-r1 contracts additively; never overrides.
+# READ-ONLY for every descendant.
+
+kind: yaml_schema
+
+extends:
+  - "../../contracts/_MANIFEST.yaml"            # the eight subtree identities this gate asserts
+  - "../../contracts/req_id_partition.yaml"     # REQ-ID ranges, section owners, partial format
+  - "../../../contracts/id_and_traceability_schema.yaml"
+  - "../../../contracts/design_artifact_map.yaml"
+
+# The artifact under verification already exists (assembled deliverable). Verification children read it
+# read-only and write findings reports; they do not edit it. Only SUBTASK_fold_gate may edit the deliverable,
+# and only for defects inside this gate's own ownership (threat_model section, REQ-ID-100..119, assembly,
+# writing-voice). A defect in a spoke-owned requirement is reported, never silently rewritten.
+artifacts:
+  - file: findings_report.md
+    declares: "Per-verifier report. Sections: scope, identities checked (by manifest identity id), result per identity (PASS | FAIL), evidence (counts, ids, line references into the deliverable), defects found (empty list allowed)."
+
+ownership:
+  "SUBTASK_verify_register/outputs/findings_register.md":  SUBTASK_verify_register   # identities REQ_ID_UNIQUE_IN_RANGE, REQ_ID_TESTABLE_AND_TRACED, GATING_REQ_NAMES_VERIFICATION, SIX_SECTIONS_PRESENT
+  "SUBTASK_verify_coverage/outputs/findings_coverage.md":  SUBTASK_verify_coverage   # identities PROD_IDENTITY_NEEDS_COVERED, THREAT_MODEL_ANSWERS
+  "SUBTASK_verify_hygiene/outputs/findings_hygiene.md":    SUBTASK_verify_hygiene    # identities NO_SCHEMA_REDEFINITION, DELIVERABLE_HYGIENE, plus the writing-voice pass
+  "SUBTASK_identity_trust/outputs/identity-security.md":   SUBTASK_fold_gate         # the deliverable (already assembled); edited only for in-ownership defects
+  "SUBTASK_identity_trust/SYNTHESIS.md":                   SUBTASK_fold_gate         # parent fold record: identity evidence + REQ-ID<->REQ-PROD trace list
+  "SUBTASK_synthesis/SYNTHESIS.md":                        SUBTASK_fold_gate         # fold record for this node
+
+identities:
+  - id: ALL_EIGHT_IDENTITIES_REPORTED
+    statement: "Across the three findings reports, each of the eight subtree identities appears exactly once with a PASS or FAIL result and recorded evidence."
+  - id: NO_SILENT_PLUG
+    statement: "No findings report or the fold record shows a FAIL turned into a PASS by editing a spoke-owned requirement; any FAIL is carried to the fold record as a failure or a remediation note."
+  - id: READ_ONLY_VERIFICATION
+    statement: "The three verification children write only their own findings report; the deliverable and the four spoke partials are unchanged by them."
+  - id: FOLD_RECORDS_AGREE
+    statement: "The REQ-ID count, id ranges and trace list in the parent fold record equal what the register in the deliverable contains."
+
+derived_artifacts: []

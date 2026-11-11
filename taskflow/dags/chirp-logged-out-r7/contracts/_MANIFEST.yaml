@@ -1,0 +1,55 @@
+kind: api_surface
+description: >
+  Public API surface contract for the Chirp logged-out visitor experience.
+  The backend task OWNS the API shape; the frontend task MUST compose against
+  these declared endpoints and MUST NOT invent its own.
+
+ownership:
+  - artifact: "crates/chirp-server public endpoints"
+    owner: SUBTASK_backend-api
+    description: >
+      Unauthenticated GET endpoint for the public timeline and unauthenticated
+      GET endpoint for a public user profile. Exact URLs and response types are
+      determined by the backend task based on what already exists; declared in
+      backend-impl.md after implementation.
+
+  - artifact: "crates/chirp-frontend home route and components"
+    owner: SUBTASK_frontend-ui
+    description: >
+      Home/landing route, PublicTimeline component (4 states), PublicUserProfile
+      component, sign-up/sign-in navigation. Must consume only the API endpoints
+      declared in backend-impl.md.
+
+  - artifact: "analysis.md"
+    owner: SUBTASK_explore-codebase
+
+  - artifact: "backend-impl.md"
+    owner: SUBTASK_backend-api
+
+  - artifact: "frontend-impl.md"
+    owner: SUBTASK_frontend-ui
+
+  - artifact: "SYNTHESIS.md"
+    owner: SUBTASK_synthesis
+
+identities:
+  - id: api_coverage
+    assertion: >
+      Every public API endpoint that the frontend calls MUST be a declared and
+      implemented endpoint from SUBTASK_backend-api's output.
+    verified_by: SUBTASK_synthesis
+
+  - id: ac_coverage
+    assertion: >
+      Each acceptance criterion (AC-1 through AC-5) from issue #35 MUST have
+      a corresponding implementation artifact. The synthesis task accounts for
+      each AC in SYNTHESIS.md as "met" or "not met and why".
+    verified_by: SUBTASK_synthesis
+
+  - id: ci_pass
+    assertion: >
+      CI checks (fmt, clippy, test, wasm, doc, image) MUST pass on branch
+      work/chirp-logged-out before the PR is marked ready.
+    verified_by: SUBTASK_synthesis
+
+derived_artifacts: []

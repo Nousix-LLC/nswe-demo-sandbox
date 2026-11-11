@@ -1,0 +1,30 @@
+kind: taxonomy
+description: >
+  Code review findings taxonomy for PR #228 code quality review spokes.
+  Every spoke produces one area finding file conforming to findings_schema.yaml.
+  The synthesis task assembles all six into code_quality_findings.md.
+
+ownership:
+  - artifact: SUBTASK_A_api_surface/area_a_api_surface.md
+    owner: SUBTASK_A_api_surface
+  - artifact: SUBTASK_B_abstraction/area_b_abstraction.md
+    owner: SUBTASK_B_abstraction
+  - artifact: SUBTASK_C_error_handling/area_c_error_handling.md
+    owner: SUBTASK_C_error_handling
+  - artifact: SUBTASK_D_function_design/area_d_function_design.md
+    owner: SUBTASK_D_function_design
+  - artifact: SUBTASK_E_test_coverage/area_e_test_coverage.md
+    owner: SUBTASK_E_test_coverage
+  - artifact: SUBTASK_F_documentation/area_f_documentation.md
+    owner: SUBTASK_F_documentation
+  - artifact: code_quality_findings.md
+    owner: SUBTASK_synthesis_cq
+
+identities:
+  - "Every area file has exactly one verdict from {CLEAN, FINDING (NON-BLOCKER), FINDING (BLOCKER)}"
+  - "Every FINDING verdict includes at least one citation with a repository-relative file path and line number"
+  - "Every area file contains a non-empty 'what was checked' section"
+  - "code_quality_findings.md contains sections A through F, one per area file"
+  - "No finding cites #225 / REQ-SSR-007 as a code quality finding (inherited non-goal)"
+
+derived_artifacts: []

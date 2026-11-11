@@ -1,0 +1,65 @@
+{
+  "sequence": 6,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T23:22:39.593678998Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_sec_quality"
+      ],
+      "placement_parent_task_id": "SUBTASK_regression"
+    },
+    "resulting_version": 6,
+    "summary": "inject tasks: SUBTASK_sec_quality",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Adding SUBTASK_sec_quality to cover the security surface and code quality dimensions of SUBTASK_regression, which are distinct from the regression criteria checks.",
+        "task_id": "SUBTASK_regression"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1_verify": [],
+      "SUBTASK_b2_verify": [],
+      "SUBTASK_reg_criteria": [],
+      "SUBTASK_regression": [],
+      "SUBTASK_sec_quality": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_b1_verify",
+        "SUBTASK_b2_verify",
+        "SUBTASK_regression"
+      ],
+      "review-ferric-ssr-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1_verify",
+          "SUBTASK_b2_verify",
+          "SUBTASK_reg_criteria",
+          "SUBTASK_regression",
+          "SUBTASK_sec_quality",
+          "review-ferric-ssr-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

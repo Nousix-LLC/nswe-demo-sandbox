@@ -1,0 +1,193 @@
+spoke: design-doc-review
+concern_ids: [2]
+
+findings:
+
+  # BLOCKING: baseline API surface is unanchored in three criteria
+
+  - id: DDR-B-001
+    severity: BLOCKING
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-001"
+    statement: >
+      The criterion requires that "An app written against the baseline `ferric` prelude compiles at 1.0
+      without modification to any previously exported item," but the document defines no specific version,
+      git tag, or commit that constitutes "the baseline." An outside reviewer cannot determine which
+      pre-1.0 API surface to compile against to check backward compatibility.
+    recommendation: >
+      Anchor the baseline to a specific, named reference — for example a git tag such as
+      `v0.1.0-usable_early` or the earliest published crates.io version — so a reviewer knows exactly
+      which API surface the 1.0 release must remain compatible with. Alternatively, list the frozen
+      prelude items explicitly in the compatibility policy (BAR-FERRIC-029), and cross-reference that
+      list here.
+
+  - id: DDR-B-002
+    severity: BLOCKING
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-003"
+    statement: >
+      The criterion states "the produced HTML passes a standard HTML sanitizer without injected markup"
+      but names no specific sanitizer (e.g. `ammonia`, DOMPurify, `sanitize-html`). The verification
+      clause — "A test produces the HTML string for a representative component and checks its content
+      without running a browser" — does not specify what the test checks for or how the sanitizer result
+      is evaluated. An outside reviewer cannot determine which sanitizer to run, what its pass/fail
+      threshold is, or whether the existing test satisfies the sanitizer claim.
+    recommendation: >
+      Name the specific sanitizer (e.g. the Rust `ammonia` crate) and the exact check — for example
+      "output is unchanged after passing through `ammonia::clean`" or "output contains no `<script>`
+      tags or `on*` event-attribute values." Add this as a named assertion in the automated test so the
+      verification is directly observable.
+
+  - id: DDR-B-003
+    severity: BLOCKING
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-006"
+    statement: >
+      The criterion states "Ferric detects the mismatch and recovers without a silent fault" when
+      client-rendered structure diverges from server HTML, but specifies no observable outcome for
+      detection or recovery — no mention of a console warning, a panic, a logged error, a dev-mode-only
+      diagnostic, or a re-render. An outside reviewer inducing a deliberate hydration mismatch has no
+      basis for determining whether the framework "detected" it, and no way to distinguish a genuine
+      detection from a silent failure.
+    recommendation: >
+      Specify the observable outcome: for example "in development builds, Ferric logs a warning to the
+      browser console identifying the mismatched node; in production builds, the mismatch triggers a
+      full client-side re-render of the affected subtree." The example_build verification should include
+      a step that deliberately introduces a mismatch and names the expected observable result.
+
+  - id: DDR-B-004
+    severity: BLOCKING
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-015"
+    statement: >
+      The criterion requires "The `ferric-router` prelude surfaces present at the baseline are present
+      at 1.0; no previously exported item is removed or redefined," but the document provides no version
+      anchor for "the baseline." An outside reviewer cannot identify which pre-1.0 router API surface
+      to check compatibility against.
+    recommendation: >
+      Same fix as DDR-B-001: anchor the baseline to a named git tag or the earliest published
+      crates.io version for `ferric-router`, or enumerate the frozen router prelude items in the
+      compatibility policy and cross-reference them here.
+
+  - id: DDR-B-005
+    severity: BLOCKING
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-017"
+    statement: >
+      The criterion requires "The `ferric-http` prelude surfaces present at the baseline are present at
+      1.0 without removal or redefinition," but the document provides no version anchor for "the
+      baseline." An outside reviewer cannot identify which pre-1.0 HTTP client API surface to check
+      compatibility against.
+    recommendation: >
+      Same fix as DDR-B-001: anchor the baseline to a named git tag or the earliest published
+      crates.io version for `ferric-http`, or enumerate the frozen HTTP prelude items in the
+      compatibility policy and cross-reference them here.
+
+  # Non-blocking: quality standards that require judgment to verify
+
+  - id: DDR-B-006
+    severity: non-blocking
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-008"
+    statement: >
+      The criterion requires each diagnostic to "name the problem in terms of the author's code rather
+      than macro internals." trybuild tests capture and fix the exact error text, which helps, but the
+      quality standard — what makes a message "in author terms" vs. "in macro internals" — is not
+      defined. Two reviewers reading captured trybuild output could disagree on whether a given message
+      meets the standard without a more concrete definition.
+    recommendation: >
+      Add a short definition or examples: for example "the error message names the specific attribute or
+      element the author wrote, not an internal type or span within the macro expansion." If any
+      trybuild expected-output file contains a message citing a framework-internal type name, revise the
+      message and update the expectation file.
+
+  - id: DDR-B-007
+    severity: non-blocking
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-010"
+    statement: >
+      The criterion requires each component type error to "name the problem at the call site rather than
+      inside framework internals." The same issue as DDR-B-006 applies: the quality standard is not
+      defined, and trybuild tests are only as good as the expected output they capture.
+    recommendation: >
+      Same fix as DDR-B-006: add a concrete definition — e.g. "the error message cites the prop name
+      and the component name as the author wrote them" — and audit the trybuild expected outputs against
+      that definition.
+
+  - id: DDR-B-008
+    severity: non-blocking
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-019"
+    statement: >
+      The criterion requires a conceptual guide that explains Ferric's reactive model, component
+      system, and data-loading pattern "in terms an author unfamiliar with the framework can read." The
+      quality standard — what makes a guide sufficient for an unfamiliar author — is not defined. The
+      tutorial half of the criterion is verifiable ("a reviewer can follow the tutorial steps exactly
+      and reach the stated end state"), but the guide quality is aspirational without a threshold.
+    recommendation: >
+      Add a concrete minimum bar for the guide — for example "an author with no prior exposure to
+      Ferric can, after reading the guide, correctly predict the render output of a component with a
+      signal and a memo without looking at framework source." Alternatively, separate the verifiable
+      structural claim (the guide covers these three topics) from the quality aspiration and move the
+      latter to a non-bar note.
+
+  - id: DDR-B-009
+    severity: non-blocking
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-021"
+    statement: >
+      The criterion requires the new-user path to be completable "without reverse-engineering toolchain
+      details." The boundary between documented expected toolchain knowledge (e.g. `rustup` is
+      installed) and knowledge that requires reverse-engineering (e.g. resolving an undocumented linker
+      flag) is not defined. Different reviewers would draw this line differently based on their
+      background.
+    recommendation: >
+      State the assumed prior knowledge explicitly — for example "the user has `rustup` and the stable
+      Rust toolchain installed; no other setup is assumed" — and list each additional toolchain step the
+      documented path requires (e.g. adding `wasm32-unknown-unknown`, installing `wasm-pack` or
+      `cargo-generate`). The criterion passes if every required step is documented; it fails if any
+      required step is absent from the docs.
+
+  - id: DDR-B-010
+    severity: non-blocking
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-027"
+    statement: >
+      The criterion states "No heavy general-purpose runtime is introduced" but does not define
+      "heavy." An outside reviewer cannot make a binary pass/fail determination without a size or
+      category threshold. In the WASM context, including a full server-side async runtime would
+      obviously fail; a reviewer evaluating a borderline dependency (e.g. a feature-flagged pull of
+      `futures`) has no defined rule to apply.
+    recommendation: >
+      Replace the phrase with a specific constraint, such as "no dependency adds more than N KB to the
+      optimized WASM bundle relative to the baseline footprint" or "the dependency set consists solely
+      of: `wasm-bindgen`, `web-sys`, `js-sys`, `serde`, `wasm-bindgen-futures`, and any crate listed
+      and justified in the footprint document." The benchmark numbers document the actual footprint;
+      this criterion should state the rule for what fails it.
+
+  - id: DDR-B-011
+    severity: non-blocking
+    concern: 2
+    location: "release-bar.md §BAR-FERRIC-029"
+    statement: >
+      The criterion requires a written compatibility policy "discoverable from the repository root" but
+      does not define what "discoverable" means — a link in the README, a named file at the root, a
+      section in CONTRIBUTING.md, or simply any file in the repo. A reviewer looking for this policy
+      could disagree with another reviewer on whether it is "discoverable" if it is buried in a
+      subfolder or linked only from an intermediate document.
+    recommendation: >
+      Name the specific location: for example "a `COMPATIBILITY.md` file at the repository root" or "a
+      `## Compatibility Policy` section in the README." If it will live in a subfolder (e.g.
+      `docs/compatibility.md`), require that the README link to it by name.
+
+summary:
+  blocking_count: 5
+  non_blocking_count: 6
+  notes: >
+    All 29 BAR-FERRIC-* criteria were evaluated. 18 pass the stranger test without qualification.
+    5 are BLOCKING: three share the same root cause (the "baseline" API surface has no version anchor
+    in BAR-FERRIC-001, BAR-FERRIC-015, BAR-FERRIC-017), one names no sanitizer and leaves its test
+    unspecified (BAR-FERRIC-003), and one omits the observable outcome for hydration mismatch
+    detection (BAR-FERRIC-006). 6 are non-blocking quality issues where the core criterion is
+    verifiable but a quality standard or term is undefined enough that two reviewers might reach
+    different verdicts on a borderline case.

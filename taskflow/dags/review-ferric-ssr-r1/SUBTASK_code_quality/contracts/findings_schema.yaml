@@ -1,0 +1,51 @@
+# Findings schema for code review area files
+# Every spoke produces one file conforming to this schema.
+
+schema_version: "1.0"
+kind: taxonomy
+description: "Structural schema for one code-review area finding file (Areas A–F)"
+
+required_sections:
+  - name: header
+    pattern: "# Area [A-F]: <Area Name> — PR #228"
+  - name: status_line
+    field: "**Status**:"
+    values:
+      - CLEAN
+      - "FINDING (NON-BLOCKER)"
+      - "FINDING (BLOCKER)"
+  - name: what_was_checked
+    heading: "## What Was Checked"
+    description: >
+      Plain prose naming the specific files, functions, types, and code paths
+      examined. Enough detail that a reader can confirm the examination was
+      thorough without re-reading the diff.
+  - name: evidence
+    heading: "## Evidence"
+    description: >
+      Repository-relative file path(s) and line numbers in Nousix-LLC/nswe-demo.
+      Required when Status is FINDING; still present (noting absence of issues)
+      when Status is CLEAN.
+  - name: finding
+    heading: "## Finding"
+    description: >
+      If CLEAN: state "None." If FINDING: describe the issue, its impact on
+      correctness or maintainability, and what a satisfactory resolution looks like.
+      A finding must be actionable by someone who was not inside the reviewer's head.
+
+citation_format:
+  pattern: "<repository-relative-path>:<line-number>"
+  example: "crates/ferric/src/ssr.rs:42"
+  constraint: >
+    Paths are relative to the root of Nousix-LLC/nswe-demo (the repository),
+    not host filesystem paths. Never include /home/... or similar host paths.
+
+verdict_definitions:
+  CLEAN: "No issues found in this area after thorough examination"
+  "FINDING (NON-BLOCKER)": >
+    An issue the reviewer identified that should be addressed (a nit, a
+    suggestion, or a mild concern) but does not block merge on its own.
+    The outer synthesis task will file a tracking issue.
+  "FINDING (BLOCKER)": >
+    An issue that must be resolved before this PR merges: a correctness
+    defect, a violated contract, or a missing safety requirement.

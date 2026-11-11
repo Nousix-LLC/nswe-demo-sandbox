@@ -1,0 +1,58 @@
+# id_and_traceability_schema.yaml — identifier + traceability schema for the whole design.
+# READ-ONLY. Children compose against this and MUST NOT redefine it (extend additively via
+# amendment only). This is what makes requirements, bar criteria, and tickets traceable.
+
+requirement_id:
+  format: "REQ-<AREA>-<NNN>"                 # NNN zero-padded 3-digit, unique within area
+  area_owner:                                 # one area prefix per owning task (no cross-writing)
+    PROD: SUBTASK_product_requirements        # product scope, users, journeys, core requirements
+    DOM:  SUBTASK_domain_app_design           # domain model, persistence, interfaces
+    UX:   SUBTASK_experience_design           # IA, screens, visual system, responsive, a11y
+    ID:   SUBTASK_identity_trust              # accounts, auth, sessions, authz, privacy, threat model
+    OPS:  SUBTASK_operational_readiness       # durable data, backups, limits, observability, incident
+  each_requirement_has:
+    - id                                      # REQ-<AREA>-NNN
+    - statement                               # what must be true, from the user's/operator's side
+    - acceptance_criteria                     # testable by someone who never met the author
+    - release_gating                          # true | false (does the release bar depend on it?)
+
+bar_id:
+  format: "BAR-<NNN>"
+  owner: SUBTASK_release_bar
+  each_bar_criterion_has:
+    - id                                      # BAR-NNN
+    - statement                               # concrete, testable statement of a release condition
+    - references                              # >=1 REQ-* it enforces
+    - verification_method                     # from verification_methods vocabulary below
+    - stage                                   # usable_early | releasable  (when it must hold)
+
+verification_methods:                         # the closed vocabulary a BAR-* must choose from
+  - manual_user_check                         # a person exercises the live product and observes the result
+  - automated_test                            # a test in the repo asserts it
+  - inspection                                # inspect config/manifest/code artifact for a declared property
+  - operational_check                         # observe a production property (durability across restart, backup restore, limit enforced)
+
+epic_and_issue:
+  owner: SUBTASK_delivery_backlog
+  epic:
+    rule: "One epic = one coherent, landable code goal (one epic = one code DAG's goal), dependencies on other epics stated."
+    existing_trackers:                        # reuse/extend these; do not duplicate
+      "#1": "EPIC: ferric"
+      "#2": "EPIC: chirp"
+      "#3": "EPIC: DevOps (CI/CD)"
+    existing_open_followups:                  # fold in where they belong; do not duplicate
+      "#23": "infra follow-up: harden/exercise native k3s install path"
+      "#24": "argocd follow-up: least-privilege RBAC + supply-chain hardening"
+      "#25": "containerize follow-ups: non-blocking polish"
+      "#27": "PR-body hygiene (DOC-3, HYG-1)"
+  issue:
+    each_issue_has:
+      - title
+      - epic                                  # exactly one parent epic
+      - acceptance_criteria                   # cite >=1 REQ-* or BAR-*
+      - traces_to                             # the design doc path(s)/section(s) and the REQ/BAR ids
+      - dependencies                          # issues/epics it depends on (dependency order)
+
+traceability_matrix:                          # derived artifact; assembled + checked by SUBTASK_synthesis
+  columns: [req_id, release_gating, bar_ids, epic, issue_numbers, design_doc_ref, live_status]
+  live_status_vocab: [met, partial, missing, not_applicable]   # filled by the live-product measurement

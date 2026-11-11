@@ -1,0 +1,50 @@
+# Contract manifest — authoring-model subtree (Ferric 1.0, concern 3).
+# The co-designed structural output of this decomposition, alongside the task tree in ../_GLOBAL.md.
+# READ-ONLY for every child. Children compose against it; they do not modify it.
+# EXTENDS the parent contract (../../contracts/); overrides nothing. Amendments are additive only.
+
+kind: [yaml_schema]
+
+purpose: >
+  Fix the one seam the three authoring-model spokes share so the sections recompose mechanically into one
+  authoring-model.md: a disjoint REQ-API-* band partition (so three spokes write one register without
+  collision) and the authoring seam between the view! macro, the component props/children/slots model, and
+  context. Narrative lives in ../_GLOBAL.md; this is structure only.
+
+# Inherited from ../../contracts/ — NOT redefined here (extension only).
+inherits:
+  from: ../../contracts/
+  binds:
+    - "REQ-API-* id pattern (REQ-<AREA>-<NNN>, zero-padded 3-digit, monotonic per band) — id_and_traceability_schema.yaml"
+    - "verification_method vocabulary (automated_test | example_build | doc_inspection | benchmark_run | publishability)"
+    - "stage vocabulary (usable_early | one_oh) and release_gating flag"
+    - "parent identity I1 (this spoke owns REQ-API-*; disjoint from other areas)"
+    - "parent identity I9 (additive over the frozen ferric-router/ferric-http/ferric prelude surfaces)"
+    - "parent REQ-FW-005 (declarative authoring model), REQ-FW-009 (frozen surfaces), REQ-FW-014 (diagnostics) — read-only cross-refs"
+
+artifacts:
+  - file: req_api_partition.yaml
+    declares: >
+      The disjoint REQ-API-* band assigned to each spoke, and the authoring-seam identities IA2/IA3 as
+      structural correspondences the synthesis gate asserts.
+
+# Ownership: every REQ-API-* band and every output has exactly one producer.
+ownership:
+  REQ-API-001..029: SUBTASK_view_macro              # view! macro surface, lowering, compile diagnostics
+  REQ-API-030..059: SUBTASK_components_props_slots   # typed props, children, named slots, composition
+  REQ-API-060..079: SUBTASK_context                 # context provide/read, reactivity + scoped cleanup
+  authoring-model.md: SUBTASK_synthesis             # consolidated deliverable at ../authoring-model.md
+  SYNTHESIS.md: SUBTASK_synthesis                   # fold record at ../SYNTHESIS.md (fold location)
+
+# Identities the synthesis task evaluates as assertions. A failure is a structured signal, never a silent plug.
+identities:
+  IA1_disjoint_bands:      "Each spoke writes only its own REQ-API-* band; bands 001-029 / 030-059 / 060-079 do not overlap; ids zero-padded 3-digit, monotonic per band."
+  IA2_invocation_seam:     "Every prop/child/named-slot the view! macro passes to a component corresponds to a declaration form the component model defines, and every declaration form is reachable from the macro. No orphan either side."
+  IA3_context_seam:        "Context provide/read is expressible inside a component body (the unit the macro renders); context lifetime is tied to the reactive owner scope so a disposed scope releases it (consistent with the baseline ReactiveScope owner tree + no_stale_subscriber_leak)."
+  IA4_additive_surface:    "Every authoring construct lowers onto the baseline VNode/VElement/EventKind/EventHandler/Component model and the frozen ferric::prelude additively; no frozen item is redefined."
+  IA5_one_deliverable:     "authoring-model.md contains all three sections and the merged REQ-API-* register exactly once; no section unplaced or double-placed; no id collision across bands."
+  IA6_testable_diagnostics:"The macro diagnostics story is trybuild-checkable, and every REQ-API-* acceptance criterion uses an inherited verification_method value."
+
+derived_artifacts:
+  - "req_api_partition.yaml is the band map the synthesis gate runs IA1 and IA5 against."
+  - "view-macro.md, components-props-slots.md, context.md are the sources SUBTASK_synthesis folds into ../authoring-model.md."

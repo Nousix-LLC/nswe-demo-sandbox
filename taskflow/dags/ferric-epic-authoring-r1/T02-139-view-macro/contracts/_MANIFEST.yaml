@@ -1,0 +1,82 @@
+# _MANIFEST.yaml — T02-139-view-macro contract
+#
+# Declares the structural seam between T02-impl (builds the macro) and T02-tests (verifies it).
+# T02-synthesis asserts all identities below before closing issue #139.
+
+hub: T02-139-view-macro
+branch: work/ferric-epic-authoring-r1
+closes: "#139"
+
+kind: behavioral_spec
+
+# ---------------------------------------------------------------------------
+# File ownership — exactly one producer per artifact group.
+# ---------------------------------------------------------------------------
+ownership:
+
+  SUBTASK_impl:
+    description: >
+      Implements crates/ferric-macros/ from scratch plus workspace and ferric crate wiring.
+    artifacts:
+      - crates/ferric-macros/Cargo.toml
+      - crates/ferric-macros/src/lib.rs
+      - crates/ferric-macros/src/**/*.rs           # any additional modules the impl needs
+      - crates/ferric/Cargo.toml                   # adds ferric-macros dependency line
+      - crates/ferric/src/lib.rs                   # adds `pub use ferric_macros::view;` to prelude
+
+  SUBTASK_tests:
+    description: >
+      Writes the native conformance test suite (lowering equality) and trybuild diagnostic
+      fixtures, with committed .stderr files, on top of the implementation commit.
+    artifacts:
+      - crates/ferric-macros/tests/lowering.rs     # conformance tests (or equivalent path)
+      - crates/ferric-macros/tests/compile_fail.rs # trybuild entry point
+      - crates/ferric-macros/tests/compile_fail/   # fixture .rs + .stderr files
+
+# ---------------------------------------------------------------------------
+# Identity assertions — SUBTASK_synthesis asserts ALL of these before closing #139.
+# ---------------------------------------------------------------------------
+identity_assertions:
+
+  - id: I-LOWER-01
+    statement: >
+      For each of the 10 rows in authoring-model.md §2.12, the view!{...} form and the
+      equivalent hand-built VElement/vdom::text builder chain produce structurally equal
+      VNode values. Equality is verified by an automated native test (no browser required).
+
+  - id: I-LOWER-02
+    statement: >
+      The <For each={items} key={|i| i.id.to_string()} let:item> form produces a Vec<VNode>
+      where every node carries a key equal to key_fn(item), spliced via .children(..). The
+      produced sibling list satisfies all_keyed (every child is a VNode::Element with key set).
+
+  - id: I-DIAG-01
+    statement: >
+      Exactly 7 trybuild fixtures are present and all pass: unclosed element, mismatched
+      close tag, multiple top-level nodes, dynamic attr/text value not Into<String>, unknown
+      event name, handler not a closure, <For> without key. Each fixture's committed .stderr
+      file matches the actual compiler output on the CI Rust toolchain.
+
+  - id: I-EXPORT-01
+    statement: >
+      `view!` is accessible as `ferric::prelude::view!` without any additional import. An
+      author who writes `use ferric::prelude::*;` can invoke `view!{...}` immediately.
+
+  - id: I-ADDITIVE-01
+    statement: >
+      No existing public export of crates/ferric is modified, removed, or renamed (identity
+      IA4 from the epic hub contract). `cargo test -p ferric --lib` on the final branch shows
+      all pre-existing tests passing and no compilation errors.
+
+  - id: I-MSRV-01
+    statement: >
+      The ferric-macros crate compiles with stable Rust 1.82 (the workspace rust-version).
+      No nightly-only features, unstable features, or proc-macro nightly APIs are used.
+
+# ---------------------------------------------------------------------------
+# Derived artifacts
+# ---------------------------------------------------------------------------
+derived_artifacts:
+  - The authoring-model.md §2.12 lowering table serves as the shared behavioral specification
+    consumed by both SUBTASK_impl (to implement) and SUBTASK_tests (to verify).
+    Location: design/ferric/authoring-model.md (on the branch; read-only for both subtasks).

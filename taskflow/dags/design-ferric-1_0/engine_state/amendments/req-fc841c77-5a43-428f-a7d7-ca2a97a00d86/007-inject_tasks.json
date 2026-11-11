@@ -1,0 +1,75 @@
+{
+  "sequence": 7,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T02:20:46.469262015Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_release_and_distribution"
+      ],
+      "placement_parent_task_id": "design-ferric-1_0"
+    },
+    "resulting_version": 7,
+    "summary": "inject tasks: SUBTASK_release_and_distribution",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the release & distribution spoke (concern 7: crates.io, semver, changelog, versioning/compat policy); depends on the scope/requirements spine.",
+        "task_id": "design-ferric-1_0"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_async_forms_events": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_authoring_model": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_docs_and_dx": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_release_and_distribution": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_router_and_http": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_scope_and_requirements": [],
+      "SUBTASK_ssr_hydration": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "design-ferric-1_0": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scope_and_requirements",
+          "design-ferric-1_0"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_async_forms_events",
+          "SUBTASK_authoring_model",
+          "SUBTASK_docs_and_dx",
+          "SUBTASK_release_and_distribution",
+          "SUBTASK_router_and_http",
+          "SUBTASK_ssr_hydration"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

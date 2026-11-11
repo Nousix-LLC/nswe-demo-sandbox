@@ -1,0 +1,73 @@
+{
+  "sequence": 8,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T06:00:43.241030412Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_findings-synthesis"
+      ],
+      "placement_parent_task_id": "SUBTASK_design-doc-review"
+    },
+    "resulting_version": 8,
+    "summary": "inject tasks: SUBTASK_findings-synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_design-doc-review: synthesis gate that reads all three spoke findings, asserts the subtree identities, and merges findings into the final design-doc-findings.md conforming to the parent hub's findings_schema.yaml.",
+        "task_id": "SUBTASK_design-doc-review"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_completeness-review": [],
+      "SUBTASK_design-doc-review": [],
+      "SUBTASK_findings-synthesis": [
+        "SUBTASK_completeness-review",
+        "SUBTASK_release-bar-quality",
+        "SUBTASK_traceability-review"
+      ],
+      "SUBTASK_foundation-buildability": [],
+      "SUBTASK_release-bar-quality": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_design-doc-review",
+        "SUBTASK_foundation-buildability",
+        "SUBTASK_ticket-review"
+      ],
+      "SUBTASK_ticket-review": [],
+      "SUBTASK_traceability-review": [],
+      "design-ferric-1_0-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_completeness-review",
+          "SUBTASK_design-doc-review",
+          "SUBTASK_foundation-buildability",
+          "SUBTASK_release-bar-quality",
+          "SUBTASK_ticket-review",
+          "SUBTASK_traceability-review",
+          "design-ferric-1_0-r3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_findings-synthesis",
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T01:47:45.364385069Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_code_quality"
+      ],
+      "placement_parent_task_id": "review-epic-persist"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_code_quality",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the code-quality / design / Rust-idiom concern spoke of the PR #113 review decomposition.",
+        "task_id": "review-epic-persist"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_durability_proof": [],
+      "review-epic-persist": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "SUBTASK_durability_proof",
+          "review-epic-persist"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

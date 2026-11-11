@@ -1,0 +1,78 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T03:49:18.434010047Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis"
+      ],
+      "placement_parent_task_id": "ferric-async-forms-r1"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: SUBTASK_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Synthesis gate: create the PR, verify all three feature modules are wired correctly, close issues, and author the SYNTHESIS.md observation seam — depends on all three feature spokes completing.",
+        "task_id": "ferric-async-forms-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_async_resource": [
+        "SUBTASK_walking_skeleton"
+      ],
+      "SUBTASK_dom_events": [
+        "SUBTASK_walking_skeleton"
+      ],
+      "SUBTASK_form_binding": [
+        "SUBTASK_walking_skeleton"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_async_resource",
+        "SUBTASK_dom_events",
+        "SUBTASK_form_binding"
+      ],
+      "SUBTASK_walking_skeleton": [],
+      "ferric-async-forms-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_walking_skeleton",
+          "ferric-async-forms-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_async_resource",
+          "SUBTASK_dom_events",
+          "SUBTASK_form_binding"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

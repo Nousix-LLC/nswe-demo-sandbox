@@ -1,0 +1,88 @@
+{
+  "sequence": 13,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T01:30:02.829036736Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_findings_synthesis"
+      ],
+      "placement_parent_task_id": "SUBTASK_correctness_concurrency"
+    },
+    "resulting_version": 13,
+    "summary": "inject tasks: SUBTASK_findings_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_correctness_concurrency: synthesis task collects B1+concurrency, B2, B3 spoke findings and produces the required findings.md at the SUBTASK_correctness_concurrency workspace root, following the ancestor findings schema.",
+        "task_id": "SUBTASK_correctness_concurrency"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1_concurrency": [],
+      "SUBTASK_b2_event": [],
+      "SUBTASK_b3_form": [],
+      "SUBTASK_concern2_quality_design": [],
+      "SUBTASK_concern3_tests": [],
+      "SUBTASK_concern6_idiom": [],
+      "SUBTASK_concern7_api_stability": [],
+      "SUBTASK_correctness_concurrency": [],
+      "SUBTASK_findings_synthesis": [
+        "SUBTASK_b1_concurrency",
+        "SUBTASK_b2_event",
+        "SUBTASK_b3_form"
+      ],
+      "SUBTASK_quality_tests_idiom": [],
+      "SUBTASK_security": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_correctness_concurrency",
+        "SUBTASK_quality_tests_idiom",
+        "SUBTASK_security"
+      ],
+      "SUBTASK_synthesis_findings": [
+        "SUBTASK_concern2_quality_design",
+        "SUBTASK_concern3_tests",
+        "SUBTASK_concern6_idiom",
+        "SUBTASK_concern7_api_stability"
+      ],
+      "review-ferric-async-forms-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1_concurrency",
+          "SUBTASK_b2_event",
+          "SUBTASK_b3_form",
+          "SUBTASK_concern2_quality_design",
+          "SUBTASK_concern3_tests",
+          "SUBTASK_concern6_idiom",
+          "SUBTASK_concern7_api_stability",
+          "SUBTASK_correctness_concurrency",
+          "SUBTASK_quality_tests_idiom",
+          "SUBTASK_security",
+          "review-ferric-async-forms-r3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_findings_synthesis",
+          "SUBTASK_synthesis",
+          "SUBTASK_synthesis_findings"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

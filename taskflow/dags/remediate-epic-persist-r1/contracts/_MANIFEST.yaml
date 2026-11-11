@@ -1,0 +1,53 @@
+# Contract manifest — remediate PR #113 doc blocker (round 1)
+# Read-only for every descendant. Additive amendments only.
+kind: yaml_schema
+
+artifacts:
+  - path: contracts/inventory.schema.yaml
+    kind: yaml_schema
+    declares: >
+      The schema of each correction record in SUBTASK_assess/INVENTORY.md. This is the seam the
+      diagnose task produces and the remediate task consumes. Apply-fixes composes against this
+      schema; it does not redefine it.
+
+ownership:
+  # Every produced artifact has exactly one producer. No artifact is unowned; none is double-owned.
+  - artifact: SUBTASK_assess/INVENTORY.md
+    owner: SUBTASK_assess
+  - artifact: "source doc-comment/intra-doc-link/doc-feature-gate edits on work/epic-persist"
+    owner: SUBTASK_apply_fixes
+  - artifact: SUBTASK_apply_fixes/CHANGESET.md
+    owner: SUBTASK_apply_fixes
+  - artifact: SUBTASK_verify_deliver/VERIFICATION.md
+    owner: SUBTASK_verify_deliver
+  - artifact: "push updating Nousix-LLC/nswe-demo PR #113 + PR description"
+    owner: SUBTASK_verify_deliver
+  - artifact: SYNTHESIS.md   # at the subtree root (the fold location)
+    owner: SUBTASK_synthesis
+
+identities:
+  # The synthesis/verification gate evaluates each of these as an assertion. No silent plugs.
+  - id: coverage
+    assert: >
+      Every hazard enumerated in INVENTORY.md (every CI-01 and #118 finding) has exactly one
+      corresponding applied fix recorded in CHANGESET.md.
+  - id: scope_docs_only
+    assert: >
+      The only source changes are to doc comments, intra-doc links, and doc feature-gate attributes
+      (#[cfg(...)], #[cfg_attr(..., doc = ...)], #[doc(cfg(...))]). No change to store logic, schema,
+      migrations, the ChirpRepository seam, or wiring.
+  - id: blocker_cleared
+    assert: >
+      `cargo doc --workspace --no-deps --locked` under RUSTDOCFLAGS=-D warnings is green on a FRESH
+      run (re-verified after the fix, not inferred from clearing the first error). Evidence in
+      VERIFICATION.md.
+  - id: no_regression
+    assert: >
+      The previously-green checks (clippy, fmt, test, wasm) remain green. Evidence in VERIFICATION.md.
+  - id: output_hygiene
+    assert: >
+      Nothing committed or posted to GitHub carries host/cluster/SSH/credential/taskflow details;
+      everything is named by repository identity (owner/repo, issue/PR numbers, commit SHAs,
+      repo-relative paths).
+
+derived_artifacts: []  # none auto-generated; INVENTORY.md is the hand-authored seam

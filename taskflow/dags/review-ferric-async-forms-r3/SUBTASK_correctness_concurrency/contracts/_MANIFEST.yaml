@@ -1,0 +1,46 @@
+kind: yaml_schema
+description: >
+  Findings sub-schema for SUBTASK_correctness_concurrency decomposition.
+  Three analysis spokes each produce a named findings doc; a synthesis
+  spoke collects them into the required findings.md at the parent workspace root.
+
+ownership:
+  - artifact: SUBTASK_b1_concurrency/b1_findings.md
+    owner: SUBTASK_b1_concurrency
+  - artifact: SUBTASK_b2_event/b2_findings.md
+    owner: SUBTASK_b2_event
+  - artifact: SUBTASK_b3_form/b3_findings.md
+    owner: SUBTASK_b3_form
+  - artifact: findings.md
+    owner: SUBTASK_findings_synthesis
+
+sub_findings_schema:
+  description: >
+    Each spoke findings file (b1_findings.md, b2_findings.md, b3_findings.md) MUST
+    contain a list of entries with:
+      - severity: blocker | non-blocker | clean
+      - requirement: REQ-ASYNC-NNN (where applicable)
+      - location: crates/ferric/src/<file>.rs:LINE (or range)
+      - description: what was found
+    Plus an enumeration of "What was checked" for coverage tracking.
+
+identities:
+  - name: b1_requirements_covered
+    assertion: >
+      SUBTASK_b1_concurrency must address REQ-ASYNC-001, REQ-ASYNC-003,
+      REQ-ASYNC-005, REQ-ASYNC-016, and the concurrency/async hazard questions
+      about spawn_local and the generation counter.
+  - name: b2_requirements_covered
+    assertion: >
+      SUBTASK_b2_event must address REQ-ASYNC-023 fully: enum variants,
+      WithEvent type, Any downcast path, vdom.rs isolation from web_sys,
+      backward compat, dom.rs dispatch of both variants.
+  - name: b3_requirements_covered
+    assertion: >
+      SUBTASK_b3_form must address REQ-ASYNC-042: on_input_event_handler
+      existence, WithEvent return type, downcast chain, signal write ordering.
+  - name: synthesis_produces_findings_md
+    assertion: >
+      SUBTASK_findings_synthesis must write findings.md at the parent workspace
+      root (SUBTASK_correctness_concurrency/findings.md) following the
+      ancestor findings_schema from review-ferric-async-forms-r3/contracts/_MANIFEST.yaml.

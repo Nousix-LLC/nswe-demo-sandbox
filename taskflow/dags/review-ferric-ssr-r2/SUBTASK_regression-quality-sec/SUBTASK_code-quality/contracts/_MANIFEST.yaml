@@ -1,0 +1,42 @@
+kind: ownership_manifest
+version: 1
+
+description: >
+  Thin seam contract for the SUBTASK_code-quality subtree.
+  Two independent spoke tasks each produce a findings note file.
+  The synthesis task reads both and assembles code-quality.md.
+
+ownership:
+  - artifact: SUBTASK_app-rs-quality/app-rs-notes.md
+    owner: SUBTASK_app-rs-quality
+    description: Findings for app.rs cfg-gate quality across five dimensions
+
+  - artifact: SUBTASK_hydrate-wasm-quality/hydrate-wasm-notes.md
+    owner: SUBTASK_hydrate-wasm-quality
+    description: Findings for hydrate_wasm.rs test quality across five dimensions
+
+  - artifact: code-quality.md
+    owner: SUBTASK_quality-synthesis
+    description: Combined code quality review with overall PASS/FAIL verdict
+
+finding_note_format:
+  description: >
+    Each spoke task MUST produce a findings note file following this structure
+    so the synthesis task can assemble code-quality.md mechanically.
+  required_sections:
+    - For each of the five quality dimensions reviewed:
+        heading: "## <Dimension Name>"
+        severity: "one of: Blocker | Warning | Pass"
+        evidence: "file:line or N/A"
+        finding_text: "one or more sentences; plain voice; no AI-tell patterns"
+  optional_sections:
+    - "## Fresh Non-Blockers (if any)"
+
+identities:
+  - all five quality dimensions present in app-rs-notes.md
+  - all five quality dimensions present in hydrate-wasm-notes.md
+  - each finding includes severity label and evidence citation
+  - code-quality.md incorporates all dimension findings from both note files
+  - overall PASS/FAIL verdict in code-quality.md is consistent with finding severities
+
+derived_artifacts: []

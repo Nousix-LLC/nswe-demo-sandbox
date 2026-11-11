@@ -1,0 +1,48 @@
+{"timestamp":"2026-10-22T16:11:29.741842618Z","action":{"Dispatch":{"task_ids":["remediate-epic-persist-r1"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:12:24.866097648Z","action":{"WaitForCompletion":{"pending_task_ids":["remediate-epic-persist-r1"]}},"reason":"task remediate-epic-persist-r1 transitioned to Ready"}
+{"timestamp":"2026-10-22T16:12:24.866300445Z","action":{"WaitForCompletion":{"pending_task_ids":["remediate-epic-persist-r1"]}},"reason":"task remediate-epic-persist-r1 transitioned to Running"}
+{"timestamp":"2026-10-22T16:17:42.376197894Z","action":{"Dispatch":{"task_ids":["SUBTASK_assess"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-22T16:18:23.155161879Z","action":{"WaitForCompletion":{"pending_task_ids":["remediate-epic-persist-r1"]}},"reason":"task remediate-epic-persist-r1 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-22T16:18:51.198263727Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_assess"]}},"reason":"task SUBTASK_assess transitioned to Ready"}
+{"timestamp":"2026-10-22T16:18:51.198477585Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_assess"]}},"reason":"task SUBTASK_assess transitioned to Running"}
+{"timestamp":"2026-10-22T16:41:27.614488589Z","action":{"Dispatch":{"task_ids":["SUBTASK_assess"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:44:03.086551888Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_assess"]}},"reason":"task SUBTASK_assess transitioned to Ready"}
+{"timestamp":"2026-10-22T16:44:03.086789877Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_assess"]}},"reason":"task SUBTASK_assess transitioned to Running"}
+{"timestamp":"2026-10-22T16:48:20.366216746Z","action":{"SkipTasks":{"task_ids":["SUBTASK_apply_fixes","SUBTASK_verify_deliver"],"failed_dependency":"SUBTASK_assess"}},"reason":"task SUBTASK_assess failed, skipping dependents (best-effort)"}
+{"timestamp":"2026-10-22T16:48:20.366588989Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"task SUBTASK_assess failed, dispatching gate dependents released by the terminal-state satisfaction rule (R6.b)"}
+{"timestamp":"2026-10-22T16:48:22.359908154Z","action":{"WaitForCompletion":{"pending_task_ids":["remediate-epic-persist-r1"]}},"reason":"task SUBTASK_synthesis failed, continuing with independent tasks (best-effort)"}
+{"timestamp":"2026-10-29T07:48:18.042489137Z","action":{"Dispatch":{"task_ids":["SUBTASK_assess"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-29T07:48:20.038041534Z","action":{"SkipTasks":{"task_ids":["SUBTASK_apply_fixes","SUBTASK_verify_deliver"],"failed_dependency":"SUBTASK_assess"}},"reason":"task SUBTASK_assess failed, skipping dependents (best-effort)"}
+{"timestamp":"2026-10-29T07:48:20.038797125Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"task SUBTASK_assess failed, dispatching gate dependents released by the terminal-state satisfaction rule (R6.b)"}
+{"timestamp":"2026-10-29T07:48:21.874347772Z","action":{"SubtreeResolved":{"parent_task_id":"remediate-epic-persist-r1","child_task_ids":["SUBTASK_assess","SUBTASK_apply_fixes","SUBTASK_verify_deliver","SUBTASK_synthesis"],"success":false}},"reason":"all children of remediate-epic-persist-r1 reached terminal state (success=false)"}
+{"timestamp":"2026-10-29T07:48:21.874514071Z","action":{"Complete":{"success":false}},"reason":"all tasks terminal after failure cascade"}
+{"timestamp":"2026-10-29T16:46:02.988425472Z","action":{"Dispatch":{"task_ids":["SUBTASK_assess"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-29T16:46:44.271131365Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_assess"]}},"reason":"task SUBTASK_assess transitioned to Ready"}
+{"timestamp":"2026-10-29T16:46:44.271359255Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_assess"]}},"reason":"task SUBTASK_assess transitioned to Running"}
+{"timestamp":"2026-10-29T17:02:00.048836305Z","action":{"Dispatch":{"task_ids":["SUBTASK_apply_fixes"],"group_index":0}},"reason":"task SUBTASK_assess completed, dispatching ready successors"}
+{"timestamp":"2026-10-29T17:02:10.959399278Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_apply_fixes"]}},"reason":"task SUBTASK_apply_fixes transitioned to Ready"}
+{"timestamp":"2026-10-29T17:02:10.959854770Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_apply_fixes"]}},"reason":"task SUBTASK_apply_fixes transitioned to Running"}
+{"timestamp":"2026-10-29T17:05:57.090537155Z","action":{"Dispatch":{"task_ids":["SUBTASK_verify_deliver"],"group_index":0}},"reason":"task SUBTASK_apply_fixes completed, dispatching ready successors"}
+{"timestamp":"2026-10-29T17:07:03.080180721Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_deliver"]}},"reason":"task SUBTASK_verify_deliver transitioned to Ready"}
+{"timestamp":"2026-10-29T17:07:03.080635315Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_deliver"]}},"reason":"task SUBTASK_verify_deliver transitioned to Running"}
+{"timestamp":"2026-10-29T17:11:46.421900697Z","action":{"Dispatch":{"task_ids":["SUBTASK_ci_verify"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-29T17:12:09.244638587Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_deliver"]}},"reason":"task SUBTASK_verify_deliver suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-29T17:12:31.307223517Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_ci_verify"]}},"reason":"task SUBTASK_ci_verify transitioned to Ready"}
+{"timestamp":"2026-10-29T17:12:31.307495070Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_ci_verify"]}},"reason":"task SUBTASK_ci_verify transitioned to Running"}
+{"timestamp":"2026-10-29T17:14:16.771611891Z","action":{"Dispatch":{"task_ids":["SUBTASK_pr_update"],"group_index":1}},"reason":"task SUBTASK_ci_verify completed, dispatching ready successors"}
+{"timestamp":"2026-10-29T17:14:57.657984745Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_pr_update"]}},"reason":"task SUBTASK_pr_update transitioned to Ready"}
+{"timestamp":"2026-10-29T17:14:57.658173670Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_pr_update"]}},"reason":"task SUBTASK_pr_update transitioned to Running"}
+{"timestamp":"2026-10-29T17:21:35.240600762Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":2}},"reason":"task SUBTASK_pr_update completed, dispatching ready successors"}
+{"timestamp":"2026-10-29T17:22:23.697938200Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-29T17:22:23.698186458Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-29T17:23:00.788097805Z","action":{"SubtreeResolved":{"parent_task_id":"SUBTASK_verify_deliver","child_task_ids":["SUBTASK_ci_verify","SUBTASK_pr_update","SUBTASK_synthesis"],"success":true}},"reason":"all children of SUBTASK_verify_deliver reached terminal state (success=true)"}
+{"timestamp":"2026-10-29T17:23:00.788826307Z","action":{"WaitForCompletion":{"pending_task_ids":["remediate-epic-persist-r1"]}},"reason":"task SUBTASK_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-29T19:15:07.857613035Z","action":{"Dispatch":{"task_ids":["SUBTASK_verify_deliver/SUBTASK_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-29T19:15:53.916323514Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_deliver/SUBTASK_synthesis"]}},"reason":"task SUBTASK_verify_deliver/SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-29T19:15:53.916669535Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_deliver/SUBTASK_synthesis"]}},"reason":"task SUBTASK_verify_deliver/SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-29T19:17:25.184306114Z","action":{"SubtreeResolved":{"parent_task_id":"SUBTASK_verify_deliver","child_task_ids":["SUBTASK_verify_deliver/SUBTASK_ci_verify","SUBTASK_verify_deliver/SUBTASK_pr_update","SUBTASK_verify_deliver/SUBTASK_synthesis"],"success":true}},"reason":"all children of SUBTASK_verify_deliver reached terminal state (success=true)"}
+{"timestamp":"2026-10-29T19:17:25.184611101Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"task SUBTASK_verify_deliver/SUBTASK_synthesis completed, dispatching ready successors"}
+{"timestamp":"2026-10-29T19:18:04.580766707Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-29T19:18:04.580998864Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-29T19:20:41.559766497Z","action":{"SubtreeResolved":{"parent_task_id":"remediate-epic-persist-r1","child_task_ids":["SUBTASK_assess","SUBTASK_apply_fixes","SUBTASK_verify_deliver","SUBTASK_synthesis"],"success":true}},"reason":"all children of remediate-epic-persist-r1 reached terminal state (success=true)"}
+{"timestamp":"2026-10-29T19:20:41.560013639Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

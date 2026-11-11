@@ -1,0 +1,76 @@
+{
+  "sequence": 9,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T07:05:00.160983194Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_findings_synthesis"
+      ],
+      "placement_parent_task_id": "SUBTASK_scope_verification"
+    },
+    "resulting_version": 9,
+    "summary": "inject tasks: SUBTASK_findings_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the synthesis/verification gate that merges the two partial findings into the one findings.md this spoke owes and folds the suspended parent spoke. Depends on both analysis spokes.",
+        "task_id": "SUBTASK_scope_verification"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_dockerfile_build": [],
+      "SUBTASK_findings_synthesis": [
+        "SUBTASK_scope_conformance",
+        "SUBTASK_verification_depth"
+      ],
+      "SUBTASK_operability_docs": [],
+      "SUBTASK_rustcode_sigterm": [],
+      "SUBTASK_scope_conformance": [],
+      "SUBTASK_scope_verification": [],
+      "SUBTASK_security_supplychain": [],
+      "SUBTASK_verdict_synthesis": [
+        "SUBTASK_dockerfile_build",
+        "SUBTASK_operability_docs",
+        "SUBTASK_rustcode_sigterm",
+        "SUBTASK_scope_verification",
+        "SUBTASK_security_supplychain"
+      ],
+      "SUBTASK_verification_depth": [],
+      "review-containerize": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_dockerfile_build",
+          "SUBTASK_operability_docs",
+          "SUBTASK_rustcode_sigterm",
+          "SUBTASK_scope_conformance",
+          "SUBTASK_scope_verification",
+          "SUBTASK_security_supplychain",
+          "SUBTASK_verification_depth",
+          "review-containerize"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_findings_synthesis",
+          "SUBTASK_verdict_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

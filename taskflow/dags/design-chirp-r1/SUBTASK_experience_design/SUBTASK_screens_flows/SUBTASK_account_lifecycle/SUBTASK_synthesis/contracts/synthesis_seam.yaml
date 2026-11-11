@@ -1,0 +1,15 @@
+# synthesis_seam.yaml — READ-ONLY. Extends ../../contracts/account_lifecycle_seam.yaml; never overrides it.
+assembled_deliverable:
+  path: "../outputs/screens-account-lifecycle.md"          # relative to SUBTASK_synthesis
+  order: [onboarding_empty_state, edit_profile, settings_hub, account_and_contact, notification_preferences, sessions_and_devices, data_export, account_deletion]   # from the inherited seam
+  followed_by: "consolidated REQ-UX-065..077 register"
+req_ux_register:
+  fields: [id, statement, acceptance_criteria, release_gating]   # inherited
+  range: "REQ-UX-065..REQ-UX-077"
+  sub_ranges_inherited_from: "../contracts/account_lifecycle_seam.yaml"
+evidence_record:
+  path: "outputs/identity-evidence.md"
+  per_identity: [identity_id, verdict, evidence]            # verdict: PASS | FAIL
+  identities_inherited_from: "../contracts/_MANIFEST.yaml"  # the eight identities, unchanged
+hygiene_rule: "Only the assembled deliverable is repository-ready; the evidence record and fold records are internal."
+fixable_failure_rule: "A FAIL verdict is remediated by amending the plan with a remediation subtree; no child plugs a gap silently."

@@ -1,0 +1,88 @@
+kind: taxonomy
+purpose: >
+  Sub-contract for the SUBTASK_correctness decomposition of the PR #113 review DAG. Extends (never overrides)
+  the root finding taxonomy at ../contracts/finding_schema.md and ../contracts/_MANIFEST.yaml. Fixes, before
+  any area spoke runs, the COR finding-id partition that keeps the consolidated findings.md collision-free and
+  the consolidation identities the synthesis gate asserts, so four per-area reviews fold into one concern
+  findings doc mechanically.
+
+extends:
+  - ../contracts/finding_schema.md       # per-finding block, severity rubric, citation format, COR prefix, sub-verdict vocab
+  - ../contracts/_MANIFEST.yaml          # pinned commit, severity rubric, cross-cutting review identities
+
+pinned_commit: "09fa453c3c40e39a9b4647e0de6e00dcf50ecb21"
+pr: "Nousix-LLC/nswe-demo#113"
+
+# Each area spoke emits one outputs/findings.md conforming to the inherited finding_schema.md, covering its one
+# acceptance-criterion / requirement area. IDs follow the inherited COR-NN convention; the ranges below keep
+# them unique across the consolidated document the synthesis gate produces.
+areas:
+  - id: ac65
+    criterion: "#65"
+    scope: >
+      Domain invariants, derived counts (follower/following/like counts), and opaque monotonic ids hold in the
+      durable store UNDER CONCURRENCY — proved, not asserted. Error paths and edge cases within this area, not
+      only the happy path.
+  - id: ac66
+    criterion: "#66"
+    scope: >
+      Full capability set behind the existing ChirpRepository seam; single-writer safety; schema versioned and
+      applied by a migration runner; no capability dropped or weakened. Behavioral correctness; seam-shape /
+      contract-stability is the root SUBTASK_architecture_contract's — record overlap, do not reconcile here.
+  - id: ac67
+    criterion: "#67"
+    scope: >
+      Retention/capacity commitments (documented lifetimes for transient state, the reclaim job, no automatic
+      expiry for user content) and the fail-closed-on-non-durable-write rule. Drill/test proof-depth is the
+      root SUBTASK_durability_proof's — record overlap, do not reconcile here.
+  - id: design64
+    criterion: "durable-persistence requirement + #64"
+    scope: >
+      The design's durable-persistence requirement and any applicable BAR-*/REQ- traced against the change;
+      and whether the PR's "#64 stays open" framing is accurate. #64 is noted, never closed, never filed as
+      backlog.
+
+ownership:
+  SUBTASK_ac65_invariants:
+    output: [SUBTASK_ac65_invariants/outputs/findings.md]
+    finding_id_range: "COR-01 .. COR-19"
+  SUBTASK_ac66_seam_migration:
+    output: [SUBTASK_ac66_seam_migration/outputs/findings.md]
+    finding_id_range: "COR-20 .. COR-39"
+  SUBTASK_ac67_retention_failclosed:
+    output: [SUBTASK_ac67_retention_failclosed/outputs/findings.md]
+    finding_id_range: "COR-40 .. COR-59"
+  SUBTASK_design_req_and_64:
+    output: [SUBTASK_design_req_and_64/outputs/findings.md]
+    finding_id_range: "COR-60 .. COR-79"
+  SUBTASK_synthesis:
+    output:
+      - SUBTASK_correctness/outputs/findings.md   # the single deliverable the root review DAG consumes
+      - SUBTASK_correctness/SYNTHESIS.md          # terminal + fold record at the fold location
+
+# Additive to the inherited root identities (ID-SCHEMA, ID-PIN, ID-SEVERITY, ID-ACTIONABLE, ID-64-OPEN,
+# ID-NO-HOST, ID-PLAIN-VOICE), which also bind here.
+identities:
+  - id: COR-ID-COVERAGE
+    assert: >
+      Each of #65, #66, #67 and the durable-persistence requirement is traced by exactly one area spoke that
+      states both what it checked and what it found clean for its area.
+  - id: COR-ID-UNIQUE
+    assert: >
+      Every COR-NN id in the consolidated findings.md is unique; each spoke stayed within its assigned range.
+  - id: COR-ID-PROVED
+    assert: >
+      Each acceptance-criterion area distinguishes what the change PROVES from what it merely ASSERTS; an
+      unproven criterion is a blocker, not a pass (especially #65's "under concurrency" guarantee).
+  - id: COR-ID-OVERLAP
+    assert: >
+      Overlaps with the root-level SUBTASK_architecture_contract (seam shape) and SUBTASK_durability_proof
+      (drill/test depth) are recorded where they bear on correctness and left for the root synthesis to
+      de-duplicate — never dropped, never reconciled away here.
+  - id: COR-ID-SUBVERDICT
+    assert: >
+      The consolidated concern sub-verdict is HAS-BLOCKERS iff any area carries blocks_landing=true;
+      NON-BLOCKING-ONLY iff findings exist but none block; CLEAN iff no findings. The synthesis gate does not
+      silently plug a failing area.
+
+derived_artifacts: []

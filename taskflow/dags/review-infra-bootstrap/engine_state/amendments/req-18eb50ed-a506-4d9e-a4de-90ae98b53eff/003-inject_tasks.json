@@ -1,0 +1,47 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T06:31:19.541757510Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_review_honesty_scope_ops"
+      ],
+      "placement_parent_task_id": "review-infra-bootstrap"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_review_honesty_scope_ops",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the honesty/scope/operability review lens spoke (concerns 6-8, plus the k3d verdict and F1 recommendation) of the PR #20 review fan-out.",
+        "task_id": "review-infra-bootstrap"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_review_correctness_repro": [],
+      "SUBTASK_review_honesty_scope_ops": [],
+      "SUBTASK_review_security_rbac": [],
+      "review-infra-bootstrap": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_review_correctness_repro",
+          "SUBTASK_review_honesty_scope_ops",
+          "SUBTASK_review_security_rbac",
+          "review-infra-bootstrap"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

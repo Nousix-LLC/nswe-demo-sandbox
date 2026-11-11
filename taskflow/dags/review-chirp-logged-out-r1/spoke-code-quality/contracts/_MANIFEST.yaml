@@ -1,0 +1,20 @@
+kind: findings_aggregation
+
+ownership:
+  spoke-tests: spoke-tests/FINDINGS.md
+  spoke-correctness: spoke-correctness/FINDINGS.md
+  spoke-code-health: spoke-code-health/FINDINGS.md
+  spoke-safety-idiom: spoke-safety-idiom/FINDINGS.md
+  spoke-prose: spoke-prose/FINDINGS.md
+  spoke-synthesis:
+    - ../REVIEW.md
+    - ../SYNTHESIS.md
+
+identities:
+  - Every concern in the Concern Assignments table (_GLOBAL.md) is covered in exactly one FINDINGS.md
+  - Each FINDINGS.md declares a Verdict (PASS | FINDINGS) and a Clean Account section
+  - spoke-synthesis reads all five FINDINGS.md and produces one ../REVIEW.md
+  - No internal host paths, private IPs, or server-side infrastructure details appear in any output
+
+derived_artifacts:
+  - contracts/findings_schema.md → consumed by all analysis spokes as the FINDINGS.md structure contract

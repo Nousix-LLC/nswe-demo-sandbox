@@ -1,0 +1,39 @@
+kind: taxonomy
+description: >
+  Structured findings format for the review-chirp-logged-out-r2 re-review spokes.
+  Each spoke produces a Markdown findings file conforming to this schema.
+  The synthesis task verifies all required fields are present before assembling the verdict.
+
+findings_schema:
+  status_values: [PASS, FAIL, FLAG, SKIP]
+  required_sections_in_findings-fixes:
+    - fix_b1_verdict       # PASS | FAIL — with evidence
+    - fix_b2_verdict       # PASS | FAIL — with evidence
+    - code_quality_verdict # PASS | FAIL | FLAG
+    - test_coverage_verdict # PASS | FAIL | FLAG
+    - security_verdict     # PASS | FAIL
+    - regression_verdict   # PASS | FAIL — are there extra changes beyond the two fixes?
+  required_sections_in_findings-acs:
+    - ac_1_verdict         # PASS | FAIL — public access without forced auth
+    - ac_2_verdict         # PASS | FAIL — empty state
+    - ac_3_verdict         # PASS | FAIL — error state recoverability
+    - ac_4_verdict         # PASS | FAIL — sign-up/sign-in CTAs
+    - ac_5_verdict         # PASS | FAIL — state branches accurate and distinct
+
+ownership:
+  - artifact: SUBTASK_verify-fixes/findings-fixes.md
+    owner: SUBTASK_verify-fixes
+  - artifact: SUBTASK_verify-acs/findings-acs.md
+    owner: SUBTASK_verify-acs
+  - artifact: SYNTHESIS.md
+    owner: SUBTASK_synthesis
+
+identities:
+  - "SUBTASK_verify-fixes/findings-fixes.md must carry a verdict for each of B1 and B2"
+  - "SUBTASK_verify-acs/findings-acs.md must carry a verdict for each of AC-1 through AC-5"
+  - "If fix_b1_verdict=FAIL or fix_b2_verdict=FAIL, overall verdict must be REQUEST-CHANGES"
+  - "If any AC verdict is FAIL, overall verdict must be REQUEST-CHANGES"
+  - "If fix_b1_verdict=PASS and fix_b2_verdict=PASS and all 5 AC verdicts are PASS and regression_verdict=PASS, overall verdict is APPROVE (unless a new blocker was found)"
+  - "SYNTHESIS.md must carry an overall verdict of APPROVE or REQUEST-CHANGES"
+
+derived_artifacts: []

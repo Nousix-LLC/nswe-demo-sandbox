@@ -1,0 +1,60 @@
+# req_api_partition.yaml — the REQ-API-* band partition + authoring-seam correspondences.
+# READ-ONLY for children. EXTENDS ../../contracts/id_and_traceability_schema.yaml (area API); overrides nothing.
+# The synthesis gate runs IA1 (disjoint bands) and IA5 (merged register, no collision) against this file.
+
+area: API            # owned by SUBTASK_authoring_model per the parent manifest; this file sub-partitions it.
+id_pattern: "REQ-API-<NNN>"   # inherited: zero-padded 3-digit, monotonic within each band.
+
+# ---------------------------------------------------------------------------
+# Disjoint bands — each spoke assigns ids only within its band (identity IA1).
+# ---------------------------------------------------------------------------
+bands:
+  view_macro:
+    owner: SUBTASK_view_macro
+    range: [1, 29]        # REQ-API-001 .. REQ-API-029
+    covers: >
+      The view! macro authoring surface: element/text nodes, attributes, event handlers (click/input today,
+      additively more), conditionals, lists with keys, interpolated reactive values; the lowering onto VNode;
+      compile-time / macro diagnostics quality (trybuild-checkable).
+  components_props_slots:
+    owner: SUBTASK_components_props_slots
+    range: [30, 59]       # REQ-API-030 .. REQ-API-059
+    covers: >
+      The component model: how a component declares typed props (required/optional/defaulted), accepts children,
+      accepts named slots, and composes; ergonomics against Rust's type system (builder vs struct-props vs
+      macro-sugar trade-offs, cited against peers).
+  context:
+    owner: SUBTASK_context
+    range: [60, 79]       # REQ-API-060 .. REQ-API-079
+    covers: >
+      Context: provide a value to a subtree and read it without prop drilling; typed lookup; interaction with
+      reactivity (a context value may be a Signal/Memo) and with the reactive owner scope / scoped cleanup.
+
+# ---------------------------------------------------------------------------
+# Authoring seam — structural correspondences the synthesis gate asserts (IA2, IA3).
+# These are design-level correspondences, not code. Each spoke states its own side; synthesis checks closure.
+# ---------------------------------------------------------------------------
+invocation_seam:        # IA2 — macro <-> component model
+  macro_side_owner: SUBTASK_view_macro
+  component_side_owner: SUBTASK_components_props_slots
+  correspondences:
+    - "A prop passed in the macro (e.g. `name=value`) <-> a declared prop on the component (name, type, required/optional/default)."
+    - "Children nested inside a component element in the macro <-> the component's declared `children` acceptance."
+    - "A named slot filled in the macro <-> a named slot the component declares."
+  rule: "No macro-side passing form without a component-side declaration form, and no declaration form unreachable from the macro."
+
+context_seam:           # IA3 — context <-> component model + reactive runtime
+  owner: SUBTASK_context
+  correspondences:
+    - "A context value is provided around a subtree and read from inside a component body rendered by the macro."
+    - "Context lifetime is tied to the reactive owner scope: disposing the scope releases the provided value (baseline ReactiveScope owner tree; no_stale_subscriber_leak)."
+  rule: "Context must be readable from the unit the macro renders (a component), not only at mount; and must not outlive its owner scope."
+
+# ---------------------------------------------------------------------------
+# Verification — inherited vocabulary only (identity IA6).
+# ---------------------------------------------------------------------------
+verification_methods_allowed: [automated_test, example_build, doc_inspection]
+notes:
+  - "automated_test for the macro includes trybuild macro-diagnostics tests and headless wasm-bindgen-test."
+  - "example_build: a stated authoring snippet compiles and renders the described UI."
+  - "No new REQ areas, verification methods, or stage values are minted here (extension-only)."

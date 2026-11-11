@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-01T23:46:19.960207821Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_view_and_diff"
+      ],
+      "placement_parent_task_id": "ferric-foundation"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_view_and_diff",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the view-layer child: implements the VNode tree, Component trait + function components, and the keyed diff, against the real reactive core.",
+        "task_id": "ferric-foundation"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_reactive_core": [
+        "SUBTASK_scaffold"
+      ],
+      "SUBTASK_scaffold": [],
+      "SUBTASK_view_and_diff": [
+        "SUBTASK_reactive_core"
+      ],
+      "ferric-foundation": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scaffold",
+          "ferric-foundation"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_reactive_core"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_view_and_diff"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

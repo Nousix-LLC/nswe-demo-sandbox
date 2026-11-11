@@ -1,0 +1,134 @@
+{
+  "sequence": 9,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T00:39:36.747921546Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "I9"
+      ],
+      "placement_parent_task_id": "I8"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: I9",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Schedule successor overseer iteration I9 (depends_on I8) BEFORE my atomic fork, so the project thread chain is self-perpetuating regardless of the fork outcome. I9 continues the fan-out: forks the next prepared DAG (chirp-types #7 if my #6 fork succeeds, else ferric-http #6), watches the in-flight DAGs (ferric-router #5, ferric-http #6), and gates/lands folds.",
+        "task_id": "I8"
+      }
+    },
+    "updated_graph_edges": {
+      "I0": [],
+      "I1": [],
+      "I2": [],
+      "I3": [],
+      "I4": [
+        "I3"
+      ],
+      "I5": [
+        "I4"
+      ],
+      "I6": [
+        "I5"
+      ],
+      "I7": [
+        "I6"
+      ],
+      "I8": [
+        "I7"
+      ],
+      "I9": [
+        "I8"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "I0",
+          "I1",
+          "I2",
+          "I3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "I4"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "I5"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "I6"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "I7"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "group_index": 5,
+        "task_ids": [
+          "I8"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "group_index": 6,
+        "task_ids": [
+          "I9"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,32 @@
+# contracts/_MANIFEST.yaml
+# security-persist-r1 — minimal seam contract
+#
+# These two spokes work on non-overlapping files and are sequenced by a git-ordering dependency.
+# The seam is thin: each spoke commits to the same branch and the synthesis task creates the PR.
+# The identities below are the assertions synthesis MUST verify before folding the parent.
+
+kind: security_fix_manifest
+
+ownership:
+  - artifact: "crates/chirp-server/Cargo.toml (argon2 dep)"
+    owner: SUBTASK_credential_hashing
+  - artifact: "crates/chirp-server/src/repository/postgres.rs (set_credential, verify_credential, complete_account_recovery)"
+    owner: SUBTASK_credential_hashing
+  - artifact: "crates/chirp-server/src/repository/in_memory.rs (set_credential, verify_credential)"
+    owner: SUBTASK_credential_hashing
+  - artifact: "crates/chirp-server/migrations/0003_*.sql (if authored)"
+    owner: SUBTASK_credential_hashing
+  - artifact: "deploy/chirp/50-transient-sweep-cronjob.yaml (PGSSLMODE)"
+    owner: SUBTASK_ssl_manifest
+  - artifact: "PR work/security-persist-r1"
+    owner: SUBTASK_synthesis
+
+identities:
+  - "stored == secret is absent from all credential-verify paths (grep must return empty)"
+  - "PGSSLMODE: disable is absent from deploy/ (grep must return empty)"
+  - "argon2 is present in crates/chirp-server/Cargo.toml"
+  - "git branch work/security-persist-r1 exists on origin after both spokes complete"
+  - "all CI checks pass (synthesis gate confirms from branch state)"
+
+# The seam is co-designed but thin; its existence is required by the contract layer
+# even when minimal. A missing _MANIFEST.yaml here would make the seam invisible at synthesis.

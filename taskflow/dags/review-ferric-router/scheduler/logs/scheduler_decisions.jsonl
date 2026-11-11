@@ -1,0 +1,9 @@
+{"timestamp":"2026-10-07T00:59:40.120173126Z","action":{"Dispatch":{"task_ids":["review-ferric-router"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T01:00:50.136368157Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ferric-router"]}},"reason":"task review-ferric-router transitioned to Ready"}
+{"timestamp":"2026-10-07T01:00:50.136805072Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ferric-router"]}},"reason":"task review-ferric-router transitioned to Running"}
+{"timestamp":"2026-10-07T03:12:57.646964423Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state during resume-time subtree-resolution fixpoint (Bug 5)"}
+{"timestamp":"2026-10-07T04:06:48.438830080Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state during resume-time subtree-resolution fixpoint (Bug 5)"}
+{"timestamp":"2026-10-07T16:15:56.964378547Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state during resume-time subtree-resolution fixpoint (Bug 5)"}
+{"timestamp":"2026-10-22T00:36:05.782338822Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state during resume-time subtree-resolution fixpoint (Bug 5)"}
+{"timestamp":"2026-10-22T16:04:21.768213841Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state during resume-time subtree-resolution fixpoint (Bug 5)"}
+{"timestamp":"2026-10-22T16:41:27.750271708Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state during resume-time subtree-resolution fixpoint (Bug 5)"}

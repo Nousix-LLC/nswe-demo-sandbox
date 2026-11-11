@@ -1,0 +1,90 @@
+# posting_conversation_seam.yaml — the writing-and-reading-in-context subtree seam.
+# READ-ONLY. Spokes compose against this and MUST NOT redefine it (extend additively via amendment only).
+# It fixes WHICH spoke designs WHICH surface, WHICH REQ-UX sub-range each spoke mints from, HOW spokes
+# compose against the frozen upstream vocabularies, how the shared ComposeBox is owned, the per-screen<->
+# global-pattern cross-reference, and the trace rule every REQ-UX-* obeys. It EXTENDS the ancestor
+# contracts; never overrides them.
+
+# --- The owned section-part and how it splits across spokes ----------------------------------------
+# This subtree owns the `posting_conversation` part of the parent `core_loop` section (see
+# ../../contracts/core_loop_seam.yaml). Assembled order in screens-posting-conversation.md:
+# compose_post, then reply_conversation (writing -> reading-and-replying-in-context), followed by the
+# consolidated REQ-UX-054..058 register.
+section_part:
+  posting_conversation:
+    owner_subtree: SUBTASK_posting_conversation
+    parent_section: "core_loop"                      # verbatim from ../../contracts/
+    assembled_from_parts_in_order:
+      - part: compose_post
+        owner: SUBTASK_compose_post
+        source: "SUBTASK_compose_post/outputs/screens-compose-post.md"
+      - part: reply_conversation
+        owner: SUBTASK_reply_conversation
+        source: "SUBTASK_reply_conversation/outputs/screens-reply-conversation.md"
+
+# --- REQ-UX-054..058 sub-range partition (ancestor scheme: REQ-UX-NNN, 3-digit, unique within area) -
+req_ux_id_ranges:
+  SUBTASK_compose_post:        { from: "REQ-UX-054", to: "REQ-UX-056" }   # 3 ids
+  SUBTASK_reply_conversation:  { from: "REQ-UX-057", to: "REQ-UX-058" }   # 2 ids
+
+# Each REQ-UX-* carries exactly the ancestor's field set (../../contracts/ then the id/traceability schema):
+req_ux_fields: [id, statement, acceptance_criteria, release_gating]
+
+# --- Surface -> owning spoke ---------------------------------------------------------------------
+# Covers both posting/conversation surfaces in the parent required_surfaces checklist, so SURFACE_COVERAGE
+# is mechanically checkable. Each owner designs the surface with its happy path AND its empty/error/loading
+# states, mapping it to journey J4 and its REQ-PROD-*.
+surface_ownership:
+  # compose_post — writing a chirp (J4.2 / REQ-PROD-001)
+  compose_and_post:        SUBTASK_compose_post        # ComposeBox in three placements (inline top-of-timeline, the Compose dialog, the reply position); the 280-char affordance; Post/Reply primary action
+  # reply_conversation — reading-in-context and replying (J4.3 / REQ-PROD-003, 004)
+  reply_and_conversation:  SUBTASK_reply_conversation  # the Chirp / conversation screen (a chirp with parent + replies); reply affordance; reply-to-a-gone-chirp not-found
+
+# --- Shared component ownership (the one explicit shared piece) ----------------------------------
+# ComposeBox is designed ONCE by compose_post (including the reply-position placement) and COMPOSED by
+# reply_conversation in the conversation's reply slot. reply_conversation refers to ComposeBox by name and
+# to its reply placement; it does not redesign the component or its counter/limit/keep-the-draft behaviour.
+shared_component:
+  name: ComposeBox
+  designed_by: SUBTASK_compose_post        # owns all three placements, incl. the reply position
+  composed_by: SUBTASK_reply_conversation  # references the reply-position placement in the conversation screen
+  rule: "reply_conversation places ComposeBox (reply variant) in the conversation's reply slot by name; the counter, 280-char limit, disabled/empty/error/loading behaviour, and keep-the-draft recovery are compose_post's to specify and the component library's to own."
+
+# --- Shared-vocabulary composition rule ----------------------------------------------------------
+shared_vocabulary_rule:
+  screen_inventory:
+    inherited_from: "../../../../SUBTASK_ia_interaction/outputs/ia-interaction.md"
+    rule: "Every screen a spoke designs is a screen named in the inventory, referred to by that name and route (Compose at /compose + overlay dialog; Chirp / conversation at /@:handle/chirp/:id). A spoke MUST NOT introduce a screen absent from the inventory; if one is genuinely needed, request an additive amendment to this contract rather than inventing it silently."
+  component_library:
+    inherited_from: "../../../../SUBTASK_visual_system/outputs/visual-system.md"
+    rule: "Every surface is described as an arrangement of named components (ComposeBox, Dialog, ChirpCard, ListView, PrimaryButton, Avatar, IconButton, InlineError, InlineFeedback, Toast, EmptyState, LoadingState, within NavShell). A surface's empty/error/loading states are the relevant components' own named states, not new inventions. Refer to tokens and components by name; introduce no ad-hoc value."
+
+# --- The per-screen <-> global-pattern cross-reference (the one internal seam) --------------------
+states_cross_reference:
+  global_patterns_owner: "SUBTASK_considered_states (in the screens-&-flows subtree, outside this subtree)"
+  rule: >
+    SUBTASK_considered_states owns the product-wide empty / loading / error PATTERNS and the
+    expired-session / transient-error recovery (keep-the-draft) behaviour, as the
+    empty_error_loading_states section. The two spokes here design each surface's OWN empty/error/loading
+    states by composing the component library's named states (ComposeBox.empty/error/loading,
+    ChirpCard.error[tombstone]/loading, ListView.empty/error/loading, Dialog.error/loading, InlineError,
+    InlineFeedback, Toast, EmptyState, LoadingState) and that global treatment — they do not invent a
+    conflicting per-screen pattern. In particular, a failed publish keeps the draft (the global
+    keep-the-draft recovery), composed here rather than redefined. Because both spokes compose against the
+    same already-frozen component library and IA conventions, the two spokes run in parallel;
+    SUBTASK_synthesis asserts STATES_CONSISTENT across the assembled whole.
+
+# --- The trace rule every REQ-UX-* obeys ---------------------------------------------------------
+trace_rule:
+  references_req_prod: ">=1"                 # every REQ-UX-* names at least one REQ-PROD-* it serves
+  acceptance_criteria: "testable by someone who never met the author, exercisable on the live product"
+  release_gating: "true | false  (false carries a one-line reason)"
+  product_requirements_source: "../../../../../SUBTASK_product_requirements/outputs/product-requirements.md"
+  note: >
+    Honour the product requirements' own release_gating. compose & post rides REQ-PROD-001
+    (release_gating:true) and replying rides REQ-PROD-003 (true); reading a reply in the conversation it
+    belongs to rides REQ-PROD-004 (release_gating:false — a navigable conversation read is an enhancement a
+    first release may omit, the parent reference already being recorded by REQ-PROD-003). A REQ-UX that
+    gates posting or replying is release_gating:true; a REQ-UX whose only REQ-PROD is the non-gating 004
+    is release_gating:false with the one-line reason. A surface that is gated but also exposes a non-gating
+    behaviour gates the parts its gated REQ-PROD requires and marks the non-gating behaviour accordingly.

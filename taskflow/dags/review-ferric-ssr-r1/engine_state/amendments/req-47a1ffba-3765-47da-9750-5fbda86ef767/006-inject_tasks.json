@@ -1,0 +1,66 @@
+{
+  "sequence": 6,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T01:13:31.361636659Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_A_api_surface"
+      ],
+      "placement_parent_task_id": "SUBTASK_code_quality"
+    },
+    "resulting_version": 6,
+    "summary": "inject tasks: SUBTASK_A_api_surface",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_code_quality into Area A: API surface and naming review spoke",
+        "task_id": "SUBTASK_code_quality"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_A_api_surface": [],
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_security_infra": [],
+      "SUBTASK_security_xss": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_code_quality",
+        "SUBTASK_correctness",
+        "SUBTASK_security_infra",
+        "SUBTASK_security_xss"
+      ],
+      "review-ferric-ssr-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_A_api_surface",
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "SUBTASK_security_infra",
+          "SUBTASK_security_xss",
+          "review-ferric-ssr-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

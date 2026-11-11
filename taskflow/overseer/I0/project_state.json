@@ -1,0 +1,43 @@
+{
+  "project_id": "nswe-demo",
+  "repo": "Nousix-LLC/nswe-demo",
+  "goal": "A small Rust/WebAssembly web-application framework (ferric) and a Twitter-style clone (chirp) built on it, production quality; built, tested, and continuously delivered via GitHub Actions CI and ArgoCD on k3s; reachable on the cluster. The GitHub Project, issues, and PRs are the working record.",
+  "created": "2026-10-01T23:20:44Z",
+  "updated": "2026-10-01T23:20:44Z",
+  "status": "active",
+  "working_branch": "main",
+  "flow": "Each unit of work is a forked swe-coder DAG on a feature branch -> pushes -> opens a PR into main referencing its issue -> overseer schedules a review DAG -> overseer gates/merges. CI via GitHub Actions; CD via ArgoCD on k3s. Bugs -> issues -> fix DAGs. (This PR-into-main flow follows the explicit user request and supersedes the app's local-first default.)",
+  "current_pointer": 0,
+  "engagement": {
+    "project_board": "https://github.com/orgs/Nousix-LLC/projects/1",
+    "project_id_gh": "PVT_kwDOEB9jls4BlZH4",
+    "status_field_id": "PVTSSF_lADOEB9jls4BlZH4zhkGLsc",
+    "status_options": {"Todo": "f75ad846", "In Progress": "47fc9ee4", "Done": "98236657"},
+    "milestones": {"M1": 1, "M2": 2, "M3": 3},
+    "issues": {
+      "epic_ferric": 1, "epic_chirp": 2, "epic_devops": 3,
+      "ferric-foundation": 4, "ferric-router": 5, "ferric-http": 6,
+      "chirp-types": 7, "chirp-server": 8, "chirp-frontend": 9,
+      "infra-bootstrap": 10, "ci-actions": 11, "containerize": 12, "deploy-argocd": 13
+    },
+    "architecture": {
+      "framework": "ferric (crates/ferric): client-side WASM framework — reactive signals, component model, DOM rendering (wasm-bindgen/web-sys), router, fetch/JSON http client",
+      "app": "chirp: crates/chirp-types (shared contract), crates/chirp-server (axum REST API + persistence + static SPA serving), crates/chirp-frontend (ferric SPA)",
+      "deploy": "chirp-server containerized; k8s manifests under deploy/; ArgoCD Application tracking the repo deploys to k3s"
+    }
+  },
+  "dispatched_dags": [
+    {
+      "item_slug": "ferric-foundation",
+      "issue": 4,
+      "branch": "work/ferric-foundation",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-foundation",
+      "methodology_bundles": ["rust", "core", "code-quality", "testing"],
+      "dispatched_at": "2026-10-01T23:20:44Z",
+      "status": "dispatched"
+    }
+  ],
+  "work_items": []
+}

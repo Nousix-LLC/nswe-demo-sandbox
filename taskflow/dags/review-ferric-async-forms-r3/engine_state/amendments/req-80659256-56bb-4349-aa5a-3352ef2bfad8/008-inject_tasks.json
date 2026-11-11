@@ -1,0 +1,69 @@
+{
+  "sequence": 8,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T01:28:17.081385342Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_concern7_api_stability"
+      ],
+      "placement_parent_task_id": "SUBTASK_quality_tests_idiom"
+    },
+    "resulting_version": 8,
+    "summary": "inject tasks: SUBTASK_concern7_api_stability",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_quality_tests_idiom: Concern 7 (API and contract stability) is a distinct analysis requiring Rust library API and framework-design methodology, parallelizable with the other 3 concern spokes.",
+        "task_id": "SUBTASK_quality_tests_idiom"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_concern2_quality_design": [],
+      "SUBTASK_concern3_tests": [],
+      "SUBTASK_concern6_idiom": [],
+      "SUBTASK_concern7_api_stability": [],
+      "SUBTASK_correctness_concurrency": [],
+      "SUBTASK_quality_tests_idiom": [],
+      "SUBTASK_security": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_correctness_concurrency",
+        "SUBTASK_quality_tests_idiom",
+        "SUBTASK_security"
+      ],
+      "review-ferric-async-forms-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_concern2_quality_design",
+          "SUBTASK_concern3_tests",
+          "SUBTASK_concern6_idiom",
+          "SUBTASK_concern7_api_stability",
+          "SUBTASK_correctness_concurrency",
+          "SUBTASK_quality_tests_idiom",
+          "SUBTASK_security",
+          "review-ferric-async-forms-r3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

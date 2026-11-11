@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-01T23:46:07.156555933Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_scaffold"
+      ],
+      "placement_parent_task_id": "ferric-foundation"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_scaffold",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the walking-skeleton child of the ferric-foundation decomposition: creates the shared git clone/branch, the virtual workspace, and the compiling ferric crate skeleton every layer fills in.",
+        "task_id": "ferric-foundation"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_scaffold": [],
+      "ferric-foundation": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scaffold",
+          "ferric-foundation"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

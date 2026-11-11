@@ -1,0 +1,76 @@
+kind: yaml_schema
+description: >
+  Contract for the SUBTASK_validate-crossrefs subtree. Declares the intermediate artifact
+  schemas for req-reconciliation.md and issue-traceability.md, and the ownership of the
+  final crossrefs-findings.md. Inherits the crossrefs_findings_schema from the parent
+  contract (../contracts/_MANIFEST.yaml), which defines the required structure for the
+  output that SUBTASK_synthesis (the parent's synthesis task) will consume.
+
+inherited_from: ../contracts/_MANIFEST.yaml
+inherited_schema: crossrefs_findings_schema
+
+ownership:
+  - artifact: SUBTASK_req-reconciliation/req-reconciliation.md
+    owner: SUBTASK_req-reconciliation
+    consumers: [SUBTASK_synthesis-crossrefs]
+  - artifact: SUBTASK_issue-traceability/issue-traceability.md
+    owner: SUBTASK_issue-traceability
+    consumers: [SUBTASK_synthesis-crossrefs]
+  - artifact: crossrefs-findings.md
+    owner: SUBTASK_synthesis-crossrefs
+    consumers: [../SUBTASK_synthesis]
+
+req_reconciliation_schema:
+  description: >
+    SUBTASK_req-reconciliation MUST produce req-reconciliation.md conforming to this schema.
+  required_sections:
+    - full_req_inventory: |
+        Complete list of all REQ-* ids found across all nine concern-findings.md files.
+        Format: per-prefix group listing (REQ-FW-*, REQ-SSR-*, REQ-API-*, REQ-ASYNC-*,
+        REQ-RT-*, REQ-HTTP-*, REQ-DX-*, REQ-REL-*, REQ-PERF-*).
+        Total count.
+    - duplicate_ids: |
+        Any REQ-* id that appears in more than one document's req_ids_found list,
+        with both document locations. Empty list if none found.
+    - orphaned_references: |
+        Any REQ-* id cited in a document as a cross-reference but not defined in
+        the owning document's req_ids_found list. Include the citing location and
+        the expected owning document. Empty list if none found.
+    - bar_without_req: |
+        Any BAR-FERRIC-* criterion from the release-bar concern findings that cites
+        no REQ-* id present in the full inventory. Empty list if all bar criteria
+        are covered.
+    - reconciliation_status: |
+        One of: clean | has-issues
+        clean: no duplicates, orphans, or uncovered bar criteria found
+        has-issues: one or more items in the above lists
+
+issue_traceability_schema:
+  description: >
+    SUBTASK_issue-traceability MUST produce issue-traceability.md conforming to this schema.
+  required_sections:
+    - epics_summary: |
+        For each epic #129–#136: epic number, title, list of child issue numbers,
+        and for each child issue whether it contains at least one REQ-* citation.
+    - issues_without_req: |
+        Child issues (#137–#164) with no REQ-* citation found in the issue body.
+        Include issue number and title.
+    - requirements_without_issue: |
+        Significant REQ-* ids (from the full inventory) with no corresponding issue.
+        "Significant" means the REQ is in scope for Ferric 1.0 (not marked deferred).
+    - issue_137_check: |
+        Specific check on issue #137 (Reactive state):
+        - Epic it is assigned to
+        - Whether its scope is correctly bounded relative to authoring-model and
+          async-forms-events concerns
+        - Any overlap or gap noted
+    - traceability_status: |
+        One of: clean | has-issues
+
+identities:
+  - The full_req_inventory in req-reconciliation.md contains no id that appears in
+    more than one source document (or the duplicate is explicitly flagged).
+  - crossrefs-findings.md contains all three required sections per the parent schema:
+    req_register_reconciliation, issue_traceability, gaps.
+  - All GAP-NNN ids in crossrefs-findings.md are in the range GAP-090 through GAP-099
+    and do not duplicate ids from the nine concern-findings.md files.

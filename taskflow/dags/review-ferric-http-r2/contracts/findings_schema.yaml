@@ -1,0 +1,39 @@
+# findings_schema.yaml
+# Schema for all spoke findings files in review-ferric-http-r2
+# Every SUBTASK_correctness, SUBTASK_code_quality, and SUBTASK_security output
+# MUST include the sections below so SUBTASK_verdict can compile them into a verdict.
+
+kind: findings_schema
+version: "1.0"
+
+required_sections:
+  - name: "## Summary"
+    description: "One paragraph: what was checked, overall result (clean / N findings)"
+  - name: "## Findings"
+    description: |
+      Zero or more findings, each following the structure:
+        **[SEVERITY] [item-id or short label]**: description
+        - File: <path> (if applicable)
+        - Principle: <what standard is at stake>
+        - Evidence: <specific lines or values seen>
+        - Resolution: <what would satisfy this finding>
+
+      Severity values: BLOCKER | SHOULD_FIX | ADVISORY | CLEAN
+      A CLEAN finding explicitly names an item checked and found sound.
+  - name: "## Verdict contribution"
+    description: |
+      Explicit statement of this spoke's vote:
+        - APPROVE: no blockers found in this concern area
+        - REQUEST-CHANGES: one or more blockers found in this concern area
+
+severity_values:
+  BLOCKER: "Must be resolved before APPROVE; prevents merge"
+  SHOULD_FIX: "Should be resolved; does not block by itself unless stated"
+  ADVISORY: "Non-blocking note or observation"
+  CLEAN: "Item examined and found sound; explicitly recorded"
+
+per_item_status_values:
+  RESOLVED: "The original finding is no longer present in the current code"
+  UNRESOLVED: "The original finding persists"
+  PARTIAL: "The original finding is partially addressed"
+  NOT_APPLICABLE: "Item does not apply to this concern area"

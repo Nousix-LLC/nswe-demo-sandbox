@@ -1,0 +1,49 @@
+{
+  "sequence": 4,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T14:53:51.360670448Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "review-chirp-logged-out-r1/spoke-code-quality"
+      ],
+      "placement_parent_task_id": "review-chirp-logged-out-r1"
+    },
+    "resulting_version": 4,
+    "summary": "inject tasks: review-chirp-logged-out-r1/spoke-code-quality",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Spoke 4 of 4 parallel review spokes: covers code quality, test depth, security, idiom, and prose.",
+        "task_id": "review-chirp-logged-out-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "review-chirp-logged-out-r1": [],
+      "review-chirp-logged-out-r1/spoke-access-auth": [],
+      "review-chirp-logged-out-r1/spoke-code-quality": [],
+      "review-chirp-logged-out-r1/spoke-state-machine": [],
+      "review-chirp-logged-out-r1/spoke-ui-states": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "review-chirp-logged-out-r1",
+          "review-chirp-logged-out-r1/spoke-access-auth",
+          "review-chirp-logged-out-r1/spoke-code-quality",
+          "review-chirp-logged-out-r1/spoke-state-machine",
+          "review-chirp-logged-out-r1/spoke-ui-states"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

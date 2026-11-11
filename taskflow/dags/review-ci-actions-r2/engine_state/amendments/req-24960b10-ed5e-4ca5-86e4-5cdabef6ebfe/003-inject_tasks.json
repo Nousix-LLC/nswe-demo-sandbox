@@ -1,0 +1,47 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-08T01:45:35.335255992Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_image_job"
+      ],
+      "placement_parent_task_id": "review-ci-actions-r2"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_image_job",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Review spoke for concern 4 (the image job now that #12's Dockerfile exists on main) of PR #21 — the most important newly-relevant concern; one of four parallel review spokes.",
+        "task_id": "review-ci-actions-r2"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_image_job": [],
+      "SUBTASK_supply_chain_security": [],
+      "SUBTASK_workflow_correctness": [],
+      "review-ci-actions-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_image_job",
+          "SUBTASK_supply_chain_security",
+          "SUBTASK_workflow_correctness",
+          "review-ci-actions-r2"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

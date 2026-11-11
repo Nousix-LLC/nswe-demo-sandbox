@@ -1,0 +1,37 @@
+{"timestamp":"2026-10-07T06:23:11.481263087Z","action":{"Dispatch":{"task_ids":["review-infra-bootstrap"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T06:24:19.805024146Z","action":{"WaitForCompletion":{"pending_task_ids":["review-infra-bootstrap"]}},"reason":"task review-infra-bootstrap transitioned to Ready"}
+{"timestamp":"2026-10-07T06:24:19.805110878Z","action":{"WaitForCompletion":{"pending_task_ids":["review-infra-bootstrap"]}},"reason":"task review-infra-bootstrap transitioned to Running"}
+{"timestamp":"2026-10-07T06:31:06.477452738Z","action":{"Dispatch":{"task_ids":["SUBTASK_review_correctness_repro"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-07T06:31:12.353435831Z","action":{"Dispatch":{"task_ids":["SUBTASK_review_security_rbac"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-07T06:31:19.541509215Z","action":{"Dispatch":{"task_ids":["SUBTASK_review_honesty_scope_ops"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-07T06:31:49.702588942Z","action":{"WaitForCompletion":{"pending_task_ids":["review-infra-bootstrap"]}},"reason":"task review-infra-bootstrap suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-07T06:31:51.667996765Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_review_correctness_repro"]}},"reason":"task SUBTASK_review_correctness_repro transitioned to Ready"}
+{"timestamp":"2026-10-07T06:31:51.668105683Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_review_correctness_repro"]}},"reason":"task SUBTASK_review_correctness_repro transitioned to Running"}
+{"timestamp":"2026-10-07T06:32:00.266692838Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_review_honesty_scope_ops"]}},"reason":"task SUBTASK_review_honesty_scope_ops transitioned to Ready"}
+{"timestamp":"2026-10-07T06:32:00.266897959Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_review_honesty_scope_ops"]}},"reason":"task SUBTASK_review_honesty_scope_ops transitioned to Running"}
+{"timestamp":"2026-10-07T06:32:12.055122130Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_review_security_rbac"]}},"reason":"task SUBTASK_review_security_rbac transitioned to Ready"}
+{"timestamp":"2026-10-07T06:32:12.055316353Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_review_security_rbac"]}},"reason":"task SUBTASK_review_security_rbac transitioned to Running"}
+{"timestamp":"2026-10-07T06:37:45.275096659Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_review_security_rbac","SUBTASK_review_correctness_repro","review-infra-bootstrap"]}},"reason":"task SUBTASK_review_honesty_scope_ops completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T06:38:10.210702650Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_review_security_rbac","review-infra-bootstrap"]}},"reason":"task SUBTASK_review_correctness_repro completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T06:38:18.281365088Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":1}},"reason":"task SUBTASK_review_security_rbac completed, dispatching ready successors"}
+{"timestamp":"2026-10-07T06:39:15.984105520Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-07T06:39:15.984285055Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-07T06:43:41.223428287Z","action":{"SubtreeResolved":{"parent_task_id":"review-infra-bootstrap","child_task_ids":["SUBTASK_review_correctness_repro","SUBTASK_review_security_rbac","SUBTASK_review_honesty_scope_ops","SUBTASK_synthesis_gate"],"success":true}},"reason":"all children of review-infra-bootstrap reached terminal state (success=true)"}
+{"timestamp":"2026-10-07T06:43:41.223560424Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-07T16:15:56.964550910Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T16:17:00.255661345Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-07T16:17:00.255787154Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-22T00:36:05.783638200Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T00:37:31.436038948Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-22T00:37:31.436340091Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-22T00:40:55.944933733Z","action":{"WaitForCompletion":{"pending_task_ids":["review-infra-bootstrap"]}},"reason":"task SUBTASK_synthesis_gate completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:04:21.768379661Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:12:46.917100914Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-22T16:12:46.917418225Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-22T16:13:22.341186010Z","action":{"WaitForCompletion":{"pending_task_ids":["review-infra-bootstrap"]}},"reason":"task SUBTASK_synthesis_gate completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:13:28.338122364Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T16:13:52.342550582Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T16:41:27.750365030Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:44:34.362548473Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-22T16:44:34.362737870Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-22T16:48:19.123271004Z","action":{"WaitForCompletion":{"pending_task_ids":["review-infra-bootstrap"]}},"reason":"task SUBTASK_synthesis_gate failed, continuing with independent tasks (best-effort)"}

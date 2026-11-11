@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T04:03:51.910816193Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "chirp-logged-out-server"
+      ],
+      "placement_parent_task_id": "chirp-logged-out-r2"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: chirp-logged-out-server",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Server spoke: create branch and implement unauthenticated GET /api/public/timeline endpoint on chirp-server (Group 0, no dependencies)",
+        "task_id": "chirp-logged-out-r2"
+      }
+    },
+    "updated_graph_edges": {
+      "chirp-logged-out-r2": [],
+      "chirp-logged-out-server": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "chirp-logged-out-r2",
+          "chirp-logged-out-server"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

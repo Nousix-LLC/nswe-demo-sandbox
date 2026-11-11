@@ -1,0 +1,30 @@
+# Contract manifest — SUBTASK_synthesis (internal seam of the account-lifecycle synthesis gate)
+# kind: yaml_schema. READ-ONLY for descendants. Extends ../contracts/ (account-lifecycle seam) and, through
+# it, the screens-&-flows and experience-design contracts. Additive only; the ancestor wins on any conflict.
+kind: yaml_schema
+
+extends:
+  - "../contracts/"
+
+artifacts:
+  - file: synthesis_seam.yaml
+    declares: "Which child writes which gate artifact, the order of the assembled deliverable, and the identity-evidence record shape the fold consumes."
+
+ownership:
+  "file:../outputs/screens-account-lifecycle.md": SUBTASK_assemble
+  "file:outputs/identity-evidence.md":            SUBTASK_verify
+  "file:SYNTHESIS.md":                            SUBTASK_fold   # fold record at this node's directory (folds SUBTASK_synthesis)
+  "file:../SYNTHESIS.md":                         SUBTASK_fold   # fold record at the account-lifecycle node's directory (folds that node)
+
+identities:
+  - id: ONE_WRITER_PER_ARTIFACT
+    statement: "Each gate artifact has exactly one writing child; no child writes an artifact it does not own."
+  - id: EVIDENCE_COVERS_ALL_IDENTITIES
+    statement: "identity-evidence.md carries a PASS/FAIL verdict with cited evidence for each of the eight account-lifecycle identities, and every verdict is checkable against the assembled deliverable."
+  - id: FOLD_MATCHES_EVIDENCE
+    statement: "Both SYNTHESIS.md records restate exactly the verdicts in identity-evidence.md; a FAIL verdict is never folded as a pass."
+
+derived_artifacts:
+  - name: "identity-evidence.md"
+    generated_from: "outputs/screens-account-lifecycle.md assembled by SUBTASK_assemble, checked against the inherited contract identities"
+    consumed_by: SUBTASK_fold

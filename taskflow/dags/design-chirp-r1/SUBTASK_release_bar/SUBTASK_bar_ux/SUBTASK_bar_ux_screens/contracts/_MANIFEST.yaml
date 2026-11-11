@@ -1,0 +1,65 @@
+# Contract manifest — SUBTASK_bar_ux_screens subtree (the screens & flows slice of the UX release bar)
+# kind: yaml_schema. Extends the inherited ancestor contracts ADDITIVELY: it sub-partitions this slice's
+# BAR-230..264 range across five screen-chapter spokes + the synthesis cross-cutting slot, fixes the per-chapter
+# release-gating REQ-UX-* set, and fixes the sub-fragment layout. Redefines NOTHING inherited.
+# READ-ONLY for every descendant.
+
+kind: yaml_schema
+
+extends:
+  - "../../contracts/"        # SUBTASK_bar_ux: this slice owns BAR-230..264 + the bar-ux-screens.md fragment;
+                              # the per-BAR field set, the proposed_stage convention, the coverage-note layout.
+  - "../../../contracts/"     # SUBTASK_release_bar: UX owns BAR-200..299.
+  - "../../../../contracts/"  # DAG root: BAR-<NNN> 3-digit format, closed verification_methods vocab,
+                              # stage vocabulary {usable_early, releasable}, per-BAR field set.
+# This sub-contract MUST NOT override any of the above.
+
+artifacts:
+  - file: bar_screens_partition.yaml
+    declares: "Disjoint BAR-<NNN> sub-range per screen-chapter spoke within BAR-230..264 + the synthesis
+               cross-cutting slot (BAR-264); the per-chapter release-gating REQ-UX-* set each spoke must cover;
+               the per-BAR field set (inherited); the sub-fragment layout each spoke emits; the within-screens
+               staging-proposal convention."
+
+# One producer per artifact. An artifact with no owner is a hole; with two owners, a race.
+ownership:
+  "SUBTASK_bar_screens_entry_auth/outputs/bar-screens-entry-auth.md":             SUBTASK_bar_screens_entry_auth         # BAR-230..237 (REQ-UX-040..050 gating)
+  "SUBTASK_bar_screens_core_loop/outputs/bar-screens-core-loop.md":               SUBTASK_bar_screens_core_loop          # BAR-238..242 (REQ-UX-051..056 gating)
+  "SUBTASK_bar_screens_social_profiles/outputs/bar-screens-social-profiles.md":   SUBTASK_bar_screens_social_profiles    # BAR-243..247 (REQ-UX-058..063 gating)
+  "SUBTASK_bar_screens_account_lifecycle/outputs/bar-screens-account-lifecycle.md": SUBTASK_bar_screens_account_lifecycle # BAR-248..255 (REQ-UX-065..077 gating)
+  "SUBTASK_bar_screens_safety_states/outputs/bar-screens-safety-states.md":       SUBTASK_bar_screens_safety_states      # BAR-256..263 (REQ-UX-079,082..089 gating)
+  "outputs/bar-ux-screens.md":                                                    SUBTASK_bar_screens_synthesis          # SUBTASK_bar_ux_screens's declared output (assembled)
+  "BAR-264 (cross-cutting)":                                                       SUBTASK_bar_screens_synthesis          # only for a finding no single chapter owns
+  "SYNTHESIS.md":                                                                  SUBTASK_bar_screens_synthesis          # fold record at the SUBTASK_bar_ux_screens workspace
+
+# Invariants the combined outputs MUST satisfy. Asserted by SUBTASK_bar_screens_synthesis (the gate) with
+# recorded evidence. A failing identity is reported and remediated (amend), NEVER silently plugged.
+identities:
+  - id: SCREENS_BAR_RANGE_RESPECTED
+    statement: "Every BAR-NNN lies within its owning spoke's assigned sub-range per bar_screens_partition.yaml;
+                no spoke wrote outside its sub-range; all BAR-NNN lie within BAR-230..264."
+  - id: SCREENS_NO_BAR_COLLISION
+    statement: "All BAR-NNN ids across the five chapter sub-fragments plus the synthesis cross-cutting bar are distinct."
+  - id: SCREENS_GATING_REQ_COVERAGE
+    statement: "Every release-gating REQ-UX-* in 040..089 (the 43 with release_gating: true) is referenced by
+                >=1 BAR-*, evaluated per chapter against that chapter's gating set in bar_screens_partition.yaml."
+  - id: SCREENS_BAR_TESTABLE
+    statement: "Every BAR-* names a verification_method from the frozen vocabulary and references >=1 REQ-*."
+  - id: SCREENS_BAR_STAGED
+    statement: "Every BAR-* carries a stage in {usable_early, releasable}; the assembled fragment states one stage
+                per BAR-* (no criterion staged two ways). These are the screens-view proposal; the parent
+                SUBTASK_bar_ux_synthesis and the whole-bar synthesis own the wider line."
+  - id: SCREENS_NONGATING_EXCLUDED
+    statement: "No BAR-* is justified SOLELY by a non-gating REQ-UX-* (release_gating: false). The screens-band
+                non-gating REQ-UX-* are: 057, 064, 071, 072, 078, 080, 081."
+  - id: SCREENS_COVERAGE_NOTE_PRESENT
+    statement: "bar-ux-screens.md carries the coverage note mapping every release-gating REQ-UX-* in 040..089 to
+                the BAR-*(s) that cover it, so the parent UX synthesis gate asserts UX_GATING_REQ_COVERAGE for the
+                screens area without re-deriving the set."
+  - id: SCREENS_HYGIENE
+    statement: "bar-ux-screens.md carries no host/system/taskflow detail and no attribution trailer."
+
+derived_artifacts:
+  - name: screens_bar_req_coverage_map
+    generated_from: "the five chapter sub-fragments (BAR-* -> REQ-UX-* references) + each chapter's release-gating REQ set"
+    consumed_by: "SUBTASK_bar_screens_synthesis (as the bar-ux-screens.md coverage note) then SUBTASK_bar_ux_synthesis (parent)"

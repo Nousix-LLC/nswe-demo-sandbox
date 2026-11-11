@@ -1,0 +1,89 @@
+spoke: design-doc-review
+concern_ids: [3]
+
+findings:
+
+  - id: DDR-T-001
+    severity: non-blocking
+    concern: 3
+    location: >-
+      design/ferric/contracts/design_artifact_map.yaml (file header vs. hub document descriptions);
+      taskflow/dags/design-ferric-1_0-r3/SUBTASK_design-doc-review/_GLOBAL.md (Design document
+      inventory table, row "contracts/design_artifact_map.yaml")
+    statement: >-
+      The hub documents describe design_artifact_map.yaml as "Maps REQ-* to design artifacts and
+      issues." The actual file maps design document filenames to their owning subtasks and repository
+      paths; its own header says "where each owned design doc lands in the repository." No REQ-* IDs
+      appear anywhere in the file. The stated cross-reference function — looking up which design
+      artifact or issue corresponds to a given REQ-* ID — cannot be performed using the artifact map.
+
+      As a result, the first audit check from the traceability review brief ("Does every REQ-* ID
+      declared in scope-and-requirements.md appear in the artifact map?") returns no matches for any
+      of the 21 REQ-FW-* IDs, not because of a coverage gap but because the map does not have REQ-*
+      entries. The traceability chain (REQ-* → BAR-FERRIC-* → issues) is intact through direct
+      citations in issues #137–#164; this mislabeling does not break that chain.
+    recommendation: >-
+      Either (a) update the hub document descriptions to accurately reflect that
+      design_artifact_map.yaml is a document-placement map, not a REQ-* cross-reference — changing
+      "Maps REQ-* to design artifacts and issues" to "Maps design document filenames to their owning
+      subtasks and repository paths" — or (b) add a separate contract file (e.g.,
+      contracts/req_to_bar_map.yaml) that records each REQ-* ID, the BAR-FERRIC-* criterion it
+      is enforced by, and the issue number that implements it, so the cross-reference function the hub
+      documents describe actually exists in the system.
+
+  - id: DDR-T-002
+    severity: non-blocking
+    concern: 3
+    location: >-
+      Issues #129–#136 (all 8 epic issues), "**BAR-FERRIC covered:**" field in each body
+    statement: >-
+      All 8 epic issues (#129–#136) use the abbreviated ID format "BAR-NNN" (e.g., "BAR-001,
+      BAR-002") in their "BAR-FERRIC covered" field. The id_and_traceability_schema.yaml defines
+      the canonical pattern as "BAR-FERRIC-<NNN>" (e.g., "BAR-FERRIC-001"). The 28 feature issues
+      (#137–#164) all use the canonical format correctly. A reviewer searching for "BAR-FERRIC-001"
+      in the issue register finds it in #137 (feature) but not in #129 (the owning epic), because
+      #129 uses "BAR-001." The numeric cross-reference is still intelligible, but the format
+      divergence makes the issue register non-conformant with the id_schema pattern and would
+      cause a substring search for "BAR-FERRIC" to miss the epic bodies.
+    recommendation: >-
+      Update the "BAR-FERRIC covered" field in all 8 epic issues to use the canonical
+      "BAR-FERRIC-NNN" format. Specifically: #129 uses BAR-001 through BAR-011 (where referenced),
+      #130 uses BAR-012–014, #131 uses BAR-015–016, #132 uses BAR-017–018, #133 uses BAR-003–006,
+      #134 uses BAR-019–022, #135 uses BAR-026–028, #136 uses BAR-023–025 and BAR-029. Replace
+      each with the "BAR-FERRIC-NNN" form. This is a batch edit with no design change.
+
+  - id: DDR-T-003
+    severity: non-blocking
+    concern: 3
+    location: >-
+      Issues #129, #131, #132, #133, #134, #135, #136 (7 of 8 epic issues); id_and_traceability_schema.yaml §epic.fields
+    statement: >-
+      Seven of the eight epic issues do not directly cite any REQ-* IDs in their bodies. They
+      reference design area files (e.g., "design/ferric/authoring-model.md") and BAR-FERRIC-*
+      criteria, but not specific requirement IDs. Issue #130 is the exception: it cites
+      REQ-ASYNC-012 and REQ-ASYNC-013 in a note. The id_and_traceability_schema.yaml does not
+      require direct REQ-* citations in epics — it requires "design_refs" (design-doc area references)
+      for epics and REQ-*/BAR-FERRIC-* citations for work items. The epics are therefore
+      schema-compliant. However, the traceability audit question ("Does every epic and feature issue
+      trace to at least one REQ-* ID?") cannot be answered "yes" for 7 epics without following the
+      indirect chain: epic → BAR-FERRIC-* → feature issue → REQ-*. A reviewer performing a direct
+      traceability check on epic bodies would find no REQ-* and incorrectly conclude a gap exists.
+    recommendation: >-
+      Consider adding a "Key requirements:" field to each epic body that lists the primary REQ-*
+      IDs from the cited design area — one or two representative IDs per epic is sufficient to
+      establish direct traceability without duplicating the full feature-issue listings. Alternatively,
+      update the id_and_traceability_schema.yaml to clarify that REQ-* traceability for epics is
+      indirect (via BAR-FERRIC-* and the feature issues under the epic) and that this is by design,
+      so future reviewers understand the intended structure.
+
+summary:
+  blocking_count: 0
+  non_blocking_count: 3
+  notes: >-
+    All 14 release-gating REQ-FW-* requirements (REQ-FW-001 through REQ-FW-014) have at least one
+    corresponding issue in #129–#164. No issue references a non-existent REQ-FW-* ID. Post-1.0
+    deferrals (REQ-FW-015 through REQ-FW-021) are correctly unticketed. The primary traceability
+    chain (REQ-* declared in design docs → cited by BAR-FERRIC-* criteria in release-bar.md →
+    referenced in feature issues #137–#164) is intact for the REQ-FW-* register. The three findings
+    above are consistency and documentation gaps; none of them would cause a ticket to implement
+    something different from what the design specifies.

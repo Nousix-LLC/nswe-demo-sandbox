@@ -1,0 +1,45 @@
+# Contract manifest — SUBTASK_synthesis (internal seam of the screens-&-flows verification gate).
+# kind: yaml_schema. READ-ONLY for every descendant. Extends ../contracts/ (the screens-&-flows seam) and
+# ../../contracts/ ADDITIVELY; it never overrides them. Where this manifest and an ancestor disagree, the ancestor wins.
+
+kind: yaml_schema
+
+extends:
+  - "../contracts/"        # screens-&-flows seam: section-part owners, REQ-UX sub-ranges, the nine identities
+  - "../../contracts/"     # experience-design seam: REQ-UX scheme, required_surfaces, trace rule
+
+artifacts:
+  - file: evidence_seam.yaml
+    declares: "Which child owns which output file; which of the nine inherited identities each verifier asserts; the shared evidence-record format; the failure/remediation rule."
+
+ownership:
+  "file:../outputs/screens-flows.md":                          SUBTASK_assemble_deliverable
+  "file:SUBTASK_assemble_deliverable/outputs/assembly-record.md": SUBTASK_assemble_deliverable
+  "file:SUBTASK_verify_register/outputs/evidence-register.md": SUBTASK_verify_register
+  "file:SUBTASK_verify_design/outputs/evidence-design.md":     SUBTASK_verify_design
+  "file:../SYNTHESIS.md":                                      SUBTASK_fold
+  "file:SYNTHESIS.md":                                         SUBTASK_fold
+
+identity_assertion_owner:     # each inherited identity (../contracts/_MANIFEST.yaml) is asserted by exactly one child
+  SECTION_PART_COVERAGE:  SUBTASK_verify_register
+  ID_UNIQUE_IN_RANGE:     SUBTASK_verify_register
+  SURFACE_COVERAGE:       SUBTASK_verify_register
+  UX_TESTABLE_AND_GATED:  SUBTASK_verify_register
+  UX_TRACES_TO_PROD:      SUBTASK_verify_register
+  NOT_SKELETAL:           SUBTASK_verify_design
+  COMPOSES_AGAINST_VOCAB: SUBTASK_verify_design
+  STATES_CONSISTENT:      SUBTASK_verify_design
+  HYGIENE:                SUBTASK_verify_design
+
+identities:
+  - id: ONE_ASSEMBLY_ONE_VERIFIED_TEXT
+    statement: "Both verifiers assert against the same assembled ../outputs/screens-flows.md that SUBTASK_assemble_deliverable produced; neither verifier edits it."
+  - id: EVERY_IDENTITY_HAS_EVIDENCE
+    statement: "All nine inherited identities appear in exactly one evidence file, each with a PASS/FAIL verdict and the concrete evidence (counts, ids, line references) behind it."
+  - id: NO_SILENT_PLUG
+    statement: "A FAIL verdict is recorded as FAIL and reaches the fold; the fold remediates by plan amendment, never by editing the assembled deliverable or a spoke output by hand."
+
+derived_artifacts:
+  - name: "../outputs/screens-flows.md"
+    produced_by: SUBTASK_assemble_deliverable
+    consumed_by: [SUBTASK_verify_register, SUBTASK_verify_design, SUBTASK_fold]

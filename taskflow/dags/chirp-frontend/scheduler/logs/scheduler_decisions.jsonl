@@ -1,0 +1,57 @@
+{"timestamp":"2026-10-07T01:49:00.383122505Z","action":{"Dispatch":{"task_ids":["chirp-frontend"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T01:51:20.568577784Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend"]}},"reason":"task chirp-frontend transitioned to Ready"}
+{"timestamp":"2026-10-07T01:51:20.569067512Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend"]}},"reason":"task chirp-frontend transitioned to Running"}
+{"timestamp":"2026-10-07T02:01:08.240960657Z","action":{"Dispatch":{"task_ids":["SUBTASK_scaffold"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-07T02:02:05.791366151Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend"]}},"reason":"task chirp-frontend suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-07T02:02:43.637106428Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_scaffold"]}},"reason":"task SUBTASK_scaffold transitioned to Ready"}
+{"timestamp":"2026-10-07T02:02:43.637411932Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_scaffold"]}},"reason":"task SUBTASK_scaffold transitioned to Running"}
+{"timestamp":"2026-10-07T03:12:57.640415355Z","action":{"Dispatch":{"task_ids":["SUBTASK_scaffold"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T03:14:49.691794219Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_scaffold"]}},"reason":"task SUBTASK_scaffold transitioned to Ready"}
+{"timestamp":"2026-10-07T03:14:49.692386462Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_scaffold"]}},"reason":"task SUBTASK_scaffold transitioned to Running"}
+{"timestamp":"2026-10-07T03:25:22.942005687Z","action":{"Dispatch":{"task_ids":["SUBTASK_compose","SUBTASK_timeline","SUBTASK_api_client","SUBTASK_profile"],"group_index":0}},"reason":"task SUBTASK_scaffold completed, dispatching ready successors"}
+{"timestamp":"2026-10-07T03:26:12.168121596Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_timeline"]}},"reason":"task SUBTASK_timeline transitioned to Ready"}
+{"timestamp":"2026-10-07T03:26:12.168314Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_timeline"]}},"reason":"task SUBTASK_timeline transitioned to Running"}
+{"timestamp":"2026-10-07T03:26:16.764875940Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_compose"]}},"reason":"task SUBTASK_compose transitioned to Ready"}
+{"timestamp":"2026-10-07T03:26:16.765445612Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_compose"]}},"reason":"task SUBTASK_compose transitioned to Running"}
+{"timestamp":"2026-10-07T03:26:26.672304975Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_profile"]}},"reason":"task SUBTASK_profile transitioned to Ready"}
+{"timestamp":"2026-10-07T03:26:26.672531848Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_profile"]}},"reason":"task SUBTASK_profile transitioned to Running"}
+{"timestamp":"2026-10-07T04:06:48.427217943Z","action":{"Dispatch":{"task_ids":["SUBTASK_profile","SUBTASK_timeline","SUBTASK_api_client","SUBTASK_compose"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T04:07:31.096805546Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_timeline"]}},"reason":"task SUBTASK_timeline transitioned to Ready"}
+{"timestamp":"2026-10-07T04:07:31.097436362Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_timeline"]}},"reason":"task SUBTASK_timeline transitioned to Running"}
+{"timestamp":"2026-10-07T04:07:40.699182144Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_api_client"]}},"reason":"task SUBTASK_api_client transitioned to Ready"}
+{"timestamp":"2026-10-07T04:07:40.699277580Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_api_client"]}},"reason":"task SUBTASK_api_client transitioned to Running"}
+{"timestamp":"2026-10-07T04:07:41.545518638Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_profile"]}},"reason":"task SUBTASK_profile transitioned to Ready"}
+{"timestamp":"2026-10-07T04:07:41.545659646Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_profile"]}},"reason":"task SUBTASK_profile transitioned to Running"}
+{"timestamp":"2026-10-07T04:07:53.178863895Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_compose"]}},"reason":"task SUBTASK_compose transitioned to Ready"}
+{"timestamp":"2026-10-07T04:07:53.178963402Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_compose"]}},"reason":"task SUBTASK_compose transitioned to Running"}
+{"timestamp":"2026-10-07T04:13:49.570564663Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend","SUBTASK_profile","SUBTASK_timeline","SUBTASK_compose"]}},"reason":"task SUBTASK_api_client completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T04:22:57.333090229Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend","SUBTASK_profile","SUBTASK_timeline"]}},"reason":"task SUBTASK_compose completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T04:26:18.892977797Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend","SUBTASK_timeline"]}},"reason":"task SUBTASK_profile completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T04:30:33.417082987Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":0}},"reason":"task SUBTASK_timeline completed, dispatching ready successors"}
+{"timestamp":"2026-10-07T04:32:04.995426940Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-07T04:32:04.995531018Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-07T04:38:14.595513537Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend"]}},"reason":"task SUBTASK_synthesis_gate completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T04:38:19.503888935Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-07T04:38:44.596844023Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-07T16:15:56.735361693Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T16:17:01.612494477Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-07T16:17:01.612617702Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-07T16:21:12.482000907Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend"]}},"reason":"task SUBTASK_synthesis_gate completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T16:21:15.764212069Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-07T16:21:42.483286045Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T00:36:05.745012924Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T00:37:12.141549814Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-22T00:37:12.141815380Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-22T00:47:35.776318004Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend"]}},"reason":"task SUBTASK_synthesis_gate completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T00:47:39.245338715Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T00:48:05.778210206Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T16:04:21.579877527Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:08:07.234817769Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-22T16:08:07.235064960Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-22T16:12:27.898750988Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend"]}},"reason":"task SUBTASK_synthesis_gate completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:12:31.601722014Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T16:12:57.900163071Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T16:41:27.592097851Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_gate"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:44:10.128472124Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Ready"}
+{"timestamp":"2026-10-22T16:44:10.128849667Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_gate"]}},"reason":"task SUBTASK_synthesis_gate transitioned to Running"}
+{"timestamp":"2026-10-22T16:48:19.326925544Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-frontend"]}},"reason":"task SUBTASK_synthesis_gate failed, continuing with independent tasks (best-effort)"}

@@ -1,0 +1,55 @@
+kind: feature_contract
+version: 1
+task: chirp-logged-out-r2
+
+# API seam frozen between SUBTASK_server and SUBTASK_frontend
+seams:
+  - id: public_timeline_endpoint
+    method: GET
+    path: /api/public/timeline
+    authentication: none
+    query_params:
+      - name: limit
+        type: "Option<u32>"
+        required: false
+      - name: cursor
+        type: "Option<Cursor>"  # Cursor(String), serde as camelCase
+        required: false
+    response_type: "Page<Chirp>"
+    error_type: ApiError
+    types_crate: chirp-types  # all types already exist here; no new shared types needed
+
+# Ownership manifest — every module assigned to exactly one child
+ownership:
+  SUBTASK_server:
+    - crates/chirp-server/src/repository/mod.rs         # ChirpRepository trait: add pub_timeline method
+    - crates/chirp-server/src/repository/in_memory.rs   # InMemoryRepository: implement pub_timeline
+    - crates/chirp-server/src/repository/postgres.rs    # PostgresRepository: implement pub_timeline
+    - crates/chirp-server/src/api/handlers.rs           # add public_timeline_handler
+    - crates/chirp-server/src/api/router.rs             # add GET /api/public/timeline route
+    - crates/chirp-server/tests/**                       # integration tests for public endpoint
+
+  SUBTASK_frontend:
+    - crates/chirp-frontend/src/api.rs        # ApiClient: add pub_timeline method
+    - crates/chirp-frontend/src/timeline.rs   # timeline_view, empty_view, chirp_item updates
+    - crates/chirp-frontend/src/app.rs        # nav_bar: add Sign up / Sign in links
+
+  SUBTASK_synthesis:
+    - taskflow/dags/chirp-logged-out-r2/SYNTHESIS.md   # root synthesis document
+
+# Identities the combined output must satisfy
+identities:
+  - id: AC1
+    description: "GET /api/public/timeline returns HTTP 200 with Page<Chirp> without any Authorization header"
+  - id: AC2
+    description: "empty_view shows a statement of what Chirp is plus visible Sign up and Sign in controls"
+  - id: AC3
+    description: "timeline error state shows a recoverable error message, not a blank page"
+  - id: AC4
+    description: "nav_bar contains Sign up and Sign in links visible on every logged-out screen"
+  - id: AC5
+    description: "timeline_view renders loading, empty, error, and end-of-list as visually distinct states"
+
+# No cross-sibling runtime mocks needed: server and frontend are in different process spaces.
+# SUBTASK_frontend composes against the frozen seam contract above during WASM build.
+mocks: []

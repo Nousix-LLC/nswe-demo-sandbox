@@ -1,0 +1,73 @@
+{
+  "sequence": 8,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T15:01:22.467528665Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_synthesis"
+      ],
+      "placement_parent_task_id": "review-chirp-logged-out-r1/spoke-ui-states"
+    },
+    "resulting_version": 8,
+    "summary": "inject tasks: SUBTASK_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing spoke-ui-states: synthesis/verification gate that reads both spoke FINDINGS.md outputs, runs the four-check gate, and produces the final REVIEW.md + SYNTHESIS.md fold record.",
+        "task_id": "review-chirp-logged-out-r1/spoke-ui-states"
+      }
+    },
+    "updated_graph_edges": {
+      "review-chirp-logged-out-r1": [],
+      "review-chirp-logged-out-r1/spoke-access-auth": [],
+      "review-chirp-logged-out-r1/spoke-code-quality": [],
+      "review-chirp-logged-out-r1/spoke-state-machine": [],
+      "review-chirp-logged-out-r1/spoke-ui-states": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_synthesis": [
+        "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states",
+        "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas"
+      ],
+      "review-chirp-logged-out-r1/synthesis": [
+        "review-chirp-logged-out-r1/spoke-access-auth",
+        "review-chirp-logged-out-r1/spoke-code-quality",
+        "review-chirp-logged-out-r1/spoke-state-machine",
+        "review-chirp-logged-out-r1/spoke-ui-states"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "review-chirp-logged-out-r1",
+          "review-chirp-logged-out-r1/spoke-access-auth",
+          "review-chirp-logged-out-r1/spoke-code-quality",
+          "review-chirp-logged-out-r1/spoke-state-machine",
+          "review-chirp-logged-out-r1/spoke-ui-states",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_synthesis",
+          "review-chirp-logged-out-r1/synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

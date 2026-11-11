@@ -1,0 +1,79 @@
+{
+  "sequence": 10,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T23:28:31.146066749Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_secq_synthesis"
+      ],
+      "placement_parent_task_id": "SUBTASK_sec_quality"
+    },
+    "resulting_version": 10,
+    "summary": "inject tasks: SUBTASK_secq_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_sec_quality: synthesis gate task (secq_synthesis) that verifies both spoke outputs satisfy contracts and assembles sec_quality_findings.md.",
+        "task_id": "SUBTASK_sec_quality"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1_verify": [],
+      "SUBTASK_b2_verify": [],
+      "SUBTASK_quality_check": [],
+      "SUBTASK_reg_criteria": [],
+      "SUBTASK_regression": [],
+      "SUBTASK_sec_check": [],
+      "SUBTASK_sec_quality": [],
+      "SUBTASK_secq_synthesis": [
+        "SUBTASK_quality_check",
+        "SUBTASK_sec_check"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_b1_verify",
+        "SUBTASK_b2_verify",
+        "SUBTASK_regression"
+      ],
+      "SUBTASK_verdict_synthesis": [
+        "SUBTASK_reg_criteria",
+        "SUBTASK_sec_quality"
+      ],
+      "review-ferric-ssr-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1_verify",
+          "SUBTASK_b2_verify",
+          "SUBTASK_quality_check",
+          "SUBTASK_reg_criteria",
+          "SUBTASK_regression",
+          "SUBTASK_sec_check",
+          "SUBTASK_sec_quality",
+          "review-ferric-ssr-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_secq_synthesis",
+          "SUBTASK_synthesis",
+          "SUBTASK_verdict_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

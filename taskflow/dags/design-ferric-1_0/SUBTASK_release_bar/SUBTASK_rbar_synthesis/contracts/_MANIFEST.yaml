@@ -1,0 +1,64 @@
+# _MANIFEST.yaml — SUBTASK_rbar_synthesis subtree contract
+# READ-ONLY for descendants. Declares the structural seam between the three serial sub-tasks:
+# rbar_gap (surface coverage table) → rbar_criteria (BAR-FERRIC-* register) → rbar_assembly (final document + folds).
+
+kind: yaml_schema
+
+# ---------------------------------------------------------------------------
+# Inherited contracts (ancestors bind these; descendants inherit and must not override)
+# ---------------------------------------------------------------------------
+inherited_contracts:
+  - path: ../../../contracts/id_and_traceability_schema.yaml
+    binds: "BAR-FERRIC-* id pattern, field requirements, verification_method vocabulary, stage vocabulary, REQ-* area namespaces"
+  - path: ../../contracts/_MANIFEST.yaml
+    binds: "gap_analysis_row schema, bar_criterion schema, identities IA/IB/I2/I3/I4/I5"
+
+# ---------------------------------------------------------------------------
+# Ownership: exactly one producer per artifact
+# ---------------------------------------------------------------------------
+ownership:
+  gap-analysis-internal.md: SUBTASK_rbar_gap        # independent gap sweep of all 24+ surfaces
+  bar-criteria-draft.md:    SUBTASK_rbar_criteria    # complete BAR-FERRIC-* register
+  release-bar.md:           SUBTASK_rbar_assembly    # written at ../../release-bar.md (SUBTASK_release_bar root)
+  SYNTHESIS.md:             SUBTASK_rbar_assembly    # two SYNTHESIS.md files:
+    # ../SYNTHESIS.md  → fold record for SUBTASK_rbar_synthesis (this task)
+    # ../../SYNTHESIS.md → fold record for SUBTASK_release_bar (parent of this task)
+
+# ---------------------------------------------------------------------------
+# Format contract for gap-analysis-internal.md
+# Inherits gap_analysis_row from ../../contracts/_MANIFEST.yaml; re-stated here for descendants.
+# ---------------------------------------------------------------------------
+gap_analysis_internal_row:
+  surface:   "Name of the framework surface (string)"
+  status:    "one of: covered | out-of-1.0 | gap"
+  req_refs:  "comma-separated REQ-* ids if status=covered; empty string otherwise"
+  notes:     "One sentence stating which REQ covers it, why it is out-of-1.0, or what the gap is"
+
+# ---------------------------------------------------------------------------
+# Format contract for bar-criteria-draft.md
+# Inherits bar_criterion from ../../contracts/_MANIFEST.yaml; re-stated here for descendants.
+# ---------------------------------------------------------------------------
+bar_criterion:
+  id:                  "BAR-FERRIC-NNN (zero-padded 3-digit, sequential, globally unique)"
+  statement:           "Checkable condition a stranger can verify against the framework"
+  references:          "list of REQ-* ids this criterion enforces (≥1; identity I2)"
+  verification_method: "automated_test | example_build | doc_inspection | benchmark_run | publishability"
+  stage:               "usable_early | one_oh"
+  must_have:           "true — SSR+hydration gating criterion(s) only; omit for all others (identity I4)"
+
+# ---------------------------------------------------------------------------
+# Identities the rbar_assembly task MUST assert (inherited from parent; no silent plugs)
+# ---------------------------------------------------------------------------
+identities:
+  - id: IA
+    assertion: "Every surface with status=covered in gap-analysis-internal.md has ≥1 BAR-FERRIC-* in bar-criteria-draft.md."
+  - id: IB
+    assertion: "Every surface with status=out-of-1.0 is enforced by no BAR-FERRIC-*."
+  - id: I2
+    assertion: "Every BAR-FERRIC-* references ≥1 REQ-* id that exists in a spoke register."
+  - id: I3
+    assertion: "Every REQ-* with stage=one_oh and release_gating=true is referenced by ≥1 BAR-FERRIC-*."
+  - id: I4
+    assertion: "≥1 one_oh BAR-FERRIC-* marks SSR+hydration must_have: true."
+  - id: I5
+    assertion: "The four named out-of-1.0 items (scoped CSS/styling, devtools, hot/live reload, desktop/mobile) appear in gap-analysis-internal.md with status=out-of-1.0 and are enforced by no BAR-FERRIC-*."

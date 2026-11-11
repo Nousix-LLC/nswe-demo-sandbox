@@ -1,0 +1,6 @@
+{"timestamp":"2026-11-03T20:17:42.105059719Z","action":{"Dispatch":{"task_ids":["update-cronjob-digest-r1"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-03T20:18:36.889983630Z","action":{"WaitForCompletion":{"pending_task_ids":["update-cronjob-digest-r1"]}},"reason":"task update-cronjob-digest-r1 transitioned to Ready"}
+{"timestamp":"2026-11-03T20:18:36.890222655Z","action":{"WaitForCompletion":{"pending_task_ids":["update-cronjob-digest-r1"]}},"reason":"task update-cronjob-digest-r1 transitioned to Running"}
+{"timestamp":"2026-11-03T20:22:11.412823196Z","action":{"Dispatch":{"task_ids":["update-cronjob-digest-r1"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-03T20:23:04.828815366Z","action":{"WaitForCompletion":{"pending_task_ids":["update-cronjob-digest-r1"]}},"reason":"task update-cronjob-digest-r1 transitioned to Ready"}
+{"timestamp":"2026-11-03T20:23:04.829100138Z","action":{"WaitForCompletion":{"pending_task_ids":["update-cronjob-digest-r1"]}},"reason":"task update-cronjob-digest-r1 transitioned to Running"}

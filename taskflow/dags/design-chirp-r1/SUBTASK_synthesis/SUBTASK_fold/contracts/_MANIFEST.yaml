@@ -1,0 +1,35 @@
+# Contract manifest — SUBTASK_fold (join + verdict + remediation + fold subtree)
+# kind: yaml_schema. Extends ../contracts/_MANIFEST.yaml and the inherited ../../contracts/ ADDITIVELY.
+# READ-ONLY for every descendant. Does not redefine ids, matrix columns, live_status vocab or the 8 identities.
+kind: yaml_schema
+extends: "../contracts/_MANIFEST.yaml"
+also_inherits:
+  - "../../contracts/_MANIFEST.yaml"
+  - "../../contracts/id_and_traceability_schema.yaml"
+  - "../../contracts/design_artifact_map.yaml"
+
+ownership:
+  "outputs/joined-matrix-and-gaps.md":      SUBTASK_join_gap        # final joined matrix (live_status per join_rule), GAP_MAPPED result, identity carry-over, fixable-gap list
+  "outputs/bar-and-issue-index.md":         SUBTASK_bar_issue_index # release-bar restatement + filed issues indexed by epic
+  "design-chirp-r1/SYNTHESIS.md (DAG root)": SUBTASK_verdict_fold   # the DAG verdict / observation seam
+  "fold record for SUBTASK_fold and resume chain": SUBTASK_verdict_fold
+  "remediation subtree (only if a fixable gap is reported)": SUBTASK_verdict_fold
+
+seam:
+  join_rule: "req row live_status = worst-case roll-up over bar_ids (missing > partial > met; not_applicable excluded); inherited from ../contracts/_MANIFEST.yaml"
+  gap_list_format: "joined-matrix-and-gaps.md MUST end with a section 'Fixable gaps' listing each as: kind (uncovered_BAR | uncovered_gating_REQ | identity_FAIL), id, evidence; or the single line 'none found'."
+  bar_issue_index_format: "bar-and-issue-index.md carries (a) a restatement of the release bar by area with BAR-* counts, (b) a table of filed issues grouped by EPIC-* with issue numbers and titles."
+
+identities:
+  - id: JOIN_MECHANICAL
+    statement: "Every matrix row's live_status is derived from its bar_ids by join_rule; every BAR-* in the measurement is used or accounted for."
+  - id: GAP_MAPPED
+    statement: "Every missing/partial BAR-* maps to >=1 filed issue/epic, or is listed under Fixable gaps."
+  - id: ALL_EIGHT_CARRIED
+    statement: "The verdicts of the eight inherited identities appear in the final verdict with any FAIL reported, not plugged."
+  - id: VERDICT_COMPLETE
+    statement: "Root SYNTHESIS.md states the bar, indexes issues by epic, gives measured standing with each gap -> covering epic/issue, and records remediation outcome."
+  - id: VERDICT_HYGIENE
+    statement: "Root SYNTHESIS.md carries no host/cluster address, filesystem/taskflow path, agent/DAG/run id, SYNTHESIS/SUSPENSION location, or attribution trailer."
+  - id: ROOT_FOLDED
+    statement: "Root design-chirp-r1 reaches COMPLETED with its SYNTHESIS.md as fold seam."

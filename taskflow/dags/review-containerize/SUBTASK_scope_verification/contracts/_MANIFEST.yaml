@@ -1,0 +1,81 @@
+# Contract manifest — SUBTASK_scope_verification sub-decomposition
+#
+# Kind: taxonomy. This sub-contract EXTENDS (never overrides) the inherited review
+# contract at ../contracts/ (one level up: ../../contracts/ from a child's workspace).
+# It freezes the one seam between the two parallel analysis children: they must each
+# emit partial findings that MERGE, without collision, into the single findings.md this
+# spoke owes — under the inherited SCOPE finding-ID namespace and the inherited
+# findings_schema.md shape.
+#
+# READ-ONLY for every descendant. A child composes against this + the inherited schema;
+# it does not redefine either.
+
+kind: taxonomy
+
+inherits:
+  schema: ../contracts/findings_schema.md      # the findings.md shape (from a child: ../../contracts/findings_schema.md)
+  manifest: ../contracts/_MANIFEST.yaml         # SCOPE prefix, concern 7+8 ownership, identities I1-I6, severity taxonomy
+
+# -------------------------------------------------------------------------
+# Ownership — the two brief concerns this spoke owns, split one-per-child, plus the
+# integration gate. The inherited SCOPE finding-ID prefix is PARTITIONED so the two
+# children never collide when the synthesis gate merges their findings.
+# -------------------------------------------------------------------------
+ownership:
+  SUBTASK_verification_depth:
+    finding_id_prefix: SCOPE-V          # partition of the inherited SCOPE namespace
+    owns_concerns:
+      - 7   # verification / evidence adequacy: does the machine-gate evidence demonstrate each acceptance criterion
+    output: SUBTASK_verification_depth/verification_findings.md
+
+  SUBTASK_scope_conformance:
+    finding_id_prefix: SCOPE-S          # partition of the inherited SCOPE namespace
+    owns_concerns:
+      - 8   # scope conformance: containerization only (no .github CI, no k8s/ArgoCD, no live deploy)
+    output: SUBTASK_scope_conformance/scope_findings.md
+
+  SUBTASK_findings_synthesis:
+    role: integration_gate              # NOT an owner of a primary concern; merges + asserts identities
+    output: findings.md                 # the merged deliverable, at this spoke's workspace root
+    fold_record: SYNTHESIS.md           # fold record at the fold location (this spoke's workspace)
+
+# -------------------------------------------------------------------------
+# Identities — invariants the synthesis gate evaluates as assertions. A failing identity
+# is reported, never silently plugged. These are ADDITIVE to the inherited I1-I6.
+# -------------------------------------------------------------------------
+identities:
+  SV1_coverage: >
+    Concern 7 and concern 8 each carry exactly one explicit per-concern disposition
+    (PASS | PASS-WITH-NOTES | FAIL) in the merged findings.md.
+  SV2_nine_criteria_completeness: >
+    All nine work-item #12 acceptance criteria (enumerated in
+    taskflow/dags/containerize/SYNTHESIS.md) appear in the verification output, each called
+    exactly one of {evidenced, weakly evidenced, unverified} with the specific machine-gate
+    evidence cited. No criterion is omitted or left without a call.
+  SV3_file_set_completeness: >
+    The scope output enumerates the COMPLETE PR #22 touched-file set and judges each path
+    in/out of work-item #12 scope. The Dockerfile-as-handoff-to-#11 distinction is stated
+    explicitly as a declared boundary, not a breach. Any path under .github/, k8s/ArgoCD
+    manifest locations, or a live-deploy action is flagged as an out-of-scope finding.
+  SV4_id_partition: >
+    Every finding ID in the merged findings.md matches SCOPE-V<n> (verification) or
+    SCOPE-S<n> (scope). No two findings share an ID; the two children's namespaces do not collide.
+  SV5_schema_conformance: >
+    The merged findings.md conforms EXACTLY to ../contracts/findings_schema.md: the header,
+    the per-concern disposition blocks for concerns 7 and 8, and the
+    Finding ID | Concern | Severity | Location | Evidence | Remediation table. Every finding
+    tagged block or major carries a concrete location, evidence, and a landable remediation.
+  SV6_severity_discipline: >
+    No finding is tagged block or major unless it names a concrete, landable defect in THIS
+    diff (a genuinely unverified acceptance criterion, or a real out-of-scope file). A hardening
+    wish or "more tests would be nice" is minor or nit. The gate downgrades any block/major that
+    is merely a hardening wish (inherited identity I4).
+
+# -------------------------------------------------------------------------
+# Severity taxonomy — inherited verbatim from ../contracts/_MANIFEST.yaml; not redefined here.
+# -------------------------------------------------------------------------
+severity_levels: [block, major, minor, nit]
+
+# No mechanical derived artifacts for a review taxonomy. The synthesis child is the
+# integration step that merges the partial findings and evaluates SV1-SV6.
+derived_artifacts: []

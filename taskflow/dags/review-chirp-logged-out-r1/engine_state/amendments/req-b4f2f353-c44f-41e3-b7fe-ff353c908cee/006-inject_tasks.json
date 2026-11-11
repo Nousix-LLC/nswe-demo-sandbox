@@ -1,0 +1,66 @@
+{
+  "sequence": 6,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T15:00:56.732940453Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states"
+      ],
+      "placement_parent_task_id": "review-chirp-logged-out-r1/spoke-ui-states"
+    },
+    "resulting_version": 6,
+    "summary": "inject tasks: SUBTASK_landing-states",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing spoke-ui-states into landing-states review spoke: reviews landing.rs for AC-2 (empty state), AC-3 (error state recoverability), and the header_nav aspect of AC-4.",
+        "task_id": "review-chirp-logged-out-r1/spoke-ui-states"
+      }
+    },
+    "updated_graph_edges": {
+      "review-chirp-logged-out-r1": [],
+      "review-chirp-logged-out-r1/spoke-access-auth": [],
+      "review-chirp-logged-out-r1/spoke-code-quality": [],
+      "review-chirp-logged-out-r1/spoke-state-machine": [],
+      "review-chirp-logged-out-r1/spoke-ui-states": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states": [],
+      "review-chirp-logged-out-r1/synthesis": [
+        "review-chirp-logged-out-r1/spoke-access-auth",
+        "review-chirp-logged-out-r1/spoke-code-quality",
+        "review-chirp-logged-out-r1/spoke-state-machine",
+        "review-chirp-logged-out-r1/spoke-ui-states"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "review-chirp-logged-out-r1",
+          "review-chirp-logged-out-r1/spoke-access-auth",
+          "review-chirp-logged-out-r1/spoke-code-quality",
+          "review-chirp-logged-out-r1/spoke-state-machine",
+          "review-chirp-logged-out-r1/spoke-ui-states",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "review-chirp-logged-out-r1/synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

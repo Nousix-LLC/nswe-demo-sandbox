@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T03:12:02.292081088Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis"
+      ],
+      "placement_parent_task_id": "chirp-logged-out"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Synthesis spoke: verify CI passes on work/chirp-logged-out, confirm all five acceptance criteria are met, open the PR closing issue #35, write SYNTHESIS.md.",
+        "task_id": "chirp-logged-out"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_frontend_logged_out": [
+        "SUBTASK_server_public_timeline"
+      ],
+      "SUBTASK_server_public_timeline": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_frontend_logged_out"
+      ],
+      "chirp-logged-out": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_server_public_timeline",
+          "chirp-logged-out"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_frontend_logged_out"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

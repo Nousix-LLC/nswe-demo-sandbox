@@ -1,0 +1,75 @@
+# Contract manifest — SUBTASK_core_loop (internal seam for the core-loop screens subtree)
+# kind: yaml_schema. READ-ONLY for every descendant. Extends the ANCESTOR contracts
+# (../../contracts/ screens-&-flows seam; ../../../contracts/ experience-design seam; ../../../../contracts/
+# whole-design seam) ADDITIVELY — it sub-ranges the REQ-UX-051..064 id space among the four spokes and maps
+# the seven core-loop surfaces to owners; it never overrides the ancestors' REQ-<AREA>-NNN format, field
+# set, section list, required_surfaces checklist, or trace rule. Where this manifest and an ancestor
+# disagree, the ancestor wins.
+
+kind: yaml_schema
+
+extends:
+  - "../../contracts/"        # screens-&-flows seam: core_loop section-part + REQ-UX-051..064 range + required_surfaces + vocabularies + trace rule + per-screen<->global-pattern cross-reference
+  - "../../../contracts/"     # experience-design seam: REQ-UX scheme + experience-design.md section list
+  - "../../../../contracts/"  # whole-design seam: REQ-<AREA>-NNN scheme
+
+artifacts:
+  - file: core_loop_seam.yaml
+    declares: "Surface->owning spoke (every core-loop surface); the REQ-UX-051..064 sub-range per spoke; the shared-vocabulary composition rule; the per-screen<->global-pattern cross-reference; the per-REQ-UX trace rule."
+
+# One producer per surface cluster / id sub-range. An unowned surface is a hole; a double-written one is a race.
+ownership:
+  "surface:home_timeline":              SUBTASK_timeline_reading
+  "surface:compose_and_post":           SUBTASK_posting_conversation
+  "surface:reply_and_conversation":     SUBTASK_posting_conversation
+  "surface:like_unlike":                SUBTASK_social_actions
+  "surface:follow_unfollow":            SUBTASK_social_actions
+  "surface:view_profile":               SUBTASK_profiles_discovery
+  "surface:discovery_find_people":      SUBTASK_profiles_discovery
+  "register:req_ux_051_064":            SUBTASK_synthesis   # consolidated from all four spokes
+  "file:outputs/screens-core-loop.md":  SUBTASK_synthesis
+  "file:SYNTHESIS.md":                  SUBTASK_synthesis
+
+req_ux_id_ranges:          # REQ-UX-NNN, 3-digit, unique within area (ancestor scheme); sub-ranged here within 051..064
+  SUBTASK_timeline_reading:      "REQ-UX-051..REQ-UX-053"   # 3 ids
+  SUBTASK_posting_conversation:  "REQ-UX-054..REQ-UX-058"   # 5 ids
+  SUBTASK_social_actions:        "REQ-UX-059..REQ-UX-060"   # 2 ids
+  SUBTASK_profiles_discovery:    "REQ-UX-061..REQ-UX-064"   # 4 ids
+
+# Inherited, NOT redefined — the frozen upstream vocabularies every spoke composes against by name.
+inherited_vocabularies:
+  screen_inventory:
+    source: "../../../SUBTASK_ia_interaction/outputs/ia-interaction.md (heading: Screen inventory)"
+    core_loop_screens: ["Home timeline", "Compose", "Chirp / conversation", "Explore / find people", "Public profile", "Own profile", "Followers", "Following"]
+    rule: "Refer to screens by their inventory names and routes. Do not invent a screen outside the inventory without an additive amendment to this contract."
+  component_library:
+    source: "../../../SUBTASK_visual_system/outputs/visual-system.md (heading: Component library)"
+    rule: "Build each screen from named components; use each component's own named states (default/empty/error/loading/disabled). Do not invent a component outside the library without an additive amendment to this contract."
+
+# Invariants SUBTASK_synthesis asserts with recorded evidence; a failing identity is reported and
+# remediated by decomposing a remediation subtree — never silently plugged.
+identities:
+  - id: SURFACE_COVERAGE
+    statement: "Each of the seven core-loop surfaces is designed with its empty/error/loading states by its owning spoke OR recorded out-of-scope with a reason; every surface maps to exactly one spoke (no hole, no double-write)."
+  - id: ID_UNIQUE_IN_RANGE
+    statement: "Every REQ-UX-051..064 id is unique and within its owning spoke's sub-range; no collisions, no out-of-range ids."
+  - id: NOT_SKELETAL
+    statement: "Each designed screen specifies layout, content, and a primary action, and its empty, error, and loading states — not a bare route name."
+  - id: UX_TESTABLE_AND_GATED
+    statement: "Every REQ-UX-* has a statement, an acceptance_criteria a stranger could check on the live product, and a release_gating flag (false carries a one-line reason)."
+  - id: UX_TRACES_TO_PROD
+    statement: "Every REQ-UX-* references >=1 REQ-PROD-*."
+  - id: COMPOSES_AGAINST_VOCAB
+    statement: "Every screen refers to screen-inventory screens by name and is built from component-library components by name; nothing redefined; no new screen/component without an additive contract amendment."
+  - id: STATES_CONSISTENT
+    statement: "Each per-screen empty/error/loading state is consistent with the global patterns in the empty_error_loading_states section (sibling of ../) and with the components' own named states."
+  - id: HYGIENE
+    statement: "Nothing in the output carries host/system/taskflow detail, workspace paths, agent/DAG/run ids, or an attribution trailer."
+
+derived_artifacts:
+  - name: req_ux_register_051_064
+    generated_from: "each spoke's REQ-UX entries (timeline_reading/posting_conversation/social_actions/profiles_discovery)"
+    consumed_by: SUBTASK_synthesis
+  - name: "outputs/screens-core-loop.md"
+    assembled_from: "screens-timeline-reading.md + screens-posting-conversation.md + screens-social-actions.md + screens-profiles-discovery.md + consolidated REQ-UX register"
+    produced_by: SUBTASK_synthesis

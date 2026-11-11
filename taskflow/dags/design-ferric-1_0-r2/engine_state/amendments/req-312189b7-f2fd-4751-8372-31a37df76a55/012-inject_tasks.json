@@ -1,0 +1,86 @@
+{
+  "sequence": 12,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T04:09:58.929430754Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_validate-plan"
+      ],
+      "placement_parent_task_id": "SUBTASK_review-validate"
+    },
+    "resulting_version": 12,
+    "summary": "inject tasks: SUBTASK_validate-plan",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_review-validate: validator for release-bar.md + release-plan.md concern area",
+        "task_id": "SUBTASK_review-validate"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_remediate": [
+        "SUBTASK_review-validate"
+      ],
+      "SUBTASK_review-validate": [],
+      "SUBTASK_synthesize-root": [
+        "SUBTASK_remediate"
+      ],
+      "SUBTASK_validate-async": [],
+      "SUBTASK_validate-authoring": [],
+      "SUBTASK_validate-docs": [],
+      "SUBTASK_validate-perf": [],
+      "SUBTASK_validate-plan": [],
+      "SUBTASK_validate-release": [],
+      "SUBTASK_validate-router": [],
+      "SUBTASK_validate-scope": [],
+      "SUBTASK_validate-ssr": [],
+      "design-ferric-1_0-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_review-validate",
+          "SUBTASK_validate-async",
+          "SUBTASK_validate-authoring",
+          "SUBTASK_validate-docs",
+          "SUBTASK_validate-perf",
+          "SUBTASK_validate-plan",
+          "SUBTASK_validate-release",
+          "SUBTASK_validate-router",
+          "SUBTASK_validate-scope",
+          "SUBTASK_validate-ssr",
+          "design-ferric-1_0-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_remediate"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesize-root"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

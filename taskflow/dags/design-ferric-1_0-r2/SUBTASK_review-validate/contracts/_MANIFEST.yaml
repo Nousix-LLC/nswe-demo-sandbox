@@ -1,0 +1,106 @@
+kind: yaml_schema
+description: >
+  Contract for the review-validate subtree. Declares the concern-findings schema that
+  each of the nine per-concern validator tasks must produce, and the crossrefs-findings
+  schema validate-crossrefs must produce, so synthesis can assemble review-report.md
+  conforming to the parent contract's review_report_schema.
+
+ownership:
+  - artifact: SUBTASK_validate-scope/concern-findings.md
+    owner: SUBTASK_validate-scope
+    consumers: [SUBTASK_validate-crossrefs, SUBTASK_synthesis]
+  - artifact: SUBTASK_validate-ssr/concern-findings.md
+    owner: SUBTASK_validate-ssr
+    consumers: [SUBTASK_validate-crossrefs, SUBTASK_synthesis]
+  - artifact: SUBTASK_validate-authoring/concern-findings.md
+    owner: SUBTASK_validate-authoring
+    consumers: [SUBTASK_validate-crossrefs, SUBTASK_synthesis]
+  - artifact: SUBTASK_validate-async/concern-findings.md
+    owner: SUBTASK_validate-async
+    consumers: [SUBTASK_validate-crossrefs, SUBTASK_synthesis]
+  - artifact: SUBTASK_validate-router/concern-findings.md
+    owner: SUBTASK_validate-router
+    consumers: [SUBTASK_validate-crossrefs, SUBTASK_synthesis]
+  - artifact: SUBTASK_validate-docs/concern-findings.md
+    owner: SUBTASK_validate-docs
+    consumers: [SUBTASK_validate-crossrefs, SUBTASK_synthesis]
+  - artifact: SUBTASK_validate-release/concern-findings.md
+    owner: SUBTASK_validate-release
+    consumers: [SUBTASK_validate-crossrefs, SUBTASK_synthesis]
+  - artifact: SUBTASK_validate-perf/concern-findings.md
+    owner: SUBTASK_validate-perf
+    consumers: [SUBTASK_validate-crossrefs, SUBTASK_synthesis]
+  - artifact: SUBTASK_validate-plan/concern-findings.md
+    owner: SUBTASK_validate-plan
+    consumers: [SUBTASK_validate-crossrefs, SUBTASK_synthesis]
+  - artifact: SUBTASK_validate-crossrefs/crossrefs-findings.md
+    owner: SUBTASK_validate-crossrefs
+    consumers: [SUBTASK_synthesis]
+  - artifact: review-report.md
+    owner: SUBTASK_synthesis
+    consumers: [SUBTASK_remediate, SUBTASK_synthesize-root]
+
+concern_findings_schema:
+  description: >
+    Every per-concern validator (SUBTASK_validate-scope through SUBTASK_validate-plan)
+    MUST produce concern-findings.md conforming to this schema.
+  required_sections:
+    - concern_name: |
+        The human name of the concern area (e.g. "Framework scope & 1.0 requirements")
+    - document_validated: |
+        The filename(s) on branch work/design-ferric-1_0 that this task read
+    - req_ids_found: |
+        List of all REQ-* ids found in the validated document(s)
+    - status: |
+        One of: valid | needs-fix | missing
+        - valid: all checklist items pass
+        - needs-fix: some items fail; specific issues listed
+        - missing: the document is absent or empty
+    - specific_issues: |
+        List of specific issues found. Each issue:
+          type: accuracy | completeness | testability | cross-reference | coherence
+          description: what is wrong or missing
+          severity: critical | major | minor
+        Empty list if status is valid.
+    - gaps: |
+        List of gaps for remediation. Each gap:
+          id: GAP-NNN (globally unique across all concern-findings.md; allocated by this validator
+              using offset for its position: scope=001-009, ssr=010-019, authoring=020-029,
+              async=030-039, router=040-049, docs=050-059, release=060-069, perf=070-079,
+              plan=080-089)
+          description: what is missing or wrong
+          severity: critical | major | minor
+          action_required: what must be done to fix it
+
+crossrefs_findings_schema:
+  description: >
+    SUBTASK_validate-crossrefs MUST produce crossrefs-findings.md conforming to this schema.
+  required_sections:
+    - req_register_reconciliation: |
+        Cross-reference check across all nine concern documents:
+        - duplicate_ids: list of any REQ-* id found in more than one document (with both locations)
+        - orphaned_references: list of any REQ-* id cited in one document but not defined in
+          its owning document (with the citing location and the expected owning document)
+        - bar_without_req: list of any BAR-FERRIC-* criterion in release-bar.md that cites no REQ-*
+        Status: clean | has-issues
+    - issue_traceability: |
+        For each epic (#129-#136): epic title, child issues, and for each child issue whether
+        it contains a REQ-* citation.
+        Also list:
+        - issues_without_req: child issues with no REQ-* citation
+        - requirements_without_issue: significant REQ-* ids with no corresponding issue
+        - issue_137_check: specific check on #137 (Reactive state) — epic assignment and scope
+        Status: clean | has-issues
+    - gaps: |
+        Additional gaps found during cross-reference checking, using GAP-NNN ids in range 090-099.
+        Same structure as concern_findings_schema.gaps.
+
+identities:
+  - Every GAP-NNN id across all concern-findings.md and crossrefs-findings.md is unique.
+  - Every concern-findings.md contains a non-empty req_ids_found list (or explicitly states
+    "no REQ-* ids in this document" for release-bar.md and release-plan.md validators).
+  - SUBTASK_synthesis produces review-report.md at the parent workspace
+    (SUBTASK_review-validate/review-report.md), not inside its own directory.
+  - review-report.md contains all five sections required by the parent contract:
+    validation_summary, per_concern_findings, req_register_reconciliation,
+    issue_traceability, gaps_for_remediation.

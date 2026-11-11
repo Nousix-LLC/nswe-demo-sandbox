@@ -1,0 +1,68 @@
+description: >
+  Schema for Ferric API survey notes files.
+  Each spoke task (async-survey, router-survey, ssr-survey) MUST produce
+  a notes markdown file with the following sections.
+
+required_sections:
+  - section: "Source Locations"
+    description: >
+      List of file paths within crates/ferric/ where this PR area's code lives.
+      Format: bulleted list of relative paths with brief description.
+    example: "- `src/resource.rs` — async resource types and loading state"
+
+  - section: "Public API"
+    description: >
+      Public types, functions, and macros added by this PR area.
+      MUST include Rust type signatures in fenced code blocks.
+      Include: struct/enum definitions, function signatures, macro signatures.
+    example: |
+      ```rust
+      pub struct Resource<T> {
+          state: ResourceState<T>,
+      }
+      pub enum ResourceState<T> {
+          Loading,
+          Error(String),
+          Ready(T),
+      }
+      ```
+
+  - section: "State Model"
+    description: >
+      Description of the loading/error/data state machine for this API area.
+      If the PR area has no state model (e.g. router navigation is stateless),
+      state this explicitly rather than omitting the section.
+    example: "Three states: Loading (initial), Error(msg), Ready(data)"
+
+  - section: "Usage Example"
+    description: >
+      Minimal Rust code showing how to create and consume this API in a component.
+      MUST be a valid code block. Pseudo-code is acceptable if actual syntax is unknown.
+    example: |
+      ```rust
+      let posts = use_resource(cx, || async { fetch_posts().await });
+      match posts.read() {
+          ResourceState::Loading => rsx! { p { "Loading..." } },
+          ResourceState::Error(e) => rsx! { p { "Error: {e}" } },
+          ResourceState::Ready(data) => rsx! { PostList { posts: data } },
+      }
+      ```
+
+optional_sections:
+  - section: "Notable Limitations"
+    description: >
+      Known limitations, missing features, or rough edges in this PR area.
+      Surfaced for the synthesis task to include in the Gaps section.
+
+  - section: "Integration Notes"
+    description: >
+      How this PR area interacts with other Ferric APIs (e.g. does the router
+      affect async resource lifecycle? does SSR require special resource handling?)
+
+validation:
+  min_code_blocks: 1
+  required_headings:
+    - "Source Locations"
+    - "Public API"
+    - "State Model"
+    - "Usage Example"

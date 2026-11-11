@@ -1,0 +1,75 @@
+# bar_ux_partition.yaml — the BAR-<NNN> sub-partition of this subtree's BAR-200..299 range across the five
+# experience-area spokes + the synthesis cross-cutting range, plus the per-area release-gating REQ-UX-* set.
+# READ-ONLY. Extends ../contracts/bar_partition.yaml and ../../contracts/id_and_traceability_schema.yaml
+# additively; redefines nothing in either. The inherited schema fixes the BAR-<NNN> format, the per-BAR field
+# set, the closed verification_methods vocabulary, and the stage vocabulary; this file ONLY sub-partitions the
+# UX number space and fixes the sub-fragment layout.
+
+bar_number_subspace:            # within this subtree's inherited BAR-200..299 range
+  owner_by_range:               # one disjoint sub-range per spoke; a spoke MUST mint BAR-* only within its sub-range
+    SUBTASK_bar_ux_ia:          "BAR-200 .. BAR-214"   # from release-gating REQ-UX-001..019
+    SUBTASK_bar_ux_visual:      "BAR-215 .. BAR-229"   # from release-gating REQ-UX-020..039
+    SUBTASK_bar_ux_screens:     "BAR-230 .. BAR-264"   # from release-gating REQ-UX-040..089
+    SUBTASK_bar_ux_responsive:  "BAR-265 .. BAR-274"   # from release-gating REQ-UX-090..099
+    SUBTASK_bar_ux_a11y:        "BAR-275 .. BAR-294"   # from release-gating REQ-UX-100..119
+    SUBTASK_bar_ux_synthesis:   "BAR-295 .. BAR-299"   # cross-cutting ONLY: a finding no single sub-area owns
+  rules:
+    - "A BAR-* may REFERENCE REQ-UX-* (or REQ-PROD-*) from more than one sub-area; it is OWNED by the spoke
+       whose sub-area most centrally holds the gating requirement it enforces. Cross-sub-area references are
+       expected and fine."
+    - "If a release-gating requirement is best enforced jointly with a sibling sub-area's requirement, one
+       owning spoke authors the BAR-* and lists all the REQ-* it references; siblings do not duplicate it."
+    - "The synthesis hub mints a BAR-295..299 ONLY when the assembled UX view needs a release condition that no
+       single sub-area's gating requirements already cover (record the finding that motivated it)."
+    - "A spoke covers EXACTLY its sub-area's release-gating set (release_gating: true in the experience design).
+       A non-gating REQ-UX-* is not covered; it MAY be referenced for context but never as a BAR-*'s sole basis."
+
+# The per-sub-area release-gating REQ-UX-* set each spoke must cover. Read from the experience design's per-REQ
+# release_gating field (authoritative); listed here so the synthesis gate can assert UX_GATING_REQ_COVERAGE
+# per sub-area without re-deriving the set. Non-gating REQ-UX-* in each band are named for clarity.
+gating_sets_by_spoke:
+  SUBTASK_bar_ux_ia:           # REQ-UX-001..019 ; non-gating: 015, 019
+    gating:    [001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014, 016, 017, 018]  # 17
+    nongating: [015, 019]
+  SUBTASK_bar_ux_visual:       # REQ-UX-020..039 ; non-gating: 023, 024, 030
+    gating:    [020, 021, 022, 025, 026, 027, 028, 029, 031, 032, 033, 034, 035, 036, 037, 038, 039]  # 17
+    nongating: [023, 024, 030]
+  SUBTASK_bar_ux_screens:      # REQ-UX-040..089 ; non-gating: 057, 064, 071, 072, 078, 080, 081
+    gating:    [040, 041, 042, 043, 044, 045, 046, 047, 048, 049, 050, 051, 052, 053, 054, 055, 056,
+                058, 059, 060, 061, 062, 063, 065, 066, 067, 068, 069, 070, 073, 074, 075, 076, 077,
+                079, 082, 083, 084, 085, 086, 087, 088, 089]  # 43
+    nongating: [057, 064, 071, 072, 078, 080, 081]
+  SUBTASK_bar_ux_responsive:   # REQ-UX-090..099 ; non-gating: none
+    gating:    [090, 091, 092, 093, 094, 095, 096, 097, 098, 099]  # 10
+    nongating: []
+  SUBTASK_bar_ux_a11y:         # REQ-UX-100..119 ; non-gating: 105
+    gating:    [100, 101, 102, 103, 104, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119]  # 19
+    nongating: [105]
+# Total release-gating REQ-UX-* = 17 + 17 + 43 + 10 + 19 = 106.
+
+bar_fragment:                   # what each spoke's outputs/bar-ux-<area>.md MUST contain
+  format: markdown
+  per_bar_block_fields:         # one block per BAR-*, carrying exactly the inherited field set
+    - id                        # BAR-NNN, within the spoke's sub-range
+    - statement                 # concrete, testable release condition in the user's terms (not a REQ restatement)
+    - references                # >=1 REQ-UX-* (and/or REQ-PROD-*) it enforces (the gating requirement(s))
+    - verification_method       # one of: manual_user_check | automated_test | inspection | operational_check
+    - proposed_stage            # usable_early | releasable  -- the SPOKE's proposal (parent synthesis finalizes)
+  also_required:
+    - "A coverage note: list every release-gating REQ-UX-* in the spoke's sub-area and the BAR-* that covers it,
+       so the synthesis gate asserts UX_GATING_REQ_COVERAGE per sub-area without re-deriving the gating set."
+
+staging_split:                  # who decides the MVP-vs-releasable line
+  proposed_by_spoke: proposed_stage
+  finalized_within_ux_by: SUBTASK_bar_ux_synthesis   # coherence across the five UX sub-areas
+  finalized_across_areas_by: SUBTASK_bar_synthesis   # the parent hub owns the one whole-product line
+  rule: "Spokes PROPOSE a stage per BAR-* from their sub-area view. SUBTASK_bar_ux_synthesis reconciles the five
+         UX sub-fragments into one coherent per-BAR stage for the bar-ux.md fragment; the parent SUBTASK_bar_synthesis
+         owns the final cross-area MVP-vs-releasable line and may still move a BAR-* for whole-product coherence."
+
+bar_ux_md:                      # the single UX fragment the synthesis hub assembles
+  path: "SUBTASK_bar_ux/outputs/bar-ux.md"   # SUBTASK_bar_ux's declared output; consumed by SUBTASK_bar_synthesis
+  contents:
+    - the consolidated BAR-200..299 register (one block per BAR-*, inherited field set)
+    - the coverage note (every release-gating REQ-UX-* -> the BAR-* covering it)
+  hygiene: "repository-ready: no host/system/taskflow detail, no attribution trailer"

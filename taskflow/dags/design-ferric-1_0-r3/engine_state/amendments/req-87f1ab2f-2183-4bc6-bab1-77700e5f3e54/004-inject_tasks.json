@@ -1,0 +1,61 @@
+{
+  "sequence": 4,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T05:55:23.819122672Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis"
+      ],
+      "placement_parent_task_id": "design-ferric-1_0-r3"
+    },
+    "resulting_version": 4,
+    "summary": "inject tasks: SUBTASK_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing design-ferric-1_0-r3: synthesis gate reads all three spoke findings, asserts contract identities, determines verdict, posts review on PR#128, files board issues, and writes SYNTHESIS.md.",
+        "task_id": "design-ferric-1_0-r3"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_design-doc-review": [],
+      "SUBTASK_foundation-buildability": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_design-doc-review",
+        "SUBTASK_foundation-buildability",
+        "SUBTASK_ticket-review"
+      ],
+      "SUBTASK_ticket-review": [],
+      "design-ferric-1_0-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_design-doc-review",
+          "SUBTASK_foundation-buildability",
+          "SUBTASK_ticket-review",
+          "design-ferric-1_0-r3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

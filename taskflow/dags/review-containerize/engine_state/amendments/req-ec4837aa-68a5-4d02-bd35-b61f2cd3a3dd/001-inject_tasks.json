@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T06:57:07.744176558Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_dockerfile_build"
+      ],
+      "placement_parent_task_id": "review-containerize"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_dockerfile_build",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize spoke 1 of the review-containerize decomposition: Dockerfile build correctness, reproducibility & runtime image composition (concerns 1, 2-layer/size, 6-Dockerfile-idiom).",
+        "task_id": "review-containerize"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_dockerfile_build": [],
+      "review-containerize": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_dockerfile_build",
+          "review-containerize"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

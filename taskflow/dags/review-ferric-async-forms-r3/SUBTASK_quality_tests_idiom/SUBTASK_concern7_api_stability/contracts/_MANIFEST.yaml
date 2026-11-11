@@ -1,0 +1,19 @@
+kind: verification_synthesis
+description: >
+  Concern 7 API stability sub-decomposition. One synthesis child reads prior
+  findings_concern7.md and produces partial_findings.md conforming to the
+  inherited findings_format.md contract.
+
+inherited_contracts:
+  - path: "../../contracts/findings_format.md"
+    description: "Required output structure for partial_findings.md"
+
+ownership:
+  partial_findings.md: SUBTASK_produce_partial_findings
+  SYNTHESIS.md: SUBTASK_produce_partial_findings
+
+identities:
+  - "partial_findings.md section header is exactly '## Findings'"
+  - "partial_findings.md contains '## What was examined'"
+  - "all finding entries use concern: api-stability"
+  - "no finding re-raises issues #196–#201"

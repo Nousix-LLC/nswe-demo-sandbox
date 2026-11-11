@@ -1,0 +1,99 @@
+# visual_system_seam.yaml — the visual-system subtree seam.
+# READ-ONLY. Children compose against this and MUST NOT redefine it (extend additively via amendment only).
+# It fixes WHICH child writes WHICH fragment of the final visual-system.md, WHICH REQ-UX sub-range each content
+# child mints from, the named design-token vocabulary (its producer and consumer), and the coverage rule the
+# component library obeys. It EXTENDS ../contracts/ and ../../contracts/; it never overrides them.
+
+# --- The one deliverable and the fragments that assemble into it (owner per fragment) ------------
+# SUBTASK_synthesis assembles these, in this order, into outputs/visual-system.md.
+deliverable:
+  produced_at: "outputs/visual-system.md"              # SUBTASK_synthesis writes it at this subtree root
+  assembled_from_in_order:
+    - fragment: visual_language_and_design_system_section   # the section body
+      owner: SUBTASK_visual_language
+      source: "SUBTASK_visual_language/outputs/visual-language.md"
+      note: "Verbatim section name 'visual_language_and_design_system' per ../contracts/ux_section_and_id_map.yaml."
+    - fragment: component_library_heading                    # the shared vocabulary, a clearly-headed subsection
+      owner: SUBTASK_component_library
+      source: "SUBTASK_component_library/outputs/component-library.md"
+      note: "Published under a clearly-labelled 'Component library' heading; required shape below."
+    - fragment: requirements_and_acceptance_criteria         # REQ-UX-020..039, consolidated from both children
+      owner: SUBTASK_synthesis
+      source: "both content children's REQ-UX entries"
+
+# --- REQ-UX id-range partition (inherited scheme: REQ-UX-NNN, 3-digit, unique within area) --------
+# The two content children sub-range the node's REQ-UX-020..039; synthesis mints no REQ-UX of its own.
+req_ux_id_ranges:
+  SUBTASK_visual_language:   { from: "REQ-UX-020", to: "REQ-UX-032" }
+  SUBTASK_component_library: { from: "REQ-UX-033", to: "REQ-UX-039" }
+
+# Each REQ-UX-* carries exactly the inherited field set (../../contracts/id_and_traceability_schema.yaml):
+req_ux_fields: [id, statement, acceptance_criteria, release_gating]
+
+# --- The design-token vocabulary (the seam the dependency edge carries) --------------------------
+# Produced by SUBTASK_visual_language; composed against by SUBTASK_component_library via its dependency.
+design_tokens:
+  produced_by: SUBTASK_visual_language
+  published_in: "SUBTASK_visual_language/outputs/visual-language.md"
+  heading: "Design tokens"
+  required_shape: >
+    A named token set, stated as design intent (not code), grouped by family, each token given a name and a
+    concrete value/intent a build could realise and a reviewer could check. The component library refers to
+    tokens by these names. Families that MUST be present:
+  token_families:
+    - "color.*        — brand, surface/background, text/on-surface, border, and semantic roles (primary,
+                        on-primary, success, warning, danger, info, muted/disabled), each with a light-theme
+                        and a dark-theme value; plus the contrast intent each role must satisfy."
+    - "type.*         — font family role(s); a named type scale (display/title/body/meta/etc.) with size,
+                        weight, and line-height per step."
+    - "space.*        — a spacing scale (the base unit and the named steps) used for padding, gaps, and the
+                        layout grid/gutters."
+    - "radius.*       — corner-radius steps (e.g. control, card, pill/avatar)."
+    - "elevation.*    — elevation/shadow steps that separate layered surfaces (card, menu, dialog, toast)."
+    - "motion.*       — named durations and easings, and the reduced-motion intent."
+  consumed_by: [SUBTASK_component_library]
+
+# --- The component library required shape (per ../contracts/ux_section_and_id_map.yaml) ----------
+component_library:
+  produced_by: SUBTASK_component_library
+  heading: "Component library"
+  required_shape: >
+    A list of named reusable components; each component names its purpose, the tokens it is built from, its
+    behavior, and its states. Siblings (screens/responsive/accessibility) refer to components by these names.
+  required_named_components:
+    # The floor from ../contracts/ux_section_and_id_map.yaml, extended as the IA archetypes require.
+    - ChirpCard            # a single chirp in a feed/list or conversation
+    - ComposeBox           # write/reply, with remaining-character affordance (REQ-PROD-001)
+    - PrimaryButton
+    - SecondaryButton
+    - TextField            # text input with inline validation (field-level errors)
+    - NavShell             # the signed-out and signed-in navigation shells
+    - Dialog               # modal/dialog + confirmation archetypes
+    - Toast                # transient, non-blocking feedback
+    - InlineFeedback       # in-place success/failure against a control
+    - EmptyState           # the empty/landing archetype's content block
+    - InlineError          # a field- or control-level error
+    - LoadingState         # loading/skeleton for lists and screens
+    - Avatar               # person identity in cards, profiles, nav
+  state_rule: >
+    Each component specifies the states that apply to it from {default, empty, error, loading, disabled};
+    a component for which a state does not apply records that it does not apply.
+  archetype_coverage_rule: >
+    The library MUST furnish every screen archetype named in the IA screen inventory
+    (feed/list, form, profile, settings, modal/dialog, confirmation, empty/landing) — i.e. for each archetype
+    there is at least one named component (or documented composition of components) that realises it.
+
+# --- The trace rule every REQ-UX-* obeys (inherited; restated for the children's convenience) ----
+trace_rule:
+  references_req_prod: ">=1"
+  acceptance_criteria: "testable by someone who never met the author, exercisable on the live product"
+  release_gating: "true | false  (false carries a one-line reason)"
+  product_requirements_source: "../../SUBTASK_product_requirements/outputs/product-requirements.md"
+  screen_inventory_source: "../SUBTASK_ia_interaction/outputs/ia-interaction.md"
+
+# --- REQ-PROD the visual system most directly serves (guidance for the trace, not a cap) ---------
+# Experience-quality and first-minute trust: the visual system is how these read as a finished product.
+prod_trace_hints:
+  visual_language: [REQ-PROD-030, REQ-PROD-032, REQ-PROD-033, REQ-PROD-035, REQ-PROD-036, REQ-PROD-024]
+  component_library: [REQ-PROD-001, REQ-PROD-002, REQ-PROD-005, REQ-PROD-006, REQ-PROD-007,
+                      REQ-PROD-022, REQ-PROD-033, REQ-PROD-034, REQ-PROD-009]

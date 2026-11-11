@@ -1,0 +1,3 @@
+{"timestamp":"2026-11-05T00:19:01.699802122Z","action":{"Dispatch":{"task_ids":["ferric-ssr-r2"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-05T00:19:46.466304425Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-ssr-r2"]}},"reason":"task ferric-ssr-r2 transitioned to Ready"}
+{"timestamp":"2026-11-05T00:19:46.466474369Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-ssr-r2"]}},"reason":"task ferric-ssr-r2 transitioned to Running"}

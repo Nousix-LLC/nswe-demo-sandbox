@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T04:43:48.286439254Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "chirp-logged-out-r3-pr-gate"
+      ],
+      "placement_parent_task_id": "chirp-logged-out-r3"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: chirp-logged-out-r3-pr-gate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the NeedsDecompose child: verify CI gate on PR #263 before the parent can reach completed status.",
+        "task_id": "chirp-logged-out-r3"
+      }
+    },
+    "updated_graph_edges": {
+      "chirp-logged-out-r3": [],
+      "chirp-logged-out-r3-pr-gate": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "chirp-logged-out-r3",
+          "chirp-logged-out-r3-pr-gate"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

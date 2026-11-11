@@ -1,0 +1,361 @@
+{
+  "current_pointer": "overseer/I211",
+  "checked_at": "2026-11-04T05:50:00Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "CLEARED",
+      "label": "Bug5 dispatch fault — frozen DAGs never real-dispatched",
+      "cleared_at": "2026-11-03T05:08:16Z",
+      "cleared_by": "review-epic-persist-r2 Dispatch entry in scheduler/logs/scheduler_decisions.jsonl",
+      "cleared_in": "overseer/I145",
+      "recorded_in": "overseer/I146",
+      "github_issue": "none filed"
+    }
+  },
+  "prs": {
+    "PR113": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T17:46:59Z",
+      "merge_commit": "0d5917dc6b10d25b15e47a867f41a450239007f6",
+      "issues_closed": ["#65", "#66", "#67", "#64", "#180"],
+      "review_dag": "review-epic-persist-r2",
+      "note": "Squash-merged. Epic #56 and issues #65/#66/#67 moved to Done. #64 closed 2026-11-03 after image digest pinned (commit a255baf). #180 closed by pin-image-digest-r1."
+    },
+    "PR128": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T18:11:07Z",
+      "merge_commit": "9a24c281f1380644801e246b79b85f13a11cb33d",
+      "branch": "work/design-ferric-1_0",
+      "title": "design: Ferric 1.0 framework design",
+      "head": "ade5bdde424638b9f993c5699219c638d02e0e59",
+      "review_dag": "review-design-ferric-1_0-r4",
+      "review_verdict": "APPROVE",
+      "blocking_findings_resolved": 5,
+      "non_blocking_follow_up": "#181 (release-bar.md §5 gap→deferred for REQ-FW-019 and REQ-FW-021)",
+      "note": "Design complete. Ten Ferric 1.0 design documents now on main. All 29 BAR-FERRIC-* criteria checked. Implementation tracked via epics #129–#136."
+    },
+    "PR182": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T19:08:01Z",
+      "merge_commit": "c3f9f558fc7b254c2b0d431c31a7fc9a095fe0d5",
+      "branch": "work/security-persist-r1",
+      "title": "fix(#117): replace psql sweep CronJob with chirp-server sweep subcommand",
+      "issues_closed": ["#120"],
+      "code_dag": "security-persist-r1",
+      "code_dag_verdict": "PASS",
+      "review_dag": "review-security-persist-r1",
+      "review_verdict": "APPROVE",
+      "follow_up_issues": ["#184"],
+      "note": "Argon2id credential hashing + TLS enforcement for CronJob. #184 filed for non-blocking polish items."
+    },
+    "PR187": {
+      "status": "MERGED",
+      "branch": "work/update-sweep-digest-r1",
+      "title": "deploy(chirp): pin sweep CronJob to febeb151 image (CI run 41710206505)",
+      "machine_gate": "PASS",
+      "ci_run": "41711824375",
+      "ci_conclusion": "success",
+      "review_dag": "review-update-sweep-digest-r1",
+      "review_status": "APPROVE",
+      "review_verdict": "APPROVE",
+      "review_folded_in": "overseer/I183",
+      "closes_issues": [],
+      "merged_at": "2026-11-03T20:54:06Z",
+      "merge_commit": "65413bbe59cb65641d6f1a85123a87f300900b83",
+      "landed_in": "overseer/I184",
+      "note": "Devops digest update — 50-transient-sweep-cronjob.yaml image digest from sha256:adaa4c26... to sha256:2c5eafbe... (febeb151 build). Squash-merged under delegated authority at 2026-11-03T20:54:06Z."
+    },
+    "PR183": {
+      "status": "MERGED",
+      "branch": "work/sweep-seam-r1",
+      "title": "fix(#117): replace psql sweep CronJob with chirp-server sweep subcommand",
+      "merged_at": "2026-11-03T20:11:06Z",
+      "merge_commit": "febeb151ba50f6c2635d922b5c3da6e01371c617",
+      "issues_closed": ["#117"],
+      "ci": {
+        "fmt": "SUCCESS",
+        "clippy": "SUCCESS",
+        "test": "SUCCESS",
+        "wasm": "SUCCESS",
+        "doc": "SUCCESS",
+        "image": "SUCCESS"
+      },
+      "ci_run": "41705065393",
+      "code_dag": "sweep-seam-r1",
+      "code_dag_verdict": "PASS",
+      "review_dag": "review-sweep-seam-r1",
+      "review_verdict": "APPROVE",
+      "follow_up_issues": [185, 186],
+      "note": "Squash-merged under delegated authority at 2026-11-03T20:11:06Z. Issue #117 closed and Done on board."
+    },
+    "PR188": {
+      "status": "MERGED",
+      "branch": "work/ferric-epic-authoring-r1",
+      "title": "feat(ferric): Ferric 1.0 Authoring Model — view!, components, context (#129)",
+      "opened_at": "2026-11-03T23:58:12Z",
+      "merged_at": "2026-11-04T03:26:50Z",
+      "merge_commit": "aa2468771eccd9e2ee79c12c79b8943fca18e07a",
+      "head_sha": "e29e2f4dd3296f420568e46b90accde159fe640b",
+      "ci_run": "41743675354",
+      "ci": {
+        "fmt": "SUCCESS",
+        "clippy": "SUCCESS",
+        "test": "SUCCESS",
+        "wasm": "SUCCESS",
+        "doc": "SUCCESS",
+        "image": "SUCCESS"
+      },
+      "closes_issues": ["#129", "#137", "#138", "#139", "#140", "#141", "#142"],
+      "code_dag": "ferric-epic-authoring-r1",
+      "code_dag_verdict": "PARTIAL",
+      "machine_gate": "PASS",
+      "review_dag": "review-ferric-epic-authoring-r1",
+      "review_dag_status": "FOLDED",
+      "review_verdict": "APPROVE",
+      "review_non_blockers": [190, 191],
+      "note": "Squash-merged under delegated authority at 2026-11-04T03:26:50Z. All 7 issues (#129, #137–#142) auto-closed and moved to Done on board."
+    },
+    "PR192": {
+      "status": "OPEN",
+      "branch": "work/ferric-router-r1",
+      "title": "feat(ferric-router): nested routes, replace navigation, active links (Ferric 1.0 router r1)",
+      "head_sha": "2bf76698c474fb60ca663f6cd074845600caea93",
+      "ci_run": "41778305739",
+      "ci": {
+        "fmt": "SUCCESS",
+        "clippy": "SUCCESS",
+        "test": "SUCCESS",
+        "wasm": "SUCCESS",
+        "doc": "SUCCESS",
+        "image": "SUCCESS"
+      },
+      "mergeable": "MERGEABLE",
+      "closes_issues": ["#131", "#146", "#147"],
+      "code_dag": "ferric-router-r1",
+      "code_dag_verdict": "PASS",
+      "machine_gate": "PASS",
+      "review_dag": null,
+      "note": "Machine gate PASS (I211 board check). Review to be launched in I213. All 3 ACs met per SYNTHESIS.md."
+    },
+    "PR193": {
+      "status": "OPEN",
+      "branch": "work/ferric-async-forms-r2",
+      "title": "feat(ferric): async resources, expanded events, and form binding (#130)",
+      "ci_run": "41780600207",
+      "ci": {
+        "fmt": "SUCCESS",
+        "clippy": "SUCCESS",
+        "test": "SUCCESS",
+        "wasm": "SUCCESS",
+        "doc": "SUCCESS",
+        "image": "SUCCESS"
+      },
+      "mergeable": "MERGEABLE",
+      "closes_issues": ["#130", "#143", "#144", "#145"],
+      "code_dag": "ferric-async-forms-r2",
+      "code_dag_verdict": "PASS",
+      "machine_gate": "PASS",
+      "review_dag": null,
+      "remediation_attempt": 2,
+      "remediation_budget": 2,
+      "note": "Machine gate PASS (I211 board check). r2 delivered to correct repo. Review to be launched in I215. All CI green (run 41780600207)."
+    }
+  },
+  "dags_in_flight": [],
+  "dags_folded": [
+    {
+      "slug": "ferric-async-forms-r1",
+      "goal": "Ferric 1.0 — Async, Forms, and Events (epic #130, usable_early): async resources + suspense, DOM event handling, two-way form bindings",
+      "issues": ["#130", "#143", "#144", "#145"],
+      "kind": "code",
+      "state": "FOLDED",
+      "machine_gate": "FAIL",
+      "failure_reason": "wrong repo (Nousix-LLC/ferric instead of nswe-demo), CI not run",
+      "synthesis_verdict_raw": "PASSED (internal gate — does not meet declared output)",
+      "synthesis_path": "taskflow/dags/ferric-async-forms-r1/SYNTHESIS.md",
+      "pr_in_wrong_repo": "https://github.com/Nousix-LLC/ferric/pull/5",
+      "prior_code_commits": "5e49c4f → ab7620a → 98a7559 → 6de5e09 → ad657f5 (on work/ferric-async-forms-r1 in Nousix-LLC/ferric)",
+      "forked_in": "overseer/I207",
+      "folded_confirmed_in": "overseer/I209",
+      "launch_agent": "swe-coder",
+      "remediation_attempt": 1,
+      "remediation_budget": 2,
+      "note": "Machine gate FAIL (I209). Remediation ferric-async-forms-r2 launched by I210."
+    },
+    {
+      "slug": "ferric-async-forms-r2",
+      "goal": "Ferric 1.0 — Async, Forms, and Events (epic #130, usable_early): async resources + suspense, DOM event handling, two-way form bindings — remediation attempt 2 of 2",
+      "issues": ["#130", "#143", "#144", "#145"],
+      "kind": "code",
+      "state": "FOLDED",
+      "machine_gate": "PASS",
+      "verdict": "PASS",
+      "pr": 193,
+      "ci_run": "41780600207",
+      "ci": {
+        "fmt": "SUCCESS",
+        "clippy": "SUCCESS",
+        "test": "SUCCESS",
+        "wasm": "SUCCESS",
+        "doc": "SUCCESS",
+        "image": "SUCCESS"
+      },
+      "fold_record_path": "taskflow/dags/ferric-async-forms-r2/COMPLETE.md",
+      "forked_in": "overseer/I210",
+      "folded_confirmed_in": "overseer/I211",
+      "launch_agent": "swe-coder",
+      "remediation_attempt": 2,
+      "remediation_budget": 2,
+      "note": "Machine gate PASS (I211). r2 ported to correct repo (nswe-demo). PR #193 OPEN/MERGEABLE. Review to be launched in I215."
+    },
+    {
+      "slug": "ferric-router-r1",
+      "goal": "Ferric 1.0 — Client-side Router (epic #131, usable_early): nested routes, replace navigation, active-route awareness, accessible links",
+      "issues": ["#131", "#146", "#147"],
+      "kind": "code",
+      "state": "FOLDED",
+      "machine_gate": "PASS",
+      "verdict": "PASS",
+      "pr": 192,
+      "head_sha": "2bf76698c474fb60ca663f6cd074845600caea93",
+      "ci_run": "41778305739",
+      "ci": {
+        "fmt": "SUCCESS",
+        "clippy": "SUCCESS",
+        "test": "SUCCESS",
+        "wasm": "SUCCESS",
+        "doc": "SUCCESS",
+        "image": "SUCCESS"
+      },
+      "synthesis_path": "taskflow/dags/ferric-router-r1/SYNTHESIS.md",
+      "forked_in": "overseer/I208",
+      "folded_confirmed_in": "overseer/I211",
+      "launch_agent": "swe-coder",
+      "note": "Machine gate PASS (I211). All 5 contract identities verified. Issues #131/#146/#147 ACs met. PR #192 OPEN/MERGEABLE. Review to be launched in I213."
+    },
+    {
+      "slug": "review-ferric-epic-authoring-r1",
+      "goal": "Review PR #188 (feat(ferric): Ferric 1.0 Authoring Model — view!, components, context (#129))",
+      "issues": ["#129", "#137", "#138", "#139", "#140", "#141", "#142"],
+      "kind": "review",
+      "state": "FOLDED",
+      "verdict": "APPROVE",
+      "forked_in": "overseer/I201",
+      "folded_confirmed_in": "overseer/I202",
+      "launch_agent": "swe-reviewer",
+      "branch": "work/ferric-epic-authoring-r1",
+      "pr": 188,
+      "synthesis_path": "taskflow/dags/review-ferric-epic-authoring-r1/SYNTHESIS.md",
+      "review_non_blockers": [190, 191],
+      "note": "6 concerns checked; all PASS. 0 blockers. 2 non-blocking findings: #190, #191. IA6 gap assessed not a blocker. APPROVE."
+    },
+    {
+      "slug": "ferric-epic-authoring-r1",
+      "goal": "Ferric 1.0 — Authoring Model (epic #129, usable_early): reactive signals, vdom, view! macro, component model, diagnostics, context",
+      "issues": ["#129", "#137", "#138", "#139", "#140", "#141", "#142"],
+      "kind": "code",
+      "state": "FOLDED",
+      "verdict": "PARTIAL",
+      "machine_gate": "PASS",
+      "pr": 188,
+      "head_sha": "e29e2f4",
+      "ci_run": "41743675354",
+      "forked_in": "overseer/I187",
+      "folded_in": "overseer/I199",
+      "launch_agent": "swe-coder",
+      "branch": "work/ferric-epic-authoring-r1",
+      "synthesis_path": "taskflow/dags/ferric-epic-authoring-r1/SYNTHESIS.md",
+      "note": "Folded at I199. All 6 CI jobs PASS. All 6 sub-issues closed. IA1–IA5 PASS. IA6 PARTIAL: view! trybuild fixtures from T02 never committed. Machine gate PASS. IA6 follow-up: issue #189."
+    }
+  ],
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-11-04T05:50:00Z",
+    "total_items": 173,
+    "open_issues_count": 27,
+    "hygiene_finding": "CLEARED",
+    "note": "I211: both DAGs folded PASS. ferric-router-r1 PASS (PR #192, issues #131/#146/#147). ferric-async-forms-r2 PASS (PR #193, issues #130/#143/#144/#145, remediation r2). free_dag_slots=4. Series scheduled: I212 (fold-read router), I213 (launch review router), I214 (fold-read async-forms), I215 (launch review async-forms), I216 (board check)."
+  },
+  "work_items": [
+    {
+      "item_slug": "ferric-epic-authoring-r1",
+      "issues_closed": [129, 137, 138, 139, 140, 141, 142],
+      "issues_returned": [],
+      "pr": 188,
+      "landed_commit_shas": ["aa2468771eccd9e2ee79c12c79b8943fca18e07a"],
+      "machine_gate": "PASS",
+      "review_verdict": "APPROVE",
+      "gate_outcome": "LANDED",
+      "landed_at": "2026-11-04T03:26:50Z",
+      "review_outcome": {
+        "blockers_resolved": 0,
+        "uncovered_concerns": [],
+        "followup_issues": [189, 190, 191]
+      },
+      "note": "Ferric 1.0 Authoring Model — epic #129 + 6 sub-issues. CI all 6 PASS. PARTIAL verdict: IA6 gap. Review APPROVE. Non-blockers: #190, #191."
+    },
+    {
+      "item_slug": "sweep-seam-r1",
+      "issues_closed": [117],
+      "issues_returned": [],
+      "pr": 183,
+      "landed_commit_shas": ["febeb151ba50f6c2635d922b5c3da6e01371c617"],
+      "machine_gate": "PASS",
+      "review_verdict": "APPROVE",
+      "gate_outcome": "LANDED",
+      "landed_at": "2026-11-03T20:11:06Z",
+      "review_outcome": {
+        "blockers_resolved": 0,
+        "uncovered_concerns": [],
+        "followup_issues": [185, 186]
+      },
+      "note": "Replace psql sweep CronJob with chirp-server sweep subcommand. CI all 6 PASS. Review APPROVE. Non-blockers: #185, #186."
+    },
+    {
+      "item_slug": "security-persist-r1",
+      "issues_closed": [120],
+      "pr": 182,
+      "landed_commit_shas": ["c3f9f558fc7b254c2b0d431c31a7fc9a095fe0d5"],
+      "machine_gate": "PASS",
+      "review_verdict": "APPROVE",
+      "gate_outcome": "LANDED",
+      "landed_at": "2026-11-03T19:08:01Z",
+      "review_outcome": {
+        "blockers_resolved": 0,
+        "uncovered_concerns": [],
+        "followup_issues": [184]
+      },
+      "note": "Argon2id credential hashing + TLS enforcement for CronJob. #184 filed for non-blocking polish items."
+    }
+  ],
+  "main_sha": "aa2468771eccd9e2ee79c12c79b8943fca18e07a",
+  "deployment_check": {
+    "status": "CI on merge commit aa24687 completed SUCCESS (run 41767186758, confirmed I206). ArgoCD auto-sync expected. Chirp endpoint HTTP 200.",
+    "checked_at": "2026-11-04T03:37:00Z",
+    "endpoint_check": "HTTP 200 at chirp app endpoint (last verified I205)",
+    "argocd_sync_status": "auto-sync pending (ci completed success; image push expected)",
+    "ci_on_merge_commit": {
+      "sha": "aa2468771eccd9e2ee79c12c79b8943fca18e07a",
+      "run_id": "41767186758",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "note": "Non-blocking. Deployment auto-sync expected. No bug filed."
+  },
+  "free_dag_slots": 4,
+  "forward_series": {
+    "I199": "EVALUATE — DONE. Board check ~2026-11-04T00:20Z (reconstruction): ferric-epic-authoring-r1 DAG FOLDED (root SYNTHESIS.md confirmed). Verdict: PARTIAL — all CI PASS (run 41743675354, e29e2f4), all 6 sub-issues closed, IA1–IA5 PASS, IA6 PARTIAL (view! trybuild fixtures from T02 never committed). PR #188 OPEN MERGEABLE. Machine gate PASS. No new external GitHub activity. free_dag_slots=2. Scheduled I200 (fold-read: load WORK_SESSION + REVIEW_GATE; file IA6 follow-up issue; schedule review launch).",
+    "I200": "EVALUATE — DONE. Fold-read: ferric-epic-authoring-r1 SYNTHESIS.md confirmed PARTIAL (all CI PASS, IA6 gap only). Machine gate PASS. PR #188 confirmed OPEN MERGEABLE. IA6 follow-up issue #189 filed (board Todo, item PVTI_lADOEB9jls4BlZH4zhF29XE). Scheduled I201 (ACT: launch review for PR #188) and I202 (EVALUATE: board check / watch review fold).",
+    "I201": "ACT — DONE. Loaded REVIEW_GATE.md + WORK_SESSION.md. Wrote review brief at taskflow/dags/review-ferric-epic-authoring-r1/_BRIEF.md (6 concerns: correctness, code quality, test coverage [IA6 noted], security, Rust idiom, API/contract stability). Forked review-ferric-epic-authoring-r1 (swe-reviewer). STATE updated: review-ferric-epic-authoring-r1 confirmed in dags_in_flight, free_dag_slots=1. I202 follows (board check / watch review fold).",
+    "I202": "EVALUATE (reconstruction wake 03:17Z) — DONE. review-ferric-epic-authoring-r1 FOLDED APPROVE. All 6 CI PASS. All 6 concerns PASS. 0 blockers. Non-blockers: #190, #191. PR #188 OPEN/MERGEABLE. Config: delegated/auto_land/headless. All landing conditions met. 2 new issues since I201 (#190, #191). Scheduled series: I203 (process review), I204 (land PR #188), I205 (deployment check), I206 (board check / next goal).",
+    "I203": "ACT — DONE. Processed review-ferric-epic-authoring-r1 APPROVE. Added #190 and #191 to board project (status: Todo). Board total: 171 → 173. I204 scheduled.",
+    "I204": "ACT — DONE. Landing conditions verified. Squash-merged PR #188 (aa2468771). All 7 issues (#129, #137–#142) auto-closed. All 7 moved to Done on board. main_sha updated to aa2468771. I205 follows.",
+    "I205": "EVALUATE — DONE. Deployment check after PR #188 land. ArgoCD OutOfSync/Healthy, sync.revision=aa24687. CI on merge commit aa24687: run 41767186758 in_progress (image build). Pods: chirp-server 1/1 Running, postgres Running, sweep CronJob Completed. Endpoint: HTTP 200. Non-blocking. I206 follows.",
+    "I206": "EVALUATE — DONE. Board check. CI on aa24687 (run 41767186758) completed SUCCESS. 3 usable_early epics unblocked: #130, #131, #132. Decision: launch #130 and #131 as parallel code DAGs. free_dag_slots: 4→2. Series: I207, I208, I209.",
+    "I207": "ACT — DONE. Loaded WORK_SESSION.md + DELIVERABLES_GIT.md. Wrote brief at taskflow/dags/ferric-async-forms-r1/_BRIEF.md. Forked ferric-async-forms-r1. Board: #130/#143/#144/#145 In Progress. free_dag_slots: 4→3.",
+    "I208": "ACT — DONE. Loaded WORK_SESSION.md + DELIVERABLES_GIT.md. Wrote brief at taskflow/dags/ferric-router-r1/_BRIEF.md. Forked ferric-router-r1. Board: #131/#146/#147 In Progress. free_dag_slots: 3→2.",
+    "I209": "EVALUATE — DONE. Board check / watch DAG folds. ferric-async-forms-r1 FOLDED (SYNTHESIS.md present). ferric-router-r1 still RUNNING. ferric-async-forms-r1: machine gate FAIL (wrong repo PR, no CI). free_dag_slots: 2→3. Scheduled I210 (launch r2 remediation) and I211 (board check).",
+    "I210": "ACT — DONE. Loaded WORK_SESSION.md + DELIVERABLES_GIT.md. Wrote remediation brief at taskflow/dags/ferric-async-forms-r2/_BRIEF.md. Forked ferric-async-forms-r2 (r2 remediation). free_dag_slots: 3→2. I211 follows.",
+    "I211": "EVALUATE — DONE. Board check / watch folds. BOTH DAGs folded PASS: ferric-router-r1 SYNTHESIS.md PASS (PR #192, CI run 41778305739, all 6 SUCCESS, issues #131/#146/#147). ferric-async-forms-r2 COMPLETE.md PASS (PR #193, CI run 41780600207, all 6 SUCCESS, issues #130/#143/#144/#145, remediation r2). No new external GitHub issues. No board hygiene issues. free_dag_slots: 4 (both code slots freed). Scheduled series: I212 (fold-read router), I213 (launch review router), I214 (fold-read async-forms), I215 (launch review async-forms), I216 (board check)."
+  }
+}

@@ -1,0 +1,76 @@
+# design_artifact_map.yaml — the repo design/ tree this subtree produces.
+# READ-ONLY. One owning task per file. Each concern task writes its section as a
+# markdown file in ITS OWN workspace (outputs/<file>); SUBTASK_design_pr assembles
+# these into the repo design/ tree on branch work/design-chirp-r1 and opens the PR.
+# Required-sections lists are the MINIMUM each file must contain, not a cap.
+
+repo_design_root: "design/"              # repo-relative; assembled by SUBTASK_design_pr
+
+files:
+  - repo_path: "design/README.md"
+    owner: SUBTASK_design_pr
+    role: "Index of the design: what each file covers, where the release bar lives, how to read the set."
+    required_sections: [overview, document_index, how_the_bar_and_backlog_relate]
+
+  - repo_path: "design/product-requirements.md"
+    owner: SUBTASK_product_requirements
+    produced_at: "SUBTASK_product_requirements/outputs/product-requirements.md"
+    required_sections:
+      - product_definition_and_kind          # what chirp is; which product kind(s) apply and what each implies
+      - users_personas                        # who it serves
+      - user_journeys                          # end-to-end incl. first visit, daily use, and leaving
+      - requirements_and_acceptance_criteria   # REQ-PROD-* with testable acceptance criteria
+      - in_scope_out_of_scope                  # what a releasable product of this kind includes/leaves out
+
+  - repo_path: "design/domain-application-design.md"
+    owner: SUBTASK_domain_app_design
+    produced_at: "SUBTASK_domain_app_design/outputs/domain-application-design.md"
+    required_sections:
+      - domain_model                          # entities, relationships, invariants (as requirements)
+      - modules_and_responsibilities          # held to ferric / chirp-types / chirp-server contracts
+      - persistence_requirement               # durability the bar requires (in-memory store is a blocker)
+      - interfaces_and_entry_points           # between parts; where state lives
+      - requirements_and_acceptance_criteria   # REQ-DOM-* (what, not how)
+
+  - repo_path: "design/experience-design.md"
+    owner: SUBTASK_experience_design
+    produced_at: "SUBTASK_experience_design/outputs/experience-design.md"
+    required_sections:
+      - information_architecture_and_interaction
+      - screens_and_flows                     # sign-up/in, posting/timeline loops, onboarding, settings
+      - empty_error_loading_states
+      - visual_language_and_design_system
+      - responsive_layout
+      - accessibility
+      - requirements_and_acceptance_criteria   # REQ-UX-*
+
+  - repo_path: "design/identity-security.md"
+    owner: SUBTASK_identity_trust
+    produced_at: "SUBTASK_identity_trust/outputs/identity-security.md"
+    required_sections:
+      - accounts_and_lifecycle                # sign-up/in/recovery, deletion, data export
+      - authentication_and_sessions           # real auth; sessions safe to expose publicly
+      - authorization                         # what each user may see/change
+      - abuse_and_privacy_basics
+      - threat_model
+      - requirements_and_acceptance_criteria   # REQ-ID-*
+
+  - repo_path: "design/operational-readiness.md"
+    owner: SUBTASK_operational_readiness
+    produced_at: "SUBTASK_operational_readiness/outputs/operational-readiness.md"
+    required_sections:
+      - durable_data                          # consumes persistence_requirement from domain design
+      - backups_and_recovery
+      - limits_and_quotas
+      - observability
+      - status_and_incident
+      - existing_followups                    # where #23/#24/#25 belong (fold, do not duplicate)
+      - requirements_and_acceptance_criteria   # REQ-OPS-*
+
+  - repo_path: "design/release-bar.md"
+    owner: SUBTASK_release_bar
+    produced_at: "SUBTASK_release_bar/outputs/release-bar.md"
+    required_sections:
+      - mvp_vs_releasable_scoping             # usable-early vs releasable; what each stage includes
+      - release_bar                           # BAR-* criteria, each testable, each -> REQ-*
+      - completeness_and_gap_review           # Product Surfaces sweep; in/out-of-scope judgments recorded

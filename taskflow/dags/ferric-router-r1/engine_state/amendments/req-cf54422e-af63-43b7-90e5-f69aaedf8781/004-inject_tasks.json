@@ -1,0 +1,82 @@
+{
+  "sequence": 4,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T04:34:06.285796360Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "synthesis-gate"
+      ],
+      "placement_parent_task_id": "ferric-router-r1"
+    },
+    "resulting_version": 4,
+    "summary": "inject tasks: synthesis-gate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Synthesis gate: verifies contracts, updates example/docs, creates PR, closes issues #131 #146 #147",
+        "task_id": "ferric-router-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "active-link": [
+        "navigate-replace"
+      ],
+      "ferric-router-r1": [],
+      "navigate-replace": [],
+      "nested-routes": [
+        "active-link"
+      ],
+      "synthesis-gate": [
+        "nested-routes"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-router-r1",
+          "navigate-replace"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "active-link"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "nested-routes"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "synthesis-gate"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

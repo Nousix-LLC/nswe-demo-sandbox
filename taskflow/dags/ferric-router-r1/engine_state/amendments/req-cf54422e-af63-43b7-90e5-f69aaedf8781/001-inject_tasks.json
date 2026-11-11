@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T04:33:53.985578038Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "navigate-replace"
+      ],
+      "placement_parent_task_id": "ferric-router-r1"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: navigate-replace",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "First serial spoke: creates work/ferric-router-r1 branch and implements navigate_replace",
+        "task_id": "ferric-router-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "ferric-router-r1": [],
+      "navigate-replace": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-router-r1",
+          "navigate-replace"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

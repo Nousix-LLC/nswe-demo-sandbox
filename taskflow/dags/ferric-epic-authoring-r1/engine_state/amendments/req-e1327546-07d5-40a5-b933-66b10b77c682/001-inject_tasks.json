@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T21:16:05.343695475Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "ferric-authoring-137-138"
+      ],
+      "placement_parent_task_id": "ferric-epic-authoring-r1"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: ferric-authoring-137-138",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing the ferric-epic-authoring-r1 hub: T01 creates the epic branch and verifies that the existing signal.rs and vdom/dom layer already satisfy issues #137 and #138, closing both issues.",
+        "task_id": "ferric-epic-authoring-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "ferric-authoring-137-138": [],
+      "ferric-epic-authoring-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-authoring-137-138",
+          "ferric-epic-authoring-r1"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

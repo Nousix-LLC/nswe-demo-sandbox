@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T16:17:56.050666634Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_verify_deliver"
+      ],
+      "placement_parent_task_id": "remediate-epic-persist-r1"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_verify_deliver",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the verify-and-deliver spoke: prove the doc check is green under -D warnings on a fresh run with no regression, and update PR #113 in place with a reader-facing description.",
+        "task_id": "remediate-epic-persist-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_apply_fixes": [
+        "SUBTASK_assess"
+      ],
+      "SUBTASK_assess": [],
+      "SUBTASK_verify_deliver": [
+        "SUBTASK_apply_fixes"
+      ],
+      "remediate-epic-persist-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_assess",
+          "remediate-epic-persist-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_apply_fixes"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_verify_deliver"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

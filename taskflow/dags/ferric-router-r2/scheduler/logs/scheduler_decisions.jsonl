@@ -1,0 +1,16 @@
+{"timestamp":"2026-11-04T06:25:28.891545859Z","action":{"Dispatch":{"task_ids":["ferric-router-r2"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-04T06:25:33.347289008Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r2"]}},"reason":"task ferric-router-r2 transitioned to Ready"}
+{"timestamp":"2026-11-04T06:25:33.347449797Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r2"]}},"reason":"task ferric-router-r2 transitioned to Running"}
+{"timestamp":"2026-11-04T06:32:34.365385927Z","action":{"Dispatch":{"task_ids":["SUBTASK_router-branch"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-04T06:32:39.328436345Z","action":{"Dispatch":{"task_ids":["SUBTASK_macros-assessment"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-04T06:33:12.773615227Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_router-branch"]}},"reason":"task SUBTASK_router-branch transitioned to Ready"}
+{"timestamp":"2026-11-04T06:33:12.773893692Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_router-branch"]}},"reason":"task SUBTASK_router-branch transitioned to Running"}
+{"timestamp":"2026-11-04T06:33:25.748983586Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_macros-assessment"]}},"reason":"task SUBTASK_macros-assessment transitioned to Ready"}
+{"timestamp":"2026-11-04T06:33:25.749834843Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_macros-assessment"]}},"reason":"task SUBTASK_macros-assessment transitioned to Running"}
+{"timestamp":"2026-11-04T06:34:34.884493979Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r2"]}},"reason":"task ferric-router-r2 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-04T06:35:15.160038139Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r2","SUBTASK_macros-assessment"]}},"reason":"task SUBTASK_router-branch completed, waiting for remaining tasks"}
+{"timestamp":"2026-11-04T06:40:20.098594952Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":1}},"reason":"task SUBTASK_macros-assessment completed, dispatching ready successors"}
+{"timestamp":"2026-11-04T06:40:57.216662948Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-11-04T06:40:57.216840094Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-11-04T06:49:22.424517153Z","action":{"SubtreeResolved":{"parent_task_id":"ferric-router-r2","child_task_ids":["SUBTASK_router-branch","SUBTASK_macros-assessment","SUBTASK_synthesis"],"success":true}},"reason":"all children of ferric-router-r2 reached terminal state (success=true)"}
+{"timestamp":"2026-11-04T06:49:22.424785946Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

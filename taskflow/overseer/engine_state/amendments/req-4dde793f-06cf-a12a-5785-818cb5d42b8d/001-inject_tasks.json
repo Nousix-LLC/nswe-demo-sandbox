@@ -1,0 +1,45 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-06T19:25:15.112735531Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "overseer/I2"
+      ],
+      "placement_parent_task_id": "I1"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: overseer/I2",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Schedule the overseer's next-self successor I2 (the thread continuation). I1 reached its machine gate (ferric-foundation PASS) and dispatched the review DAG; I2 carries the forward plan to read the review verdict on the DAG's fold and then LAND (merge PR #14, board #4 Done, append STATE, fan out ferric-router/ferric-http/chirp-types) or REMEDIATE. I2 becomes eligible when I1 reaches terminal; the review-DAG fold is observed via I1's firing condition, not a depends_on edge.",
+        "task_id": "I1"
+      }
+    },
+    "updated_graph_edges": {
+      "I0": [],
+      "I1": [],
+      "overseer/I2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "I0",
+          "I1",
+          "overseer/I2"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

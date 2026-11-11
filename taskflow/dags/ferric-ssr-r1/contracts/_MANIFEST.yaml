@@ -1,0 +1,103 @@
+# contracts/_MANIFEST.yaml — ferric-ssr-r1
+# Contract kind: rust_trait (function signatures + compile-time constants)
+# Produced by decomposition of task ferric-ssr-r1.
+# This file and all files in contracts/ are READ-ONLY for all descendant tasks.
+
+kind: rust_trait
+version: 1
+produced_by: ferric-ssr-r1
+structural_declarations:
+  - contracts/ferric_ssr_contract.rs
+
+# ── Ownership ─────────────────────────────────────────────────────────────────
+# Every source file must have exactly one owner. Synthesis verifies no task
+# wrote to a file it does not own.
+
+ownership:
+
+  ferric-ssr-r1-skeleton:
+    owns:
+      - crates/ferric/src/lib.rs
+      - crates/ferric/Cargo.toml
+      # The skeleton also creates the stub files; ownership passes to spokes
+      # for their content, but module declarations in lib.rs stay with skeleton.
+      - crates/ferric/src/ssr.rs           # stub only; content owned by server-render
+      - crates/ferric/src/hydrate.rs       # stub only; content owned by client-hydrate
+
+  ferric-ssr-r1-server-render:
+    owns:
+      - crates/ferric/src/ssr.rs
+      # may expand to crates/ferric/src/ssr/ subdirectory
+
+  ferric-ssr-r1-client-hydrate:
+    owns:
+      - crates/ferric/src/hydrate.rs
+      # may expand to crates/ferric/src/hydrate/ subdirectory
+
+  ferric-ssr-r1-axum-integration:
+    owns:
+      - crates/chirp-server/Cargo.toml
+      - crates/chirp-server/src/main.rs    # additive route-registration only
+      # all new files the spoke creates in crates/chirp-server/src/
+
+  ferric-ssr-r1-synthesis:
+    owns:
+      - taskflow/dags/ferric-ssr-r1/SYNTHESIS.md
+      # creates the GitHub PR; not a file ownership
+
+# ── Frozen files (must not be modified by any task in this subtree) ───────────
+frozen:
+  - crates/ferric/src/dom.rs
+  - crates/ferric/src/signal.rs
+  - crates/ferric/src/vdom.rs
+  - crates/ferric/src/component.rs
+
+# ── Identities (invariants synthesis gate must assert) ───────────────────────
+identities:
+
+  - id: native-compile
+    command: "cargo check --lib -p ferric"
+    assertion: >
+      Passes on the host (non-wasm) native target.
+      Confirms render_to_string is reachable with no web_sys in scope.
+
+  - id: wasm-compile
+    command: "cargo check --target wasm32-unknown-unknown -p ferric"
+    assertion: >
+      Passes on the wasm32-unknown-unknown target.
+      Confirms the existing WASM client build is not broken.
+
+  - id: native-tests-pass
+    command: "cargo test -p ferric"
+    assertion: >
+      Exits zero on native target.
+      All server-render unit tests pass.
+
+  - id: chirp-server-compile
+    command: "cargo build -p chirp-server"
+    assertion: >
+      Exits zero. Axum integration compiles successfully.
+
+  - id: frozen-prelude-unchanged
+    command: >
+      git diff work/ferric-ssr-r1^..work/ferric-ssr-r1 --name-only
+      -- crates/ferric/src/dom.rs crates/ferric/src/signal.rs
+         crates/ferric/src/vdom.rs crates/ferric/src/component.rs
+    assertion: >
+      Produces no output: none of the four frozen files were modified.
+
+  - id: marker-format-agreement
+    assertion: >
+      The literal string "<!--$t-->" appears in crates/ferric/src/ssr.rs (emit site)
+      AND in crates/ferric/src/hydrate.rs (parse site).
+      No other marker format is used in either file.
+      (Use grep to verify before creating the PR.)
+
+  - id: issues-closed
+    assertion: >
+      The PR body includes "Closes #223", "Closes #224", "Closes #226" (GitHub
+      auto-close syntax) and the sentence:
+      "BAR-005 / #225 (state carry + async resource resume) is a follow-up issue
+      dependent on #130 and is NOT part of this goal."
+
+derived_artifacts: []

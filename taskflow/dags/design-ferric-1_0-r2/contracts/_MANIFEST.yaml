@@ -1,0 +1,61 @@
+kind: yaml_schema
+description: >
+  Contract for the design-ferric-1_0-r2 recovery DAG. Declares the review and
+  remediation report schemas so SUBTASK_synthesize-root can consume them
+  predictably, and maps artifact ownership across the three spokes.
+
+ownership:
+  - artifact: SUBTASK_review-validate/review-report.md
+    owner: SUBTASK_review-validate
+    consumers: [SUBTASK_remediate, SUBTASK_synthesize-root]
+  - artifact: SUBTASK_remediate/remediation-report.md
+    owner: SUBTASK_remediate
+    consumers: [SUBTASK_synthesize-root]
+  - artifact: SYNTHESIS.md
+    owner: SUBTASK_synthesize-root
+    consumers: [overseer]
+
+review_report_schema:
+  required_sections:
+    - validation_summary: |
+        One-paragraph verdict on overall design completeness (complete/mostly-complete/has-gaps).
+    - per_concern_findings: |
+        For each of the nine concerns: document name, overall status (valid/needs-fix/missing),
+        list of specific issues found (each with: type, description, severity: critical|major|minor).
+    - req_register_reconciliation: |
+        Cross-reference check: list any REQ-* ids referenced in one document but not defined, any
+        duplicate ids, any requirements in release-bar.md with no matching REQ-* citation.
+    - issue_traceability: |
+        For each epic (#129-#136): list its child issues and whether each has a traceable REQ-* citation.
+        Flag any issues with no requirement citation and any requirements with no issue.
+    - gaps_for_remediation: |
+        Prioritised list of items SUBTASK_remediate must address. Each item:
+          id: GAP-NNN (sequential)
+          description: what is missing or wrong
+          severity: critical | major | minor
+          action_required: what SUBTASK_remediate must do
+
+remediation_report_schema:
+  required_sections:
+    - remediation_summary: |
+        Overall result: what was fixed, what was confirmed as already correct, what was out of scope.
+    - actions_taken: |
+        For each GAP-NNN from the review report:
+          gap_id: GAP-NNN
+          action: fixed | confirmed-no-fix-needed | out-of-scope
+          description: what was done (or why no fix was needed)
+          artifacts_modified: list of files/issues changed (or empty if none)
+    - pr_readiness_verdict: |
+        One of: ready-to-merge | needs-review | has-blockers
+        With rationale. If needs-review or has-blockers, list specific items.
+    - synthesis_inputs: |
+        A short summary of what SUBTASK_synthesize-root should include in the SYNTHESIS.md:
+          - release_bar_summary: key BAR-FERRIC-* criteria (usable_early bar, one_oh bar, must-have)
+          - epic_index: list of epic numbers with their titles and child issue numbers
+          - pr_number: the PR number the design was filed under
+
+identities:
+  - REQ IDs are globally unique within the design. No REQ-* id appears in more than one register owner.
+  - Every BAR-FERRIC-* criterion in release-bar.md cites at least one REQ-* id.
+  - Every epic (#129-#136) has at least one child issue with a stated requirement reference.
+  - The root SYNTHESIS.md references the PR number and the epic list from the remediation report.

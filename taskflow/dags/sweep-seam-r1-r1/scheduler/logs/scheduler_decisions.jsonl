@@ -1,0 +1,4 @@
+{"timestamp":"2026-11-03T19:31:21.916514106Z","action":{"Dispatch":{"task_ids":["sweep-seam-r1-r1"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-03T19:32:14.636163180Z","action":{"WaitForCompletion":{"pending_task_ids":["sweep-seam-r1-r1"]}},"reason":"task sweep-seam-r1-r1 transitioned to Ready"}
+{"timestamp":"2026-11-03T19:32:14.636542453Z","action":{"WaitForCompletion":{"pending_task_ids":["sweep-seam-r1-r1"]}},"reason":"task sweep-seam-r1-r1 transitioned to Running"}
+{"timestamp":"2026-11-03T19:42:00.143108245Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

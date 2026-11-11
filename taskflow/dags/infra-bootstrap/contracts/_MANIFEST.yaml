@@ -1,0 +1,137 @@
+# contracts/_MANIFEST.yaml — infra-bootstrap (#10) decomposition contract
+#
+# This is the frozen seam for the infra-bootstrap fan-out. The three build spokes are
+# otherwise independent (they touch different host subsystems and disjoint repo paths); the
+# ONE shared structure they must agree on is (a) which repo paths each spoke owns and
+# (b) the shape of the evidence record each spoke emits, so the synthesis gate can enumerate
+# ownership coverage and assert the #10 acceptance criteria mechanically.
+#
+# READ-ONLY for every descendant. Amendments are additive-only (CONTRACT_LAYER.md).
+
+kind: yaml_schema
+
+purpose: >
+  Freeze the path-ownership partition and the per-spoke RESULT record schema so the synthesis
+  gate can (1) verify every #10 acceptance criterion is owned and has a verdict, (2) assert no
+  secret was committed, (3) assert reproducibility was demonstrated, and (4) assemble a single
+  unified runbook + PR from disjoint spoke outputs without reconciling divergent structures.
+
+# ---------------------------------------------------------------------------
+# Ownership — every produced artifact has exactly ONE owning subtask.
+# Spokes STAGE their repo-destined files under  SUBTASK_<slug>/staged/<repo-relative-path>
+# (a mirror of the intended repo tree) and write their evidence record at SUBTASK_<slug>/RESULT.md.
+# The synthesis gate is the ONLY task that touches git / the repo checkout and the unified runbook.
+# ---------------------------------------------------------------------------
+ownership:
+  # --- SUBTASK_cluster_k3s ---
+  "staged/deploy/bootstrap/cluster/**":
+    owner: SUBTASK_cluster_k3s
+    description: k3s install script, readiness-verification script, and the cluster runbook fragment.
+  "RESULT.md@SUBTASK_cluster_k3s":
+    owner: SUBTASK_cluster_k3s
+    description: Evidence record for the cluster-provisioning criterion (schema below).
+
+  # --- SUBTASK_wasm_toolchain ---
+  "staged/deploy/bootstrap/wasm/**":
+    owner: SUBTASK_wasm_toolchain
+    description: wasm toolchain setup script, the chirp-frontend wasm-build proof script, pinned versions, and the wasm runbook fragment.
+  "RESULT.md@SUBTASK_wasm_toolchain":
+    owner: SUBTASK_wasm_toolchain
+    description: Evidence record for the build-toolchain criterion (schema below).
+
+  # --- SUBTASK_gitops_argocd ---
+  "staged/deploy/bootstrap/gitops/**":
+    owner: SUBTASK_gitops_argocd
+    description: ArgoCD declarative install manifest/script, readiness-verification script, access/credential runbook fragment (NO secret values), and RBAC-posture notes.
+  "RESULT.md@SUBTASK_gitops_argocd":
+    owner: SUBTASK_gitops_argocd
+    description: Evidence record for the GitOps-control-plane criterion (schema below).
+
+  # --- SUBTASK_synthesis_gate (hub; owns git + the unified top-level deliverables) ---
+  "deploy/bootstrap/README.md":
+    owner: SUBTASK_synthesis_gate
+    description: Unified bootstrap runbook assembled from the three spoke fragments (prereqs, run order, verification, access).
+  "repo.git_state":
+    owner: SUBTASK_synthesis_gate
+    description: Branch work/infra-bootstrap off main, commits of all staged files, and the PR into main that Closes #10. NEVER merges; NEVER pushes to main.
+  "SYNTHESIS.md":
+    owner: SUBTASK_synthesis_gate
+    description: Root fold record + machine-gate verdict at the DAG root (the observation seam).
+
+# ---------------------------------------------------------------------------
+# Identities — invariants the synthesis gate evaluates as assertions over the COMBINED output.
+# The gate MUST NOT silently plug a failing identity; a real failure is a FAIL (or an honest
+# documented-blocker outcome when the environment forbids the install).
+# ---------------------------------------------------------------------------
+identities:
+  - id: I1_criteria_coverage
+    statement: >
+      Each of the five #10 acceptance criteria (cluster, argocd, wasm, reproducible-scripts,
+      honest-reporting) is owned by exactly one spoke's RESULT.md and carries a verdict in
+      {PASS, BLOCKED}. No criterion is unowned; none has two owners.
+    check: >
+      Enumerate the three RESULT.md files; assert the union of their `criteria[].id` equals the
+      declared #10 criteria set, each appearing once with a verdict ∈ {PASS, BLOCKED}.
+  - id: I2_no_committed_secrets
+    statement: >
+      No produced/staged file and no commit contains a live secret: no kubeconfig with embedded
+      client-cert/token data, no ArgoCD admin password value, no bearer token, no private key.
+    check: >
+      grep the staged trees and the diff for secret patterns (e.g. BEGIN .*PRIVATE KEY,
+      client-certificate-data, client-key-data, token:, password:, argocd admin password values);
+      assert zero matches carrying real values. Credential RETRIEVAL commands (documentation) are allowed.
+  - id: I3_reproducible
+    statement: >
+      Every staged executable script declares its prerequisites and is safe to re-run (idempotent
+      where feasible); the unified runbook states run order + verification for each.
+    check: >
+      Assert each staged script has a header documenting prereqs + re-run behavior, and that
+      deploy/bootstrap/README.md references every staged script with run order and a verification step.
+  - id: I4_versions_recorded
+    statement: >
+      The wasm proof records exact toolchain versions (rustc, cargo, wasm-bindgen, target), and the
+      cluster/argocd results record the installed component versions (k3s, ArgoCD).
+    check: >
+      Assert RESULT.md@SUBTASK_wasm_toolchain.versions is non-empty and names rustc + wasm-bindgen +
+      wasm32-unknown-unknown; assert the cluster and argocd RESULTs record their component versions.
+  - id: I5_honest_blockers
+    statement: >
+      Any criterion marked BLOCKED carries a concrete blocker (exact command + observed error +
+      environment fact) AND a concrete remediation path. No criterion is marked PASS without evidence
+      (command + observed output). No fabricated green.
+    check: >
+      For each criterion: if verdict==BLOCKED assert blocker{command,error,env_fact} and remediation
+      are present and non-empty; if verdict==PASS assert evidence{command,observed} is present.
+  - id: I6_infra_only_scope
+    statement: >
+      No produced file containerizes the app (#12) or authors a deploy manifest / ArgoCD Application
+      for the app (#13). Scope is standing-up + proving the environment only.
+    check: >
+      Assert no Dockerfile/app-image build and no ArgoCD `Application`/app Deployment manifest appears
+      in the staged trees (ArgoCD's OWN install workloads are in-scope; an app Application is not).
+
+# ---------------------------------------------------------------------------
+# Derived artifacts — the shared fixture every spoke composes against.
+# ---------------------------------------------------------------------------
+derived_artifacts:
+  - name: result_record.schema.md
+    description: >
+      The RESULT.md schema every spoke writes and the synthesis gate enumerates. Read-only; see the
+      sibling file contracts/result_record.schema.md. Spokes import this shape literally; they do not
+      invent their own evidence format.
+
+# ---------------------------------------------------------------------------
+# Seam classification (recorded rationale; mechanics in _GLOBAL.md prose)
+# ---------------------------------------------------------------------------
+seams:
+  - edge: SUBTASK_gitops_argocd -> SUBTASK_cluster_k3s
+    resolution: SERIALIZE
+    rationale: >
+      ArgoCD installs INTO the running cluster — a runtime dependency, not a file-shape seam.
+      Declared as a task dependency (argocd depends_on cluster_k3s); no contract artifact needed.
+  - edge: all spokes -> synthesis_gate (evidence + staged files)
+    resolution: FREEZE
+    rationale: >
+      The synthesis gate enumerates each spoke's RESULT.md and staged paths; the record shape and the
+      path partition are forced (by the #10 criteria and the unified-runbook format) and mechanically
+      assertable. Frozen as this manifest + result_record.schema.md.

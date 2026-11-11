@@ -1,0 +1,45 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T06:32:39.329218464Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_macros-assessment"
+      ],
+      "placement_parent_task_id": "ferric-router-r2"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_macros-assessment",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing ferric-router-r2: macros-assessment spoke analyzes the 12 macros/ferric commits from work/ferric-router-r1 to produce a scope document for the follow-on PR",
+        "task_id": "ferric-router-r2"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_macros-assessment": [],
+      "SUBTASK_router-branch": [],
+      "ferric-router-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_macros-assessment",
+          "SUBTASK_router-branch",
+          "ferric-router-r2"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

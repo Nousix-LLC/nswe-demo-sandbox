@@ -1,0 +1,99 @@
+{
+  "sequence": 9,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T02:21:00.093169283Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_release_bar"
+      ],
+      "placement_parent_task_id": "design-ferric-1_0"
+    },
+    "resulting_version": 9,
+    "summary": "inject tasks: SUBTASK_release_bar",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the release-bar spoke (concern 9a): consolidate all REQ registers into the testable Ferric 1.0 release bar; depends on scope + all seven capability spokes.",
+        "task_id": "design-ferric-1_0"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_async_forms_events": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_authoring_model": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_docs_and_dx": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_performance_and_benchmark": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_release_and_distribution": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_release_bar": [
+        "SUBTASK_async_forms_events",
+        "SUBTASK_authoring_model",
+        "SUBTASK_docs_and_dx",
+        "SUBTASK_performance_and_benchmark",
+        "SUBTASK_release_and_distribution",
+        "SUBTASK_router_and_http",
+        "SUBTASK_scope_and_requirements",
+        "SUBTASK_ssr_hydration"
+      ],
+      "SUBTASK_router_and_http": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_scope_and_requirements": [],
+      "SUBTASK_ssr_hydration": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "design-ferric-1_0": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scope_and_requirements",
+          "design-ferric-1_0"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_async_forms_events",
+          "SUBTASK_authoring_model",
+          "SUBTASK_docs_and_dx",
+          "SUBTASK_performance_and_benchmark",
+          "SUBTASK_release_and_distribution",
+          "SUBTASK_router_and_http",
+          "SUBTASK_ssr_hydration"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_release_bar"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

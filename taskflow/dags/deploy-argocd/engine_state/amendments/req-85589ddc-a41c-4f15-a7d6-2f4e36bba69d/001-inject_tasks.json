@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-08T16:50:24.871133951Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_discovery"
+      ],
+      "placement_parent_task_id": "deploy-argocd"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_discovery",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the serialized discovery precursor of the deploy-argocd decomposition: resolves ground-truth facts (image digest, container port/health surface, ingress class, ArgoCD/AppProject apiVersion, repo checkout, pull-secret need) that both authoring spokes and the synthesis gate depend on.",
+        "task_id": "deploy-argocd"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_discovery": [],
+      "deploy-argocd": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_discovery",
+          "deploy-argocd"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

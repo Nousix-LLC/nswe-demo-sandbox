@@ -1,0 +1,115 @@
+{
+  "sequence": 7,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-10T02:57:02.174479484Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_design_pr"
+      ],
+      "placement_parent_task_id": "design-chirp-r1"
+    },
+    "resulting_version": 7,
+    "summary": "inject tasks: SUBTASK_design_pr",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the design-PR assembly: place the produced design files into the repo design/ tree per the artifact map on branch work/design-chirp-r1 and open one PR into main.",
+        "task_id": "design-chirp-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_design_pr": [
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness",
+        "SUBTASK_product_requirements",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_domain_app_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_experience_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_identity_trust": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_operational_readiness": [
+        "SUBTASK_domain_app_design",
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_product_requirements": [],
+      "SUBTASK_release_bar": [
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness",
+        "SUBTASK_product_requirements"
+      ],
+      "design-chirp-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_product_requirements",
+          "design-chirp-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_domain_app_design",
+          "SUBTASK_experience_design",
+          "SUBTASK_identity_trust"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_operational_readiness"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_release_bar"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "SUBTASK_design_pr"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

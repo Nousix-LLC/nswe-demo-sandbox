@@ -1,0 +1,25 @@
+kind: yaml_schema
+description: >
+  API surface contract for the public (unauthenticated) Chirp endpoints.
+  SUBTASK_explore defines this shape; SUBTASK_backend implements it;
+  SUBTASK_frontend consumes it. The synthesis gate verifies alignment.
+
+ownership:
+  api_contract_definition: SUBTASK_explore
+  backend_implementation: SUBTASK_backend
+  frontend_consumption: SUBTASK_frontend
+  pr_and_synthesis: SUBTASK_synthesis
+
+identities:
+  - "The backend endpoints implement the URL paths and response shapes
+     declared or inferred from api_contract in SUBTASK_explore/analysis.md"
+  - "The frontend fetch calls target the same URL paths and deserialize
+     the same response shapes the backend serves"
+
+derived_artifacts: []
+
+notes: >
+  This is a thin-seam contract. The operative contract detail lives in
+  SUBTASK_explore/analysis.md (the exploration task's output), which
+  each downstream task reads as an input. The seam is the API shape —
+  the one structural fact the backend produces and the frontend consumes.

@@ -1,0 +1,49 @@
+{
+  "sequence": 4,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T01:07:44.469092986Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_security_infra"
+      ],
+      "placement_parent_task_id": "review-ferric-ssr-r1"
+    },
+    "resulting_version": 4,
+    "summary": "inject tasks: SUBTASK_security_infra",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "SUBTASK_security_infra covers committed infrastructure detail exposure and supply-chain risk — distinct from XSS (runtime behavior) and from code quality (design).",
+        "task_id": "review-ferric-ssr-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_security_infra": [],
+      "SUBTASK_security_xss": [],
+      "review-ferric-ssr-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "SUBTASK_security_infra",
+          "SUBTASK_security_xss",
+          "review-ferric-ssr-r1"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

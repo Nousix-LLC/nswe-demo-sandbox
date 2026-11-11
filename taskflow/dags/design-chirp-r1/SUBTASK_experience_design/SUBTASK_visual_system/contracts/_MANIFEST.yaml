@@ -1,0 +1,63 @@
+# Contract manifest — SUBTASK_visual_system (internal seam for the visual-system subtree)
+# kind: yaml_schema. READ-ONLY for every descendant. Extends the PARENT contracts
+# (../contracts/ and ../../contracts/) ADDITIVELY — it sub-ranges the REQ-UX-020..039 id space between
+# the two content children, splits the one deliverable between them, and declares the design-token seam.
+# It never overrides an inherited declaration. Where this manifest and an ancestor disagree, the ancestor wins.
+
+kind: yaml_schema
+
+extends:
+  - "../contracts/"      # experience-design seam: REQ-UX-020..039, section list, "Component library" shape, trace rule
+  - "../../contracts/"   # whole-design schema: REQ-<AREA>-NNN format + per-requirement field set
+
+artifacts:
+  - file: visual_system_seam.yaml
+    declares: "Output-fragment -> owning child; REQ-UX-020..039 sub-range partition; the named design-token
+               vocabulary (producer + consumer); the archetype/required-component coverage rule."
+
+# One producer per artifact / id range. An unowned fragment is a hole; a double-written one is a race.
+ownership:
+  "fragment:visual_language_and_design_system_section": SUBTASK_visual_language
+  "fragment:component_library_heading":                 SUBTASK_component_library
+  "vocab:design_tokens":                                SUBTASK_visual_language
+  "vocab:component_library":                            SUBTASK_component_library
+  "file:outputs/visual-system.md":                      SUBTASK_synthesis
+  "file:SYNTHESIS.md":                                  SUBTASK_synthesis
+
+req_ux_id_ranges:          # REQ-UX-NNN, 3-digit, unique within area (inherited scheme); sub-ranged here
+  SUBTASK_visual_language:  "REQ-UX-020..REQ-UX-032"
+  SUBTASK_component_library: "REQ-UX-033..REQ-UX-039"
+
+# Invariants SUBTASK_synthesis asserts with recorded evidence; a failing identity is reported and
+# remediated by decomposing a remediation subtree — never silently plugged.
+identities:
+  - id: SECTION_AND_HEADING_SHAPE
+    statement: "visual-system.md contains the visual_language_and_design_system section and a clearly-headed
+                'Component library' in the shape ../contracts/ux_section_and_id_map.yaml requires."
+  - id: TOKENS_PUBLISHED_AND_COMPOSED
+    statement: "SUBTASK_visual_language publishes a named token set under a 'Design tokens' heading; every
+                component in the component library references token names from that set, not ad-hoc values."
+  - id: ARCHETYPE_AND_COMPONENT_COVERAGE
+    statement: "The component library furnishes every screen archetype in the IA inventory (feed/list, form,
+                profile, settings, modal/dialog, confirmation, empty/landing) and every required named
+                component, each with its applicable states (default/empty/error/loading/disabled)."
+  - id: ID_UNIQUE_IN_RANGE
+    statement: "Every REQ-UX-* id is unique, within its owning child's sub-range, and within REQ-UX-020..039;
+                no collisions, no out-of-range ids."
+  - id: UX_TESTABLE_AND_GATED
+    statement: "Every REQ-UX-* has a statement, an acceptance_criteria a stranger could check on the live
+                product, and a release_gating flag (a false carries a one-line reason)."
+  - id: UX_TRACES_TO_PROD
+    statement: "Every REQ-UX-* references >=1 REQ-PROD-*."
+  - id: COMPOSES_AGAINST_PARENT
+    statement: "The inherited REQ-UX format, field set, section list, and 'Component library' required shape
+                are used, not redefined; this contract only sub-ranges ids and splits the deliverable."
+  - id: HYGIENE
+    statement: "Nothing in visual-system.md carries host/system/taskflow detail, workspace paths,
+                agent/DAG/run ids, or an attribution trailer."
+
+derived_artifacts:
+  - name: visual_system_md
+    assembled_from: "visual-language.md (section body + tokens + consistency) + component-library.md
+                     ('Component library' heading) + consolidated REQ-UX-020..039 register"
+    produced_by: SUBTASK_synthesis

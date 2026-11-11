@@ -1,0 +1,45 @@
+# section_ownership_map.yaml — how the three fragments compose into product-requirements.md.
+# READ-ONLY. EXTENDS ../../contracts/design_artifact_map.yaml (which fixes the required_sections and
+# names SUBTASK_product_requirements as the file owner). This map assigns each required section to the
+# child fragment that sources it, and fixes the single owner of the REQ-PROD-* register.
+# Children compose against this; they MUST NOT redefine the inherited required-section list or id scheme.
+
+target_file: "design/product-requirements.md"              # repo-relative; assembled at outputs/product-requirements.md
+assembled_by: SUBTASK_pr_synthesis
+
+# Each of the five inherited required_sections, mapped to its sourcing fragment.
+# "source_fragment" is the child output the synthesis gate draws the section from.
+sections:
+  - name: product_definition_and_kind
+    source_fragment: "SUBTASK_product_definition/outputs/product-definition.md"
+    must_contain: "What chirp is as a releasable product; which product kind(s) apply (consumer web / SaaS / COTS / OSS) and what each makes users assume without asking."
+
+  - name: users_personas
+    source_fragment: "SUBTASK_users_and_journeys/outputs/users-and-journeys.md"
+    must_contain: "The distinct user types chirp serves, as personas with goals and context."
+
+  - name: user_journeys
+    source_fragment: "SUBTASK_users_and_journeys/outputs/users-and-journeys.md"
+    must_contain: "End-to-end journeys incl. first visit, sign-up/in/recovery, the posting/reading/timeline/follow loops, daily use, and leaving (account deletion and data export)."
+
+  - name: requirements_and_acceptance_criteria
+    source_fragment: "SUBTASK_requirements/outputs/requirements.md"
+    must_contain: "The REQ-PROD-* register; each requirement has id, statement, stranger-testable acceptance_criteria, release_gating flag."
+
+  - name: in_scope_out_of_scope
+    source_fragment: "SUBTASK_requirements/outputs/requirements.md"
+    must_contain: "What a releasable product of this kind includes and leaves out; any concern judged out-of-scope with a reason. Consolidates the product-kind scope draft from SUBTASK_product_definition."
+
+# The REQ-PROD-* register has exactly one minter. Upstream fragments express needs in PROSE and MAY tag
+# them with informal need-handles (e.g. "need: durable timeline across restart") to aid traceability, but
+# MUST NOT assign REQ-PROD-NNN ids. SUBTASK_requirements reads the upstream fragments and mints every id.
+req_prod_register:
+  sole_minter: SUBTASK_requirements
+  id_format: "REQ-PROD-NNN"                 # per inherited ../../contracts/id_and_traceability_schema.yaml (NOT redefined)
+  upstream_fragments_may: "express needs in prose + informal need-handles"
+  upstream_fragments_must_not: "assign REQ-PROD-NNN ids"
+
+# Informal need-handle convention (optional aid, not an id): lowercase 'need:' prefix in prose.
+# SUBTASK_requirements maps each handle it adopts to a minted REQ-PROD-* so the journey->requirement
+# trace (identity JOURNEY_TO_REQ) is checkable by the synthesis gate.
+need_handle_convention: "need: <short phrase>"

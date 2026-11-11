@@ -1,0 +1,82 @@
+{
+  "sequence": 4,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T21:16:18.039426172Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "ferric-authoring-141-diag"
+      ],
+      "placement_parent_task_id": "ferric-epic-authoring-r1"
+    },
+    "resulting_version": 4,
+    "summary": "inject tasks: ferric-authoring-141-diag",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing the ferric-epic-authoring-r1 hub: T04 adds trybuild component diagnostic fixtures per authoring-model.md §3.7, closing #141. Runs in parallel with T05.",
+        "task_id": "ferric-epic-authoring-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "ferric-authoring-137-138": [],
+      "ferric-authoring-139-view": [
+        "ferric-authoring-137-138"
+      ],
+      "ferric-authoring-140-comp": [
+        "ferric-authoring-139-view"
+      ],
+      "ferric-authoring-141-diag": [
+        "ferric-authoring-140-comp"
+      ],
+      "ferric-epic-authoring-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-authoring-137-138",
+          "ferric-epic-authoring-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "ferric-authoring-139-view"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "ferric-authoring-140-comp"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "ferric-authoring-141-diag"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

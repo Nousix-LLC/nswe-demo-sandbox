@@ -1,0 +1,121 @@
+{
+  "sequence": 25,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T15:09:05.458487147Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_synthesis"
+      ],
+      "placement_parent_task_id": "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests"
+    },
+    "resulting_version": 25,
+    "summary": "inject tasks: SUBTASK_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing spoke-tests: materializing the synthesis gate that reads all 3 concern analyses and assembles FINDINGS.md per the parent schema.",
+        "task_id": "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests"
+      }
+    },
+    "updated_graph_edges": {
+      "review-chirp-logged-out-r1": [],
+      "review-chirp-logged-out-r1/spoke-access-auth": [],
+      "review-chirp-logged-out-r1/spoke-code-quality": [],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-code-health": [],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-correctness": [],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-prose": [],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-safety-idiom": [],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-synthesis": [
+        "review-chirp-logged-out-r1/spoke-code-quality/spoke-code-health",
+        "review-chirp-logged-out-r1/spoke-code-quality/spoke-correctness",
+        "review-chirp-logged-out-r1/spoke-code-quality/spoke-prose",
+        "review-chirp-logged-out-r1/spoke-code-quality/spoke-safety-idiom",
+        "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests"
+      ],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests": [],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_frontend-test-validity": [],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_handler-unit-tests": [],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_integration-tests": [],
+      "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_synthesis": [
+        "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_frontend-test-validity",
+        "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_handler-unit-tests",
+        "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_integration-tests"
+      ],
+      "review-chirp-logged-out-r1/spoke-state-machine": [],
+      "review-chirp-logged-out-r1/spoke-ui-states": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_check-ac2": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_check-ac3": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_check-ac4p": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_synthesis-findings": [
+        "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_check-ac2",
+        "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_check-ac3",
+        "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_check-ac4p"
+      ],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas/SUBTASK_ac4-path": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas/SUBTASK_annotation": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas/SUBTASK_cta-link": [],
+      "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_synthesis": [
+        "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states",
+        "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas"
+      ],
+      "review-chirp-logged-out-r1/synthesis": [
+        "review-chirp-logged-out-r1/spoke-access-auth",
+        "review-chirp-logged-out-r1/spoke-code-quality",
+        "review-chirp-logged-out-r1/spoke-state-machine",
+        "review-chirp-logged-out-r1/spoke-ui-states"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "review-chirp-logged-out-r1",
+          "review-chirp-logged-out-r1/spoke-access-auth",
+          "review-chirp-logged-out-r1/spoke-code-quality",
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-code-health",
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-correctness",
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-prose",
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-safety-idiom",
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests",
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_frontend-test-validity",
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_handler-unit-tests",
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_integration-tests",
+          "review-chirp-logged-out-r1/spoke-state-machine",
+          "review-chirp-logged-out-r1/spoke-ui-states",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_check-ac2",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_check-ac3",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_check-ac4p",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas/SUBTASK_ac4-path",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas/SUBTASK_annotation",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_routing-ctas/SUBTASK_cta-link"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-synthesis",
+          "review-chirp-logged-out-r1/spoke-code-quality/spoke-tests/SUBTASK_synthesis",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_landing-states/SUBTASK_synthesis-findings",
+          "review-chirp-logged-out-r1/spoke-ui-states/SUBTASK_synthesis",
+          "review-chirp-logged-out-r1/synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

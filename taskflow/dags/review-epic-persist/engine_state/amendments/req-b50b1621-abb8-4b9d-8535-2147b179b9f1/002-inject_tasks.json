@@ -1,0 +1,45 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T01:47:40.685277341Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_durability_proof"
+      ],
+      "placement_parent_task_id": "review-epic-persist"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_durability_proof",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the durability-proof / test-depth concern spoke of the PR #113 review decomposition.",
+        "task_id": "review-epic-persist"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_correctness": [],
+      "SUBTASK_durability_proof": [],
+      "review-epic-persist": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_correctness",
+          "SUBTASK_durability_proof",
+          "review-epic-persist"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,23 @@
+kind: yaml_schema+markdown_schema
+
+ownership:
+  - artifact: child-dead-code/finding_c6.md
+    owner: child-dead-code
+  - artifact: child-hydrate-scope/finding_c7.md
+    owner: child-hydrate-scope
+  - artifact: spoke-code-health/FINDINGS.md
+    owner: child-synthesis
+
+identities:
+  - "Concern 6 is covered exactly once, in child-dead-code/finding_c6.md"
+  - "Concern 7 is covered exactly once, in child-hydrate-scope/finding_c7.md"
+  - "FINDINGS.md contains ## Verdict, ## Findings (when FINDINGS verdict), and ## Clean Account covering concerns 6 and 7"
+  - "Every finding in FINDINGS.md cites a file path and line number at commit decb6196c2c1e6ed421d393a642f0c844cc333ba"
+
+derived_artifacts: []
+
+schema_files:
+  - path: concern_finding_schema.md
+    description: Structure for per-concern finding files (finding_c6.md, finding_c7.md)
+  - path: ../../contracts/findings_schema.md
+    description: Inherited parent schema for the final FINDINGS.md

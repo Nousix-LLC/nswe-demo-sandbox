@@ -1,0 +1,72 @@
+# _MANIFEST.yaml — ferric-epic-authoring-r1 identity assertions
+#
+# These assertions must all pass before T06-synthesis opens the PR. The SYNTHESIS.md
+# records the pass/fail status of each assertion with evidence.
+
+hub: ferric-epic-authoring-r1
+branch: work/ferric-epic-authoring-r1
+
+identity_assertions:
+
+  - id: IA1
+    statement: >
+      Each of the six sub-issues (#137, #138, #139, #140, #141, #142) is accounted for
+      by exactly one child task (T01–T05). No sub-issue is unaddressed; no sub-issue is
+      covered by more than one task.
+    verification: >
+      Enumerate the six issues. For each, name the task that closes it and confirm the
+      task's COMPLETE.md records it as closed.
+
+  - id: IA2
+    statement: >
+      The view! macro (T02) and the component model (T03) are connected at the invocation
+      seam: a capitalized tag in view! is a component invocation, and the component model's
+      Component::render method is the mechanism that produces the VNode spliced into the
+      parent tree. No alternate invocation path exists. This is the IA2 seam from
+      design/ferric/authoring-model.md §3.8.
+    verification: >
+      Confirm that view! lowering for a capitalized tag calls Component::render (or the
+      generated props builder + render path), not a separate rendering mechanism.
+      Confirm that an end-to-end test exercises a component invocation from within view!.
+
+  - id: IA3
+    statement: >
+      The context API (T05) is callable from a component body — the unit the macro renders.
+      provide_context, use_context, and expect_context are free functions usable in an
+      ordinary Fn() -> VNode body, with no special mounting hook required. This is the
+      IA3 seam from design/ferric/authoring-model.md §4.7.
+    verification: >
+      Confirm that the test suite (T05) demonstrates provide_context called in a parent
+      component body and use_context/expect_context called in a child component body,
+      with the values flowing without prop threading.
+
+  - id: IA4
+    statement: >
+      All additions to crates/ferric are strictly additive over the frozen prelude. No
+      existing public export (create_signal, create_memo, create_effect, batch, Signal,
+      Memo, Component, mount, EventKind, VElement, VNode) is removed, renamed, or given
+      a changed signature. An app compiled against the baseline prelude on main still
+      compiles without modification with the authoring model additions present.
+    verification: >
+      Confirm that the counter example (examples/counter.rs on main) still compiles
+      without modification on the final branch. Confirm no existing prelude item is
+      absent from the final prelude.
+
+  - id: IA5
+    statement: >
+      Every code task (T01 through T05) produces at least one commit on the branch
+      work/ferric-epic-authoring-r1. The synthesis task (T06) opens the PR from that
+      branch. The branch contains commits satisfying all six acceptance criteria before
+      the PR is opened.
+    verification: >
+      Confirm that git log on work/ferric-epic-authoring-r1 shows commits from each
+      task. Confirm the PR is from that branch.
+
+  - id: IA6
+    statement: >
+      All trybuild diagnostic fixtures (view! diagnostics from T02, component diagnostics
+      from T04) have committed expected stderr files and pass as part of cargo test on
+      the final branch. The trybuild suite is not gated behind a feature flag.
+    verification: >
+      Confirm that cargo test includes the trybuild suite and all fixtures match their
+      committed stderr. Confirm the CI test job runs the trybuild suite.

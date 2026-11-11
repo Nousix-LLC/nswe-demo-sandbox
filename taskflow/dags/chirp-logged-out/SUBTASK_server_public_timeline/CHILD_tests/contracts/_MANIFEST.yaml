@@ -1,0 +1,24 @@
+kind: execution_sequence
+description: >
+  Serial pipeline: CHILD_write_tests authors the test code; CHILD_ci_verify
+  verifies and certifies it. The seam is tests/api.rs — written by write_tests,
+  read and verified by ci_verify.
+
+ownership:
+  - artifact: "crates/chirp-server/tests/api.rs"
+    owner: CHILD_write_tests
+    description: Four new test cases + UnhealthyStore::public_timeline stub
+  - artifact: "taskflow/dags/chirp-logged-out/SUBTASK_server_public_timeline/COMPLETE.md"
+    owner: CHILD_ci_verify
+    description: Parent task completion record
+  - artifact: "taskflow/dags/chirp-logged-out/SUBTASK_server_public_timeline/CHILD_tests/SYNTHESIS.md"
+    owner: CHILD_ci_verify
+    description: Fold record (synthesis terminal record)
+
+identities:
+  - "cargo fmt --check exits 0 on crates/chirp-server/ after CHILD_write_tests commits"
+  - "cargo clippy exits 0 (no new warnings) on crates/chirp-server/ after CHILD_write_tests commits"
+  - "cargo test passes (all 4 new test cases pass, all prior tests unaffected)"
+  - "CHILD_write_tests does not introduce host paths, internal addresses, SSH key paths, or taskflow references into committed code"
+
+derived_artifacts: []

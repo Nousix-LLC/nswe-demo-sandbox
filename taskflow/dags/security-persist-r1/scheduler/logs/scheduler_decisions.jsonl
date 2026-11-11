@@ -1,0 +1,15 @@
+{"timestamp":"2026-11-03T18:11:31.628209527Z","action":{"Dispatch":{"task_ids":["security-persist-r1"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-03T18:12:14.468662949Z","action":{"WaitForCompletion":{"pending_task_ids":["security-persist-r1"]}},"reason":"task security-persist-r1 transitioned to Ready"}
+{"timestamp":"2026-11-03T18:12:14.468847518Z","action":{"WaitForCompletion":{"pending_task_ids":["security-persist-r1"]}},"reason":"task security-persist-r1 transitioned to Running"}
+{"timestamp":"2026-11-03T18:18:06.022845138Z","action":{"Dispatch":{"task_ids":["SUBTASK_credential_hashing"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-03T18:18:26.542524606Z","action":{"WaitForCompletion":{"pending_task_ids":["security-persist-r1"]}},"reason":"task security-persist-r1 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-03T18:18:43.051795474Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_credential_hashing"]}},"reason":"task SUBTASK_credential_hashing transitioned to Ready"}
+{"timestamp":"2026-11-03T18:18:43.052038917Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_credential_hashing"]}},"reason":"task SUBTASK_credential_hashing transitioned to Running"}
+{"timestamp":"2026-11-03T18:28:58.767618030Z","action":{"Dispatch":{"task_ids":["SUBTASK_ssl_manifest"],"group_index":1}},"reason":"task SUBTASK_credential_hashing completed, dispatching ready successors"}
+{"timestamp":"2026-11-03T18:29:57.357035621Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_ssl_manifest"]}},"reason":"task SUBTASK_ssl_manifest transitioned to Ready"}
+{"timestamp":"2026-11-03T18:29:57.357558595Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_ssl_manifest"]}},"reason":"task SUBTASK_ssl_manifest transitioned to Running"}
+{"timestamp":"2026-11-03T18:31:50.765535694Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":2}},"reason":"task SUBTASK_ssl_manifest completed, dispatching ready successors"}
+{"timestamp":"2026-11-03T18:32:53.282044641Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-11-03T18:32:53.282245309Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-11-03T18:41:42.468216451Z","action":{"SubtreeResolved":{"parent_task_id":"security-persist-r1","child_task_ids":["SUBTASK_credential_hashing","SUBTASK_ssl_manifest","SUBTASK_synthesis"],"success":true}},"reason":"all children of security-persist-r1 reached terminal state (success=true)"}
+{"timestamp":"2026-11-03T18:41:42.468637245Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

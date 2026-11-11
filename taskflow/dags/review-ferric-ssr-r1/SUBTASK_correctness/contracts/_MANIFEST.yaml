@@ -1,0 +1,37 @@
+kind: yaml_schema
+
+# Findings file schema binding every spoke in this subtree.
+# Each spoke MUST produce a findings file whose content satisfies this schema.
+# Prose framing around the structured data is acceptable; the data must be present and unambiguous.
+
+schema:
+  criteria:
+    type: list
+    items:
+      id: string         # e.g. REQ-SSR-001
+      status: enum       # CLEAN | FINDING_BLOCKER | FINDING_NON_BLOCKER
+      what_checked: string
+      evidence: string   # "file:line" or "file:line–line" in Nousix-LLC/nswe-demo (never host paths)
+      finding: string|null   # null when CLEAN
+  non_goal:
+    type: string|null    # axum_mismatch spoke only: explicit REQ-SSR-007 confirmation text
+
+ownership:
+  ssr_render_findings.md: SUBTASK_ssr_render
+  hydration_findings.md: SUBTASK_hydration
+  axum_mismatch_findings.md: SUBTASK_axum_mismatch
+  ../correctness_findings.md: SUBTASK_correctness_synthesis
+
+identities:
+  - name: all_criteria_covered
+    description: Every in-scope criterion has a verdict (no silent omission)
+  - name: marker_format_consistency
+    description: >
+      The marker schema documented in ssr_render_findings.md (REQ-SSR-004) MUST agree with
+      the marker schema documented in hydration_findings.md (REQ-HYD-004).
+      Synthesis verifies this and MUST NOT silently plug a failure.
+  - name: non_goal_confirmed
+    description: >
+      REQ-SSR-007 / #225 is explicitly confirmed as absent or stubbed only, never as deficient.
+
+derived_artifacts: []

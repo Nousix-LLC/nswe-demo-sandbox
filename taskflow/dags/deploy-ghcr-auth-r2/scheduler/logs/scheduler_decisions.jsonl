@@ -1,0 +1,31 @@
+{"timestamp":"2026-10-10T01:53:17.311750119Z","action":{"Dispatch":{"task_ids":["deploy-ghcr-auth-r2"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-10T01:56:18.132233886Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-ghcr-auth-r2"]}},"reason":"task deploy-ghcr-auth-r2 transitioned to Ready"}
+{"timestamp":"2026-10-10T01:56:18.132646136Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-ghcr-auth-r2"]}},"reason":"task deploy-ghcr-auth-r2 transitioned to Running"}
+{"timestamp":"2026-10-10T02:02:13.601482444Z","action":{"Dispatch":{"task_ids":["SUBTASK_diagnose"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-10T02:02:51.144715289Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-ghcr-auth-r2"]}},"reason":"task deploy-ghcr-auth-r2 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-10T02:02:53.419641221Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_diagnose"]}},"reason":"task SUBTASK_diagnose transitioned to Ready"}
+{"timestamp":"2026-10-10T02:02:53.420013416Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_diagnose"]}},"reason":"task SUBTASK_diagnose transitioned to Running"}
+{"timestamp":"2026-10-10T02:06:13.726191288Z","action":{"Dispatch":{"task_ids":["SUBTASK_remediate"],"group_index":1}},"reason":"task SUBTASK_diagnose completed, dispatching ready successors"}
+{"timestamp":"2026-10-10T02:07:31.883322064Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_remediate"]}},"reason":"task SUBTASK_remediate transitioned to Ready"}
+{"timestamp":"2026-10-10T02:07:31.884530700Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_remediate"]}},"reason":"task SUBTASK_remediate transitioned to Running"}
+{"timestamp":"2026-10-10T02:09:33.398338609Z","action":{"Dispatch":{"task_ids":["SUBTASK_verify_synthesis"],"group_index":2}},"reason":"task SUBTASK_remediate completed, dispatching ready successors"}
+{"timestamp":"2026-10-10T02:10:20.330662380Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_synthesis"]}},"reason":"task SUBTASK_verify_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-10T02:10:20.331810642Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_synthesis"]}},"reason":"task SUBTASK_verify_synthesis transitioned to Running"}
+{"timestamp":"2026-10-10T02:18:10.983711871Z","action":{"SubtreeResolved":{"parent_task_id":"deploy-ghcr-auth-r2","child_task_ids":["SUBTASK_diagnose","SUBTASK_remediate","SUBTASK_verify_synthesis"],"success":true}},"reason":"all children of deploy-ghcr-auth-r2 reached terminal state (success=true)"}
+{"timestamp":"2026-10-10T02:18:10.984019967Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T00:36:05.751649302Z","action":{"Dispatch":{"task_ids":["SUBTASK_verify_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T00:37:11.341339965Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_synthesis"]}},"reason":"task SUBTASK_verify_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-22T00:37:11.341609756Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_synthesis"]}},"reason":"task SUBTASK_verify_synthesis transitioned to Running"}
+{"timestamp":"2026-10-22T00:43:22.199981357Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-ghcr-auth-r2"]}},"reason":"task SUBTASK_verify_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:04:21.595931501Z","action":{"Dispatch":{"task_ids":["SUBTASK_verify_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:08:13.101544846Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_synthesis"]}},"reason":"task SUBTASK_verify_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-22T16:08:13.101849171Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_synthesis"]}},"reason":"task SUBTASK_verify_synthesis transitioned to Running"}
+{"timestamp":"2026-10-22T16:17:01.324710139Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-ghcr-auth-r2"]}},"reason":"task SUBTASK_verify_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:17:06.603046781Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T16:17:31.326589064Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T16:41:27.604396367Z","action":{"Dispatch":{"task_ids":["SUBTASK_verify_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:44:18.188600514Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_synthesis"]}},"reason":"task SUBTASK_verify_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-22T16:44:18.188817784Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_verify_synthesis"]}},"reason":"task SUBTASK_verify_synthesis transitioned to Running"}
+{"timestamp":"2026-10-22T16:48:14.538317603Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-ghcr-auth-r2"]}},"reason":"task SUBTASK_verify_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:48:18.009504790Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T16:48:44.539425077Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}

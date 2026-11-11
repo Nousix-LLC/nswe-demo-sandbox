@@ -1,0 +1,97 @@
+{
+  "sequence": 11,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T05:44:55.714136450Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [
+        "SUBTASK_synthesis"
+      ],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "FIXTASK_frontend_contract"
+      ],
+      "placement_parent_task_id": "chirp-logged-out-r4-synthesis"
+    },
+    "resulting_version": 11,
+    "summary": "inject tasks: FIXTASK_frontend_contract",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Check 2 (Contract Verification) identified a wire-format mismatch: the frontend's public API deserialization structs use snake_case field names and String types for id/timestamps, but the backend serializes with camelCase (serde rename_all) and integer types. This causes runtime serde errors on every API response. A fix-task is required to update the frontend structs.",
+        "task_id": "chirp-logged-out-r4-synthesis"
+      }
+    },
+    "updated_graph_edges": {
+      "FIXTASK_frontend_contract": [
+        "SUBTASK_synthesis"
+      ],
+      "SUBTASK_design_analysis": [],
+      "SUBTASK_ferric_analysis": [],
+      "SUBTASK_frontend_analysis": [],
+      "SUBTASK_git_branch": [],
+      "SUBTASK_server_analysis": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_design_analysis",
+        "SUBTASK_ferric_analysis",
+        "SUBTASK_frontend_analysis",
+        "SUBTASK_git_branch",
+        "SUBTASK_server_analysis"
+      ],
+      "chirp-logged-out-r4": [],
+      "chirp-logged-out-r4-backend": [
+        "chirp-logged-out-r4-explore"
+      ],
+      "chirp-logged-out-r4-explore": [],
+      "chirp-logged-out-r4-frontend": [
+        "chirp-logged-out-r4-explore"
+      ],
+      "chirp-logged-out-r4-synthesis": [
+        "chirp-logged-out-r4-backend",
+        "chirp-logged-out-r4-frontend"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_design_analysis",
+          "SUBTASK_ferric_analysis",
+          "SUBTASK_frontend_analysis",
+          "SUBTASK_git_branch",
+          "SUBTASK_server_analysis",
+          "chirp-logged-out-r4",
+          "chirp-logged-out-r4-explore"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis",
+          "chirp-logged-out-r4-backend",
+          "chirp-logged-out-r4-frontend"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "FIXTASK_frontend_contract",
+          "chirp-logged-out-r4-synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

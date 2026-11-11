@@ -1,0 +1,42 @@
+# Contract manifest — SUBTASK_synthesis (internal seam for the visual-system synthesis gate)
+# kind: yaml_schema. READ-ONLY for every descendant. Extends ../../contracts/ (visual-system seam),
+# ../../../contracts/ and ../../../../contracts/ additively; it overrides none of them.
+kind: yaml_schema
+extends:
+  - "../../contracts/"
+  - "../../../contracts/"
+  - "../../../../contracts/"
+ownership:
+  "file:../outputs/visual-system.md":              SUBTASK_assemble_deliverable
+  "file:outputs/identity_verification.md":         SUBTASK_verify_identities
+  "file:SYNTHESIS.md":                             SUBTASK_fold_record
+  "file:../SYNTHESIS.md":                          SUBTASK_fold_record
+handoffs:
+  - from: SUBTASK_assemble_deliverable
+    to: SUBTASK_verify_identities
+    carries: "the assembled visual-system.md; assembly writes nothing after it completes"
+  - from: SUBTASK_verify_identities
+    to: SUBTASK_fold_record
+    carries: "per-identity verdict + evidence for the eight inherited identities (identity_verification.md)"
+verification_record_shape:
+  per_identity: [id, verdict(PASS|FAIL), evidence]
+  identities_covered:
+    - SECTION_AND_HEADING_SHAPE
+    - TOKENS_PUBLISHED_AND_COMPOSED
+    - ARCHETYPE_AND_COMPONENT_COVERAGE
+    - ID_UNIQUE_IN_RANGE
+    - UX_TESTABLE_AND_GATED
+    - UX_TRACES_TO_PROD
+    - COMPOSES_AGAINST_PARENT
+    - HYGIENE
+identities:
+  - id: VERIFY_READS_FINAL_ASSEMBLY
+    statement: "Verification evidence is gathered from visual-system.md after assembly completed."
+  - id: ALL_EIGHT_ASSERTED
+    statement: "identity_verification.md holds a verdict and evidence for each identity in identities_covered."
+  - id: FOLD_MATCHES_VERIFICATION
+    statement: "Both SYNTHESIS.md records restate the verification verdicts unchanged; any FAIL is reported and
+                routed to a remediation subtree, never plugged."
+  - id: NO_REQ_UX_MINTED
+    statement: "No REQ-UX id is added, removed, or renumbered by this gate; the register holds REQ-UX-020..039."
+derived_artifacts: []

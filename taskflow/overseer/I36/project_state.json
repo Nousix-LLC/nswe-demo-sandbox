@@ -1,0 +1,998 @@
+{
+  "project_id": "nswe-demo",
+  "repo": "Nousix-LLC/nswe-demo",
+  "goal": "A small Rust/WebAssembly web-application framework (ferric) and a Twitter-style clone (chirp) built on it, production quality; built, tested, and continuously delivered via GitHub Actions CI and ArgoCD on k3s; reachable on the cluster. The GitHub Project, issues, and PRs are the working record.",
+  "created": "2026-10-01T23:20:44Z",
+  "updated": "2026-10-07T05:34:00Z",
+  "status": "active",
+  "working_branch": "main",
+  "flow": "Each unit of work is a forked swe-coder DAG on a feature branch -> pushes -> opens a PR into main referencing its issue -> overseer schedules a review DAG -> overseer gates/merges. CI via GitHub Actions; CD via ArgoCD on k3s. Bugs -> issues -> fix DAGs. Lockfile/rebase conflicts (a sibling landing restales an open PR's Cargo.lock) are cleared by a forked relock/rebase DAG, never inline (P1). (This PR-into-main flow follows the explicit user request and supersedes the app's local-first default.)",
+  "current_pointer": 5,
+  "engagement": {
+    "project_board": "https://github.com/orgs/Nousix-LLC/projects/1",
+    "project_id_gh": "PVT_kwDOEB9jls4BlZH4",
+    "status_field_id": "PVTSSF_lADOEB9jls4BlZH4zhkGLsc",
+    "status_options": {
+      "Todo": "f75ad846",
+      "In Progress": "47fc9ee4",
+      "Done": "98236657"
+    },
+    "project_item_ids": {
+      "issue_1": "PVTI_lADOEB9jls4BlZH4zg-BHJY",
+      "issue_2": "PVTI_lADOEB9jls4BlZH4zg-BHKw",
+      "issue_3": "PVTI_lADOEB9jls4BlZH4zg-BHL4",
+      "issue_4": "PVTI_lADOEB9jls4BlZH4zg-BHNo",
+      "issue_5": "PVTI_lADOEB9jls4BlZH4zg-BHRk",
+      "issue_6": "PVTI_lADOEB9jls4BlZH4zg-BHTA",
+      "issue_7": "PVTI_lADOEB9jls4BlZH4zg-BHTs",
+      "issue_8": "PVTI_lADOEB9jls4BlZH4zg-BHUs",
+      "issue_9": "PVTI_lADOEB9jls4BlZH4zg-BHWM",
+      "issue_10": "PVTI_lADOEB9jls4BlZH4zg-BHY4",
+      "issue_11": "PVTI_lADOEB9jls4BlZH4zg-BHZw",
+      "issue_12": "PVTI_lADOEB9jls4BlZH4zg-BHbE",
+      "issue_13": "PVTI_lADOEB9jls4BlZH4zg-BHcE"
+    },
+    "milestones": {
+      "M1": 1,
+      "M2": 2,
+      "M3": 3
+    },
+    "issues": {
+      "epic_ferric": 1,
+      "epic_chirp": 2,
+      "epic_devops": 3,
+      "ferric-foundation": 4,
+      "ferric-router": 5,
+      "ferric-http": 6,
+      "chirp-types": 7,
+      "chirp-server": 8,
+      "chirp-frontend": 9,
+      "infra-bootstrap": 10,
+      "ci-actions": 11,
+      "containerize": 12,
+      "deploy-argocd": 13
+    },
+    "architecture": {
+      "framework": "ferric (crates/ferric): client-side WASM framework \u2014 reactive signals, component model, DOM rendering (wasm-bindgen/web-sys), router, fetch/JSON http client",
+      "app": "chirp: crates/chirp-types (shared contract), crates/chirp-server (axum REST API + persistence + static SPA serving), crates/chirp-frontend (ferric SPA)",
+      "deploy": "chirp-server containerized; k8s manifests under deploy/; ArgoCD Application tracking the repo deploys to k3s"
+    }
+  },
+  "known_patterns": {
+    "lockfile_restale_on_land": "Every land to main moves the base and MAY restale the Cargo.lock of a still-open sibling PR that branched from an earlier commit \u2014 BUT ONLY IF the two sides' lockfile changes textually overlap. If the sibling PRs add package nodes in NON-overlapping regions (alphabetically distant [[package]] blocks), git text-merges them cleanly and there is NO conflict. First observed at I14: landing #16 (ferric-router #5) at I13 restaled PR #15 (ferric-http #6) -> I15 forked ferric-http-relock-r1. I16's chirp-types #7 land (squash 2e32aed) was EXPECTED to restale PR #15 again, but at I17 the live gh poll showed PR #15 OPEN/MERGEABLE/CLEAN: chirp-types ('c') and ferric-http ('f') added non-overlapping additive Cargo.lock nodes with zero version churn, so git merged them cleanly and NO relock-r2 was needed. LESSON: always CONFIRM restale via the live gh mergeability poll, never by assumption \u2014 a sibling land does not necessarily conflict. When a PR IS CONFLICTING, clear it with one forked relock/rebase DAG (check out work/<slug>, merge origin/main, regenerate Cargo.lock via cargo build, re-run the synthesis gate, push), never inline (P1).",
+    "gh_mergeability_async": "gh pr view returns mergeable/mergeStateStatus=UNKNOWN on a fresh query; GitHub computes it asynchronously. Re-poll until it is not UNKNOWN before gating a land. Never land on UNKNOWN; never land CONFLICTING.",
+    "gh_self_review_block": "gh pr review --approve is rejected (Can not approve your own pull request) because the authenticated gh account authored the PR; the fallback posts --comment (state COMMENTED). The authoritative APPROVE/REQUEST-CHANGES verdict is in the review DAG's SYNTHESIS.md body, not the gh review state.",
+    "gate_on_synthesis_not_review_body": "A DAG that has produced a SIDE-EFFECT (a review DAG posting a review-body.md; a relock DAG PUSHING a rebased branch that makes a PR mechanically CLEAN; a decomposed code DAG holding a SUBTASK_synthesis_gate/ child) but has NOT written its ROOT SYNTHESIS.md / COMPLETE.md has NOT folded. The overseer gates on the folded ROOT SYNTHESIS.md verdict record, never on a side-effect or a subtask-level marker alone. First applied at I15 (review-chirp-types posted APPROVE but no root SYNTHESIS.md -> I15 did NOT land PR #17). Re-applied at I16: ferric-http-relock-r1 had PUSHED a rebase but written NO root SYNTHESIS.md -> I16 did NOT land #6. RESOLVED at I17: ferric-http-relock-r1 HAD folded (root SYNTHESIS.md re-PASS on rebased tree e27c2ac + COMPLETE.md) AND gh confirmed PR #15 OPEN/MERGEABLE/CLEAN -> I17 LANDED #6. Re-applied at I18: chirp-server #8 held root SUSPENSION.md (NeedsDecompose) + a SUBTASK_synthesis_gate/ child with only a _BRIEF.md, but NO root SYNTHESIS.md -> still running, NOT folded, no gate."
+  },
+  "dispatched_dags": [
+    {
+      "item_slug": "ferric-foundation",
+      "issue": 4,
+      "branch": "work/ferric-foundation",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-foundation",
+      "methodology_bundles": [
+        "rust",
+        "core",
+        "code-quality",
+        "testing"
+      ],
+      "dispatched_at": "2026-10-01T23:20:44Z",
+      "status": "landed-and-reaped",
+      "machine_gate": {
+        "verdict": "PASS",
+        "round": 1,
+        "pr": 14,
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-foundation/SYNTHESIS.md",
+        "gated_by": "overseer/I1",
+        "gated_at": "2026-10-06T12:20:00Z"
+      },
+      "landed_by": "overseer/I2",
+      "landed_commit": "3c8d26408b3027cf625aa5ec0ca50e5cdd38c0fc"
+    },
+    {
+      "item_slug": "review-ferric-foundation",
+      "issue": 4,
+      "kind": "review",
+      "reviews_pr": 14,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-ferric-foundation",
+      "methodology_bundles": [
+        "code-review",
+        "rust",
+        "core"
+      ],
+      "dispatched_at": "2026-10-06T12:20:00Z",
+      "dispatched_by": "overseer/I1",
+      "status": "folded-and-reaped",
+      "verdict": "APPROVE",
+      "review_url": "https://github.com/Nousix-LLC/nswe-demo/pull/14#pullrequestreview-5433582590",
+      "note": "gh review posted as COMMENTED (self-review platform block; author==gh account); authoritative verdict APPROVE carried in SYNTHESIS.md"
+    },
+    {
+      "item_slug": "ferric-router",
+      "issue": 5,
+      "branch": "work/ferric-router",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-router",
+      "methodology_bundles": [
+        "rust",
+        "core",
+        "code-quality",
+        "testing"
+      ],
+      "dispatched_at": "2026-10-06T19:33:00Z",
+      "dispatched_by": "overseer/I2",
+      "forked_thread_id": "ferric-router",
+      "status": "landed-and-reaped",
+      "machine_gate": {
+        "verdict": "PASS",
+        "round": 1,
+        "pr": 16,
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-router/SYNTHESIS.md",
+        "gated_by": "overseer/I11",
+        "gated_at": "2026-10-07T00:58:00Z"
+      },
+      "landed_by": "overseer/I13",
+      "landed_commit": "cb619e9099393b1a7b8879c5038fd2326cbec4cd",
+      "note": "Machine PASS round 1 (PR #16 Closes #5). Review DAG review-ferric-router folded APPROVE (0 block/0 major) at I13; I13 LANDED via gh pr merge 16 --squash --delete-branch -> squash commit cb619e9 on main, issue #5 CLOSED, board Done, current_pointer 1->2. Code-DAG + review-DAG reaped whole (scratch). NOTE: this land restaled PR #15's Cargo.lock (see known_patterns.lockfile_restale_on_land)."
+    },
+    {
+      "item_slug": "review-ferric-router",
+      "issue": 5,
+      "kind": "review",
+      "reviews_pr": 16,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-ferric-router",
+      "methodology_bundles": [
+        "code-review",
+        "rust",
+        "core"
+      ],
+      "dispatched_at": "2026-10-07T00:58:36Z",
+      "dispatched_by": "overseer/I11",
+      "forked_thread_id": "review-ferric-router",
+      "status": "folded-and-reaped",
+      "verdict": "APPROVE",
+      "gated_by": "overseer/I13",
+      "note": "I11's demand-driven fork (reviewed PR #16 / ferric-router #5). FOLDED at I13: authoritative verdict APPROVE (0 block, 0 major; 2 minor by-design + 3 nits; 9/9 acceptance; machine gate relied upon not re-run). I13 gated APPROVE+green -> LANDED PR #16. Reaped whole after land (scratch)."
+    },
+    {
+      "item_slug": "ferric-http",
+      "issue": 6,
+      "branch": "work/ferric-http",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-http",
+      "methodology_bundles": [
+        "rust",
+        "core",
+        "code-quality",
+        "testing"
+      ],
+      "prepared_by": "overseer/I2",
+      "dispatched_at": "2026-10-07T00:39:38Z",
+      "dispatched_by": "overseer/I8",
+      "forked_thread_id": "ferric-http",
+      "status": "landed-and-reaped",
+      "machine_gate": {
+        "verdict": "PASS",
+        "round": 1,
+        "pr": 15,
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-http/SYNTHESIS.md",
+        "gated_by": "overseer/I11",
+        "gated_at": "2026-10-07T00:58:00Z"
+      },
+      "review": {
+        "verdict": "APPROVE",
+        "reviewed_by_dag": "review-ferric-http",
+        "gated_by": "overseer/I14",
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-ferric-http/SYNTHESIS.md",
+        "note": "0 block/0 major, 5 non-blocking nits, 7/7 acceptance; APPROVE+green => LAND signal"
+      },
+      "relock": {
+        "dag": "ferric-http-relock-r1",
+        "verdict": "PASS",
+        "folded_at_I17": true,
+        "rebased_onto": "cb619e9",
+        "pushed_head": "e27c2ac",
+        "note": "Cleared the Cargo.lock conflict; feature code byte-identical to approved diff; re-PASS gate on rebased tree."
+      },
+      "landed_by": "overseer/I17",
+      "landed_commit": "25e90c05caca5421ead87adbbbea74d4f5d41a50",
+      "note": "Delivered ATOMIC as a single standalone crate crates/ferric-http; machine PASS round 1 (PR #15 Closes #6); review-ferric-http FOLDED APPROVE at I14. LAND blocked I14-I16 on a Cargo.lock conflict; ferric-http-relock-r1 (forked I15) cleared it and FOLDED re-PASS by I17. I17: relock-r1 folded (root SYNTHESIS.md) AND gh confirmed PR #15 OPEN/MERGEABLE/CLEAN (the #7 land did NOT reconflict \u2014 non-overlapping lock nodes) -> LANDED via gh pr merge 15 --squash --delete-branch -> squash commit 25e90c0 on main, PR #15 MERGED @ 2026-10-07T01:47:15Z, issue #6 CLOSED, board Done, current_pointer 3->4. #6 already reviewed APPROVE -> no new review. Code-DAG + review-DAG + relock-DAG reaped whole (scratch). P1 held (mechanical squash-merge, no code touched)."
+    },
+    {
+      "item_slug": "review-ferric-http",
+      "issue": 6,
+      "kind": "review",
+      "reviews_pr": 15,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-ferric-http",
+      "methodology_bundles": [
+        "code-review",
+        "rust",
+        "core"
+      ],
+      "dispatched_at": "2026-10-07T01:05:30Z",
+      "dispatched_by": "overseer/I12",
+      "forked_thread_id": "review-ferric-http",
+      "status": "folded-and-reaped",
+      "verdict": "APPROVE",
+      "gated_by": "overseer/I14",
+      "review_url": "https://github.com/Nousix-LLC/nswe-demo/pull/15#pullrequestreview-5436443649",
+      "note": "I12's demand-driven fork (reviews PR #15 / ferric-http #6). FOLDED at I14: authoritative verdict APPROVE \u2014 machine gate green, 7/7 acceptance, 0 block/0 major, 5 non-blocking nits. gh review posted COMMENTED (self-review block). Reaped whole at I17 once #6 landed."
+    },
+    {
+      "item_slug": "ferric-http-relock-r1",
+      "issue": 6,
+      "kind": "relock-rebase",
+      "clears_pr": 15,
+      "branch": "work/ferric-http",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-http-relock-r1",
+      "methodology_bundles": [
+        "rust",
+        "core"
+      ],
+      "dispatched_at": "2026-10-07T01:28:10Z",
+      "dispatched_by": "overseer/I15",
+      "forked_thread_id": "ferric-http-relock-r1",
+      "placement": "peer",
+      "status": "folded-re-PASS-and-reaped",
+      "pushed_head": "e27c2ac65726a2aad31536d277276cb24ff562bc",
+      "gated_by": "overseer/I17",
+      "note": "I15's demand-driven priority fork. Remediation (NOT a feature): clear PR #15's Cargo.lock conflict. Merged origin/main (cb619e9, ferric-router #16) into work/ferric-http (c8a58b8); resolved lockfile by Cargo relock (take main's Cargo.lock + cargo build --workspace; never hand-edited); re-ran the Synthesis gate on the rebased tree (all green: workspace build, cargo test -p ferric-http 29 unit+4 doctests, fmt, clippy, wasm build); pushed work/ferric-http @ e27c2ac. At I16 recon it had pushed but NOT folded. At I17 it HAD folded: root SYNTHESIS.md verdict PASS + COMPLETE.md; feature code byte-identical to c8a58b8 (empty diff); zero version churn (+1 package node ferric-http vs main). I17 confirmed PR #15 OPEN/MERGEABLE/CLEAN via live gh poll -> LANDED #6. Reaped whole after land (scratch). P1 held."
+    },
+    {
+      "item_slug": "chirp-types",
+      "issue": 7,
+      "branch": "work/chirp-types",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-types",
+      "methodology_bundles": [
+        "rust",
+        "core",
+        "architecture"
+      ],
+      "prepared_by": "overseer/I2",
+      "dispatched_at": "2026-10-07T00:47:08Z",
+      "dispatched_by": "overseer/I9",
+      "forked_thread_id": "chirp-types",
+      "status": "landed-and-reaped",
+      "machine_gate": {
+        "verdict": "PASS",
+        "round": 1,
+        "pr": 17,
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-types/SYNTHESIS.md",
+        "gated_by": "overseer/I14",
+        "gated_at": "2026-10-07T01:19:00Z"
+      },
+      "review": {
+        "verdict": "APPROVE",
+        "reviewed_by_dag": "review-chirp-types",
+        "gated_by": "overseer/I16",
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-types/SYNTHESIS.md",
+        "note": "0 block/0 major, 6 minor/advisory F1-F6, 7/7 acceptance; APPROVE+green => LAND signal"
+      },
+      "landed_by": "overseer/I16",
+      "landed_commit": "2e32aed5d49529c9075372aabfcaac12e56a8788",
+      "note": "Decomposed (NeedsDecompose) into SUBTASK_implement_crate + SUBTASK_synthesis_gate. FOLDED machine-PASS (PR #17 Closes #7); review-chirp-types FOLDED APPROVE. I16 gated APPROVE+green+CLEAN -> LANDED via gh pr merge 17 --squash --delete-branch -> squash commit 2e32aed on main, issue #7 CLOSED, board Done, current_pointer 2->3. Code-DAG + review-DAG reaped whole (scratch). NOTE: this land did NOT reconflict PR #15 (non-overlapping Cargo.lock nodes; see known_patterns)."
+    },
+    {
+      "item_slug": "review-chirp-types",
+      "issue": 7,
+      "kind": "review",
+      "reviews_pr": 17,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-types",
+      "methodology_bundles": [
+        "code-review",
+        "rust",
+        "architecture"
+      ],
+      "dispatched_at": "2026-10-07T01:21:00Z",
+      "dispatched_by": "overseer/I14",
+      "forked_thread_id": "review-chirp-types",
+      "status": "folded-and-reaped",
+      "verdict": "APPROVE",
+      "gated_by": "overseer/I16",
+      "review_url": "https://github.com/Nousix-LLC/nswe-demo/pull/17#pullrequestreview-5436534501",
+      "note": "I14's demand-driven fork (reviews PR #17 / chirp-types #7). FOLDED at I16: root SYNTHESIS.md verdict APPROVE (0 block/0 major; 6 minor/advisory F1-F6; 7/7 acceptance; critical shared-contract breaking-change test answered NO). I16 gated APPROVE+green -> LANDED PR #17. Reaped whole after land (scratch)."
+    },
+    {
+      "item_slug": "chirp-server",
+      "issue": 8,
+      "branch": "work/chirp-server",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-server",
+      "methodology_bundles": [
+        "rust",
+        "core",
+        "architecture",
+        "testing"
+      ],
+      "dispatched_at": "2026-10-07T01:38:00Z",
+      "dispatched_by": "overseer/I16",
+      "forked_thread_id": "chirp-server",
+      "placement": "peer",
+      "status": "folded-authoritative-machine-PASS-PR19-open-conflicting-awaiting-review",
+      "note": "I16's demand-driven fork: work-item #8 (EPIC #2). Task: crates/chirp-server (axum REST API + repository-trait persistence [in-memory default, optional sqlx/SQLite] + static SPA serving + /healthz + tracing + API integration tests), composing the landed chirp-types contract, branch work/chirp-server, PR into main Closes #8, write SYNTHESIS.md. At I17 recon: workspace held _BRIEF/_FORK/_GLOBAL (DECOMPOSED, NeedsDecompose) + scheduler dir but NO root SYNTHESIS.md -> still running. At I18 recon (read-only, P1 held): root SUSPENSION.md (NeedsDecompose) present; decomposed into 4 subtasks SUBTASK_scaffold_and_repository + SUBTASK_api_layer + SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate, each holding only a _BRIEF.md (no child COMPLETE.md); still NO root SYNTHESIS.md -> still running decompose->implement->synthesize, NOT folded. No open PR for #8 yet. I19: watch for its ROOT SYNTHESIS.md fold -> read machine verdict -> PASS: fork review-chirp-server before landing; FAIL: remediate (budget 2 then escalate). Scratch: reaped whole once #8 lands. P1 held. | I19 recon (read-only, P1 held): STILL RUNNING, NOT folded, but progressing \u2014 SUBTASK_scaffold_and_repository now has COMPLETE.md (first spoke landed); SUBTASK_api_layer + SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate hold only _BRIEF.md; live checkout/ + taskflow_workspaces/ present; NO root SYNTHESIS.md -> still decompose->implement->synthesize. No open PR for #8 yet. I20: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-server before landing; FAIL: remediate (budget 2 then escalate). | I20 recon (read-only, P1 held): STILL RUNNING, NOT folded, PROGRESSING past I19 - root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository has COMPLETE.md + IMPLEMENTATION_NOTES.md (first spoke done); SUBTASK_api_layer has NOW ITSELF DECOMPOSED (carries _GLOBAL.md + contracts/ -> a sub-subtree, further than I19 where it held only _BRIEF.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate hold only _BRIEF.md; live checkout/ + taskflow_workspaces/; NO root SYNTHESIS.md -> still decompose->implement->synthesize. No open PR for #8 yet. I21: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-server before landing; FAIL: remediate (budget 2 then escalate). | I21 recon (read-only, P1 held): STILL RUNNING, NOT folded, PROGRESSING past I20 - root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer has NOW ITSELF DECOMPOSED AND SUSPENDED (carries _GLOBAL.md + SUSPENSION.md + contracts/ -> a running sub-subtree; at I20 it held _GLOBAL.md + contracts/ without its own SUSPENSION.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate hold only _BRIEF.md; live checkout/ + taskflow_workspaces/; NO root SYNTHESIS.md -> still decompose->implement->synthesize. No open PR for #8 yet. I22: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-server before landing; FAIL: remediate (budget 2 then escalate). | I22 recon (read-only, P1 held): STILL RUNNING, NOT folded, PROGRESSING past I21 - root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md + IMPLEMENTATION_NOTES.md (first spoke done); SUBTASK_api_layer has NOW MATERIALIZED ITS OWN FOUR GRANDCHILD SPOKES (SUBTASK_transport_foundations, SUBTASK_handlers, SUBTASK_router_and_bootstrap, SUBTASK_api_synthesis) alongside its _GLOBAL.md + SUSPENSION.md + contracts/ (a running sub-subtree, deeper than I21 where only its SUSPENSION.md/_GLOBAL.md/contracts/ were visible); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; live checkout/ + taskflow_workspaces/; NO root SYNTHESIS.md -> still decompose->implement->synthesize. No open PR for #8 yet. I23: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-server before landing; FAIL: remediate (budget 2 then escalate). | I23 recon (read-only, P1 held): STILL RUNNING, NOT folded, PROGRESSING past I22 - root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer (itself decomposed + suspended) now has its FIRST grandchild spoke folded - SUBTASK_transport_foundations has COMPLETE.md (the other three grandchildren SUBTASK_handlers/SUBTASK_router_and_bootstrap/SUBTASK_api_synthesis hold only _BRIEF.md; at I22 all four grandchildren held only _BRIEF.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; live checkout/ + taskflow_workspaces/; NO root SYNTHESIS.md -> still running. No open PR for #8 yet. I24 recon (read-only, P1 held): STILL RUNNING, NOT folded, marker level UNCHANGED since I23 - root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer (itself decomposed + suspended) has its FIRST grandchild spoke folded - SUBTASK_transport_foundations COMPLETE.md (the other three grandchildren handlers/router_and_bootstrap/api_synthesis still only _BRIEF.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; NO root SYNTHESIS.md -> still decompose->implement->synthesize. No open PR for #8 yet. I25: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-server before landing; FAIL: remediate (budget 2 then escalate). I25 recon (read-only, P1 held): STILL RUNNING, NOT folded, but PROGRESSING past I24 - root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer (itself decomposed + suspended) now has its SECOND grandchild spoke folded - SUBTASK_handlers now has COMPLETE.md ALONGSIDE SUBTASK_transport_foundations COMPLETE.md (2 of 4 grandchildren folded; at I24 only transport_foundations was COMPLETE; SUBTASK_router_and_bootstrap + SUBTASK_api_synthesis still only _BRIEF.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; NO root SYNTHESIS.md -> still decompose->implement->synthesize. No open PR for #8 yet. I26 recon (read-only, P1 held): STILL RUNNING, NOT folded, but PROGRESSING past I25 - root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer (itself decomposed + suspended) now has its THIRD grandchild spoke folded - SUBTASK_router_and_bootstrap COMPLETE.md ALONGSIDE SUBTASK_transport_foundations + SUBTASK_handlers COMPLETE.md (3 of 4 grandchildren folded; at I25 only transport_foundations + handlers were COMPLETE; only SUBTASK_api_synthesis still _BRIEF.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; NO root SYNTHESIS.md -> still decompose->implement->synthesize. No open PR for #8 yet. I27 recon (read-only, P1 held): STILL RUNNING, NOT folded, but PROGRESSING past I26 - root SUSPENSION.md (NeedsDecompose), still NO root SYNTHESIS.md and NO root COMPLETE.md; SUBTASK_scaffold_and_repository COMPLETE.md (first top-level spoke done); SUBTASK_api_layer HAS NOW ITSELF FOLDED - SUBTASK_api_layer/SYNTHESIS.md is present (its 4th/last grandchild SUBTASK_api_synthesis folded the sub-subtree, alongside transport_foundations + handlers + router_and_bootstrap COMPLETE.md; at I26 it was 3/4 grandchildren with NO api_layer SYNTHESIS.md) => 2 of 4 TOP-LEVEL spokes now done (scaffold_and_repository COMPLETE + api_layer FOLDED); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate still only _BRIEF.md (the root synthesis_gate writes the ROOT SYNTHESIS.md, still pending). Gated ONLY on the ROOT record, never the SUBTASK_api_layer/SYNTHESIS.md side-effect (gate_on_synthesis_not_review_body). No open PR for #8 yet. I28: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-server before landing; FAIL: remediate (budget 2 then escalate). I28 recon (read-only, P1 held): STILL RUNNING, NOT folded, marker level UNCHANGED vs I27 - root SUSPENSION.md (NeedsDecompose), still NO root SYNTHESIS.md and NO root COMPLETE.md; SUBTASK_scaffold_and_repository COMPLETE.md (first top-level spoke done); SUBTASK_api_layer FOLDED (SUBTASK_api_layer/SYNTHESIS.md present; grandchildren transport_foundations + handlers + router_and_bootstrap COMPLETE) => 2 of 4 TOP-LEVEL spokes done (scaffold + api_layer); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate still only _BRIEF.md (the large integration-tests+docs spoke is the next in-flight unit; the root synthesis_gate writes the ROOT SYNTHESIS.md, still pending). This is the FIRST flat-marker round for #8 (it advanced every round I19->I27); one flat round is within variance for a big spoke -> NOT frozen, keep watching rather than recover. Gated ONLY on the folded ROOT record, never the SUBTASK_api_layer/SYNTHESIS.md side-effect (gate_on_synthesis_not_review_body). No open PR for #8 yet. I29: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-server before landing; FAIL: remediate (budget 2 then escalate). I29 recon (read-only, P1 held): STILL RUNNING, NOT folded (no root SYNTHESIS.md, no root COMPLETE.md; root holds _FORK/_BRIEF/_GLOBAL/SUSPENSION.md + 4 SUBTASK dirs), but PROGRESSING past I28's flat round - SUBTASK_integration_tests_and_docs NOW holds TEST_NOTES.md alongside its _BRIEF.md (the large integration-tests+docs spoke, 3rd top-level, is actively in flight; at I28 it held only _BRIEF.md); SUBTASK_scaffold_and_repository COMPLETE + SUBTASK_api_layer FOLDED (SUBTASK_api_layer/SYNTHESIS.md present) = 2 of 4 top-level spokes done; SUBTASK_synthesis_gate (the ROOT SYNTHESIS.md writer) still only _BRIEF.md -> root fold still pending. The I28 flat round was within variance; #8 resumed advancing -> NOT frozen, keep watching. Gated ONLY on the folded ROOT record, never the SUBTASK_api_layer/SYNTHESIS.md side-effect (gate_on_synthesis_not_review_body). No open PR for #8 yet. I30 recon (read-only, P1 held): STILL RUNNING, NOT folded (no root SYNTHESIS.md, no root COMPLETE.md; root holds _FORK/_BRIEF/_GLOBAL/SUSPENSION.md + 4 SUBTASK dirs), but PROGRESSING past I29 - SUBTASK_integration_tests_and_docs NOW holds COMPLETE.md (the large integration-tests+docs spoke, 3rd top-level, has FOLDED; at I29 it held only TEST_NOTES.md + _BRIEF.md) => 3 of 4 top-level spokes done (SUBTASK_scaffold_and_repository COMPLETE + SUBTASK_api_layer FOLDED [SUBTASK_api_layer/SYNTHESIS.md present; grandchildren transport_foundations + handlers + router_and_bootstrap COMPLETE] + SUBTASK_integration_tests_and_docs COMPLETE); only SUBTASK_synthesis_gate (the ROOT SYNTHESIS.md writer, the last spoke) still only _BRIEF.md -> VERY CLOSE to root fold. #8 resumed/continued advancing -> NOT frozen, keep watching. Gated ONLY on the folded ROOT record, never the SUBTASK_api_layer/SYNTHESIS.md side-effect (gate_on_synthesis_not_review_body). No open PR for #8 yet. I31: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-server before landing; FAIL: remediate (budget 2 then escalate). I31 recon (read-only, P1 held): STILL RUNNING, NOT folded (no root SYNTHESIS.md, no root COMPLETE.md; root holds _FORK/_BRIEF/_GLOBAL/SUSPENSION.md + SUBTASK dirs), but SHAPE-CHANGED past I30 - the synthesis gate found a validation-error-mapping defect and the DAG is SELF-REMEDIATING internally: TWO NEW subtasks appeared - SUBTASK_fix_validation_error_mapping + SUBTASK_reverify_gate (each only _BRIEF.md) alongside the prior SUBTASK_scaffold_and_repository (COMPLETE) + SUBTASK_api_layer (FOLDED, SUBTASK_api_layer/SYNTHESIS.md) + SUBTASK_integration_tests_and_docs (COMPLETE) + SUBTASK_synthesis_gate (_BRIEF.md). This is the DAG's OWN decompose->implement->synthesize remediation (NOT the overseer's - the overseer never touches #8's code, P1); it means the first synthesis-gate pass did not cleanly PASS and the DAG is fixing+reverifying before it writes its ROOT SYNTHESIS.md. Active work, NOT frozen -> keep watching. Gated ONLY on the folded ROOT record (gate_on_synthesis_not_review_body). No open PR for #8 yet. I32 recon (read-only, P1 held): SHAPE-CHANGED past I31 - a ROOT SYNTHESIS.md NOW EXISTS at the DAG root, BUT it is the INITIAL round-0 synthesis-gate record with verdict gate=FAIL: one tier-1 contract-identity violation F1 (DTO-validation failures return 422 plain-text via axum's Json<T> serde boundary, NOT the frozen contract's 400 ApiError{code:VALIDATION_ERROR,details}); build/test/fmt/clippy/wiring/duplication/code-review all PASS (chirp-server 23 unit + 20 integration = 43 passed, no DB). This record is NOT a terminal fold: it self-declares it 'will be superseded by SUBTASK_reverify_gate's PASS SYNTHESIS.md (with the PR URL) once FT1 lands' and 'no PR exists yet, so the DAG is correctly not landable'. The synthesis gate INJECTED one fix-task FT1=SUBTASK_fix_validation_error_mapping + one re-verification gate RV=SUBTASK_reverify_gate (round 1, depends_on FT1) - each holds only _BRIEF.md (not yet COMPLETE); NO root COMPLETE.md; root still holds SUSPENSION.md. LIVE evidence FT1 is actively mid-implementation THIS iteration: checkout/ shows a NEW src/api/json.rs (custom extractor routing DTO-validation through ServerError::Validation -> 400) + edits to handlers.rs/error.rs/auth.rs/lib.rs + the flipped characterization test in tests/api.rs, all timestamped ~now (04:58-04:59Z). gh pr list -> [] (zero open PRs); main confirmed @ 92661d8. This is the DAG's OWN decompose->implement->synthesize remediation (gotcha (h)), NOT a terminal machine-FAIL the overseer acts on - the overseer never touches #8's code (P1). Active + progressing, NOT frozen -> keep watching. Gated ONLY on the AUTHORITATIVE (RV-overwritten) root SYNTHESIS.md verdict + a real PR, never this interim round-0 record (gate_on_synthesis_not_review_body). I33: watch for RV's authoritative root SYNTHESIS.md (which overwrites the round-0 record AND opens the PR) -> machine PASS: fork review-chirp-server (do not land unreviewed) / machine FAIL: only THEN remediate (fresh chirp-server-r1, budget 2 then escalate). I33 recon (read-only, P1 held): #8 chirp-server has AUTHORITATIVELY FOLDED machine-PASS. SUBTASK_reverify_gate (RV) OVERWROTE the I32 round-0 interim FAIL -> the DAG root SYNTHESIS.md (mtime 05:07:39Z) is now RV's AUTHORITATIVE record: gate=PASS round 1, PR https://github.com/Nousix-LLC/nswe-demo/pull/19 (OPEN, work/chirp-server->main, Closes #8, head 714d50f), self-declaring it 'supersedes the interim round-0 FAIL as the authoritative fold/observation record at the hub'. F1 RESOLVED + re-verified: SUBTASK_fix_validation_error_mapping COMPLETE (commit 714d50f; new src/api/json.rs ValidatedJson<T> FromRequest extractor routes JsonRejection->ServerError::InvalidBody->ErrorCode::ValidationError->400 ApiError with non-empty details; flipped characterization test invalid_dto_field_is_rejected_as_400_validation_error passes; no test pins 422). All checks PASS cold: build/test(44=24 unit+20 integration, no DB)/fmt/clippy -D warnings/wiring(9 routes+/healthz+SPA fallback)/contract/duplication/code-review; one tracked NON-gating minor F2 (rustdoc intra-doc-link nits under RUSTDOCFLAGS=-D warnings, not in the gate assertion set; missing_docs satisfied). Finalization lag noted: RV's own SUBTASK_reverify_gate/COMPLETE.md and the root COMPLETE.md / root SUSPENDED->COMPLETED flip were not yet present at recon (root still held SUSPENSION.md; RV + SUBTASK_synthesis_gate held only _BRIEF.md), BUT the AUTHORITATIVE verdict record + the real open PR #19 both exist (the two-part gate condition from the brief) and head 714d50f is immutable -> gated as authoritative machine-PASS per gotcha (i) (read the body, not mere existence). PR #19 live gh mergeability: CONFLICTING/DIRTY - branch cut on main @ 25e90c0, main now 92661d8 (the #9 land restaled its Cargo.lock); a mechanical lock restale, not a code defect, not a review concern. I33 ACTION: forked review-chirp-server (the one fork; ladder priority-2: #8 authoritatively machine-PASS + PR open + no review DAG). Relock priority-1 did NOT fire (PR #19 CONFLICTING but NOT approved-ready; review first, then relock before land - the ferric-http precedent). Did NOT land (unreviewed + CONFLICTING). main @ 92661d8 confirmed. I34: gate review-chirp-server's root SYNTHESIS.md -> APPROVE: if PR #19 still CONFLICTING fork a relock DAG (priority-1) then LAND once OPEN/MERGEABLE/CLEAN / REQUEST-CHANGES: remediate (fresh chirp-server-r1, budget 2 then escalate). | I35 recon (read-only, P1 held): #8 code DAG finalization lag persists (non-blocking, unchanged since I33/I34): root SYNTHESIS.md present (RV authoritative PASS, mtime 05:07:39Z) but root still holds SUSPENSION.md (not yet flipped SUSPENDED->COMPLETED, no root COMPLETE.md). The authoritative machine-PASS verdict + the real open PR #19 already exist, so it does not block the review/land. PR #19 still OPEN/CONFLICTING/DIRTY (head 714d50f; Cargo.lock restale base 25e90c0 vs main 92661d8) - needs a relock DAG after review APPROVE, before land. review-chirp-server (its review DAG) progressed to 3/4 concerns folded (not yet root-folded). I36: gate review-chirp-server's root fold; relock then LAND on APPROVE. | I36 recon (read-only, P1 held): review-chirp-server has AUTHORITATIVELY FOLDED its root SYNTHESIS.md = APPROVE (gate PASS, round 1; 0 block, 0 major; 6 minor + 5 nit, all land-then-fix/tracked; all four review concerns architecture_contract_review + code_review_quality_review + rust_soundness_review + test_adequacy_review folded with COMPLETE.md; synthesis_verdict wrote the root record + a gh_review_body.md posted COMMENTED under the self-review block). The root record is the AUTHORITATIVE human-landing verdict (gotcha (g)/(i): gated on the folded root SYNTHESIS.md body, not the gh review state nor a subtask side-effect; root still holds SUSPENSION.md + no root COMPLETE.md = finalization lag only, the body is a terminal authoritative verdict). It explicitly states PR #19 is APPROVED to land subject to the overseer's mechanical Cargo.lock relock. PR #19 re-polled past async UNKNOWN: OPEN/CONFLICTING/DIRTY (head 714d50f; Cargo.lock restale base 25e90c0 vs main 92661d8) - still needs the relock before land. I36 ACTION: review APPROVE + PR #19 still CONFLICTING -> forked ONE relock/rebase DAG chirp-server-relock-r1 (priority-1; the one fork this iteration) and did NOT land (never land CONFLICTING). I37: gate chirp-server-relock-r1's root SYNTHESIS.md re-PASS + PR #19 OPEN/MERGEABLE/CLEAN -> LAND #8; then fan out devops #10-#13.",
+      "pr": 19,
+      "machine_gate": {
+        "verdict": "PASS",
+        "round": "1 (re-verification after F1 remediation; round-0 interim FAIL superseded)",
+        "pr": 19,
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-server/SYNTHESIS.md",
+        "head": "714d50f6075416cf8c5f43c8611dcd88c8352ebd",
+        "gated_by": "overseer/I33 (machine gate read, not re-run; authoritative RV record + real PR)",
+        "gated_at": "2026-10-07T05:10:00Z",
+        "note": "RV (SUBTASK_reverify_gate) overwrote the I32 round-0 interim FAIL; authoritative root SYNTHESIS.md gate=PASS; F1 (DTO-validation 422->400 ApiError) fixed by SUBTASK_fix_validation_error_mapping (714d50f, ValidatedJson<T> extractor) + re-verified cold; 44 tests (24 unit+20 integration, no DB); one tracked non-gating minor F2 (rustdoc intra-doc-link nits). PR #19 opened Closes #8 but CONFLICTING (Cargo.lock restale: base 25e90c0 vs main 92661d8)."
+      },
+      "review": {
+        "verdict": "APPROVE",
+        "reviewed_by_dag": "review-chirp-server",
+        "reviews_pr": 19,
+        "reviews_head": "714d50f6075416cf8c5f43c8611dcd88c8352ebd",
+        "gated_by": "overseer/I36",
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-server/SYNTHESIS.md",
+        "note": "review-chirp-server root SYNTHESIS.md folded AUTHORITATIVE APPROVE at I36 (gate PASS, round 1; 0 block, 0 major; 6 minor + 5 nit, all land-then-fix/tracked; all four concerns architecture_contract_review + code_review_quality_review + rust_soundness_review + test_adequacy_review folded COMPLETE.md). Gated on the folded root record body (gotcha (g)/(i)), not gh review state (COMMENTED under self-review block). Tracked non-blocking minors: ARCH-01 (unknown /api/* -> SPA index.html 200 not JSON 404 ApiError), ARCH-02 (fat-repository service tier), ARCH-03 (F1 details generic field:body on serde-boundary path - ruled acceptable), TEST-01 (no SPA fallback integration test), CRQ-01 (README still documents old 422 gap, omits 400 row), CRQ-02/F2 (rustdoc intra-doc-link debt under RUSTDOCFLAGS=-D warnings); nits RUST-01/02/03, TEST-02. Review recommends folding CRQ-01+F2 into devops/CI #10-#13. None blocks landing #8."
+      },
+      "relock": {
+        "dag": "chirp-server-relock-r1",
+        "dispatched_by": "overseer/I36",
+        "clears_pr": 19,
+        "status": "dispatched-running",
+        "note": "I36's one demand-driven fork (ladder priority-1). review APPROVE + PR #19 still OPEN/CONFLICTING/DIRTY (Cargo.lock restale base 25e90c0 vs main 92661d8) -> forked chirp-server-relock-r1 to merge origin/main @ 92661d8 into work/chirp-server, Cargo relock (never hand-edit), re-run the synthesis gate cold on the rebased tree, confirm feature diff vs 714d50f empty outside Cargo.lock, push. I37 gates its root SYNTHESIS.md re-PASS + live gh OPEN/MERGEABLE/CLEAN -> LAND #8. Budget: 2 relock rounds then escalate. Mirrors ferric-http-relock-r1 (I15->I17). Scratch: reaped whole once #8 lands."
+      }
+    },
+    {
+      "item_slug": "chirp-frontend",
+      "issue": 9,
+      "branch": "work/chirp-frontend",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-frontend",
+      "methodology_bundles": [
+        "rust",
+        "core",
+        "architecture",
+        "testing"
+      ],
+      "dispatched_at": "2026-10-07T01:48:00Z",
+      "dispatched_by": "overseer/I17",
+      "forked_thread_id": "chirp-frontend",
+      "placement": "peer",
+      "status": "landed-and-reaped",
+      "note": "I17's demand-driven fork: work-item #9 (EPIC #2), newly unblocked by landing its deps ferric-router #5, ferric-http #6, chirp-types #7 to main. Task: crates/chirp-frontend (ferric SPA, wasm32 target) composing ferric + ferric-router + ferric-http + the chirp-types REST contract: timeline view, compose-chirp form, /user/:id route, follow/like actions, loading/error states; wasm build example; native/compile-only tests; fmt/clippy clean; branch work/chirp-frontend; PR into main Closes #9; write SYNTHESIS.md. Parallel to chirp-server #8 (no build-dep; calls the REST API at runtime via the chirp-types contract). At I18 recon (read-only): workspace held only _BRIEF.md + _FORK.md (no _GLOBAL.md, no SUSPENSION/SYNTHESIS) -> forked but not yet decomposed/producing; still early. No open PR for #9 yet. Watch for its ROOT SYNTHESIS.md fold at I19+ -> PASS: fork review-chirp-frontend before landing; FAIL: remediate. Scratch: reaped whole once #9 lands. P1 held. | I19 recon (read-only, P1 held): ADVANCED since I18 \u2014 workspace now holds _GLOBAL.md + SIX subtasks (SUBTASK_scaffold, SUBTASK_api_client, SUBTASK_timeline, SUBTASK_compose, SUBTASK_profile, SUBTASK_synthesis_gate), each with only a _BRIEF.md (no child COMPLETE.md yet), and NO root SYNTHESIS.md -> decomposed, early implementation, NOT folded. No open PR for #9 yet. I20: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-frontend before landing; FAIL: remediate. | I20 recon (read-only, P1 held): STILL RUNNING, NOT folded - root SUSPENSION.md (DECOMPOSED) + 6 subtasks (scaffold, api_client, timeline, compose, profile, synthesis_gate), each only _BRIEF.md (no child COMPLETE.md yet), NO root SYNTHESIS.md -> decomposed, early implementation. No open PR for #9 yet. I21: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-frontend before landing; FAIL: remediate. | I21 recon (read-only, P1 held): STILL RUNNING, NOT folded - root SUSPENSION.md (DECOMPOSED) + 6 subtasks (scaffold, api_client, timeline, compose, profile, synthesis_gate), each only _BRIEF.md (no child COMPLETE.md yet), NO root SYNTHESIS.md -> decomposed, early implementation. No open PR for #9 yet. I22: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-frontend before landing; FAIL: remediate. | I22 recon (read-only, P1 held): STILL RUNNING, NOT folded - root SUSPENSION.md (DECOMPOSED) + 6 subtasks (scaffold, api_client, timeline, compose, profile, synthesis_gate), each only _BRIEF.md (no child COMPLETE.md yet), NO root SYNTHESIS.md -> decomposed, early implementation (unchanged at the marker level since I21). No open PR for #9 yet. I23: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-frontend before landing; FAIL: remediate. | I23 recon (read-only, P1 held): STILL RUNNING, NOT folded - root SUSPENSION.md (DECOMPOSED) + 6 subtasks (scaffold, api_client, timeline, compose, profile, synthesis_gate), each only _BRIEF.md (no child COMPLETE.md yet); live checkout/ holds the scaffolded crates/ + Cargo.toml + Cargo.lock; NO root SYNTHESIS.md -> decomposed, early implementation (unchanged at the marker level since I21). No open PR for #9 yet. I24 recon (read-only, P1 held): STILL RUNNING, NOT folded, but PROGRESSING past I23 - root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_scaffold NOW has COMPLETE.md (first spoke folded; at I23 all six held only _BRIEF.md); the other five (api_client, timeline, compose, profile, synthesis_gate) still only _BRIEF.md; live checkout/ holds the scaffolded crates/ + Cargo.toml + Cargo.lock; NO root SYNTHESIS.md -> decomposed, implementation underway. No open PR for #9 yet. I25: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-frontend before landing; FAIL: remediate. I25 recon (read-only, P1 held): STILL RUNNING, NOT folded, but PROGRESSING past I24 - root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_api_client NOW has COMPLETE.md ALONGSIDE SUBTASK_scaffold COMPLETE.md (2 of 6 spokes folded; at I24 only scaffold was COMPLETE); the other four (timeline, compose, profile, synthesis_gate) still only _BRIEF.md; live checkout/ holds the scaffolded crates/ + Cargo.toml + Cargo.lock; NO root SYNTHESIS.md -> decomposed, implementation underway. No open PR for #9 yet. I26 recon (read-only, P1 held): STILL RUNNING, NOT folded, marker level UNCHANGED since I25 - root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_scaffold + SUBTASK_api_client COMPLETE.md (2 of 6 spokes folded, unchanged since I25); the other four (timeline, compose, profile, synthesis_gate) still only _BRIEF.md; live checkout/ holds the scaffolded crates/ + Cargo.toml + Cargo.lock; NO root SYNTHESIS.md -> decomposed, implementation underway. No open PR for #9 yet. I27 recon (read-only, P1 held): STILL RUNNING, NOT folded, but PROGRESSING past I26 - root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_compose NOW has COMPLETE.md ALONGSIDE SUBTASK_scaffold + SUBTASK_api_client COMPLETE.md (3 of 6 spokes folded; at I26 only scaffold + api_client = 2/6); the other three (timeline, profile, synthesis_gate) still only _BRIEF.md; live checkout/ holds the scaffolded crates/ + Cargo.toml + Cargo.lock; NO root SYNTHESIS.md -> decomposed, implementation underway. No open PR for #9 yet. I28: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-frontend before landing; FAIL: remediate. I28 recon (read-only, P1 held): STILL RUNNING, NOT folded, but PROGRESSING past I27 - root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_timeline + SUBTASK_profile NOW have COMPLETE.md ALONGSIDE SUBTASK_scaffold + SUBTASK_api_client + SUBTASK_compose COMPLETE.md (5 of 6 spokes folded; at I27 only scaffold + api_client + compose = 3/6); only SUBTASK_synthesis_gate (the ROOT SYNTHESIS.md writer) still _BRIEF.md -> VERY CLOSE to root fold; live checkout/ holds the scaffolded crates/ + Cargo.toml + Cargo.lock; NO root SYNTHESIS.md -> still decompose->implement->synthesize. No open PR for #9 yet. I29: keep watching for ROOT SYNTHESIS.md fold -> PASS: fork review-chirp-frontend before landing; FAIL: remediate. | I29 recon (read-only, P1 held): #9 chirp-frontend HAS FOLDED - root SYNTHESIS.md (verdict PASS round 1) + root COMPLETE.md both present; PR #18 OPENED (work/chirp-frontend -> main, Closes #9, head b5f7e62 on scaffold abee995 over main @ 25e90c0). Live gh poll: PR #18 OPEN / MERGEABLE / CLEAN (not UNKNOWN). Machine PASS (4/4 checks, 7/7 identities, 41/41 native tests, 2 non-blocking minors). Per the ladder a machine-PASS code DAG needs a REVIEW DAG before it can land -> I29 forked review-chirp-frontend (the one demand-driven fork this iteration) to render the authoritative APPROVE/REQUEST-CHANGES landing verdict in its own root SYNTHESIS.md; did NOT land unreviewed. I30: watch review-chirp-frontend/SYNTHESIS.md fold -> APPROVE + PR #18 OPEN/MERGEABLE/CLEAN: LAND; REQUEST-CHANGES: remediate (budget 2 then escalate). | I31: review-chirp-frontend FOLDED APPROVE (root SYNTHESIS.md: 0 block/0 major; 14/14 acceptance; 7/7 REST contract conformance; 5 minor/nit F1-F5 non-blocking; machine gate relied upon; COMPLETE.md present) + PR #18 re-polled OPEN/MERGEABLE/CLEAN (head b5f7e62, two independent gh polls) -> LANDED via gh pr merge 18 --squash --delete-branch -> squash commit 92661d8 on main, PR #18 MERGED @ 2026-10-07T04:52:21Z, issue #9 CLOSED (Closes #9), board #9 Done, current_pointer 4->5. Code-DAG chirp-frontend + review-DAG review-chirp-frontend reaped whole (scratch). P1 held (mechanical squash-merge, no code touched).",
+      "pr": 18,
+      "machine_gate": {
+        "verdict": "PASS",
+        "round": 1,
+        "pr": 18,
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-frontend/SYNTHESIS.md",
+        "gated_by": "overseer/I29",
+        "gated_at": "2026-10-07T07:05:00Z",
+        "note": "4/4 checks (wiring/contract/duplication/code-review), 7/7 contract identities, native 41/41 tests, 2 non-blocking minors F1 (local error_banner helper dup) / F2 (sanctioned representative like-control). wasm build + fmt/clippy clean."
+      },
+      "review": {
+        "reviewed_by_dag": "review-chirp-frontend",
+        "dispatched_by": "overseer/I29",
+        "status": "folded-and-reaped",
+        "reviews_pr": 18,
+        "verdict": "APPROVE",
+        "gated_by": "overseer/I31",
+        "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-frontend/SYNTHESIS.md"
+      },
+      "landed_by": "overseer/I31",
+      "landed_commit": "92661d89e296e3d960c07f3bc58e667b98fbfecb"
+    },
+    {
+      "item_slug": "review-chirp-frontend",
+      "issue": 9,
+      "kind": "review",
+      "reviews_pr": 18,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-frontend",
+      "methodology_bundles": [
+        "code-review",
+        "rust",
+        "architecture"
+      ],
+      "dispatched_at": "2026-10-07T07:05:00Z",
+      "dispatched_by": "overseer/I29",
+      "forked_thread_id": "review-chirp-frontend",
+      "placement": "peer",
+      "status": "folded-and-reaped",
+      "note": "I29's demand-driven priority-2 fork (reviews PR #18 / chirp-frontend #9). Triggered because the #9 code DAG folded machine-PASS (root SYNTHESIS.md + COMPLETE.md) and opened PR #18 (OPEN/MERGEABLE/CLEAN) and lacked a review DAG. Renders the authoritative APPROVE/REQUEST-CHANGES verdict in its own root SYNTHESIS.md - the overseer gates the land on THAT folded root record, not on gh review state (self-review posts COMMENTED) nor on the code DAG's machine gate alone (gate_on_synthesis_not_review_body). Overseer wrote no code and performed no review itself (P1). Scratch: reaped whole once #9 lands. I30 recon (read-only, P1 held): NOT folded - review-chirp-frontend root holds only _FORK.md + _BRIEF.md (no root SYNTHESIS.md, no COMPLETE.md) -> the review DAG (forked at I29) is still spinning up/running; no authoritative APPROVE/REQUEST-CHANGES verdict yet. Per gate_on_synthesis_not_review_body, #9/PR #18 CANNOT land until this review's ROOT SYNTHESIS.md folds -> I30 did NOT land #9 (correctly: no review verdict). PR #18 re-polled OPEN/MERGEABLE/CLEAN (still landable once reviewed). Only 1 iteration since the I29 fork -> early, NOT frozen, keep watching. I31: watch review-chirp-frontend/SYNTHESIS.md for ROOT fold -> APPROVE + PR #18 OPEN/MERGEABLE/CLEAN: LAND #9; REQUEST-CHANGES: remediate (fresh chirp-frontend-r1, budget 2). | I31: FOLDED - root SYNTHESIS.md verdict APPROVE (0 block/0 major; 14/14 acceptance; 7/7 contract conformance; 5 minor/nit F1-F5; machine gate relied upon not re-run) + COMPLETE.md. I31 gated APPROVE + PR #18 OPEN/MERGEABLE/CLEAN -> LANDED #9/PR #18 (squash commit 92661d8). Reaped whole after land (scratch).",
+      "verdict": "APPROVE",
+      "gated_by": "overseer/I31"
+    },
+    {
+      "item_slug": "review-chirp-server",
+      "issue": 8,
+      "kind": "review",
+      "reviews_pr": 19,
+      "reviews_head": "714d50f6075416cf8c5f43c8611dcd88c8352ebd",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-server",
+      "methodology_bundles": [
+        "code-review",
+        "rust",
+        "architecture",
+        "testing"
+      ],
+      "dispatched_at": "2026-10-07T05:10:00Z",
+      "dispatched_by": "overseer/I33",
+      "forked_thread_id": "review-chirp-server",
+      "placement": "peer",
+      "status": "folded-APPROVE-awaiting-relock-then-land",
+      "verdict": "APPROVE",
+      "gated_by": "overseer/I36",
+      "note": "I33's demand-driven priority-2 fork (reviews PR #19 / chirp-server #8). Triggered because #8 AUTHORITATIVELY folded machine-PASS (SUBTASK_reverify_gate overwrote the round-0 interim FAIL with a PASS root SYNTHESIS.md + opened PR #19 Closes #8; F1 validation->400 fix verified via ValidatedJson<T> extractor, 44 tests, no DB) and lacked a review DAG. Renders the authoritative APPROVE/REQUEST-CHANGES landing verdict in its own root SYNTHESIS.md - the overseer gates the land on THAT folded root record, not on gh review state (self-review posts COMMENTED) nor the code DAG's machine gate alone (gate_on_synthesis_not_review_body). Reviews the immutable pushed diff (714d50f); PR #19 CONFLICTING is a Cargo.lock restale (base 25e90c0 vs main 92661d8), NOT a review concern - the overseer clears it with a forked relock DAG after APPROVE, before land. Overseer wrote no code and performed no review itself (P1). Scratch: reaped whole once #8 lands. I34: watch review-chirp-server/SYNTHESIS.md for ROOT fold -> APPROVE + PR #19 OPEN/MERGEABLE/CLEAN: LAND (relock first if still CONFLICTING) / REQUEST-CHANGES: remediate (budget 2 then escalate). I34 recon (read-only, P1 held): NOT folded - review-chirp-server has DECOMPOSED into 3 review subtasks (SUBTASK_architecture_contract_review + SUBTASK_rust_soundness_review + SUBTASK_test_adequacy_review), each holding ONLY _BRIEF.md (no subtask COMPLETE.md); root holds _FORK/_BRIEF/_GLOBAL.md + contracts/ + scheduler/ but NO root SYNTHESIS.md and NO root COMPLETE.md -> still running decompose->implement->synthesize, no authoritative APPROVE/REQUEST-CHANGES verdict yet. Freshly spun up (dirs ~05:09-05:16Z); only ~1 cycle since the I33 fork -> early, NOT frozen, keep watching. Per gate_on_synthesis_not_review_body #8/PR #19 CANNOT land until this review's ROOT SYNTHESIS.md folds -> I34 did NOT land (correctly: no verdict). PR #19 re-polled past async UNKNOWN: OPEN/CONFLICTING/DIRTY (head 714d50f; Cargo.lock restale base 25e90c0 vs main 92661d8) - still needs a relock DAG after APPROVE, before land. I35: watch review-chirp-server/SYNTHESIS.md for ROOT fold -> APPROVE + PR #19 OPEN/MERGEABLE/CLEAN: LAND (relock first if still CONFLICTING) / REQUEST-CHANGES: remediate (budget 2 then escalate). I35 recon (read-only, P1 held): review-chirp-server NOT folded at the root (no root SYNTHESIS.md, no root COMPLETE.md; root holds SUSPENSION.md NeedsDecompose) but PROGRESSING strongly past I34 - it GREW from 3 subtasks to 5: added SUBTASK_code_review_quality_review + SUBTASK_synthesis_verdict alongside SUBTASK_architecture_contract_review + SUBTASK_rust_soundness_review + SUBTASK_test_adequacy_review. 3 of 4 review CONCERNS have FOLDED: SUBTASK_architecture_contract_review (COMPLETE.md + findings_architecture_contract.md), SUBTASK_code_review_quality_review (COMPLETE.md + findings_code_review_quality.md), SUBTASK_test_adequacy_review (COMPLETE.md + findings_test_adequacy.md). Still pending: SUBTASK_rust_soundness_review (only _BRIEF.md) and SUBTASK_synthesis_verdict (only _BRIEF.md - the writer of the ROOT SYNTHESIS.md). Dirs timestamped ~22:22-22:23 local (UTC-7) -> actively progressing, NOT frozen, VERY CLOSE to the root fold. Per gate_on_synthesis_not_review_body the overseer gates ONLY on the folded ROOT record, never on a subtask findings_*.md/COMPLETE.md side-effect -> no authoritative APPROVE/REQUEST-CHANGES verdict yet -> correctly did NOT land #8. PR #19 re-polled past async UNKNOWN (gh pr view 19 + gh pr list): OPEN / CONFLICTING / DIRTY (head 714d50f, base main; the only open PR) - the Cargo.lock restale (base 25e90c0 vs main 92661d8), a mechanical lock conflict, not a code defect, not a review concern; still needs a relock DAG after APPROVE, before land. main @ 92661d8 confirmed. I36: watch review-chirp-server/SYNTHESIS.md for ROOT fold -> APPROVE + PR #19 OPEN/MERGEABLE/CLEAN: LAND (relock first if still CONFLICTING) / REQUEST-CHANGES: remediate (fresh chirp-server-r1, budget 2 then escalate). I36 recon (read-only, P1 held): review-chirp-server has AUTHORITATIVELY FOLDED its root SYNTHESIS.md = APPROVE (gate PASS, round 1; 0 block, 0 major; 6 minor ARCH-01/02/03 + CRQ-01/02 + TEST-01 and 5 nit RUST-01/02/03 + TEST-02, all land-then-fix/tracked; all four concerns folded COMPLETE.md [architecture_contract_review + code_review_quality_review + rust_soundness_review + test_adequacy_review]; synthesis_verdict wrote the root record + gh_review_body.md posted COMMENTED under the self-review block). Gated on the folded ROOT record body (gotcha (g)/(i)): the root still holds SUSPENSION.md + no root COMPLETE.md (finalization lag only), but the body is the AUTHORITATIVE terminal human-landing verdict (it explicitly states PR #19 is APPROVED to land subject to the overseer's mechanical Cargo.lock relock; it ruled F1's details-limitation ACCEPTABLE and derived zero-block/zero-major => APPROVE with all contract identities asserted). PR #19 re-polled past async UNKNOWN: OPEN/CONFLICTING/DIRTY (head 714d50f; Cargo.lock restale base 25e90c0 vs main 92661d8). I36 ACTION: review APPROVE + PR #19 CONFLICTING -> forked ONE relock/rebase DAG chirp-server-relock-r1 (priority-1; the one fork this iteration) and did NOT land (never land CONFLICTING). Reaped whole once #8 lands. I37: gate chirp-server-relock-r1's root re-PASS + PR #19 OPEN/MERGEABLE/CLEAN -> LAND #8."
+    },
+    {
+      "item_slug": "chirp-server-relock-r1",
+      "issue": 8,
+      "kind": "relock-rebase",
+      "clears_pr": 19,
+      "branch": "work/chirp-server",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-server-relock-r1",
+      "dispatched_at": "2026-10-07T05:33:50Z",
+      "dispatched_by": "overseer/I36",
+      "forked_thread_id": "chirp-server-relock-r1",
+      "placement": "peer",
+      "status": "dispatched-running",
+      "note": "I36's demand-driven priority-1 fork (the one fork this iteration). Remediation (NOT a feature): clear PR #19's Cargo.lock conflict so the APPROVED change can land. review-chirp-server folded AUTHORITATIVE APPROVE (0 block/0 major) but PR #19 is OPEN/CONFLICTING/DIRTY from a mechanical Cargo.lock restale (branch base main @ 25e90c0; main now 92661d8, the chirp-frontend #9 land). Task: merge origin/main @ 92661d8 into work/chirp-server, regenerate Cargo.lock via Cargo (cargo build --workspace; never hand-edit), re-run the synthesis gate cold on the rebased tree (workspace build, cargo test -p chirp-server [expect 44 = 24 unit + 20 integration, no DB], fmt --check, clippy -D warnings), confirm the feature diff vs approved head 714d50f is empty outside Cargo.lock, push work/chirp-server; write a root SYNTHESIS.md re-PASS verdict. Does NOT merge the PR and does NOT push to main. Mirrors ferric-http-relock-r1 (overseer I15->I17) which cleared an identical restale and landed with a byte-identical feature diff. I37: gate its root SYNTHESIS.md re-PASS + live gh PR #19 OPEN/MERGEABLE/CLEAN -> LAND #8 (budget 2 relock rounds then escalate). Scratch: reaped whole once #8 lands. P1 held (the overseer touched no code/lockfile; this is the forked DAG's work)."
+    }
+  ],
+  "work_items": [
+    {
+      "item_slug": "ferric-foundation",
+      "issue": 4,
+      "pr": 14,
+      "acceptance_criteria": "Virtual Cargo workspace + crates/ferric; sound reactive signals (computed + batching, no stale-subscriber leaks); component model + mount; DOM rendering via wasm-bindgen/web-sys with keyed diff + click/input; wasm build + counter example; native tests (wasm-bindgen-test optional without headless browser); fmt/clippy clean, rustdoc, README.",
+      "landed_commit_shas": [
+        "3c8d26408b3027cf625aa5ec0ca50e5cdd38c0fc"
+      ],
+      "diff_summary": "workspace + ferric core; ~3035 insertions, all additive (signal.rs reactive core, vdom.rs view tree + keyed diff, component.rs, dom.rs web-sys runtime, examples/counter.rs, README.md, workspace Cargo.toml/Cargo.lock).",
+      "dag_decision_record": "Four implementation spokes (reactive_core -> view_and_diff -> dom_runtime) over a scaffold. ABA-safe generational arena for signals; Rc<RefCell<Box<dyn Any>>> value cells so no borrow held across user closures; conditional-dependency re-tracking drops stale subscribers; lazy glitch-free memos; panic-safe BatchGuard. Keyed diff proven via shadow-DOM roundtrip. Zero unsafe, zero production unwrap. Synthesis gate PASS: workspace+wasm build OK, 36 unit + 6 doctests OK, fmt/clippy clean.",
+      "gate_outcome": "approved",
+      "machine_gate": "PASS (round 1)",
+      "review_verdict": "APPROVE (0 block/major findings; F1-F6 minor/nit/informational, none blocking)",
+      "landed_at": "2026-10-06T19:31:01Z",
+      "compacted": false
+    },
+    {
+      "item_slug": "ferric-router",
+      "issue": 5,
+      "pr": 16,
+      "acceptance_criteria": "New workspace member crate crates/ferric-router (path-dep on crates/ferric); route table + matcher with param extraction (/user/:id -> id); History API pushState/popstate via web-sys; <Link>-style helper (link) + programmatic navigate(path); reactive router outlet re-rendering on navigation (via ferric signals); cargo build -p ferric-router --target wasm32-unknown-unknown + 3-route wasm example; native matcher/param tests + wasm-bindgen-test compile-only (no headless runner, documented not a FAIL); fmt --check clean, clippy -D warnings clean, rustdoc on public items, README.md; PR into main with Closes #5.",
+      "landed_commit_shas": [
+        "cb619e9099393b1a7b8879c5038fd2326cbec4cd"
+      ],
+      "diff_summary": "+1205 lines across 8 additive files (Cargo.lock, crates/ferric-router/{Cargo.toml, README.md, examples/app.rs, src/lib.rs, src/link.rs, src/matcher.rs, src/router.rs}). Composes ferric (create_signal/Signal, VElement/text/EventKind, Component, mount); no reactivity/DOM re-implementation.",
+      "dag_decision_record": "5-child contract-first serial pipeline (scaffold -> matcher -> navigation -> view/link -> synthesis gate) against a frozen contract (contracts/ferric_router_api.rs). Matcher: exact-over-segments with empty-segment normalization, 18 unit tests. Navigation: pushState/popstate behind cfg(target_arch=wasm32), app-lifetime closure.forget() mirroring ferric::dom. Thread-local CURRENT_PATH Signal<String> (F1, by-design for single-root SPA scope). <span role=link tabindex=0>+click->navigate (F2) because ferric's click handler is zero-arg Fn(). No unwrap/expect/panic/unsafe in library code. Machine gate PASS round 1.",
+      "gate_outcome": "approved",
+      "machine_gate": "PASS (round 1)",
+      "review_verdict": "APPROVE (0 block, 0 major; 2 minor by-design F1/F2 + 3 nits M1-M3, none blocking)",
+      "landed_at": "2026-10-07T01:10:24Z",
+      "compacted": false
+    },
+    {
+      "item_slug": "chirp-types",
+      "issue": 7,
+      "pr": 17,
+      "acceptance_criteria": "New workspace member crate crates/chirp-types (plain lib, native target, no wasm/server deps); coherent domain model User/Chirp(Post with reply threads)/Timeline/Follow/Like with ids+timestamps+relationships; request/response DTOs forming the client<->server REST contract (auth/user, create-chirp, timeline query, follow, like, generic Page<T>, ApiError/ErrorCode); every type serde Serialize+Deserialize with stable explicit JSON naming, round-trip stable; native cargo test unit tests; dependency-light (serde; serde_json dev-only); fmt/clippy clean, rustdoc, README; PR into main Closes #7.",
+      "landed_commit_shas": [
+        "2e32aed5d49529c9075372aabfcaac12e56a8788"
+      ],
+      "diff_summary": "+1163 additive, 0 deletions; new crate crates/chirp-types (src/{lib,ids,domain,api}.rs, Cargo.toml, README.md) + 2 centralized [workspace.dependencies] lines (serde/serde_json) + Cargo.lock; no other crate touched. Squash commit 2e32aed (PR #17).",
+      "dag_decision_record": "Decomposed (NeedsDecompose) into SUBTASK_implement_crate + SUBTASK_synthesis_gate. Newtype ids with #[serde(transparent)] (UserId/ChirpId as u64); TryFrom<String> validate-on-deserialize value objects; camelCase rename_all wire convention; SCREAMING_SNAKE_CASE ErrorCode; epoch-millis timestamps; skip_serializing_if optionals; generic Page<T> pagination with opaque Cursor; ApiError/ErrorCode error contract. Dependency-light. No unwrap/expect/panic/unsafe/todo outside tests/doc. Machine gate PASS round 1.",
+      "gate_outcome": "approved",
+      "machine_gate": "PASS (round 1)",
+      "review_verdict": "APPROVE (0 block/0 major; 6 minor/advisory F1-F6 forward-compat/cosmetic; 7/7 acceptance). Critical shared-contract breaking-change test answered NO.",
+      "landed_at": "2026-10-07T01:37:16Z",
+      "compacted": false
+    },
+    {
+      "item_slug": "ferric-http",
+      "issue": 6,
+      "pr": 15,
+      "acceptance_criteria": "Standalone workspace member crate crates/ferric-http; fetch-based HTTP/JSON client for the ferric framework (wasm32 target via web-sys fetch); typed request/response, JSON (serde) ser/de, error model; builder/client API; wasm build; native + wasm-bindgen-test (compile-only acceptable); fmt --check clean, clippy -D warnings clean, rustdoc, README; PR into main Closes #6.",
+      "landed_commit_shas": [
+        "25e90c05caca5421ead87adbbbea74d4f5d41a50"
+      ],
+      "diff_summary": "crates/ferric-http (Cargo.toml, README.md, src/{lib,error,request,response,client}.rs) + Cargo.lock (+1 package node ferric-http, zero version churn). Squash commit 25e90c0 (PR #15). Feature code byte-identical to the I14-approved head c8a58b8; the relock (ferric-http-relock-r1) changed only Cargo.lock on the rebased tree.",
+      "dag_decision_record": "Delivered ATOMIC as a single standalone crate crates/ferric-http. fetch/JSON client over web-sys; typed request/response + error model; 29 unit + 4 doctests. Machine gate PASS round 1. LAND was blocked I14-I16 on a Cargo.lock conflict with sibling lands (ferric-router #5); cleared by the forked ferric-http-relock-r1 DAG (Cargo relock on a merge of origin/main, re-PASS synthesis gate on the rebased tree e27c2ac), never inline (P1).",
+      "gate_outcome": "approved (machine PASS r1 + review APPROVE at I14; landed at I17 after relock cleared the lockfile; no new review needed for a lockfile-only relock)",
+      "machine_gate": "PASS (round 1)",
+      "review_verdict": "APPROVE (0 block/0 major; 5 non-blocking nits; 7/7 acceptance) \u2014 reviewed at I14 on head c8a58b8; relock changed only Cargo.lock, feature diff unchanged.",
+      "landed_at": "2026-10-07T01:47:15Z",
+      "compacted": false
+    },
+    {
+      "item_slug": "chirp-frontend",
+      "issue": 9,
+      "pr": 18,
+      "acceptance_criteria": "crates/chirp-frontend ferric SPA (wasm32) composing ferric + ferric-router + ferric-http + the chirp-types REST contract: timeline view (cursor pagination, keyed list, loading/error/empty), compose-chirp form (login + validated), /user/:id profile route with follow/like, loading/error states throughout; wasm build; native/compile-only tests; fmt/clippy clean; rustdoc; README; DTOs imported from chirp-types never redefined; no panic/unsafe in runtime; errors surface to UI never swallowed; PR into main Closes #9.",
+      "landed_commit_shas": [
+        "92661d89e296e3d960c07f3bc58e667b98fbfecb"
+      ],
+      "diff_summary": "+2527 additive, 0 deletions, confined to crates/chirp-frontend/* plus root Cargo.lock (+29 Cargo-authored new-member lines). Squash commit 92661d8 (PR #18). New crate crates/chirp-frontend (ferric SPA): src/{lib,app,error,api,timeline,compose,profile}.rs, examples/chirp.rs, index.html, Cargo.toml, README.md. No other crate touched; chirp-types not modified; main untouched until squash.",
+      "dag_decision_record": "Decomposed (NeedsDecompose) into 6 spokes (scaffold, api_client, timeline, compose, profile, synthesis_gate). ferric is a coarse re-render framework (a signal created in a running effect is disposed when the effect re-runs); all three views handle this identically: state lives in plain thread_local data (TimelineModel/ComposeState/ProfileState), re-render driven by a long-lived root anchor (AppContext::session signal created once outside any effect; timeline guards bump() with a current_path() check so a completion after navigation-away is dropped); async via wasm_bindgen_futures::spawn_local behind #[cfg(target_arch=wasm32)] so the crate unit-tests natively. 7/7 REST contract conformance against chirp-types (DTOs imported from prelude, never redefined); total AppError::from_http over #[non_exhaustive] ferric_http::Error (non-decodable body degrades to Transport, never unwraps); text-node rendering only (no innerHTML/XSS); bearer token in header not URL; compile-time API base (no runtime secret in bundle). 41/41 native tests. Machine gate PASS round 1. Uncontrolled inputs so re-render never clobbers typing.",
+      "gate_outcome": "approved",
+      "machine_gate": "PASS (round 1)",
+      "review_verdict": "APPROVE (0 block/0 major; 14/14 acceptance criteria substantively met; 7/7 REST contract one-to-one; 5 minor/nit/advisory F1-F5 non-blocking [F1 local error-banner dup, F2 sanctioned representative like-control, F3/F4 forward-looking UX, F5 positive security/a11y notes]; two safety identities independently re-verified not merely trusted) - review-chirp-frontend root SYNTHESIS.md, gated_by overseer/I31. gh review posted COMMENTED (self-review block; author==gh account).",
+      "landed_at": "2026-10-07T04:52:21Z",
+      "compacted": false
+    }
+  ],
+  "iterations": [
+    {
+      "iteration": "I3",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I4",
+      "atomic_action": "engine_fork ferric-http (#6) \u2014 DENIED (1st)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I4",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I5",
+      "atomic_action": "engine_fork ferric-http (#6) \u2014 DENIED (2nd)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I5",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I6",
+      "atomic_action": "engine_fork ferric-http (#6) \u2014 DENIED (3rd)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I6",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I7",
+      "atomic_action": "engine_fork ferric-http (#6) \u2014 DENIED (4th)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I7",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I8",
+      "atomic_action": "engine_fork ferric-http (#6) \u2014 DENIED (5th)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I8",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I9",
+      "atomic_action": "engine_fork ferric-http (#6) \u2014 GRANTED+SUCCEEDED (6th attempt, 1st success)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I9",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I10",
+      "atomic_action": "engine_fork chirp-types (#7) \u2014 GRANTED+SUCCEEDED. Last prepared-fork-pending DAG; next-wave fan-out (#5+#6+#7) complete.",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I10",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I11",
+      "atomic_action": "NONE \u2014 demand-driven: nothing folded/landed; held the one-fork budget.",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I11",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I12",
+      "atomic_action": "engine_fork review-ferric-router (#5 review) \u2014 GRANTED+SUCCEEDED. #6 review queued for I12.",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I12",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I13",
+      "atomic_action": "engine_fork review-ferric-http (#6 review) \u2014 GRANTED+SUCCEEDED. No land (reviews not folded).",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I13",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I14",
+      "atomic_action": "LANDED ferric-router #5 / PR #16 (mechanical squash-merge @ cb619e9; #5 CLOSED, board Done, pointer 1->2). Demand-driven fork: NONE (held budget).",
+      "landed": "ferric-router #5 -> main @ cb619e9",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I14",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I15",
+      "atomic_action": "engine_fork review-chirp-types (#7 review) \u2014 GRANTED+SUCCEEDED. LAND of #6/PR #15 ATTEMPTED-but-BLOCKED (review APPROVE but PR #15 CONFLICTING on Cargo.lock); relock DAG queued for I15. No land.",
+      "landed": "none",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I15",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I16",
+      "atomic_action": "engine_fork ferric-http-relock-r1 (#6 relock/rebase DAG) \u2014 GRANTED+SUCCEEDED. No land (PR #15 CONFLICTING -> relock in flight; PR #17 CLEAN but review-chirp-types had posted-but-not-folded). current_pointer stays 2.",
+      "landed": "none",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I16",
+      "persona": "swe-lead",
+      "evaluation": "Continue",
+      "scheduled_successor": "I17",
+      "atomic_action": "LANDED chirp-types #7 / PR #17 (mechanical squash-merge @ 2e32aed; #7 CLOSED, board Done, pointer 2->3; reaped chirp-types + review-chirp-types whole). THEN engine_fork chirp-server (#8 code DAG) \u2014 GRANTED+SUCCEEDED. Did NOT land #6 (relock-r1 pushed-but-not-folded).",
+      "landed": "chirp-types #7 -> main @ 2e32aed",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I17",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I16 -> I17). Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch ferric-http-relock-r1/SYNTHESIS.md (#6 relock) and chirp-server/SYNTHESIS.md (#8); gate+LAND any approved+CLEAN work mechanically; fork one demand-driven DAG; schedule I18.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I18 (depends_on I17; execution group 15; eligible promptly to gate the #8 chirp-server and #9 chirp-frontend folds and fan out devops)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) ferric-http-relock-r1 (#6 relock DAG) HAD FOLDED: root SYNTHESIS.md verdict PASS (re-PASS on the rebased tree e27c2ac) + COMPLETE.md present. (2) chirp-server (#8 code DAG) had NOT folded: DECOMPOSED, NeedsDecompose, no root SYNTHESIS.md -> still running. (3) gh re-polled past async UNKNOWN: PR #15 OPEN/MERGEABLE/CLEAN (head e27c2ac) \u2014 the #7 land did NOT reconflict it. main @ 2e32aed confirmed.",
+      "atomic_action": "LANDED ferric-http #6 / PR #15 (mechanical squash-merge: re-polled MERGEABLE/CLEAN, then gh pr merge 15 --squash --delete-branch -> squash commit 25e90c0 on main, PR #15 MERGED @ 2026-10-07T01:47:15Z, issue #6 CLOSED, board #6 Done, current_pointer 3->4; reaped ferric-http code-DAG + review-ferric-http review DAG + ferric-http-relock-r1 relock DAG whole). THEN engine_fork chirp-frontend (#9 code DAG) \u2014 the one demand-driven fork, newly unblocked by landing #6.",
+      "fork_denied": null,
+      "fork_succeeded": {
+        "tool": "fork",
+        "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-frontend",
+        "launch_agent": "swe-coder",
+        "result": "status=forked, forked_thread_id=chirp-frontend, placement=peer",
+        "note": "Carry-forward: _FORK.md kernel-metadata fields MUST be plain 'key: value' lines, not markdown bullets."
+      },
+      "landed": "ferric-http #6 -> main @ 25e90c0 (PR #15 squash-merged, issue #6 CLOSED, board Done)",
+      "board_changes": "#6 set to Done. #8 and #9 remain In Progress.",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I18",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I17 -> I18). Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I19.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I19 (depends_on I18; execution group 16; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded: root SUSPENSION.md (DECOMPOSED/NeedsDecompose) + 4 subtasks (SUBTASK_scaffold_and_repository, SUBTASK_api_layer, SUBTASK_integration_tests_and_docs, SUBTASK_synthesis_gate) each with only a _BRIEF.md (no child COMPLETE.md), NO root SYNTHESIS.md -> still running decompose->implement->synthesize. (2) chirp-frontend (#9 code DAG) NOT folded: workspace held only _BRIEF.md + _FORK.md (no _GLOBAL.md) -> forked but not yet decomposed/producing. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs. issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN. main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE \u2014 demand-driven watch-and-schedule iteration (the I10/I13 precedent). Nothing folded (no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing. One-fork budget held unspent; fork token NOT exercised. Scheduled successor I19 before the (null) atomic action per the self-perpetuating continue path.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I19",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I18 -> I19), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I20.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I20 (depends_on I19; execution group 17; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded but PROGRESSING: root SUSPENSION.md (DECOMPOSED/NeedsDecompose); SUBTASK_scaffold_and_repository now COMPLETE.md (first spoke done); SUBTASK_api_layer + SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate still only _BRIEF.md; live checkout/ + taskflow_workspaces/; NO root SYNTHESIS.md -> still running. (2) chirp-frontend (#9 code DAG) NOT folded but ADVANCED since I18: now _GLOBAL.md + 6 subtasks (scaffold, api_client, timeline, compose, profile, synthesis_gate), each only _BRIEF.md (no child COMPLETE.md), NO root SYNTHESIS.md -> decomposed, early implementation. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs. issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN. main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I20 BEFORE the (null) atomic action per the self-perpetuating continue path.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I20",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I19 -> I20), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I21.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I21 (depends_on I20; execution group 18; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded but PROGRESSING: root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md + IMPLEMENTATION_NOTES.md (first spoke done); SUBTASK_api_layer has NOW ITSELF DECOMPOSED (_GLOBAL.md + contracts/ -> sub-subtree); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; live checkout/ + taskflow_workspaces/; NO root SYNTHESIS.md -> still running. (2) chirp-frontend (#9 code DAG) NOT folded: root SUSPENSION.md (DECOMPOSED) + 6 subtasks each only _BRIEF.md, NO root SYNTHESIS.md -> decomposed, early implementation. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs. issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18/I19 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I21 BEFORE the (null) atomic action per the self-perpetuating continue path.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I21",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I20 -> I21), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I22.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I22 (depends_on I21; execution group 19; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded but PROGRESSING past I20: root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer has NOW ITSELF DECOMPOSED AND SUSPENDED (_GLOBAL.md + SUSPENSION.md + contracts/ -> running sub-subtree, further than I20's _GLOBAL.md+contracts/ without SUSPENSION.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; live checkout/ + taskflow_workspaces/; NO root SYNTHESIS.md -> still running. (2) chirp-frontend (#9 code DAG) NOT folded: root SUSPENSION.md (DECOMPOSED) + 6 subtasks each only _BRIEF.md, NO root SYNTHESIS.md -> decomposed, early implementation. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs (nothing to re-poll mergeability on, no gate due). issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18/I19/I20 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I22 BEFORE the (null) atomic action per the self-perpetuating continue path.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I22",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I21 -> I22), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I23.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I23 (depends_on I22; execution group 20; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded but PROGRESSING past I21: root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md + IMPLEMENTATION_NOTES.md (first spoke done); SUBTASK_api_layer has NOW materialized its own 4 grandchild spokes (transport_foundations, handlers, router_and_bootstrap, api_synthesis) + its _GLOBAL.md + SUSPENSION.md + contracts/ (running sub-subtree); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; live checkout/ + taskflow_workspaces/; NO root SYNTHESIS.md -> still running. (2) chirp-frontend (#9 code DAG) NOT folded: root SUSPENSION.md (DECOMPOSED) + 6 subtasks each only _BRIEF.md, NO root SYNTHESIS.md -> decomposed, early implementation. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs (nothing to re-poll mergeability on, no gate due). issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18/I19/I20/I21 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I23 BEFORE the (null) atomic action per the self-perpetuating continue path.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I23",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I22 -> I23), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I24.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I24 (depends_on I23; execution group 21; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded but PROGRESSING past I22: root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer (itself decomposed + suspended) now has its FIRST grandchild spoke folded - SUBTASK_transport_foundations COMPLETE.md (the other three grandchildren handlers/router_and_bootstrap/api_synthesis hold only _BRIEF.md; at I22 all four held only _BRIEF.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; live checkout/ + taskflow_workspaces/; NO root SYNTHESIS.md -> still running. (2) chirp-frontend (#9 code DAG) NOT folded: root SUSPENSION.md (DECOMPOSED) + 6 subtasks each only _BRIEF.md; live checkout/ holds scaffolded crates/ + Cargo.toml + Cargo.lock; NO root SYNTHESIS.md -> decomposed, early implementation (unchanged at marker level since I21). (3) gh (authenticated mattsmcknight), re-polled: NO open PRs (nothing to re-poll mergeability on, no gate due, no relock due). issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18/I19/I20/I21/I22 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I24 BEFORE the (null) atomic action per the self-perpetuating continue path.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I24",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I23 -> I24), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I25.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I25 (depends_on I24; execution group 22; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded, marker level UNCHANGED since I23: root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer (itself decomposed + suspended) with its first grandchild spoke SUBTASK_transport_foundations COMPLETE.md (handlers/router_and_bootstrap/api_synthesis still only _BRIEF.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; NO root SYNTHESIS.md -> still running. (2) chirp-frontend (#9 code DAG) NOT folded but PROGRESSING past I23: root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_scaffold NOW has COMPLETE.md (first spoke folded; at I23 all six held only _BRIEF.md); the other five (api_client/timeline/compose/profile/synthesis_gate) still only _BRIEF.md; NO root SYNTHESIS.md -> decomposed, implementation underway. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs (nothing to re-poll mergeability on, no gate due, no relock due). issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18/I19/I20/I21/I22/I23 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I25 BEFORE the (null) atomic action per the self-perpetuating continue path. Note: #9 chirp-frontend progressed this round (scaffold spoke folded) - continued momentum on both DAGs.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I25",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I24 -> I25), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I26.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I26 (depends_on I25; execution group 23; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded but PROGRESSING past I24: root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer (itself decomposed + suspended) now has its SECOND grandchild spoke folded - SUBTASK_handlers COMPLETE.md alongside SUBTASK_transport_foundations COMPLETE.md (2 of 4 grandchildren folded; at I24 only transport_foundations; SUBTASK_router_and_bootstrap + SUBTASK_api_synthesis still only _BRIEF.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; NO root SYNTHESIS.md -> still running. (2) chirp-frontend (#9 code DAG) NOT folded but PROGRESSING past I24: root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_api_client NOW has COMPLETE.md alongside SUBTASK_scaffold COMPLETE.md (2 of 6 spokes folded; at I24 only scaffold); the other four (timeline/compose/profile/synthesis_gate) still only _BRIEF.md; live checkout/ holds scaffolded crates/ + Cargo.toml + Cargo.lock; NO root SYNTHESIS.md -> decomposed, implementation underway. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs (nothing to re-poll mergeability on, no gate due, no relock due). issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18/I19/I20/I21/I22/I23/I24 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I26 BEFORE the (null) atomic action per the self-perpetuating continue path. Note: BOTH DAGs progressed this round (#8 api_layer's handlers grandchild folded -> 2/4; #9's api_client spoke folded -> 2/6) - continued momentum.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I26",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I25 -> I26), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I27.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I27 (depends_on I26; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded but PROGRESSING past I25: root SUSPENSION.md (NeedsDecompose); SUBTASK_scaffold_and_repository COMPLETE.md (first spoke done); SUBTASK_api_layer (itself decomposed + suspended) now has its THIRD grandchild spoke folded - SUBTASK_router_and_bootstrap COMPLETE.md alongside SUBTASK_transport_foundations + SUBTASK_handlers COMPLETE.md (3 of 4 grandchildren folded; at I25 only transport_foundations + handlers; only SUBTASK_api_synthesis still _BRIEF.md); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate only _BRIEF.md; NO root SYNTHESIS.md -> still running. (2) chirp-frontend (#9 code DAG) NOT folded, marker level UNCHANGED since I25: root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_scaffold + SUBTASK_api_client COMPLETE.md (2 of 6 spokes folded, unchanged since I25); the other four (timeline/compose/profile/synthesis_gate) still only _BRIEF.md; live checkout/ holds scaffolded crates/ + Cargo.toml + Cargo.lock; NO root SYNTHESIS.md -> decomposed, implementation underway. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs (nothing to re-poll mergeability on, no gate due, no relock due). issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18/I19/I20/I21/I22/I23/I24/I25 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I27 BEFORE the (null) atomic action per the self-perpetuating continue path. Note: #8 chirp-server progressed this round (api_layer's router_and_bootstrap grandchild folded -> 3 of 4 grandchildren, only api_synthesis left); #9 chirp-frontend unchanged at the marker level (2 of 6).",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I27",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I26 -> I27), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I28.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I28 (depends_on I27; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded (no root SYNTHESIS.md, no root COMPLETE.md; root holds _FORK/_BRIEF/_GLOBAL/SUSPENSION.md) but PROGRESSING past I26: SUBTASK_scaffold_and_repository COMPLETE.md (first top-level spoke done); SUBTASK_api_layer HAS NOW ITSELF FOLDED (SUBTASK_api_layer/SYNTHESIS.md present - its last grandchild api_synthesis folded the sub-subtree; transport_foundations + handlers + router_and_bootstrap COMPLETE; at I26 it was 3/4 grandchildren with no api_layer SYNTHESIS.md) => 2 of 4 top-level spokes done (scaffold + api_layer); SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate still only _BRIEF.md -> root synthesis_gate (the ROOT SYNTHESIS.md writer) still pending. Gated ONLY on the folded ROOT record, never the SUBTASK_api_layer/SYNTHESIS.md side-effect (gate_on_synthesis_not_review_body). (2) chirp-frontend (#9 code DAG) NOT folded (no root SYNTHESIS.md) but PROGRESSING past I26: root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_compose NOW has COMPLETE.md alongside SUBTASK_scaffold + SUBTASK_api_client COMPLETE.md (3 of 6 spokes folded; at I26 only scaffold + api_client = 2/6); the other three (timeline/profile/synthesis_gate) still only _BRIEF.md; live checkout/ holds scaffolded crates/ + Cargo.toml + Cargo.lock -> decomposed, implementation underway. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs (nothing to re-poll mergeability on, no gate due, no relock due). issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18/I19/I20/I21/I22/I23/I24/I25/I26 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I28 BEFORE the (null) atomic action per the self-perpetuating continue path. Note: BOTH DAGs progressed this round (#8 api_layer sub-subtree FOLDED -> 2 of 4 top-level spokes done, only integration_tests_and_docs + synthesis_gate left; #9 compose spoke folded -> 3 of 6) - continued momentum; neither frozen, so keep watching rather than recover.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I28",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I27 -> I28), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I29.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I29 (depends_on I28; eligible promptly to re-check #8 chirp-server and #9 chirp-frontend folds, gate/land, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) NOT folded (no root SYNTHESIS.md, no root COMPLETE.md; root holds _FORK/_BRIEF/_GLOBAL/SUSPENSION.md + 4 SUBTASK dirs); marker level FLAT vs I27: SUBTASK_scaffold_and_repository COMPLETE, SUBTASK_api_layer FOLDED (its SYNTHESIS.md present; grandchildren transport_foundations/handlers/router_and_bootstrap COMPLETE) => 2 of 4 top-level spokes done; SUBTASK_integration_tests_and_docs + SUBTASK_synthesis_gate still only _BRIEF.md. First flat round for #8 (advanced every round I19->I27); the integration-tests+docs spoke is a large in-flight unit -> within variance, NOT frozen. Gated ONLY on folded ROOT record (gate_on_synthesis_not_review_body). (2) chirp-frontend (#9 code DAG) NOT folded (no root SYNTHESIS.md) but PROGRESSING past I27: root SUSPENSION.md (DECOMPOSED) + 6 subtasks; SUBTASK_timeline + SUBTASK_profile NOW COMPLETE alongside scaffold + api_client + compose (5 of 6 spokes; at I27 only 3/6); only SUBTASK_synthesis_gate (_BRIEF) remains -> very close to root fold. (3) gh (authenticated mattsmcknight), re-polled: NO open PRs (nothing to re-poll mergeability on, no gate due, no relock due); issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN); main @ 25e90c0 confirmed. Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18/I19/I20/I21/I22/I23/I24/I25/I26/I27 precedent). Nothing folded (no root SYNTHESIS.md for #8 or #9 -> no machine gate), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on a buildable app surface / #8 chirp-server landing per the brief's priority-4 trigger. One-fork budget held unspent; fork token NOT exercised. Priority ladder (relock > review > remediation > newly-unblocked devops) produced no actionable fork. Scheduled successor I29 depends_on I28 per the self-perpetuating continue path. Momentum check: #9 progressed strongly (3/6 -> 5/6 spokes, synthesis_gate last -> near fold); #8 flat one round (2/4 top-level, integration-tests spoke in flight) but alive - neither frozen, so keep watching rather than recover.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 and #9 remain In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I29",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I28 -> I29), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN); watch chirp-server/SYNTHESIS.md (#8) and chirp-frontend/SYNTHESIS.md (#9) for their ROOT fold; gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG; schedule I30.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I30 (depends_on I29; eligible promptly to gate review-chirp-frontend's fold + LAND #9/PR #18, re-check #8 chirp-server fold, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-frontend (#9 code DAG) HAS FOLDED: root SYNTHESIS.md (verdict PASS round 1; 4/4 checks, 7/7 contract identities, 41/41 native tests, 2 non-blocking minors F1/F2) + root COMPLETE.md both present; PR #18 OPENED (work/chirp-frontend -> main, Closes #9, head b5f7e62). Live gh poll: PR #18 OPEN / MERGEABLE / CLEAN (not UNKNOWN). (2) chirp-server (#8 code DAG) NOT folded but PROGRESSING past I28's flat round: SUBTASK_integration_tests_and_docs NOW holds TEST_NOTES.md (3rd top-level spoke in flight; at I28 only _BRIEF.md); SUBTASK_scaffold_and_repository COMPLETE + SUBTASK_api_layer FOLDED = 2 of 4 top-level spokes done; SUBTASK_synthesis_gate (ROOT SYNTHESIS.md writer) still only _BRIEF.md; NO root SYNTHESIS.md -> still running, NOT frozen. (3) gh (authenticated mattsmcknight), re-polled past async UNKNOWN: PR #18 OPEN/MERGEABLE/CLEAN; issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN); main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "engine_fork review-chirp-frontend (#9 review DAG) - GRANTED+SUCCEEDED (the one demand-driven fork this iteration). Priority-2 on the ladder: #9 folded machine-PASS + PR #18 open + no review DAG -> fork the review. Did NOT land (a machine-PASS code DAG must be reviewed before landing; review not yet folded). No relock due (PR #18 CLEAN; it is the only open PR). #8 not folded (no review/remediation due). Devops #10-#13 still gated on #8 landing. Scheduled successor I30 depends_on I29 BEFORE the atomic action per the self-perpetuating continue path. current_pointer stays 4.",
+      "fork_denied": null,
+      "fork_succeeded": {
+        "tool": "fork",
+        "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-frontend",
+        "launch_agent": "swe-coder",
+        "result": "status=forked, forked_thread_id=review-chirp-frontend, placement=peer",
+        "reviews_pr": 18,
+        "note": "Mirrors review-chirp-types fork pattern; _FORK.md kernel-metadata fields as plain key: value lines; methodology code-review+rust+architecture as a +-joined launch_context string."
+      },
+      "landed": "none",
+      "board_changes": "none (#9 remains In Progress - machine-PASS but not yet reviewed/landed; #8 remains In Progress; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I30",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I29 -> I30), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh PR #18 past UNKNOWN); gate review-chirp-frontend's ROOT SYNTHESIS.md -> on APPROVE + PR #18 OPEN/MERGEABLE/CLEAN LAND #9 (mechanical squash-merge, no fork) / on REQUEST-CHANGES remediate; watch chirp-server/SYNTHESIS.md (#8) for its ROOT fold; fork at most one demand-driven DAG per the priority ladder; schedule I31.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I31 (depends_on I30; eligible promptly to gate review-chirp-frontend's fold + LAND #9/PR #18, re-check #8 chirp-server fold -> fork review-chirp-server on PASS, and fan out devops once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) review-chirp-frontend (#9 review DAG, forked I29) NOT folded: root holds only _FORK.md + _BRIEF.md (no root SYNTHESIS.md, no COMPLETE.md) -> still spinning up/running; no authoritative APPROVE/REQUEST-CHANGES verdict yet. (2) chirp-server (#8 code DAG) NOT folded but PROGRESSING past I29: root SUSPENSION.md (NeedsDecompose); SUBTASK_integration_tests_and_docs NOW COMPLETE.md (at I29 only TEST_NOTES.md) => 3 of 4 top-level spokes done (scaffold COMPLETE + api_layer FOLDED + integration_tests_and_docs COMPLETE); only SUBTASK_synthesis_gate (the ROOT SYNTHESIS.md writer) still only _BRIEF.md -> VERY CLOSE to root fold; NO root SYNTHESIS.md -> still running. (3) gh (authenticated mattsmcknight), re-polled past async UNKNOWN: PR #18 OPEN/MERGEABLE/CLEAN (head b5f7e62; the only open PR); issues #4/#5/#6/#7 CLOSED, #8-#13 OPEN (+ epics #1/#2/#3 OPEN); main @ 25e90c0 confirmed (ferric-http #6). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18-I28 precedent). GATE+LAND: review-chirp-frontend had NOT folded (only _FORK/_BRIEF, no root SYNTHESIS.md) -> per gate_on_synthesis_not_review_body a machine-PASS code DAG cannot land until its review DAG's ROOT SYNTHESIS.md folds -> correctly did NOT land #9 (no verdict), even though PR #18 is OPEN/MERGEABLE/CLEAN. current_pointer stays 4. FORK ladder produced no actionable fork: (1) relock - none (PR #18 CLEAN; only open PR); (2) review - review-chirp-frontend already in flight (I29), review-chirp-server not due (#8 not folded); (3) remediation - none (no machine-FAIL, no REQUEST-CHANGES); (4) newly-unblocked devops #10-#13 - still gated on #8 chirp-server landing. One-fork budget held unspent; fork token NOT exercised. Scheduled successor I31 depends_on I30 BEFORE the (null) atomic action per the self-perpetuating continue path.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#9 remains In Progress - machine-PASS but review not folded, not landable; #8 remains In Progress - 3/4 top-level spokes, near fold; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I31",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I30 -> I31), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh PR #18 past UNKNOWN); gate review-chirp-frontend's ROOT SYNTHESIS.md -> on APPROVE + PR #18 OPEN/MERGEABLE/CLEAN LAND #9 (mechanical squash-merge, no fork); watch chirp-server/SYNTHESIS.md (#8) for its ROOT fold; fork at most one demand-driven DAG per the priority ladder; schedule I32.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I32 (depends_on I31; eligible promptly to gate chirp-server #8's fold -> fork review-chirp-server on PASS / remediate on FAIL, and fan out devops #10-#13 once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) review-chirp-frontend (#9 review DAG, forked I29) HAS FOLDED: root SYNTHESIS.md verdict APPROVE (0 block/0 major; 14/14 acceptance; 7/7 REST contract conformance; 5 minor/nit F1-F5 non-blocking; machine gate relied upon) + COMPLETE.md present. (2) PR #18 re-polled past async UNKNOWN (two independent gh polls - pr view + pr list): OPEN/MERGEABLE/CLEAN (head b5f7e62; the only open PR). (3) chirp-server (#8 code DAG) NOT folded (no root SYNTHESIS.md) but SHAPE-CHANGED past I30: TWO NEW subtasks SUBTASK_fix_validation_error_mapping + SUBTASK_reverify_gate appeared (DAG self-remediating a validation-error-mapping defect its synthesis gate found; prior scaffold COMPLETE + api_layer FOLDED + integration_tests_and_docs COMPLETE remain; synthesis_gate still _BRIEF.md) -> still running decompose->implement->synthesize, NOT frozen. (4) issues: #4/#5/#6/#7 CLOSED, #9 now CLOSED (this iteration), #8/#10-#13 OPEN (+ epics #1/#2/#3 OPEN). main advanced 25e90c0 -> 92661d8 (the #9 land).",
+      "atomic_action": "LANDED chirp-frontend #9 / PR #18 (mechanical squash-merge: review-chirp-frontend folded APPROVE + PR #18 re-confirmed OPEN/MERGEABLE/CLEAN -> gh pr merge 18 --squash --delete-branch -> squash commit 92661d8 on main, PR #18 MERGED @ 2026-10-07T04:52:21Z, issue #9 CLOSED, board #9 Done, current_pointer 4->5; reaped chirp-frontend code-DAG + review-chirp-frontend review-DAG whole). Demand-driven FORK: NONE - ladder produced no actionable fork: (1) relock - none (no open PR CONFLICTING; #8 has no PR yet, so the #9 land cannot restale a non-existent #8 PR); (2) review - review-chirp-server not due (#8 not folded machine-PASS); (3) remediation - none (review APPROVE, no machine-FAIL); (4) newly-unblocked devops #10-#13 - still gated on #8 chirp-server landing. One-fork budget held unspent; fork token NOT exercised. Landing #9 is mechanical (not a fork), so no fork-token conflict. Scheduled successor I32 depends_on I31 per the self-perpetuating continue path. P1 held (mechanical squash-merge + board/STATE updates only; no code touched).",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "chirp-frontend #9 -> main @ 92661d8 (PR #18 squash-merged, issue #9 CLOSED, board Done, current_pointer 4->5)",
+      "board_changes": "#9 set to Done (CLOSED). #8 remains In Progress (running, self-remediating a validation-mapping fix); #10-#13 remain Todo/In Progress.",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I32",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I31 -> I32), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN; confirm main @ 92661d8); watch chirp-server/SYNTHESIS.md (#8) for its ROOT fold -> on machine PASS fork review-chirp-server (don't land unreviewed) / on machine FAIL remediate (budget 2 then escalate); gate+LAND any approved+CLEAN work mechanically; fork at most one demand-driven DAG per the priority ladder; schedule I33.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I33 (depends_on I32; eligible promptly to re-check #8 chirp-server's AUTHORITATIVE root fold [RV overwrites the round-0 record + opens the PR] -> fork review-chirp-server on machine PASS / remediate on machine FAIL, and fan out devops #10-#13 once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) SHAPE-CHANGED past I31: a ROOT SYNTHESIS.md NOW EXISTS but it is the INITIAL round-0 synthesis-gate record, verdict gate=FAIL on one tier-1 contract violation F1 (DTO-validation -> 422 plain-text via axum Json<T> serde boundary, NOT the contract's 400 ApiError{code:VALIDATION_ERROR,details}; all other checks PASS - build/test/fmt/clippy/wiring/duplication/code-review; chirp-server 23 unit + 20 integration = 43 passed, no DB). It is explicitly NOT a terminal fold: self-declares it 'will be superseded by SUBTASK_reverify_gate's PASS SYNTHESIS.md (with the PR URL) once FT1 lands' and 'no PR exists yet, so the DAG is correctly not landable'. The gate INJECTED FT1=SUBTASK_fix_validation_error_mapping + RV=SUBTASK_reverify_gate (round 1, depends_on FT1) - each holds only _BRIEF.md (not yet COMPLETE); NO root COMPLETE.md; root still holds SUSPENSION.md. LIVE evidence FT1 is actively mid-implementation THIS iteration: checkout/ has a NEW src/api/json.rs custom extractor (routing DTO-validation through ServerError::Validation -> 400) + edits to handlers.rs/error.rs/auth.rs/lib.rs + the flipped characterization test in tests/api.rs, all timestamped ~now (04:58-04:59Z local==UTC-7). This is the DAG's OWN decompose->implement->synthesize remediation (gotcha (h)), NOT a terminal machine-FAIL the overseer acts on - NOT frozen, progressing. (2) gh (authenticated mattsmcknight), re-polled: NO open PRs (gh pr list -> []; nothing to gate/land/relock). issues #4/#5/#6/#7/#9 CLOSED, #8/#10-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 92661d8 confirmed (the #9 land). Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18-I28/I30/I31 precedent). The #8 root SYNTHESIS.md that appeared is an INTERIM round-0 FAIL the DAG is self-remediating internally (FT1 + RV), NOT the authoritative terminal fold -> per gotcha (h) + gate_on_synthesis_not_review_body the overseer does NOT fork a remediation DAG and does NOT gate on this record; the authoritative RV verdict (which overwrites it + opens the PR) is what I33+ gate on. Nothing authoritatively folded (no machine gate due), no open PR (nothing landable), no PR CONFLICTING (no relock), and the devops wave (#10-#13) is still gated on #8 chirp-server LANDING per the brief's priority-4 trigger. Priority ladder (relock > review > remediation > newly-unblocked devops) produced NO actionable fork. One-fork budget held unspent; fork token NOT exercised. Scheduled successor I33 depends_on I32 per the self-perpetuating continue path. P1 held (read-only recon + STATE/board only, no code touched).",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 remains In Progress - round-0 gate FAIL, DAG self-remediating F1 via FT1+RV internally, no PR, not landable; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I33",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I32 -> I33), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh past UNKNOWN; confirm main @ 92661d8); watch chirp-server #8 for its AUTHORITATIVE root fold (RV overwrites the round-0 record + opens the PR) -> on machine PASS fork review-chirp-server (don't land unreviewed) / on machine FAIL remediate; gate+LAND any approved+CLEAN work; fork at most one demand-driven DAG per the priority ladder; schedule I34.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I34 (depends_on I33; eligible promptly to gate review-chirp-server's fold -> relock PR #19 if CONFLICTING then LAND #8 on APPROVE / remediate on REQUEST-CHANGES, and fan out devops #10-#13 once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) chirp-server (#8 code DAG) has AUTHORITATIVELY FOLDED machine-PASS: SUBTASK_reverify_gate overwrote the I32 round-0 interim FAIL -> the DAG root SYNTHESIS.md (mtime 05:07:39Z) is now RV's AUTHORITATIVE record (gate=PASS round 1; PR #19 URL; self-declares it supersedes the round-0 FAIL as the authoritative hub fold). F1 RESOLVED: SUBTASK_fix_validation_error_mapping COMPLETE (714d50f; ValidatedJson<T> extractor -> 400 ApiError; flipped characterization test passes; no 422 pin). All checks PASS cold (build/test[44, no DB]/fmt/clippy/wiring/contract/duplication/code-review; one tracked non-gating minor F2 rustdoc). Finalization lag: RV's own COMPLETE.md + root COMPLETE.md / SUSPENDED->COMPLETED flip not yet present (root still SUSPENSION.md; RV + synthesis_gate hold only _BRIEF.md) but the AUTHORITATIVE verdict record + the real open PR #19 both exist and head 714d50f is immutable -> gated as authoritative machine-PASS (gotcha (i): read the body, not mere existence). (2) PR #19 OPENED (work/chirp-server->main, Closes #8, head 714d50f, 05:06:23Z); live gh poll: OPEN but CONFLICTING/DIRTY - branch cut on main @ 25e90c0, main now 92661d8 (the #9 land restaled its Cargo.lock); a mechanical lock restale, not a code defect. (3) gh (authenticated mattsmcknight): open PRs = [#19]; issues #4/#5/#6/#7/#9 CLOSED, #8/#10-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 92661d8 confirmed. Nothing re-authored.",
+      "atomic_action": "engine_fork review-chirp-server (#8 review DAG) - GRANTED+SUCCEEDED (the one demand-driven fork this iteration). Ladder priority-2: #8 AUTHORITATIVELY folded machine-PASS + PR #19 open + no review DAG -> fork the review (render the authoritative APPROVE/REQUEST-CHANGES verdict; reviews the immutable 714d50f diff). Priority-1 relock did NOT fire: PR #19 is CONFLICTING but NOT approved-ready (relock is for an APPROVED PR gone conflicting; review must come first, then relock before land - the ferric-http I14->I15->I17 precedent). Did NOT land (#8 unreviewed + PR #19 CONFLICTING; never land unreviewed or on CONFLICTING). Priority-3 remediation: none (machine-PASS; the DAG's own reverify RV succeeded). Priority-4 devops #10-#13: still gated on #8 LANDING. current_pointer stays 5 (no land). Scheduled successor I34 depends_on I33 per the self-perpetuating continue path. P1 held (read-only recon + the fork's _BRIEF/_FORK + STATE only; no code touched).",
+      "fork_denied": null,
+      "fork_succeeded": {
+        "tool": "fork",
+        "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-server",
+        "launch_agent": "swe-coder",
+        "result": "status=forked, forked_thread_id=review-chirp-server, placement=peer",
+        "reviews_pr": 19,
+        "note": "Mirrors the review-chirp-frontend / review-chirp-types fork pattern; _FORK.md kernel-metadata as plain key: value lines; methodology concerns named in _BRIEF.md (code-review+rust+architecture+testing) as a +-joined launch_context string; the DAG selects/loads its own bundles (gotcha (b))."
+      },
+      "landed": "none",
+      "board_changes": "none (#8 remains In Progress - authoritatively machine-PASS, PR #19 open but CONFLICTING + unreviewed, not landable; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I34",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I33 -> I34), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh PR #19 past UNKNOWN; confirm main @ 92661d8); gate review-chirp-server's ROOT SYNTHESIS.md -> APPROVE + PR #19 OPEN/MERGEABLE/CLEAN LAND #8 (relock first if still CONFLICTING) / REQUEST-CHANGES remediate; fork at most one demand-driven DAG per the priority ladder; schedule I35.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I35 (depends_on I34; execution group 32; eligible promptly to gate review-chirp-server's fold -> relock PR #19 if CONFLICTING then LAND #8 on APPROVE / remediate on REQUEST-CHANGES, and fan out devops #10-#13 once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) review-chirp-server (#8 review DAG, forked I33) NOT folded: it has DECOMPOSED into 3 review subtasks (SUBTASK_architecture_contract_review + SUBTASK_rust_soundness_review + SUBTASK_test_adequacy_review), each holding ONLY _BRIEF.md (no subtask COMPLETE.md); root holds _FORK/_BRIEF/_GLOBAL.md + contracts/ + scheduler/ but NO root SYNTHESIS.md and NO root COMPLETE.md (no root SUSPENSION.md surfaced either) -> still running decompose->implement->synthesize, no authoritative APPROVE/REQUEST-CHANGES verdict yet. Freshly spun up (dirs ~05:09-05:16Z); ~1 cycle since the I33 fork -> early, NOT frozen. (2) PR #19 re-polled past async UNKNOWN (gh pr view + gh pr list): OPEN / CONFLICTING / DIRTY (head 714d50f; the only open PR) - the Cargo.lock restale (base 25e90c0 vs main 92661d8), a mechanical lock conflict, not a code defect, not a review concern. (3) #8 code DAG finalization lag persists (non-blocking): root SYNTHESIS.md present (RV authoritative PASS, mtime 05:07:39Z) but root still holds SUSPENSION.md (not yet flipped SUSPENDED->COMPLETED, no root COMPLETE.md) - the same lag I33 noted; the authoritative machine-PASS verdict + the real open PR #19 already exist so it does not block the review/land. (4) gh (authenticated mattsmcknight): open PRs = [#19]; issues #4/#5/#6/#7/#9 CLOSED, #8/#10-#13 OPEN (+ epics #1/#2/#3 OPEN). main @ 92661d8 confirmed. Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18-I28/I30/I31/I32 precedent). GATE+LAND: review-chirp-server had NOT folded (decomposed into 3 review subtasks, each only _BRIEF.md; no root SYNTHESIS.md) -> per gate_on_synthesis_not_review_body a machine-PASS code DAG cannot land until its review DAG's ROOT SYNTHESIS.md folds -> correctly did NOT land #8 (no verdict), even though #8 is authoritatively machine-PASS. current_pointer stays 5. FORK ladder produced no actionable fork: (1) relock priority-1 - did NOT fire: PR #19 is CONFLICTING but NOT yet approved-ready (relock is for an APPROVED PR gone conflicting; review must come first, then relock before land - the ferric-http I14->I15->I17 precedent); (2) review priority-2 - review-chirp-server already in flight (forked I33), no new machine-PASS code DAG without a review; (3) remediation priority-3 - none (no REQUEST-CHANGES, no machine-FAIL; the DAG's own reverify RV succeeded at I33); (4) newly-unblocked devops #10-#13 priority-4 - still gated on #8 chirp-server LANDING. One-fork budget held unspent; fork token NOT exercised. Scheduled successor I35 depends_on I34 BEFORE the (null) atomic action per the self-perpetuating continue path. P1 held (read-only recon + successor _BRIEF + STATE/CONTINUE only; no code touched).",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 remains In Progress - authoritatively machine-PASS, PR #19 open but CONFLICTING, review-chirp-server in flight [decomposed, not folded], not landable; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I35",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I34 -> I35), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh PR #19 past UNKNOWN; confirm main @ 92661d8; check the review subtasks for COMPLETE.md liveness); gate review-chirp-server's ROOT SYNTHESIS.md -> APPROVE + PR #19 OPEN/MERGEABLE/CLEAN LAND #8 (relock first if still CONFLICTING) / REQUEST-CHANGES remediate; fork at most one demand-driven DAG per the priority ladder; schedule I36.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I36 (depends_on I35; execution group 33; eligible promptly to gate review-chirp-server's fold -> relock PR #19 if CONFLICTING then LAND #8 on APPROVE / remediate on REQUEST-CHANGES, and fan out devops #10-#13 once #8 lands)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) review-chirp-server (#8 review DAG, forked I33) NOT folded at the root (no root SYNTHESIS.md, no root COMPLETE.md; root holds SUSPENSION.md NeedsDecompose) but PROGRESSING strongly past I34: GREW from 3 subtasks to 5 (added SUBTASK_code_review_quality_review + SUBTASK_synthesis_verdict). 3 of 4 review concerns FOLDED: SUBTASK_architecture_contract_review (COMPLETE.md + findings), SUBTASK_code_review_quality_review (COMPLETE.md + findings), SUBTASK_test_adequacy_review (COMPLETE.md + findings); pending SUBTASK_rust_soundness_review (_BRIEF.md only) + SUBTASK_synthesis_verdict (_BRIEF.md only, the ROOT SYNTHESIS.md writer). Dirs ~22:22-22:23 local -> actively progressing, NOT frozen, very close to the fold; no authoritative APPROVE/REQUEST-CHANGES verdict yet. (2) PR #19 re-polled past async UNKNOWN (gh pr view 19 + gh pr list): OPEN / CONFLICTING / DIRTY (head 714d50f, base main; the only open PR) - the Cargo.lock restale (base 25e90c0 vs main 92661d8), a mechanical lock conflict, not a code defect, not a review concern. (3) #8 code DAG finalization lag persists (non-blocking): root SYNTHESIS.md (RV authoritative PASS, 05:07:39Z) but root still holds SUSPENSION.md (no root COMPLETE.md) - the authoritative verdict record + real open PR #19 exist so it does not block. (4) gh (authenticated mattsmcknight): open PRs = [#19]; main @ 92661d8 confirmed. Nothing re-authored.",
+      "atomic_action": "NONE - demand-driven watch-and-schedule iteration (the I10/I13/I18-I28/I30/I32/I34 precedent). GATE+LAND: review-chirp-server had NOT folded its ROOT SYNTHESIS.md (3 of 4 subtask concerns folded + findings, but no root record; rust_soundness_review + synthesis_verdict still only _BRIEF.md) -> per gate_on_synthesis_not_review_body a machine-PASS code DAG cannot land until its review DAG's ROOT SYNTHESIS.md folds -> correctly did NOT land #8 (no verdict), even though #8 is authoritatively machine-PASS. current_pointer stays 5. FORK ladder produced no actionable fork: (1) relock priority-1 - did NOT fire: PR #19 is CONFLICTING but NOT yet approved-ready (relock is for an APPROVED PR gone conflicting; review must come first, then relock before land - the ferric-http I14->I15->I17 precedent); (2) review priority-2 - review-chirp-server already in flight (forked I33), progressing 3/4; no new machine-PASS code DAG without a review; (3) remediation priority-3 - none (no REQUEST-CHANGES, no machine-FAIL; the DAG's own reverify RV succeeded at I33); (4) newly-unblocked devops #10-#13 priority-4 - still gated on #8 chirp-server LANDING. One-fork budget held unspent; fork token NOT exercised. Scheduled successor I36 depends_on I35 BEFORE the (null) atomic action per the self-perpetuating continue path. P1 held (read-only recon + successor _BRIEF + STATE/CONTINUE only; no code touched).",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (#8 remains In Progress - authoritatively machine-PASS, PR #19 open but CONFLICTING, review-chirp-server in flight [5 subtasks, 3/4 concerns folded, root not folded], not landable; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I36",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain (I35 -> I36), 'resume reconstructed taskflow node'. Per _BRIEF.md: recon read-only (re-poll gh PR #19 past UNKNOWN; confirm main @ 92661d8; check SUBTASK_rust_soundness_review + SUBTASK_synthesis_verdict for COMPLETE.md liveness); gate review-chirp-server's ROOT SYNTHESIS.md -> APPROVE + PR #19 OPEN/MERGEABLE/CLEAN LAND #8 / APPROVE + CONFLICTING fork ONE relock DAG / REQUEST-CHANGES remediate; fork at most one demand-driven DAG per the priority ladder; schedule I37.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I37 (depends_on I36; execution group 34; eligible promptly to gate chirp-server-relock-r1's root re-PASS -> LAND #8/PR #19 once OPEN/MERGEABLE/CLEAN, then fan out devops #10-#13)",
+      "reconnaissance": "Read-only, P1 held (no build re-run, no rebase, no code/lockfile touched). (1) review-chirp-server (#8 review DAG, forked I33) has AUTHORITATIVELY FOLDED its ROOT SYNTHESIS.md = APPROVE (gate PASS, round 1; 0 block, 0 major; 6 minor + 5 nit, all land-then-fix/tracked). Past I35 (3/4 concerns) it grew the 4th: all four review concerns now folded with COMPLETE.md - SUBTASK_architecture_contract_review + SUBTASK_code_review_quality_review + SUBTASK_rust_soundness_review (NEW this iteration) + SUBTASK_test_adequacy_review; SUBTASK_synthesis_verdict wrote the root SYNTHESIS.md + a gh_review_body.md (posted COMMENTED under the self-review block). Gated on the folded ROOT record body (gotcha (g)/(i)): root still holds SUSPENSION.md + no root COMPLETE.md (finalization lag only); the body is the AUTHORITATIVE terminal human-landing verdict - it ruled F1's details-limitation ACCEPTABLE, derived zero-block/zero-major => APPROVE with all contract identities asserted, and states PR #19 is APPROVED to land subject to the overseer's mechanical Cargo.lock relock. (2) PR #19 re-polled past async UNKNOWN (gh pr view 19 + gh pr list): OPEN / CONFLICTING / DIRTY (head 714d50f, base main; the only open PR) - the Cargo.lock restale (base 25e90c0 vs main 92661d8), a mechanical lock conflict, not a code defect, not a review concern. (3) main @ 92661d8 confirmed (gh api repos/.../commits/main). Nothing re-authored.",
+      "atomic_action": "engine_fork chirp-server-relock-r1 (#8 relock/rebase DAG) - GRANTED+SUCCEEDED (the one demand-driven fork this iteration). Ladder priority-1: review-chirp-server folded AUTHORITATIVE APPROVE AND PR #19 is CONFLICTING (approved-ready PR gone conflicting) -> fork the relock to merge origin/main @ 92661d8 into work/chirp-server, Cargo relock (never hand-edit), re-run the synthesis gate cold on the rebased tree, confirm feature diff vs 714d50f empty outside Cargo.lock, push. Did NOT land (#8 PR #19 still CONFLICTING; never land CONFLICTING - the ferric-http I14->I15->I17 precedent: review first, relock before land). Priority-3 remediation: none (review APPROVE, not REQUEST-CHANGES; no machine-FAIL). Priority-4 devops #10-#13: still gated on #8 LANDING. current_pointer stays 5 (no land). Scheduled successor I37 depends_on I36 BEFORE the fork per the self-perpetuating continue path. P1 held (read-only recon + the fork's _BRIEF/_FORK + successor _BRIEF + STATE/CONTINUE only; no code/lockfile touched).",
+      "fork_denied": null,
+      "fork_succeeded": {
+        "tool": "fork",
+        "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-server-relock-r1",
+        "launch_agent": "swe-coder",
+        "result": "status=forked, forked_thread_id=chirp-server-relock-r1, placement=peer",
+        "clears_pr": 19,
+        "kind": "relock-rebase",
+        "note": "Mirrors the ferric-http-relock-r1 fork pattern; _FORK.md kernel-metadata as plain key: value lines, launch_context identity-only (application: software, model_default) with methodology concerns named in _BRIEF.md (Cargo workspace lockfile correctness + rebased-tree re-verification + diff-fidelity; the DAG selects/loads its own bundles, gotcha (b)); disposition reap-whole-after-land (gotcha (c))."
+      },
+      "landed": "none",
+      "board_changes": "none (#8 remains In Progress - authoritatively machine-PASS AND review-APPROVE, PR #19 open but CONFLICTING, relock chirp-server-relock-r1 in flight, not landable yet; #10-#13 remain Todo/In Progress)",
+      "terminal": "continue"
+    }
+  ],
+  "turn_pointer": {
+    "landed": "ferric-foundation (#4) -> main @ 3c8d264 (issue #4 Done/CLOSED); ferric-router (#5) -> main @ cb619e9 (issue #5 Done/CLOSED, I13); chirp-types (#7) -> main @ 2e32aed (issue #7 Done/CLOSED, I16); ferric-http (#6) -> main @ 25e90c0 (issue #6 Done/CLOSED, I17). chirp-frontend (#9) -> main @ 92661d8 (issue #9 Done/CLOSED, I31).",
+    "wave": "FERRIC FRAMEWORK COMPLETE on main (ferric #4 + ferric-router #5 + ferric-http #6). CHIRP: chirp-types #7 + chirp-frontend #9 LANDED. chirp-server #8 has AUTHORITATIVELY FOLDED machine-PASS at I33 (SUBTASK_reverify_gate overwrote the round-0 interim FAIL with a PASS root SYNTHESIS.md; F1 DTO-validation->400 fixed + re-verified; 44 tests, no DB) and OPENED PR #19 (Closes #8) - but PR #19 is CONFLICTING (Cargo.lock restale: base 25e90c0 vs main 92661d8). I33 forked review-chirp-server (don't land unreviewed). At I36 review-chirp-server FOLDED AUTHORITATIVE APPROVE (0 block/0 major; 6 minor + 5 nit, all land-then-fix/tracked) -> I36 forked chirp-server-relock-r1 (priority-1) to clear PR #19's Cargo.lock restale; did NOT land (CONFLICTING). Remaining: gate the relock re-PASS -> LAND #8 once PR #19 OPEN/MERGEABLE/CLEAN; then devops #10-#13.",
+    "running": [
+      "chirp-server (forked by I16; crates/chirp-server axum REST API + repo-trait persistence [in-memory default, no DB] + static/SPA serving + /healthz + tracing + integration tests, composing the landed chirp-types contract; branch work/chirp-server) has AUTHORITATIVELY FOLDED machine-PASS at I33: RV (SUBTASK_reverify_gate) overwrote the round-0 interim FAIL -> root SYNTHESIS.md gate=PASS round 1 + opened PR #19 (Closes #8, head 714d50f). F1 (DTO-validation 422->400 ApiError) fixed by SUBTASK_fix_validation_error_mapping (714d50f, ValidatedJson<T> extractor) + re-verified cold (44 tests). Finalization lag only (RV COMPLETE.md + root COMPLETE.md/flip not yet present; the authoritative verdict record + real PR already exist -> gated as machine-PASS per gotcha (i)). PR #19 CONFLICTING (Cargo.lock restale vs main 92661d8) -> needs a relock DAG after review APPROVE, before land. Scratch: reaped whole once #8 lands.",
+      "review-chirp-server (forked by I33; reviews PR #19 / chirp-server #8, head 714d50f; methodology concerns code-review+rust+architecture+testing; renders the authoritative APPROVE/REQUEST-CHANGES verdict in its own root SYNTHESIS.md; reviews the immutable pushed diff, not mergeability). At I36: FOLDED its root SYNTHESIS.md = AUTHORITATIVE APPROVE (gate PASS round 1; 0 block/0 major; 6 minor ARCH-01/02/03+CRQ-01/02+TEST-01 + 5 nit RUST-01/02/03+TEST-02, all land-then-fix/tracked; all four concerns architecture_contract_review + code_review_quality_review + rust_soundness_review + test_adequacy_review folded COMPLETE.md; synthesis_verdict wrote the root record + gh_review_body.md COMMENTED). Gated on the folded ROOT body (gotcha (g)/(i)); it ruled F1 details-limitation ACCEPTABLE and states PR #19 is APPROVED to land subject to the mechanical Cargo.lock relock. -> I36 forked chirp-server-relock-r1. Scratch: reaped whole once #8 lands.",
+      "chirp-server-relock-r1 (forked by I36; relock/rebase for PR #19 / chirp-server #8): merge origin/main @ 92661d8 into work/chirp-server, Cargo relock (never hand-edit), re-run the synthesis gate cold on the rebased tree, confirm feature diff vs 714d50f empty outside Cargo.lock, push. Clears the mechanical Cargo.lock restale (base 25e90c0 vs main 92661d8) so PR #19 becomes OPEN/MERGEABLE/CLEAN. Watch its root SYNTHESIS.md re-PASS at I37+ -> LAND #8 once live gh confirms OPEN/MERGEABLE/CLEAN (budget 2 relock rounds then escalate). Does NOT merge the PR or push to main. Scratch: reaped whole once #8 lands."
+    ],
+    "folded_awaiting_action": [
+      "chirp-server #8 AUTHORITATIVELY folded machine-PASS AND review-APPROVE (review-chirp-server root SYNTHESIS.md APPROVE at I36; 0 block/0 major). PR #19 open but CONFLICTING (Cargo.lock restale base 25e90c0 vs main 92661d8) -> I36 forked chirp-server-relock-r1 (priority-1). Awaiting the relock's root SYNTHESIS.md re-PASS + a live gh OPEN/MERGEABLE/CLEAN poll before landing. Not landable yet (CONFLICTING). #8 is the LAST app work-item."
+    ],
+    "fork_pending_next_iterations": [
+      "(I37) LAND #8/PR #19 (mechanical squash-merge, NOT a fork) once chirp-server-relock-r1 folds its root SYNTHESIS.md re-PASS AND a live gh poll confirms PR #19 OPEN/MERGEABLE/CLEAN: gh pr merge 19 --squash --delete-branch; issue #8 Done; append work_items[]; current_pointer 5->6; reap #8 code-DAG + review-DAG + relock-DAG whole.",
+      "(I37, if relock FAILED or PR #19 still CONFLICTING after re-PASS) ONE fresh chirp-server-relock-r2 carrying the failure (budget 2 relock rounds total, then escalate to the user). Never inline (P1).",
+      "(after #8 lands) devops #10 infra-bootstrap / #11 ci-actions / #12 containerize / #13 deploy-argocd once a buildable server surface exists on main (#8 chirp-server landed is the CI/containerize trigger). infra-bootstrap #10 (k3s + ArgoCD + wasm toolchain) first; one fork per iteration.",
+      "(after #8 lands, optional) a tracking issue or devops-brief fold for the non-blocking review minors CRQ-01 (README 422->400 doc fix) + CRQ-02/F2 (rustdoc intra-doc-link debt) + ARCH-01 (/api 404 fallthrough) + TEST-01 (SPA fallback test) - the review recommends folding CRQ-01+F2 into #10-#13.",
+      "(recurring) a relock/rebase DAG for each open PR whose Cargo.lock is restaled (and CONFIRMED CONFLICTING via gh) when a sibling lands."
+    ],
+    "awaiting": "I37+ to: (1) recon read-only; check chirp-server-relock-r1 for its root SYNTHESIS.md re-PASS; re-poll gh PR #19 mergeability past UNKNOWN; confirm main @ 92661d8. (2) Gate the relock -> re-PASS + PR #19 OPEN/MERGEABLE/CLEAN: LAND #8 (mechanical squash-merge, board Done, append work_items[], current_pointer 5->6, reap #8 DAGs whole); relock re-PASS but still CONFLICTING or relock FAILED: fork ONE fresh relock-r2 (budget 2 relock rounds then escalate); relock not folded yet: keep watching. (3) After #8 lands, fan out devops #10-#13 (one fork per iteration; infra-bootstrap #10 first). (4) Fork one demand-driven DAG per the priority ladder. One fork per iteration; never land on UNKNOWN or CONFLICTING. #8 is the last app work-item; after it lands only devops #10-#13 remain before the board is all Done.",
+    "fork_token_note": "I3-I7 denied the 'fork' token (reconstructed nodes); I8 (#6), I9 (#7), I11 (#5 review), I12 (#6 review), I14 (#7 review), I15 (#6 relock), I16 (#8 chirp-server), I17 (#9 chirp-frontend), I29 (#9 review review-chirp-frontend), I33 (#8 review review-chirp-server), I36 (#8 relock chirp-server-relock-r1) GRANTED + all forks SUCCEEDED. I10, I13, I18, I19, I20, I21, I22, I23, I24, I25, I26, I27, I28, I30, I32, I34, I35 had NO fork to make (demand-driven watch-and-schedule iterations). The chain is self-perpetuating (each schedules its successor BEFORE the atomic action). P1 held on every iteration incl. I29: the overseer read DAG/PR state read-only (no build re-run, no code touched), forked exactly one review DAG (demand-driven priority-2: #9 folded machine-PASS + PR #18 open + no review), scheduled its successor, and updated STATE. I29 milestone: #9 chirp-frontend code DAG FOLDED machine-PASS and opened PR #18 (OPEN/MERGEABLE/CLEAN) -> review dispatched; #8 resumed advancing (integration_tests_and_docs spoke in flight) after one flat round, not frozen. I30 (no fork): correctly did NOT land #9 because review-chirp-frontend had not yet folded its ROOT SYNTHESIS.md (gate_on_synthesis_not_review_body) though PR #18 stayed OPEN/MERGEABLE/CLEAN; #8 progressed to 3 of 4 top-level spokes (integration_tests_and_docs FOLDED), only synthesis_gate left -> near root fold; one-fork budget held unspent; current_pointer stays 4. I31 (no fork): LANDED chirp-frontend #9/PR #18 (review folded APPROVE + PR #18 OPEN/MERGEABLE/CLEAN -> mechanical squash-merge @ 92661d8; issue #9 CLOSED, board Done, pointer 4->5; reaped chirp-frontend + review-chirp-frontend whole). Landing is mechanical, not a fork; fork ladder produced no actionable fork (no CONFLICTING PR / #8 no PR yet -> no relock; review-chirp-server not due [#8 not folded]; no machine-FAIL/REQUEST-CHANGES -> no remediation; devops gated on #8 land). One-fork budget held unspent. #8 shape-changed: self-remediating a validation-mapping defect (new fix+reverify subtasks) -> not frozen, keep watching. P1 held (mechanical merge + board/STATE only, no code touched). I32 (no fork): pure watch-and-schedule. #8's ROOT SYNTHESIS.md appeared but is the INTERIM round-0 synthesis-gate record (gate=FAIL on F1 DTO-validation-mapping; all other checks PASS, 43 tests), explicitly NOT a terminal fold - it self-declares it will be superseded by RV's PASS SYNTHESIS.md once FT1 lands and that no PR exists so the DAG is correctly not landable. FT1=SUBTASK_fix_validation_error_mapping is LIVE mid-implementation (new src/api/json.rs custom extractor -> 400 + handler/error/test edits, ~now). Per gotcha (h) + gate_on_synthesis_not_review_body the overseer did NOT fork a remediation DAG and did NOT gate on this interim record - the DAG's own decompose->implement->synthesize is fixing F1 internally; the overseer never touches #8's code (P1). Fork ladder produced no actionable fork: relock none (zero open PRs); review-chirp-server not due (no authoritative machine-PASS, no PR); remediation none (interim FAIL is the DAG's own); devops #10-#13 gated on #8 landing. One-fork budget held unspent; fork token NOT exercised. current_pointer stays 5. Scheduled I33. P1 held (read-only recon + STATE only, no code touched). I33 (FORK GRANTED+SUCCEEDED): #8 chirp-server AUTHORITATIVELY folded machine-PASS (RV overwrote the I32 round-0 interim FAIL -> PASS root SYNTHESIS.md + opened PR #19 Closes #8; F1 fixed via ValidatedJson<T> extractor + re-verified, 44 tests, no DB) -> I33 forked review-chirp-server (the one demand-driven fork; ladder priority-2: authoritative machine-PASS + PR open + no review DAG). Relock priority-1 did NOT fire (PR #19 CONFLICTING but not yet approved-ready; review first, relock before land - the ferric-http precedent). Did NOT land (#8 unreviewed + PR #19 CONFLICTING). Gated the #8 machine verdict by READING the authoritative RV root SYNTHESIS.md body (gotcha (i)), not re-running the build, and not on the superseded round-0 interim record. current_pointer stays 5. Scheduled I34. P1 held (read-only recon + the fork's _BRIEF/_FORK + STATE only; no code touched). I34 (no fork): pure watch-and-schedule. review-chirp-server (forked I33) had NOT folded - it decomposed into 3 review subtasks (architecture_contract_review + rust_soundness_review + test_adequacy_review), each only _BRIEF.md, no root SYNTHESIS.md -> per gate_on_synthesis_not_review_body #8 cannot land until that root record folds -> correctly did NOT land #8 (no verdict), though #8 is authoritatively machine-PASS. PR #19 re-polled past UNKNOWN: OPEN/CONFLICTING/DIRTY (the Cargo.lock restale vs main 92661d8). Fork ladder produced no actionable fork: relock priority-1 did NOT fire (PR #19 CONFLICTING but not yet approved-ready; review first, relock before land - the ferric-http precedent); review priority-2 already in flight; remediation none (no REQUEST-CHANGES/machine-FAIL); devops #10-#13 gated on #8 landing. One-fork budget held unspent; fork token NOT exercised. current_pointer stays 5. Scheduled I35. P1 held (read-only recon + successor _BRIEF + STATE/CONTINUE only; no code touched). I35 (no fork): pure watch-and-schedule. review-chirp-server (forked I33) had NOT folded its ROOT SYNTHESIS.md but progressed strongly - it grew from 3 to 5 subtasks and folded 3 of 4 review concerns (architecture_contract_review + code_review_quality_review + test_adequacy_review COMPLETE + findings; rust_soundness_review + synthesis_verdict still _BRIEF.md, the latter writes the root record) -> per gate_on_synthesis_not_review_body #8 cannot land until that root record folds -> correctly did NOT land #8 (no verdict), though #8 is authoritatively machine-PASS. PR #19 re-polled past UNKNOWN: OPEN/CONFLICTING/DIRTY (the Cargo.lock restale vs main 92661d8). Fork ladder produced no actionable fork: relock priority-1 did NOT fire (PR #19 CONFLICTING but not yet approved-ready; review first, relock before land - the ferric-http precedent); review priority-2 already in flight (progressing 3/4); remediation none (no REQUEST-CHANGES/machine-FAIL); devops #10-#13 gated on #8 landing. One-fork budget held unspent; fork token NOT exercised. current_pointer stays 5. Scheduled I36. P1 held (read-only recon + successor _BRIEF + STATE/CONTINUE only; no code touched). I36 (FORK GRANTED+SUCCEEDED): review-chirp-server AUTHORITATIVELY FOLDED its root SYNTHESIS.md = APPROVE (gate PASS round 1; 0 block/0 major; 6 minor + 5 nit, all land-then-fix/tracked; all four concerns folded COMPLETE.md; synthesis_verdict wrote the root record + gh_review_body.md COMMENTED). Gated on the folded ROOT body (gotcha (g)/(i)): root still held SUSPENSION.md + no root COMPLETE.md (finalization lag only) but the body is the AUTHORITATIVE terminal human-landing verdict (ruled F1 details-limitation ACCEPTABLE; zero-block/zero-major => APPROVE with all contract identities asserted; states PR #19 APPROVED to land subject to the mechanical Cargo.lock relock). PR #19 re-polled past UNKNOWN: OPEN/CONFLICTING/DIRTY (Cargo.lock restale base 25e90c0 vs main 92661d8). I36 ACTION: review APPROVE + PR #19 CONFLICTING -> forked chirp-server-relock-r1 (the one demand-driven fork; ladder priority-1: an approved-ready PR gone conflicting). Did NOT land (never land CONFLICTING; review first, relock before land - the ferric-http I14->I15->I17 precedent). Priority-3 remediation none (APPROVE, no REQUEST-CHANGES/machine-FAIL); priority-4 devops #10-#13 gated on #8 landing. current_pointer stays 5. Scheduled I37. P1 held (read-only recon + the fork's _BRIEF/_FORK + successor _BRIEF + STATE/CONTINUE only; no code/lockfile touched).",
+    "remaining_backlog": [
+      "LAND chirp-server #8 (last app work-item) once chirp-server-relock-r1 folds re-PASS and PR #19 is OPEN/MERGEABLE/CLEAN [review-chirp-server APPROVE gated I36; relock forked I36]",
+      "infra-bootstrap #10",
+      "ci-actions #11",
+      "containerize #12",
+      "deploy-argocd #13"
+    ]
+  }
+}

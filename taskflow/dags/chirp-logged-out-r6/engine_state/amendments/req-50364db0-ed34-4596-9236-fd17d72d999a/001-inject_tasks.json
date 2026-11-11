@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T06:47:08.349845556Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "chirp-logged-out-r6-synthesis"
+      ],
+      "placement_parent_task_id": "chirp-logged-out-r6"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: chirp-logged-out-r6-synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize SUBTASK_synthesis to verify all five ACs against the implementation on work/chirp-logged-out and produce the root SYNTHESIS.md fold artifact, completing the DAG fold.",
+        "task_id": "chirp-logged-out-r6"
+      }
+    },
+    "updated_graph_edges": {
+      "chirp-logged-out-r6": [],
+      "chirp-logged-out-r6-synthesis": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "chirp-logged-out-r6",
+          "chirp-logged-out-r6-synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "sequence": 17,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T23:39:04.210407770Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [
+        "SUBTASK_html_inj",
+        "SUBTASK_dom_spoof",
+        "SUBTASK_test_inj"
+      ],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_seccheck_synth"
+      ],
+      "placement_parent_task_id": "SUBTASK_sec_check"
+    },
+    "resulting_version": 17,
+    "summary": "inject tasks: SUBTASK_seccheck_synth",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Synthesis gate for SUBTASK_sec_check: assembles the three spoke findings into security_raw_findings.md at the fold location and folds the SUBTASK_sec_check parent from SUSPENDED to COMPLETED via engine_resume_suspended.",
+        "task_id": "SUBTASK_sec_check"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_app_quality": [],
+      "SUBTASK_b1_verify": [],
+      "SUBTASK_b2_verify": [],
+      "SUBTASK_dom_spoof": [],
+      "SUBTASK_html_inj": [],
+      "SUBTASK_qc_synthesis": [
+        "SUBTASK_app_quality",
+        "SUBTASK_test_quality"
+      ],
+      "SUBTASK_quality_check": [],
+      "SUBTASK_reg_criteria": [],
+      "SUBTASK_regression": [],
+      "SUBTASK_sec_check": [],
+      "SUBTASK_sec_quality": [],
+      "SUBTASK_seccheck_synth": [
+        "SUBTASK_dom_spoof",
+        "SUBTASK_html_inj",
+        "SUBTASK_test_inj"
+      ],
+      "SUBTASK_secq_synthesis": [
+        "SUBTASK_quality_check",
+        "SUBTASK_sec_check"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_b1_verify",
+        "SUBTASK_b2_verify",
+        "SUBTASK_regression"
+      ],
+      "SUBTASK_test_inj": [],
+      "SUBTASK_test_quality": [],
+      "SUBTASK_verdict_synthesis": [
+        "SUBTASK_reg_criteria",
+        "SUBTASK_sec_quality"
+      ],
+      "review-ferric-ssr-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_app_quality",
+          "SUBTASK_b1_verify",
+          "SUBTASK_b2_verify",
+          "SUBTASK_dom_spoof",
+          "SUBTASK_html_inj",
+          "SUBTASK_quality_check",
+          "SUBTASK_reg_criteria",
+          "SUBTASK_regression",
+          "SUBTASK_sec_check",
+          "SUBTASK_sec_quality",
+          "SUBTASK_test_inj",
+          "SUBTASK_test_quality",
+          "review-ferric-ssr-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_qc_synthesis",
+          "SUBTASK_seccheck_synth",
+          "SUBTASK_secq_synthesis",
+          "SUBTASK_synthesis",
+          "SUBTASK_verdict_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

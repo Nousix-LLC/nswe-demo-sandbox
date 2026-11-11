@@ -1,0 +1,78 @@
+# _MANIFEST.yaml — SUBTASK_release_bar subtree contract
+# READ-ONLY for descendants. Declares the structural seam between gap_review, criteria, and synthesis.
+
+kind: yaml_schema
+
+# ---------------------------------------------------------------------------
+# Ownership: exactly one producer per artifact
+# ---------------------------------------------------------------------------
+ownership:
+  gap-analysis.md:   SUBTASK_rbar_gap_review   # supplemental; optional cross-check for rbar_synthesis
+  release-bar.md:    SUBTASK_rbar_synthesis     # primary declared output of SUBTASK_release_bar
+  SYNTHESIS.md:      SUBTASK_rbar_synthesis
+
+# NOTE: SUBTASK_rbar_criteria was briefed but not added to the DAG (scheduling cycle).
+# bar-criteria.md will not be produced as a standalone artifact; rbar_synthesis absorbs its work.
+
+# ---------------------------------------------------------------------------
+# Format contract for gap-analysis.md
+# Each surface entry MUST carry these four fields (markdown table rows or
+# structured list entries — the synthesis task reads them).
+# ---------------------------------------------------------------------------
+gap_analysis_row:
+  surface:   "Name of the framework surface (string; match the brief's canonical list where listed)"
+  status:    "one of: covered | out-of-1.0 | gap"
+  req_refs:  "comma-separated REQ-* ids if status=covered; empty string if out-of-1.0 or gap"
+  notes:     "One sentence: which REQ covers it, or why it is out-of-1.0, or what the gap is"
+
+# status semantics (from id_and_traceability_schema.yaml stage vocabulary):
+#   covered:    the surface is addressed by ≥1 REQ-* in the 1.0 design
+#   out-of-1.0: explicitly deferred; no BAR criterion enforces it (identity IB / I5)
+#   gap:        not covered and not explicitly deferred — a finding for the release plan
+
+# ---------------------------------------------------------------------------
+# Format contract for bar-criteria.md
+# Each criterion entry MUST carry these fields per id_and_traceability_schema.yaml bar_fields.
+# ---------------------------------------------------------------------------
+bar_criterion:
+  id:                  "BAR-FERRIC-NNN (zero-padded 3-digit, sequential, unique in this document)"
+  statement:           "Checkable condition a stranger can verify against the framework"
+  references:          "list of REQ-* ids this criterion enforces (≥1 required; identity I2)"
+  verification_method: "automated_test | example_build | doc_inspection | benchmark_run | publishability"
+  stage:               "usable_early | one_oh"
+  must_have:           "true — SSR+hydration gating criterion(s) only; omit for all others (identity I4)"
+
+# ---------------------------------------------------------------------------
+# Identities the synthesis task MUST assert (no silent plugs)
+# ---------------------------------------------------------------------------
+identities:
+  - id: IA
+    assertion: >
+      Every surface with status=covered in gap-analysis.md has ≥1 BAR-FERRIC-*
+      in bar-criteria.md referencing ≥1 of its REQ-* ids.
+  - id: IB
+    assertion: >
+      Every surface with status=out-of-1.0 in gap-analysis.md is not enforced
+      by any BAR-FERRIC-* (i.e., none of its req_refs appear as references in
+      any bar criterion).
+  - id: I2
+    assertion: >
+      Every BAR-FERRIC-* references ≥1 REQ-* id that exists in some spoke's
+      register (as defined in the parent id_and_traceability_schema.yaml).
+    source: "../../contracts/id_and_traceability_schema.yaml"
+  - id: I3
+    assertion: >
+      Every REQ-* with stage=one_oh and release_gating=true (as declared by its
+      owning spoke) is referenced by ≥1 BAR-FERRIC-*.
+    source: "../../contracts/id_and_traceability_schema.yaml"
+  - id: I4
+    assertion: >
+      ≥1 one_oh BAR-FERRIC-* marks SSR+hydration as the gating must-have
+      (must_have: true). This is the single non-negotiable prerequisite for 1.0.
+    source: "../../contracts/id_and_traceability_schema.yaml"
+  - id: I5
+    assertion: >
+      The four named out-of-1.0 items — scoped CSS/styling, browser devtools
+      integration, hot/live reload, desktop/mobile targets — each appear in
+      gap-analysis.md with status=out-of-1.0 and are enforced by no BAR-FERRIC-*.
+    source: "../../contracts/id_and_traceability_schema.yaml"

@@ -1,0 +1,48 @@
+kind: taxonomy
+purpose: >
+  Frozen findings seam for the review of PR #21 (ci-actions, issue #11) at head c8123376.
+  All review spokes emit findings in the schema declared by findings_schema.md so the
+  synthesis gate can mechanically aggregate severity counts and render the landing verdict.
+
+pr_head_reviewed: c8123376ca1794c0b0466f41a1204bf3c3301b16
+base_main: 61f924a
+
+artifacts:
+  - path: findings_schema.md
+    kind: taxonomy
+    declares: severity enum, per-finding record, finding-id prefixes, verdict rule
+    owner: SUBTASK_synthesis (authored by the decomposing parent; read-only for all)
+
+ownership:
+  SUBTASK_workflow_correctness:
+    output: SUBTASK_workflow_correctness/findings.md
+    id_prefix: "WF-"
+    concerns: [1, 2]
+  SUBTASK_supply_chain_security:
+    output: SUBTASK_supply_chain_security/findings.md
+    id_prefix: "SEC-"
+    concerns: [3]
+  SUBTASK_image_job:
+    output: SUBTASK_image_job/findings.md
+    id_prefix: "IMG-"
+    concerns: [4]
+  SUBTASK_folded_minors:
+    output: SUBTASK_folded_minors/findings.md
+    id_prefix: "DOC-"
+    concerns: [5]
+  SUBTASK_synthesis:
+    output: SYNTHESIS.md          # at the DAG root (the SUSPENDED parent's directory)
+    concerns: [6]                 # acceptance-criteria mapping + fold + verdict
+
+identities:
+  - every_spoke_findings_file_exists_and_conforms_to_schema
+  - every_finding_severity_in_enum: [block, major, minor, nit]
+  - every_finding_has_location_and_rationale
+  - every_block_or_major_has_required_change
+  - every_spoke_states_pr_head_reviewed_equals_c8123376
+  - verdict_rule: "APPROVE iff total(block)==0 and total(major)==0 else REQUEST-CHANGES"
+  - every_issue11_acceptance_criterion_mapped_pass_or_fail
+  - each_of_six_concerns_covered_by_exactly_one_spoke_scope
+
+derived_artifacts: []   # thin seam; gate consumes real findings files directly
+amendment_policy: additive-only

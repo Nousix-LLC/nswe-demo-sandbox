@@ -1,0 +1,24 @@
+# Contract manifest — SUBTASK_bar_ux_synthesis subtree (thin seam)
+# kind: yaml_schema. Extends ../../contracts/ (the SUBTASK_bar_ux sub-partition + 8 UX identities),
+# ../../../contracts/ and ../../../../contracts/ ADDITIVELY. Redefines nothing. READ-ONLY for descendants.
+kind: yaml_schema
+
+extends:
+  - "../../contracts/"
+  - "../../../contracts/"
+  - "../../../../contracts/"
+
+# One producer per artifact.
+ownership:
+  "SUBTASK_synth_verify/outputs/verification.md": SUBTASK_synth_verify   # evidence for the 8 UX identities
+  "SYNTHESIS.md (at SUBTASK_bar_ux_synthesis)":    SUBTASK_synth_fold     # fold record for this node
+  "SYNTHESIS.md (at SUBTASK_bar_ux)":              SUBTASK_synth_fold     # fold record for the SUBTASK_bar_ux subtree
+  "SUBTASK_bar_ux/outputs/bar-ux.md":              SUBTASK_bar_ux_synthesis  # already assembled; changed only by amendment, not by these children
+
+identities:
+  - id: SYNTH_EVIDENCE_PRESENT
+    statement: "verification.md records, for each of the 8 inherited UX identities, the check run and its observed result."
+  - id: SYNTH_NO_SILENT_PLUG
+    statement: "A failing UX identity is reported (FAILURE / amendment request); bar-ux.md is not edited to make a check pass."
+  - id: SYNTH_FOLD_ORDER
+    statement: "SUBTASK_bar_ux_synthesis is folded to COMPLETED before it is named as the synthesized task folding SUBTASK_bar_ux."

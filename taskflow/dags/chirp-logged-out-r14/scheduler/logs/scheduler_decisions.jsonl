@@ -1,0 +1,3 @@
+{"timestamp":"2026-11-06T09:19:43.186900729Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-r14"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-06T09:22:01.724374259Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r14"]}},"reason":"task chirp-logged-out-r14 transitioned to Ready"}
+{"timestamp":"2026-11-06T09:22:01.724567714Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r14"]}},"reason":"task chirp-logged-out-r14 transitioned to Running"}

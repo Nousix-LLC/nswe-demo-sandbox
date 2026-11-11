@@ -1,0 +1,52 @@
+# Contract manifest — design-chirp-r1
+# kind: yaml_schema (requirement/traceability schema + design-artifact ownership map)
+# READ-ONLY for every descendant task. Extend (additively) via plan amendment only; never override.
+
+kind: yaml_schema
+
+artifacts:
+  - file: design_artifact_map.yaml
+    declares: "Repo design/ file layout, one owning task per file, required sections per file."
+  - file: id_and_traceability_schema.yaml
+    declares: "REQ/BAR/epic/issue identifier conventions, area->owner assignment, traceability-matrix columns, verification-method vocabulary."
+
+# One producer per artifact. An artifact with no owner is a hole; with two owners, a race.
+ownership:
+  "design/product-requirements.md":     SUBTASK_product_requirements   # + REQ-PROD-*
+  "design/domain-application-design.md": SUBTASK_domain_app_design      # + REQ-DOM-*
+  "design/experience-design.md":        SUBTASK_experience_design      # + REQ-UX-*
+  "design/identity-security.md":        SUBTASK_identity_trust         # + REQ-ID-*
+  "design/operational-readiness.md":    SUBTASK_operational_readiness  # + REQ-OPS-*
+  "design/release-bar.md":              SUBTASK_release_bar            # + BAR-*
+  "design/README.md":                   SUBTASK_design_pr              # design index; + the PR
+  "board:epics+issues+trace_map":       SUBTASK_delivery_backlog       # EPIC-*/issue placement
+  "SYNTHESIS.md":                        SUBTASK_synthesis             # + live-product measurement
+
+# Invariants the combined outputs MUST satisfy. Asserted by SUBTASK_synthesis (the integration gate)
+# with recorded evidence. A failing identity is reported and remediated by decomposing a remediation
+# subtree — NEVER silently plugged.
+identities:
+  - id: ONE_OWNER_PER_FILE
+    statement: "Each design/*.md has exactly one owning task; none unowned, none double-written."
+  - id: CONCERN_COVERAGE
+    statement: "Each of the six brief concerns is covered by a design file OR recorded out-of-scope with a reason."
+  - id: BAR_COVERS_GATING_REQS
+    statement: "Every release-gating REQ-* is covered by >=1 BAR-*."
+  - id: BAR_TESTABLE
+    statement: "Every BAR-* names a verification method from the schema vocabulary and references >=1 REQ-*."
+  - id: ISSUE_TRACES
+    statement: "Every filed issue's acceptance criteria cite >=1 REQ-* or BAR-*; every issue sits under exactly one epic; each epic is one coherent landable code goal with stated dependencies."
+  - id: GAP_HAS_ISSUE
+    statement: "Every gap found in the live-product measurement maps to >=1 filed issue/epic."
+  - id: SURFACE_COVERAGE
+    statement: "Every recurring account/operational surface (sign-up/in/recovery, account deletion, data export, onboarding, settings, notifications, admin/support, billing) is designed OR recorded out-of-scope with a reason."
+  - id: GITHUB_HYGIENE
+    statement: "Nothing posted to GitHub contains host/system/taskflow detail or an attribution trailer."
+
+derived_artifacts:
+  - name: traceability_matrix
+    generated_from: "release-bar.md (BAR-*<->REQ-*) + backlog (issue<->REQ/BAR) + each design file's REQ list"
+    consumed_by: SUBTASK_synthesis
+  - name: "design/README.md"
+    generated_from: design_artifact_map.yaml
+    produced_by: SUBTASK_design_pr

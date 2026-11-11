@@ -1,0 +1,86 @@
+# Contract manifest — SUBTASK_live_measurement (live-product measurement subtree)
+# kind: yaml_schema. Extends ../../contracts/ and ../../../contracts/ ADDITIVELY. Never overrides the inherited
+# live_status vocab, the verification_method vocab, the traceability-matrix columns, or the gate join seam.
+# READ-ONLY for every descendant of this subtree.
+
+kind: yaml_schema
+
+extends: "../../contracts/_MANIFEST.yaml"            # gate sub-contract: live_status_key=bar_id; one verdict per BAR-*
+also_inherits:
+  - "../../../contracts/id_and_traceability_schema.yaml"   # live_status vocab; closed verification_method vocab
+
+# ---------------------------------------------------------------------------
+# The seam: ONE bar_id-keyed verdict table over all 278 BAR-*, partitioned by each BAR-*'s declared
+# verification_method across four measurement children, then unioned and checked for totality by the fold.
+# Inherited, not redefined:
+#   live_status vocab: [met, partial, missing, not_applicable]
+#   verification_method vocab: [manual_user_check, automated_test, inspection, operational_check]
+#   live_status_key: bar_id   (one verdict row per BAR-*)
+# ---------------------------------------------------------------------------
+
+# Every measurement child emits a verdict table with EXACTLY these columns, one row per BAR-* it owns.
+verdict_row_schema:
+  columns: [bar_id, live_status, observation]
+  bar_id:       "the BAR-* id, verbatim from the release bar (e.g. BAR-013)"
+  live_status:  "exactly one of {met, partial, missing, not_applicable} (inherited vocab, not redefined)"
+  observation:  "concise, non-empty; what was exercised or inspected at c805525 and what was seen; grounds the verdict.
+                 Where the method could not be run in this environment, states that and the conservative basis for the
+                 verdict. No assumed or confabulated results. No host/system/taskflow detail — repository identity only."
+
+# The partition key. Each BAR-* is owned by exactly the child matching the verification_method the release bar
+# declares for it. Disjoint by construction (each BAR-* names one method) and total (the four methods are the whole
+# closed vocabulary).
+partition_by: verification_method
+partition:
+  manual_user_check:  SUBTASK_live_journeys        # exercise the running product as a user
+  operational_check:  SUBTASK_operational_checks   # observe a running-service property (restart survival, backup, limits, readiness)
+  automated_test:     SUBTASK_automated_tests      # run/read a repo test at c805525
+  inspection:         SUBTASK_inspection_checks    # read a declared property from config/manifest/code at c805525
+
+# Expected per-partition counts, measured from the release bar at c805525 (row tags, not prose). The fold asserts the
+# unioned table matches these and totals 278; a mismatch is a reported gap, never silently reconciled.
+expected_counts:
+  manual_user_check:  139
+  operational_check:  68
+  automated_test:     36
+  inspection:         35
+  total:              278
+
+ownership:
+  "SUBTASK_live_journeys/outputs/live-journeys-measurement.md":       SUBTASK_live_journeys      # manual_user_check verdicts
+  "SUBTASK_automated_tests/outputs/automated-test-measurement.md":    SUBTASK_automated_tests    # automated_test verdicts
+  "SUBTASK_inspection_checks/outputs/inspection-measurement.md":      SUBTASK_inspection_checks  # inspection verdicts
+  "SUBTASK_operational_checks/outputs/operational-measurement.md":    SUBTASK_operational_checks # operational_check verdicts
+  "outputs/live-measurement.md":                                      SUBTASK_measurement_fold   # the unioned bar_id-keyed table + preamble (this subtree's declared output)
+  "SYNTHESIS.md (at SUBTASK_live_measurement/ root)":                 SUBTASK_measurement_fold   # the fold record
+# No artifact has two owners. Each measurement child owns a disjoint partition; the fold owns only the union.
+
+identities:
+  - id: PARTITION_DISJOINT_TOTAL
+    statement: "The four measurement children's bar_id sets are pairwise disjoint and union to exactly the 278 BAR-* in
+                the release bar; each BAR-* appears under exactly the child matching its declared verification_method."
+  - id: LIVE_STATUS_TOTAL
+    statement: "Every BAR-* in the release bar carries exactly one live_status in {met, partial, missing,
+                not_applicable} with a recorded observation."
+  - id: OBSERVATION_GROUNDED
+    statement: "Every observation is grounded in an actual exercise of the live product or an actual repository
+                artifact at c805525; a criterion that cannot be observed in this environment is judged conservatively
+                with the reason stated — never assumed or confabulated, never judged optimistically."
+  - id: VOCAB_CONFORMS
+    statement: "Every live_status value is from the inherited vocab and every bar_id is a verbatim release-bar id."
+  - id: OUTPUT_HYGIENE
+    statement: "outputs/live-measurement.md (and anything that could reach GitHub) carries no host/system/taskflow
+                detail — repository identity only (owner/repo, commit SHA, repo-relative paths, BAR-*/REQ- ids). Its
+                preamble records only that the live product was reached (or why not), by repository/commit identity."
+
+derived_artifacts:
+  - name: live_measurement_table
+    generated_from: "union of the four partition verdict tables, keyed by bar_id"
+    produced_by: SUBTASK_measurement_fold
+    consumed_by: "SUBTASK_fold (gate level) — joined into the traceability matrix via live_status_key=bar_id"
+
+# Fold wiring (described, not over-specified; the fold agent resolves exact syscalls at runtime against the kernel
+# fold contract):
+#   - SUBTASK_measurement_fold reads the four partition outputs, unions them into ../outputs/live-measurement.md
+#     (this subtree's declared output), authors ../SYNTHESIS.md at this subtree root (the fold location), and resolves
+#     SUBTASK_live_measurement SUSPENDED -> COMPLETED with that record as the fold seam.

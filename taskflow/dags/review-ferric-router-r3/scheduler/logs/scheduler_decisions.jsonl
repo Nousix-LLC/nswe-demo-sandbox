@@ -1,0 +1,4 @@
+{"timestamp":"2026-11-04T08:35:10.578624964Z","action":{"Dispatch":{"task_ids":["review-ferric-router-r3"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-04T08:35:51.121943387Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ferric-router-r3"]}},"reason":"task review-ferric-router-r3 transitioned to Ready"}
+{"timestamp":"2026-11-04T08:35:51.122176564Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ferric-router-r3"]}},"reason":"task review-ferric-router-r3 transitioned to Running"}
+{"timestamp":"2026-11-04T08:43:17.702307988Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

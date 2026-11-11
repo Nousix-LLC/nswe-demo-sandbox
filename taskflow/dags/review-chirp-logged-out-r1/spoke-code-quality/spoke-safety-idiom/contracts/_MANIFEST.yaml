@@ -1,0 +1,33 @@
+kind: yaml_schema
+description: >
+  Thin contract for the error-safety + rust-idiom decomposition.
+  Structural format is inherited from the ancestor findings schema at
+  ../../contracts/findings_schema.md. This manifest declares per-child
+  output ownership and the identities the synthesis must assert.
+
+inherited_from:
+  - path: "../../contracts/findings_schema.md"
+    binds: "FINDINGS.md structure for every output"
+
+ownership:
+  - artifact: "spoke-error-safety/error_safety_findings.md"
+    owner: "spoke-error-safety"
+    description: "Partial findings for concern 8 (AppError / user_message() safety)"
+  - artifact: "spoke-rust-idiom/rust_idiom_findings.md"
+    owner: "spoke-rust-idiom"
+    description: "Partial findings for concern 10 (Rust/WASM idiom patterns)"
+  - artifact: "FINDINGS.md"
+    owner: "spoke-safety-synthesis"
+    description: "Combined findings for concerns 8 and 10"
+  - artifact: "SYNTHESIS.md"
+    owner: "spoke-safety-synthesis"
+    description: "Fold record — folds parent spoke-safety-idiom SUSPENDED→COMPLETED"
+
+identities:
+  - "Every concern assigned to spoke-safety-idiom (8 and 10) appears in the Clean Account of FINDINGS.md"
+  - "No finding in FINDINGS.md lacks a file path and line number at the pinned commit"
+  - "Verdict in FINDINGS.md is exactly PASS or FINDINGS"
+  - "If Verdict is FINDINGS, at least one finding subsection exists"
+  - "No finding contains internal host paths, private IPs, or infrastructure details"
+
+derived_artifacts: []

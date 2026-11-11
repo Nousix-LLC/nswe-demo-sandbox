@@ -1,0 +1,14 @@
+kind: yaml_schema
+extends: ["../../contracts/", "../contracts/"]
+ownership:
+  "../outputs/release-bar.md": SUBTASK_staging_gap_review   # sole writer; verify child reads only (may report defects)
+  "BAR-900..999": SUBTASK_staging_gap_review
+  "outputs/staging-gap-findings.md": SUBTASK_staging_gap_review
+  "outputs/identity-evidence.md": SUBTASK_verify_and_fold
+  "SYNTHESIS.md": SUBTASK_verify_and_fold                   # fold record for this task
+  "../SYNTHESIS.md": SUBTASK_verify_and_fold                # fold record for SUBTASK_release_bar
+identities:
+  - id: SUBTREE_IDENTITIES_ASSERTED
+    statement: "All eight identities in ../contracts/_MANIFEST.yaml carry recorded evidence and a verdict; a failing one is reported, not plugged."
+  - id: SINGLE_WRITER
+    statement: "release-bar.md is modified only by SUBTASK_staging_gap_review."

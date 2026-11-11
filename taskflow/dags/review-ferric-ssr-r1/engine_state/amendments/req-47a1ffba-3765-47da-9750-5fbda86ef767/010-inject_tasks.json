@@ -1,0 +1,74 @@
+{
+  "sequence": 10,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T01:13:39.364171003Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_ssr_render"
+      ],
+      "placement_parent_task_id": "SUBTASK_correctness"
+    },
+    "resulting_version": 10,
+    "summary": "inject tasks: SUBTASK_ssr_render",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_correctness into specialized sub-reviewers: spoke for render_to_string SSR criteria (#223 REQ-SSR-001–005)",
+        "task_id": "SUBTASK_correctness"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_A_api_surface": [],
+      "SUBTASK_B_abstraction": [],
+      "SUBTASK_C_error_handling": [],
+      "SUBTASK_D_function_design": [],
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_security_infra": [],
+      "SUBTASK_security_xss": [],
+      "SUBTASK_ssr_render": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_code_quality",
+        "SUBTASK_correctness",
+        "SUBTASK_security_infra",
+        "SUBTASK_security_xss"
+      ],
+      "review-ferric-ssr-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_A_api_surface",
+          "SUBTASK_B_abstraction",
+          "SUBTASK_C_error_handling",
+          "SUBTASK_D_function_design",
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "SUBTASK_security_infra",
+          "SUBTASK_security_xss",
+          "SUBTASK_ssr_render",
+          "review-ferric-ssr-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

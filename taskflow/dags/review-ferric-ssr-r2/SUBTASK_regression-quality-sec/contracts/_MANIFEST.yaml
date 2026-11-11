@@ -1,0 +1,47 @@
+kind: ownership_manifest
+version: "1.0"
+subtree_root: SUBTASK_regression-quality-sec
+description: >
+  Thin seam manifest for the regression-quality-sec review subtree.
+  Three parallel spokes each produce one verdict file; synthesis combines them.
+
+ownership:
+  - artifact: "SUBTASK_regression-check/regression-check.md"
+    owner: SUBTASK_regression-check
+    kind: verdict_markdown
+
+  - artifact: "SUBTASK_code-quality/code-quality.md"
+    owner: SUBTASK_code-quality
+    kind: verdict_markdown
+
+  - artifact: "SUBTASK_security/security.md"
+    owner: SUBTASK_security
+    kind: verdict_markdown
+
+  - artifact: "../verdict-regression-quality-sec.md"
+    owner: SUBTASK_synthesis
+    kind: combined_verdict_markdown
+
+  - artifact: "../SYNTHESIS.md"
+    owner: SUBTASK_synthesis
+    kind: synthesis_fold_record
+
+identities:
+  - id: "all-9-criteria-covered"
+    assertion: >
+      regression-check.md must contain a section for every one of the 9 previously-clean
+      acceptance criteria: REQ-SSR-001, REQ-SSR-002, REQ-SSR-003, REQ-SSR-004, REQ-SSR-005,
+      REQ-HYD-001, REQ-HYD-002, REQ-HYD-004, REQ-MIS-001, REQ-MIS-002.
+    checked_by: SUBTASK_synthesis
+
+  - id: "verdict-covers-all-spoke-areas"
+    assertion: >
+      verdict-regression-quality-sec.md must address all three areas from the original brief:
+      regression check, code quality, and security.
+    checked_by: SUBTASK_synthesis
+
+  - id: "overall-verdict-consistent"
+    assertion: >
+      The overall PASS/FAIL verdict in verdict-regression-quality-sec.md must be consistent
+      with the specific findings across all three spoke verdict files.
+    checked_by: SUBTASK_synthesis

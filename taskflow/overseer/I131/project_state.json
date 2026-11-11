@@ -1,0 +1,62 @@
+{
+  "current_pointer": "overseer/I131",
+  "checked_at": "2026-11-03T03:35:00Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "OPEN",
+      "label": "Bug5 dispatch fault — frozen DAGs never real-dispatched",
+      "frozen_dags": [
+        "remediate-epic-persist-r1c",
+        "remediate-epic-persist-r1b",
+        "design-ferric-1_0-r2"
+      ],
+      "last_bug5_entry": "2026-11-03T02:48:57Z",
+      "unchanged_since": "I122",
+      "last_checked_at": "2026-11-03T03:35:00Z",
+      "clearing_condition": "a fresh fork that grows content / dispatches its root (SUBTASK_*, SYNTHESIS.md, or scheduler Dispatch entry post-Bug5)"
+    }
+  },
+  "prs": {
+    "PR113": {
+      "status": "OPEN",
+      "mergeStateStatus": "UNSTABLE",
+      "head": "db1a5d6790803161e6d493647eb3fad93b9b0a4e",
+      "ci_run": "40920211148",
+      "ci_completed_at": "2026-10-29T17:19:54Z",
+      "doc": "FAILURE",
+      "fmt": "SUCCESS",
+      "clippy": "SUCCESS",
+      "test": "SUCCESS",
+      "wasm": "SUCCESS",
+      "image": "SKIPPED",
+      "updated_at": "2026-10-29T17:20:41Z",
+      "eligible_for_landing": false
+    },
+    "PR128": {
+      "status": "OPEN",
+      "branch": "work/design-ferric-1_0",
+      "title": "design: Ferric 1.0 framework design",
+      "updated_at": "2026-10-29T16:25:00Z",
+      "board_gap": true,
+      "note": "deferred to escalation-clear iteration"
+    }
+  },
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-10-29T16:32:22Z",
+    "latest_pr_update": "2026-10-29T17:20:41Z",
+    "board_gap": {
+      "issues": "#129-#164",
+      "count": 36,
+      "pr": "#128",
+      "deferred": "until escalation clears"
+    }
+  },
+  "main_sha": "276138f",
+  "deployment_check": "skipped (no drift)",
+  "free_dag_slots": 4,
+  "persist_remediation_budget": {
+    "total": 2,
+    "spent": 0
+  }
+}

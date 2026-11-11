@@ -1,0 +1,88 @@
+# _MANIFEST.yaml — SUBTASK_tests sub-decomposition contract
+#
+# Declares ownership and identity assertions for the SUBTASK_tests sub-decomposition.
+# SUBTASK_synthesis asserts all identities below before fold.
+
+hub: SUBTASK_tests
+parent_hub: T02-139-view-macro
+branch: work/ferric-epic-authoring-r1
+
+kind: behavioral_spec
+
+# ---------------------------------------------------------------------------
+# File ownership — exactly one producer per artifact group.
+# ---------------------------------------------------------------------------
+ownership:
+
+  SUBTASK_conformance:
+    description: >
+      Writes the native conformance test suite (lowering equality assertions) for
+      every row in authoring-model.md §2.12.
+    artifacts:
+      - crates/ferric-macros/tests/lowering.rs
+
+  SUBTASK_trybuild:
+    description: >
+      Writes the trybuild runner, all 7 fixture .rs files, and generates committed
+      .stderr files via TRYBUILD=overwrite on the build server.
+    artifacts:
+      - crates/ferric-macros/tests/compile_fail.rs
+      - crates/ferric-macros/tests/compile_fail/unclosed_element.rs
+      - crates/ferric-macros/tests/compile_fail/unclosed_element.stderr
+      - crates/ferric-macros/tests/compile_fail/mismatched_close_tag.rs
+      - crates/ferric-macros/tests/compile_fail/mismatched_close_tag.stderr
+      - crates/ferric-macros/tests/compile_fail/multiple_top_level.rs
+      - crates/ferric-macros/tests/compile_fail/multiple_top_level.stderr
+      - crates/ferric-macros/tests/compile_fail/dynamic_not_into_string.rs
+      - crates/ferric-macros/tests/compile_fail/dynamic_not_into_string.stderr
+      - crates/ferric-macros/tests/compile_fail/unknown_event_name.rs
+      - crates/ferric-macros/tests/compile_fail/unknown_event_name.stderr
+      - crates/ferric-macros/tests/compile_fail/handler_not_closure.rs
+      - crates/ferric-macros/tests/compile_fail/handler_not_closure.stderr
+      - crates/ferric-macros/tests/compile_fail/for_missing_key.rs
+      - crates/ferric-macros/tests/compile_fail/for_missing_key.stderr
+
+  SUBTASK_synthesis:
+    description: >
+      Verification gate — runs cargo test, asserts identity assertions, commits.
+      Writes SYNTHESIS.md at the fold location.
+    artifacts:
+      - SYNTHESIS.md   # at SUBTASK_tests/ level (fold record)
+
+# ---------------------------------------------------------------------------
+# Identity assertions — SUBTASK_synthesis asserts ALL of these before fold.
+# ---------------------------------------------------------------------------
+identity_assertions:
+
+  - id: I-LOWER-01
+    inherited_from: T02-139-view-macro
+    producer: SUBTASK_conformance
+    statement: >
+      For each row in authoring-model.md §2.12, the view!{...} form and the
+      equivalent hand-built VElement/vdom::text builder chain produce structurally
+      equal VNode values. Verified by native tests in tests/lowering.rs.
+
+  - id: I-LOWER-02
+    inherited_from: T02-139-view-macro
+    producer: SUBTASK_conformance
+    statement: >
+      The <For each={items} key={|i| i.id.to_string()} let:item> form produces a
+      Vec<VNode> where every node carries a key equal to key_fn(item). The produced
+      sibling list satisfies all_keyed (every child is a VNode::Element with key set).
+
+  - id: I-DIAG-01
+    inherited_from: T02-139-view-macro
+    producer: SUBTASK_trybuild
+    statement: >
+      Exactly 7 trybuild fixtures are present and all pass: unclosed element,
+      mismatched close tag, multiple top-level nodes, dynamic attr/text value not
+      Into<String>, unknown event name, handler not a closure, <For> without key.
+      Each fixture's committed .stderr file matches the actual compiler output.
+
+# ---------------------------------------------------------------------------
+# Derived artifacts
+# ---------------------------------------------------------------------------
+derived_artifacts:
+  - authoring-model.md §2.12 and §2.9 serve as the shared behavioral specification
+    consumed by both SUBTASK_conformance and SUBTASK_trybuild as their oracle.
+    Location: design/ferric/authoring-model.md (on branch; read-only for all subtasks).

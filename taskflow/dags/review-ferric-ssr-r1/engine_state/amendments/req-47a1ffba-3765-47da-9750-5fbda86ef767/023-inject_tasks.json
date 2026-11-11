@@ -1,0 +1,116 @@
+{
+  "sequence": 23,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T01:32:16.167763397Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_axum_server"
+      ],
+      "placement_parent_task_id": "SUBTASK_axum_mismatch"
+    },
+    "resulting_version": 23,
+    "summary": "inject tasks: SUBTASK_axum_server",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_axum_mismatch: spoke covering server-side Axum handler pattern (REQ-MIS-001), HTML output quality (REQ-MIS-002), and non-goal confirmation (REQ-SSR-007) — independent from mismatch detection spoke, examines server-side Rust code",
+        "task_id": "SUBTASK_axum_mismatch"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_A_api_surface": [],
+      "SUBTASK_B_abstraction": [],
+      "SUBTASK_C_error_handling": [],
+      "SUBTASK_D_function_design": [],
+      "SUBTASK_E_test_coverage": [],
+      "SUBTASK_F_documentation": [],
+      "SUBTASK_axum_mismatch": [],
+      "SUBTASK_axum_server": [],
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_correctness_synthesis": [
+        "SUBTASK_axum_mismatch",
+        "SUBTASK_hydration",
+        "SUBTASK_ssr_render"
+      ],
+      "SUBTASK_hyd001": [],
+      "SUBTASK_hyd002": [],
+      "SUBTASK_hyd003": [],
+      "SUBTASK_hyd004": [],
+      "SUBTASK_hyd_synthesis": [
+        "SUBTASK_hyd001",
+        "SUBTASK_hyd002",
+        "SUBTASK_hyd003",
+        "SUBTASK_hyd004"
+      ],
+      "SUBTASK_hydration": [],
+      "SUBTASK_mismatch_detect": [],
+      "SUBTASK_security_infra": [],
+      "SUBTASK_security_xss": [],
+      "SUBTASK_ssr_render": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_code_quality",
+        "SUBTASK_correctness",
+        "SUBTASK_security_infra",
+        "SUBTASK_security_xss"
+      ],
+      "SUBTASK_synthesis_cq": [
+        "SUBTASK_A_api_surface",
+        "SUBTASK_B_abstraction",
+        "SUBTASK_C_error_handling",
+        "SUBTASK_D_function_design",
+        "SUBTASK_E_test_coverage",
+        "SUBTASK_F_documentation"
+      ],
+      "review-ferric-ssr-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_A_api_surface",
+          "SUBTASK_B_abstraction",
+          "SUBTASK_C_error_handling",
+          "SUBTASK_D_function_design",
+          "SUBTASK_E_test_coverage",
+          "SUBTASK_F_documentation",
+          "SUBTASK_axum_mismatch",
+          "SUBTASK_axum_server",
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "SUBTASK_hyd001",
+          "SUBTASK_hyd002",
+          "SUBTASK_hyd003",
+          "SUBTASK_hyd004",
+          "SUBTASK_hydration",
+          "SUBTASK_mismatch_detect",
+          "SUBTASK_security_infra",
+          "SUBTASK_security_xss",
+          "SUBTASK_ssr_render",
+          "review-ferric-ssr-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_correctness_synthesis",
+          "SUBTASK_hyd_synthesis",
+          "SUBTASK_synthesis",
+          "SUBTASK_synthesis_cq"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

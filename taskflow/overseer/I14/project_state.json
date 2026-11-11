@@ -1,0 +1,243 @@
+{
+  "project_id": "nswe-demo",
+  "repo": "Nousix-LLC/nswe-demo",
+  "goal": "A small Rust/WebAssembly web-application framework (ferric) and a Twitter-style clone (chirp) built on it, production quality; built, tested, and continuously delivered via GitHub Actions CI and ArgoCD on k3s; reachable on the cluster. The GitHub Project, issues, and PRs are the working record.",
+  "created": "2026-10-01T23:20:44Z",
+  "updated": "2026-10-07T01:21:30Z",
+  "status": "active",
+  "working_branch": "main",
+  "flow": "Each unit of work is a forked swe-coder DAG on a feature branch -> pushes -> opens a PR into main referencing its issue -> overseer schedules a review DAG -> overseer gates/merges. CI via GitHub Actions; CD via ArgoCD on k3s. Bugs -> issues -> fix DAGs. Lockfile/rebase conflicts (a sibling landing restales an open PR's Cargo.lock) are cleared by a forked relock/rebase DAG, never inline (P1). (This PR-into-main flow follows the explicit user request and supersedes the app's local-first default.)",
+  "current_pointer": 2,
+  "engagement": {
+    "project_board": "https://github.com/orgs/Nousix-LLC/projects/1",
+    "project_id_gh": "PVT_kwDOEB9jls4BlZH4",
+    "status_field_id": "PVTSSF_lADOEB9jls4BlZH4zhkGLsc",
+    "status_options": {"Todo": "f75ad846", "In Progress": "47fc9ee4", "Done": "98236657"},
+    "project_item_ids": {"issue_4": "PVTI_lADOEB9jls4BlZH4zg-BHNo", "issue_5": "PVTI_lADOEB9jls4BlZH4zg-BHRk", "issue_6": "PVTI_lADOEB9jls4BlZH4zg-BHTA", "issue_7": "PVTI_lADOEB9jls4BlZH4zg-BHTs"},
+    "milestones": {"M1": 1, "M2": 2, "M3": 3},
+    "issues": {
+      "epic_ferric": 1, "epic_chirp": 2, "epic_devops": 3,
+      "ferric-foundation": 4, "ferric-router": 5, "ferric-http": 6,
+      "chirp-types": 7, "chirp-server": 8, "chirp-frontend": 9,
+      "infra-bootstrap": 10, "ci-actions": 11, "containerize": 12, "deploy-argocd": 13
+    },
+    "architecture": {
+      "framework": "ferric (crates/ferric): client-side WASM framework — reactive signals, component model, DOM rendering (wasm-bindgen/web-sys), router, fetch/JSON http client",
+      "app": "chirp: crates/chirp-types (shared contract), crates/chirp-server (axum REST API + persistence + static SPA serving), crates/chirp-frontend (ferric SPA)",
+      "deploy": "chirp-server containerized; k8s manifests under deploy/; ArgoCD Application tracking the repo deploys to k3s"
+    }
+  },
+  "known_patterns": {
+    "lockfile_restale_on_land": "Every land to main moves the base and restales the Cargo.lock of every still-open sibling PR that branched from an earlier commit. Each such PR goes CONFLICTING/DIRTY on Cargo.lock and must be cleared by a forked relock/rebase swe-coder DAG (check out work/<slug>, merge/rebase origin/main, regenerate Cargo.lock via cargo build, re-run the synthesis gate, push) BEFORE it can land. Never resolved inline (P1). First observed at I14: landing #16 (ferric-router #5) at I13 restaled PR #15 (ferric-http #6). Expect PR #17 (chirp-types #7) and future #8/#9 PRs to need the same when they are next in line to land.",
+    "gh_mergeability_async": "gh pr view returns mergeable/mergeStateStatus=UNKNOWN on a fresh query; GitHub computes it asynchronously. Re-poll until it is not UNKNOWN before gating a land. Never land on UNKNOWN; never land CONFLICTING.",
+    "gh_self_review_block": "gh pr review --approve is rejected (Can not approve your own pull request) because the authenticated gh account authored the PR; the fallback posts --comment (state COMMENTED). The authoritative APPROVE/REQUEST-CHANGES verdict is in the review DAG's SYNTHESIS.md body, not the gh review state."
+  },
+  "dispatched_dags": [
+    {
+      "item_slug": "ferric-foundation",
+      "issue": 4,
+      "branch": "work/ferric-foundation",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-foundation",
+      "methodology_bundles": ["rust", "core", "code-quality", "testing"],
+      "dispatched_at": "2026-10-01T23:20:44Z",
+      "status": "landed-and-reaped",
+      "machine_gate": {"verdict": "PASS", "round": 1, "pr": 14, "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-foundation/SYNTHESIS.md", "gated_by": "overseer/I1", "gated_at": "2026-10-06T12:20:00Z"},
+      "landed_by": "overseer/I2",
+      "landed_commit": "3c8d26408b3027cf625aa5ec0ca50e5cdd38c0fc"
+    },
+    {
+      "item_slug": "review-ferric-foundation",
+      "issue": 4,
+      "kind": "review",
+      "reviews_pr": 14,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-ferric-foundation",
+      "methodology_bundles": ["code-review", "rust", "core"],
+      "dispatched_at": "2026-10-06T12:20:00Z",
+      "dispatched_by": "overseer/I1",
+      "status": "folded-and-reaped",
+      "verdict": "APPROVE",
+      "review_url": "https://github.com/Nousix-LLC/nswe-demo/pull/14#pullrequestreview-5433582590",
+      "note": "gh review posted as COMMENTED (self-review platform block; author==gh account); authoritative verdict APPROVE carried in SYNTHESIS.md"
+    },
+    {
+      "item_slug": "ferric-router",
+      "issue": 5,
+      "branch": "work/ferric-router",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-router",
+      "methodology_bundles": ["rust", "core", "code-quality", "testing"],
+      "dispatched_at": "2026-10-06T19:33:00Z",
+      "dispatched_by": "overseer/I2",
+      "forked_thread_id": "ferric-router",
+      "status": "landed-and-reaped",
+      "machine_gate": {"verdict": "PASS", "round": 1, "pr": 16, "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-router/SYNTHESIS.md", "gated_by": "overseer/I11", "gated_at": "2026-10-07T00:58:00Z"},
+      "landed_by": "overseer/I13",
+      "landed_commit": "cb619e9099393b1a7b8879c5038fd2326cbec4cd",
+      "note": "Machine PASS round 1 (PR #16 Closes #5). Review DAG review-ferric-router folded APPROVE (0 block/0 major) at I13; I13 LANDED via gh pr merge 16 --squash --delete-branch -> squash commit cb619e9 on main, issue #5 CLOSED, board Done, current_pointer 1->2. Code-DAG + review-DAG reaped whole (scratch). NOTE: this land restaled PR #15's Cargo.lock (see known_patterns.lockfile_restale_on_land)."
+    },
+    {
+      "item_slug": "review-ferric-router",
+      "issue": 5,
+      "kind": "review",
+      "reviews_pr": 16,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-ferric-router",
+      "methodology_bundles": ["code-review", "rust", "core"],
+      "dispatched_at": "2026-10-07T00:58:36Z",
+      "dispatched_by": "overseer/I11",
+      "forked_thread_id": "review-ferric-router",
+      "status": "folded-and-reaped",
+      "verdict": "APPROVE",
+      "gated_by": "overseer/I13",
+      "note": "I11's demand-driven fork (reviewed PR #16 / ferric-router #5). FOLDED at I13: authoritative verdict APPROVE (0 block, 0 major; 2 minor by-design + 3 nits; 9/9 acceptance; machine gate relied upon not re-run). I13 gated APPROVE+green -> LANDED PR #16. Reaped whole after land (scratch)."
+    },
+    {
+      "item_slug": "ferric-http",
+      "issue": 6,
+      "branch": "work/ferric-http",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-http",
+      "methodology_bundles": ["rust", "core", "code-quality", "testing"],
+      "prepared_by": "overseer/I2",
+      "dispatched_at": "2026-10-07T00:39:38Z",
+      "dispatched_by": "overseer/I8",
+      "forked_thread_id": "ferric-http",
+      "status": "folded-machine-pass-reviewed-approve-LAND-BLOCKED-conflict",
+      "machine_gate": {"verdict": "PASS", "round": 1, "pr": 15, "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-http/SYNTHESIS.md", "gated_by": "overseer/I11", "gated_at": "2026-10-07T00:58:00Z"},
+      "review": {"verdict": "APPROVE", "reviewed_by_dag": "review-ferric-http", "gated_by": "overseer/I14", "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-ferric-http/SYNTHESIS.md", "note": "0 block/0 major, 5 non-blocking nits, 7/7 acceptance; APPROVE+green => LAND signal"},
+      "land_blocked": {"reason": "PR #15 mergeable=CONFLICTING / mergeStateStatus=DIRTY against main as of I14", "conflict_files": ["Cargo.lock"], "cause": "work/ferric-http branched from 3c8d264; I13 landed ferric-router #5 (PR #16) to main; both relocked Cargo.lock from the same base -> lockfile conflict (verified read-only via git merge-tree: only Cargo.lock changed-in-both; crates/ferric-router/* are main-side additions, not conflicts)", "remedy": "fork a ferric-http-relock-r1 swe-coder DAG (rust+core): check out work/ferric-http, merge/rebase origin/main, regenerate Cargo.lock via cargo build, re-run synthesis gate, push so PR #15 is OPEN/MERGEABLE/CLEAN; then a later overseer iteration LANDS. P1: overseer does NOT resolve the lockfile inline.", "queued_for": "overseer/I15"},
+      "note": "Delivered ATOMIC as a single standalone crate crates/ferric-http; machine PASS round 1 (PR #15 Closes #6). review-ferric-http FOLDED at I14 -> verdict APPROVE. I14 attempted to LAND but PR #15 is CONFLICTING on Cargo.lock (sibling #16 landed first). NOT landed at I14; relock DAG queued for I15. P1 held."
+    },
+    {
+      "item_slug": "review-ferric-http",
+      "issue": 6,
+      "kind": "review",
+      "reviews_pr": 15,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-ferric-http",
+      "methodology_bundles": ["code-review", "rust", "core"],
+      "dispatched_at": "2026-10-07T01:05:30Z",
+      "dispatched_by": "overseer/I12",
+      "forked_thread_id": "review-ferric-http",
+      "status": "folded",
+      "verdict": "APPROVE",
+      "gated_by": "overseer/I14",
+      "review_url": "https://github.com/Nousix-LLC/nswe-demo/pull/15#pullrequestreview-5436443649",
+      "note": "I12's demand-driven fork (reviews PR #15 / ferric-http #6). FOLDED at I14: root SYNTHESIS.md + COMPLETE.md + review-body.md present; authoritative verdict APPROVE — machine gate green, 7/7 acceptance, 0 block/0 major, 5 non-blocking suggestions/nits; independent-clone read of the full +1356-line diff, machine gate relied upon (not re-run). gh review posted COMMENTED (self-review block). I14 read the verdict APPROVE but COULD NOT LAND (PR #15 CONFLICTING on Cargo.lock) -> no-land, relock DAG queued for I15. This review DAG is NOT yet reaped (reaps whole only once #6 lands)."
+    },
+    {
+      "item_slug": "chirp-types",
+      "issue": 7,
+      "branch": "work/chirp-types",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-types",
+      "methodology_bundles": ["rust", "core", "architecture"],
+      "prepared_by": "overseer/I2",
+      "dispatched_at": "2026-10-07T00:47:08Z",
+      "dispatched_by": "overseer/I9",
+      "forked_thread_id": "chirp-types",
+      "status": "folded-machine-pass",
+      "machine_gate": {"verdict": "PASS", "round": 1, "pr": 17, "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-types/SYNTHESIS.md", "gated_by": "overseer/I14", "gated_at": "2026-10-07T01:19:00Z"},
+      "note": "Decomposed (NeedsDecompose) into SUBTASK_implement_crate + SUBTASK_synthesis_gate. FOLDED machine-PASS since I13: root SYNTHESIS.md present (gate PASS round 1), PR #17 Closes #7, OPEN/MERGEABLE/CLEAN as of I14. cargo build --workspace exit 0; cargo test -p chirp-types 18 unit + 1 doctest 0 failed; fmt/clippy -D warnings clean (fresh rebuild); all 5 contract identities green; 8 files +1163 additive (commit a44c4a6; new crate src/{lib,ids,domain,api}.rs + Cargo.toml + README + 2 centralized workspace serde deps + Cargo.lock); 0 block/0 major (2 minor cosmetic nits). I14 dispatched review DAG review-chirp-types (code-review+rust+architecture). Watch for review fold at I15 -> gate PR #17. NOTE: landing #6 before #7 will restale PR #17's Cargo.lock (see known_patterns)."
+    },
+    {
+      "item_slug": "review-chirp-types",
+      "issue": 7,
+      "kind": "review",
+      "reviews_pr": 17,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-types",
+      "methodology_bundles": ["code-review", "rust", "architecture"],
+      "dispatched_at": "2026-10-07T01:21:00Z",
+      "dispatched_by": "overseer/I14",
+      "forked_thread_id": "review-chirp-types",
+      "status": "dispatched",
+      "note": "I14's demand-driven priority-1 fork (reviews PR #17 / chirp-types #7, machine-PASS, against issue #7 acceptance criteria + code-review/rust/architecture). architecture named deliberately: chirp-types is the SHARED CONTRACT crate consumed by chirp-server #8 + chirp-frontend #9, so public API surface + serde wire stability + dependency-light boundary are the load-bearing review concerns. fork GRANTED+SUCCEEDED (forked_thread_id=review-chirp-types, placement=peer). Resumption: I15 watches for this DAG's terminal fold -> read review SYNTHESIS.md -> APPROVE+green+CLEAN LAND PR #17 (squash --delete-branch, closes #7) / REQUEST-CHANGES remediate (budget 2 then escalate). If PR #17 is CONFLICTING at land time, relock DAG first."
+    }
+  ],
+  "work_items": [
+    {
+      "item_slug": "ferric-foundation",
+      "issue": 4,
+      "pr": 14,
+      "acceptance_criteria": "Virtual Cargo workspace + crates/ferric; sound reactive signals (computed + batching, no stale-subscriber leaks); component model + mount; DOM rendering via wasm-bindgen/web-sys with keyed diff + click/input; wasm build + counter example; native tests (wasm-bindgen-test optional without headless browser); fmt/clippy clean, rustdoc, README.",
+      "landed_commit_shas": ["3c8d26408b3027cf625aa5ec0ca50e5cdd38c0fc"],
+      "diff_summary": "workspace + ferric core; ~3035 insertions, all additive (signal.rs reactive core, vdom.rs view tree + keyed diff, component.rs, dom.rs web-sys runtime, examples/counter.rs, README.md, workspace Cargo.toml/Cargo.lock).",
+      "dag_decision_record": "Four implementation spokes (reactive_core -> view_and_diff -> dom_runtime) over a scaffold. ABA-safe generational arena for signals; Rc<RefCell<Box<dyn Any>>> value cells so no borrow held across user closures; conditional-dependency re-tracking drops stale subscribers; lazy glitch-free memos; panic-safe BatchGuard. Keyed diff proven via shadow-DOM roundtrip. Zero unsafe, zero production unwrap. Synthesis gate PASS: workspace+wasm build OK, 36 unit + 6 doctests OK, fmt/clippy clean.",
+      "gate_outcome": "approved",
+      "machine_gate": "PASS (round 1)",
+      "review_verdict": "APPROVE (0 block/major findings; F1-F6 minor/nit/informational, none blocking)",
+      "landed_at": "2026-10-06T19:31:01Z",
+      "compacted": false
+    },
+    {
+      "item_slug": "ferric-router",
+      "issue": 5,
+      "pr": 16,
+      "acceptance_criteria": "New workspace member crate crates/ferric-router (path-dep on crates/ferric); route table + matcher with param extraction (/user/:id -> id); History API pushState/popstate via web-sys; <Link>-style helper (link) + programmatic navigate(path); reactive router outlet re-rendering on navigation (via ferric signals); cargo build -p ferric-router --target wasm32-unknown-unknown + 3-route wasm example; native matcher/param tests + wasm-bindgen-test compile-only (no headless runner, documented not a FAIL); fmt --check clean, clippy -D warnings clean, rustdoc on public items, README.md; PR into main with Closes #5.",
+      "landed_commit_shas": ["cb619e9099393b1a7b8879c5038fd2326cbec4cd"],
+      "diff_summary": "+1205 lines across 8 additive files (Cargo.lock, crates/ferric-router/{Cargo.toml, README.md, examples/app.rs, src/lib.rs, src/link.rs, src/matcher.rs, src/router.rs}). Composes ferric (create_signal/Signal, VElement/text/EventKind, Component, mount); no reactivity/DOM re-implementation.",
+      "dag_decision_record": "5-child contract-first serial pipeline (scaffold -> matcher -> navigation -> view/link -> synthesis gate) against a frozen contract (contracts/ferric_router_api.rs). Matcher: exact-over-segments with empty-segment normalization, 18 unit tests. Navigation: pushState/popstate behind cfg(target_arch=wasm32), app-lifetime closure.forget() mirroring ferric::dom. Thread-local CURRENT_PATH Signal<String> (F1, by-design for single-root SPA scope). <span role=link tabindex=0>+click->navigate (F2) because ferric's click handler is zero-arg Fn(). No unwrap/expect/panic/unsafe in library code. Machine gate PASS round 1.",
+      "gate_outcome": "approved",
+      "machine_gate": "PASS (round 1)",
+      "review_verdict": "APPROVE (0 block, 0 major; 2 minor by-design F1/F2 + 3 nits M1-M3, none blocking)",
+      "landed_at": "2026-10-07T01:10:24Z",
+      "compacted": false
+    }
+  ],
+  "iterations": [
+    {"iteration": "I3", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I4", "atomic_action": "engine_fork ferric-http (#6) — DENIED (1st)", "terminal": "continue"},
+    {"iteration": "I4", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I5", "atomic_action": "engine_fork ferric-http (#6) — DENIED (2nd)", "terminal": "continue"},
+    {"iteration": "I5", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I6", "atomic_action": "engine_fork ferric-http (#6) — DENIED (3rd)", "terminal": "continue"},
+    {"iteration": "I6", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I7", "atomic_action": "engine_fork ferric-http (#6) — DENIED (4th)", "terminal": "continue"},
+    {"iteration": "I7", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I8", "atomic_action": "engine_fork ferric-http (#6) — DENIED (5th)", "terminal": "continue"},
+    {"iteration": "I8", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I9", "atomic_action": "engine_fork ferric-http (#6) — GRANTED+SUCCEEDED (6th attempt, 1st success)", "terminal": "continue"},
+    {"iteration": "I9", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I10", "atomic_action": "engine_fork chirp-types (#7) — GRANTED+SUCCEEDED. Last prepared-fork-pending DAG; next-wave fan-out (#5+#6+#7) complete.", "terminal": "continue"},
+    {"iteration": "I10", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I11", "atomic_action": "NONE — demand-driven: nothing folded/landed; held the one-fork budget.", "terminal": "continue"},
+    {"iteration": "I11", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I12", "atomic_action": "engine_fork review-ferric-router (#5 review) — GRANTED+SUCCEEDED. #6 review queued for I12.", "terminal": "continue"},
+    {"iteration": "I12", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I13", "atomic_action": "engine_fork review-ferric-http (#6 review) — GRANTED+SUCCEEDED. No land (reviews not folded).", "terminal": "continue"},
+    {"iteration": "I13", "persona": "swe-lead", "evaluation": "Continue", "scheduled_successor": "I14", "atomic_action": "LANDED ferric-router #5 / PR #16 (mechanical squash-merge @ cb619e9; #5 CLOSED, board Done, pointer 1->2). Demand-driven fork: NONE (held budget).", "landed": "ferric-router #5 -> main @ cb619e9", "terminal": "continue"},
+    {
+      "iteration": "I14",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain — my case determined by I13's CONTINUE.md (no prepared-fork-pending DAGs; one fork demand-driven: review > remediation > newly-unblocked). Watch review-ferric-http (#6) for its fold -> gate/LAND PR #15; watch chirp-types #7 for its fold; dispatch the next demand-driven DAG; fan out.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I15 (depends_on I14; execution group 12; eligible promptly to gate the #7 review fold -> LAND PR #17, fork the #6 relock DAG, watch, fan out)",
+      "reconnaissance": "Verified on disk + via gh (read-only, P1 held — no build re-run, no code/lockfile touched; the read IS this iteration's reconnaissance). BOTH watched DAGs folded since I13. review-ferric-http (#6 review) FOLDED: root SYNTHESIS.md + COMPLETE.md + review-body.md; authoritative verdict APPROVE (machine green, 7/7 acceptance, 0 block/0 major, 5 non-blocking nits). chirp-types #7 FOLDED machine-PASS: root SYNTHESIS.md (gate PASS round 1, PR #17 Closes #7, 18 unit + 1 doctest, fmt/clippy clean, 5/5 contract identities, 0 block/0 major). gh: PR #17 OPEN/MERGEABLE/CLEAN; PR #15 re-polled (UNKNOWN then resolved) -> CONFLICTING/DIRTY on Cargo.lock (sibling #16 landed at I13 restaled it; verified read-only via git merge-tree: only Cargo.lock changed-in-both). Nothing re-authored.",
+      "atomic_action": "engine_fork review-chirp-types — GRANTED and SUCCEEDED (status=forked, forked_thread_id=review-chirp-types, placement=peer). Demand-driven priority-1 fork: the chirp-types #7 review DAG (swe-coder, code-review+rust+architecture) for the machine-PASS PR #17. LAND of #6/PR #15: ATTEMPTED-but-BLOCKED — review APPROVE but PR #15 CONFLICTING on Cargo.lock; NOT landed (landing requires OPEN/MERGEABLE/CLEAN); relock/rebase remediation DAG queued for I15 (overseer does not resolve the lockfile inline — P1). No LAND this iteration.",
+      "fork_denied": null,
+      "fork_succeeded": {"tool": "fork", "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-chirp-types", "launch_agent": "swe-coder", "result": "status=forked, forked_thread_id=review-chirp-types, placement=peer"},
+      "landed": "none (ferric-http #6 approved but LAND-BLOCKED on Cargo.lock conflict; relock DAG queued for I15)",
+      "board_changes": "none (no land; #6/#7 remain In Progress)",
+      "terminal": "continue"
+    }
+  ],
+  "turn_pointer": {
+    "landed": "ferric-foundation (#4) -> main @ 3c8d264 (issue #4 Done/CLOSED); ferric-router (#5) -> main @ cb619e9 (issue #5 Done/CLOSED, landed by I13).",
+    "wave": "ferric foundation + ferric-router landed. ferric-http #6: machine-PASS + review APPROVE, but PR #15 LAND-BLOCKED on a Cargo.lock conflict (needs a relock DAG). chirp-types #7: folded machine-PASS (PR #17), review DAG review-chirp-types dispatched by I14 (watch for its fold). The engagement is in the watch/review/gate/land phase; the lockfile-restale-on-land pattern is now active (see known_patterns).",
+    "running": [
+      "review-chirp-types (forked by I14; reviews PR #17 / chirp-types #7; NOT folded as of I14; watch for fold at I15 -> gate PR #17: APPROVE+green+CLEAN LAND / REQUEST-CHANGES remediate; if PR #17 CONFLICTING at land, relock first)"
+    ],
+    "folded_awaiting_action": [
+      "ferric-http #6 / PR #15: review APPROVE but PR #15 CONFLICTING on Cargo.lock -> fork a ferric-http-relock-r1 DAG (rust+core) to rebase/relock onto current main + re-gate + push, then LAND. Queued for I15 (its demand-driven fork)."
+    ],
+    "fork_pending_next_iterations": [
+      "(I15) ferric-http #6 relock/rebase DAG (clear PR #15's Cargo.lock conflict) OR a chirp-types #7 remediation if review-chirp-types folds REQUEST-CHANGES — one fork per iteration, highest priority first",
+      "(later) chirp-server #8 after chirp-types #7 lands; chirp-frontend #9 after ferric-router #5 [done] + ferric-http #6 + chirp-types #7 land; devops #10-#13 once buildable",
+      "(recurring) a relock/rebase DAG for each open PR whose Cargo.lock is restaled when a sibling lands"
+    ],
+    "awaiting": "I15+ to: (1) gate the #7 review DAG (review-chirp-types) when it folds -> read review SYNTHESIS.md -> APPROVE+green+CLEAN LAND PR #17 (gh pr merge 17 --squash --delete-branch, closes #7) + board Done + append STATE + bump pointer + reap; REQUEST-CHANGES -> remediate (budget 2 then escalate, do NOT land); CONFLICTING -> relock DAG first. (2) Fork one demand-driven DAG: the ferric-http #6 relock/rebase DAG (clear PR #15 conflict) is the highest-value pending; else a #7 remediation on REQUEST-CHANGES. (3) After #6 relock clears PR #15 -> a later iteration LANDS #6 (mechanical). Then fan out: #8 after #7 lands; #9 after ferric-* + #7; devops #10-#13 once buildable. One fork per iteration.",
+    "fork_token_note": "I3-I7 denied the 'fork' token (reconstructed nodes); I8 (#6), I9 (#7), I11 (#5 review), I12 (#6 review), I14 (#7 review) GRANTED + all forks SUCCEEDED. I10 and I13 had NO fork to make. The chain is self-perpetuating (each schedules its successor BEFORE the atomic action). P1 held on every iteration incl. I14: the overseer reads verdicts, dispatches review DAGs, and WOULD merge mechanically — but when PR #15 was found CONFLICTING it did NOT resolve the lockfile inline; it queued a forked relock DAG instead. No iteration fell back to inline engineering.",
+    "remaining_backlog": ["RELOCK + LAND ferric-http #6 (fork relock DAG for PR #15 Cargo.lock conflict -> then squash-merge PR #15)", "GATE + LAND chirp-types #7 (on review-chirp-types APPROVE -> PR #17; relock if restaled)", "chirp-server #8 (deps chirp-types #7)", "chirp-frontend #9 (deps ferric-router #5 [done], ferric-http #6, chirp-types #7)", "infra-bootstrap #10", "ci-actions #11", "containerize #12", "deploy-argocd #13"]
+  }
+}

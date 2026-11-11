@@ -1,0 +1,43 @@
+kind: test_depth_analysis_decomposition
+owner: spoke-tests
+
+per_child_ownership:
+  - task_id: SUBTASK_handler-unit-tests
+    concern: 1
+    artifacts:
+      - path: SUBTASK_handler-unit-tests/analysis.md
+        kind: concern_analysis
+
+  - task_id: SUBTASK_integration-tests
+    concern: 2
+    artifacts:
+      - path: SUBTASK_integration-tests/analysis.md
+        kind: concern_analysis
+
+  - task_id: SUBTASK_frontend-test-validity
+    concern: 5
+    artifacts:
+      - path: SUBTASK_frontend-test-validity/analysis.md
+        kind: concern_analysis
+
+  - task_id: SUBTASK_synthesis
+    concerns: [1, 2, 5]
+    artifacts:
+      - path: ../FINDINGS.md
+        kind: findings_output
+        schema: ../contracts/findings_schema.md
+
+identities:
+  - concerns_covered: Concerns 1, 2, and 5 each appear in exactly one analysis spoke output
+  - verdict_declared: Each analysis.md declares a Verdict (CLEAN or FINDING(S))
+  - synthesis_conforms: ../FINDINGS.md conforms to ../contracts/findings_schema.md
+  - no_infrastructure_leakage: No host paths, private IPs, or server paths in any output
+
+inherited_contracts:
+  - path: ../contracts/findings_schema.md
+    binds: SUBTASK_synthesis output (../FINDINGS.md)
+
+derived_artifacts:
+  - contracts/analysis_schema.md -> consumed by all analysis spokes as the analysis.md contract
+
+pinned_commit: decb6196c2c1e6ed421d393a642f0c844cc333ba

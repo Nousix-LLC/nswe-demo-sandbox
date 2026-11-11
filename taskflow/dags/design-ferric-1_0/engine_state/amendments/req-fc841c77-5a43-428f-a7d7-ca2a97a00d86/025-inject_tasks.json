@@ -1,0 +1,221 @@
+{
+  "sequence": 25,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T02:48:41.935996634Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_afe_events_payloads"
+      ],
+      "placement_parent_task_id": "SUBTASK_async_forms_events"
+    },
+    "resulting_version": 25,
+    "summary": "inject tasks: SUBTASK_afe_events_payloads",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize concern-4 capability child: full DOM event coverage + the payload-carrying handler form (REQ-ASYNC-020..039). Owns the event-payload seam the forms child composes against.",
+        "task_id": "SUBTASK_async_forms_events"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_afe_async_resources": [],
+      "SUBTASK_afe_events_payloads": [],
+      "SUBTASK_async_forms_events": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_authoring_model": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_authoring_model_synthesis": [
+        "SUBTASK_components_props_slots",
+        "SUBTASK_context",
+        "SUBTASK_view_macro"
+      ],
+      "SUBTASK_components_props_slots": [],
+      "SUBTASK_context": [],
+      "SUBTASK_design_pr": [
+        "SUBTASK_async_forms_events",
+        "SUBTASK_authoring_model",
+        "SUBTASK_docs_and_dx",
+        "SUBTASK_performance_and_benchmark",
+        "SUBTASK_release_and_distribution",
+        "SUBTASK_release_bar",
+        "SUBTASK_release_plan",
+        "SUBTASK_router_and_http",
+        "SUBTASK_scope_and_requirements",
+        "SUBTASK_ssr_hydration"
+      ],
+      "SUBTASK_docs_and_dx": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_file_backlog": [
+        "SUBTASK_design_pr",
+        "SUBTASK_release_plan"
+      ],
+      "SUBTASK_http": [],
+      "SUBTASK_performance_and_benchmark": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_publishing": [],
+      "SUBTASK_release_and_distribution": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_release_bar": [
+        "SUBTASK_async_forms_events",
+        "SUBTASK_authoring_model",
+        "SUBTASK_docs_and_dx",
+        "SUBTASK_performance_and_benchmark",
+        "SUBTASK_release_and_distribution",
+        "SUBTASK_router_and_http",
+        "SUBTASK_scope_and_requirements",
+        "SUBTASK_ssr_hydration"
+      ],
+      "SUBTASK_release_plan": [
+        "SUBTASK_async_forms_events",
+        "SUBTASK_authoring_model",
+        "SUBTASK_docs_and_dx",
+        "SUBTASK_performance_and_benchmark",
+        "SUBTASK_release_and_distribution",
+        "SUBTASK_release_bar",
+        "SUBTASK_router_and_http",
+        "SUBTASK_scope_and_requirements",
+        "SUBTASK_ssr_hydration"
+      ],
+      "SUBTASK_router": [],
+      "SUBTASK_router_and_http": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_rt_http_synthesis": [
+        "SUBTASK_http",
+        "SUBTASK_router"
+      ],
+      "SUBTASK_scope_and_requirements": [],
+      "SUBTASK_semver_changelog": [],
+      "SUBTASK_ssr_hydration": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_async_forms_events",
+        "SUBTASK_authoring_model",
+        "SUBTASK_design_pr",
+        "SUBTASK_docs_and_dx",
+        "SUBTASK_file_backlog",
+        "SUBTASK_performance_and_benchmark",
+        "SUBTASK_release_and_distribution",
+        "SUBTASK_release_bar",
+        "SUBTASK_release_plan",
+        "SUBTASK_router_and_http",
+        "SUBTASK_scope_and_requirements",
+        "SUBTASK_ssr_hydration"
+      ],
+      "SUBTASK_versioning_compat": [],
+      "SUBTASK_view_macro": [],
+      "design-ferric-1_0": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_afe_async_resources",
+          "SUBTASK_afe_events_payloads",
+          "SUBTASK_components_props_slots",
+          "SUBTASK_context",
+          "SUBTASK_http",
+          "SUBTASK_publishing",
+          "SUBTASK_router",
+          "SUBTASK_scope_and_requirements",
+          "SUBTASK_semver_changelog",
+          "SUBTASK_versioning_compat",
+          "SUBTASK_view_macro",
+          "design-ferric-1_0"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_async_forms_events",
+          "SUBTASK_authoring_model",
+          "SUBTASK_authoring_model_synthesis",
+          "SUBTASK_docs_and_dx",
+          "SUBTASK_performance_and_benchmark",
+          "SUBTASK_release_and_distribution",
+          "SUBTASK_router_and_http",
+          "SUBTASK_rt_http_synthesis",
+          "SUBTASK_ssr_hydration"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_release_bar"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_release_plan"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "SUBTASK_design_pr"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "group_index": 5,
+        "task_ids": [
+          "SUBTASK_file_backlog"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "group_index": 6,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

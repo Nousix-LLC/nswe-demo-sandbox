@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T04:01:23.243610784Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_review-validate"
+      ],
+      "placement_parent_task_id": "design-ferric-1_0-r2"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_review-validate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing the Ferric 1.0 design recovery DAG into a serial three-spoke pipeline. Spoke 1: read and validate all ten design documents and the filed issues against each other and the live codebase, producing a structured review report.",
+        "task_id": "design-ferric-1_0-r2"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_review-validate": [],
+      "design-ferric-1_0-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_review-validate",
+          "design-ferric-1_0-r2"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

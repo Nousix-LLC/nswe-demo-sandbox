@@ -1,0 +1,67 @@
+{
+  "sequence": 7,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T20:25:09.124235787Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_completeness_check"
+      ],
+      "placement_parent_task_id": "SUBTASK_code_quality"
+    },
+    "resulting_version": 7,
+    "summary": "inject tasks: SUBTASK_completeness_check",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_code_quality: completeness spoke (concern 5)",
+        "task_id": "SUBTASK_code_quality"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_code_quality": [],
+      "SUBTASK_completeness_check": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_format_check": [],
+      "SUBTASK_placement_check": [],
+      "SUBTASK_security": [],
+      "SUBTASK_verdict": [
+        "SUBTASK_code_quality",
+        "SUBTASK_correctness",
+        "SUBTASK_security"
+      ],
+      "review-ferric-http-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_code_quality",
+          "SUBTASK_completeness_check",
+          "SUBTASK_correctness",
+          "SUBTASK_format_check",
+          "SUBTASK_placement_check",
+          "SUBTASK_security",
+          "review-ferric-http-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_verdict"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

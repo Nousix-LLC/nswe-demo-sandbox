@@ -1,0 +1,92 @@
+# bar_screens_partition.yaml — the BAR-<NNN> sub-partition of the screens & flows slice (BAR-230..264)
+# across five screen-chapter spokes + the synthesis cross-cutting slot, plus the per-chapter release-gating
+# REQ-UX-* set each spoke must cover.
+#
+# READ-ONLY for every descendant. Extends additively (redefines NOTHING in):
+#   ../../contracts/bar_ux_partition.yaml        (SUBTASK_bar_ux: screens owns BAR-230..264; per-BAR field set;
+#                                                 proposed_stage convention; bar-fragment + coverage-note layout)
+#   ../../../contracts/bar_partition.yaml        (SUBTASK_release_bar: UX owns BAR-200..299)
+#   ../../../../contracts/id_and_traceability_schema.yaml  (BAR-<NNN> 3-digit; closed verification_methods vocab;
+#                                                 stage vocabulary {usable_early, releasable}; per-BAR field set)
+# This file ONLY sub-partitions the BAR-230..264 number space and fixes the sub-fragment layout.
+
+bar_number_subspace:            # within this slice's inherited BAR-230..264 range (35 ids)
+  owner_by_range:               # one disjoint sub-range per spoke; a spoke MUST mint BAR-* only within its sub-range
+    SUBTASK_bar_screens_entry_auth:        "BAR-230 .. BAR-237"   # 8 ids  — REQ-UX-040..050 gating (11)
+    SUBTASK_bar_screens_core_loop:         "BAR-238 .. BAR-242"   # 5 ids  — REQ-UX-051..056 gating (6)
+    SUBTASK_bar_screens_social_profiles:   "BAR-243 .. BAR-247"   # 5 ids  — REQ-UX-058..063 gating (6)
+    SUBTASK_bar_screens_account_lifecycle: "BAR-248 .. BAR-255"   # 8 ids  — REQ-UX-065..077 gating (11)
+    SUBTASK_bar_screens_safety_states:     "BAR-256 .. BAR-263"   # 8 ids  — REQ-UX-079,082..089 gating (9)
+    SUBTASK_bar_screens_synthesis:         "BAR-264 .. BAR-264"   # 1 id   — cross-cutting ONLY (a finding no single spoke owns)
+  rules:
+    - "The id budget is tight by design: 35 ids for 43 gating requirements. One BAR-* MAY (and often MUST)
+       enforce several related REQ-UX-* in the same screen chapter — cluster related gating requirements into
+       one checkable release condition rather than restating each REQ one-to-one."
+    - "A BAR-* MAY REFERENCE REQ-UX-* (or REQ-PROD-*) from more than one chapter; it is OWNED by the spoke whose
+       chapter most centrally holds the gating requirement it enforces. Cross-chapter references are expected and
+       fine; siblings do not duplicate a BAR-*."
+    - "A spoke covers EXACTLY its chapter's release-gating set (release_gating: true in the experience design).
+       A non-gating REQ-UX-* is not covered; it MAY be referenced for context but NEVER as a BAR-*'s sole basis."
+    - "The synthesis spoke mints BAR-264 ONLY when the assembled screens view needs a release condition that no
+       single chapter's gating requirements already cover (record the finding that motivated it); otherwise
+       BAR-264 is unused and that is fine."
+
+# The per-chapter release-gating REQ-UX-* set each spoke must cover. Read from the experience design's per-REQ
+# release_gating field (authoritative); listed here so the synthesis gate asserts SCREENS_GATING_REQ_COVERAGE
+# per chapter without re-deriving the set. The screens-area non-gating set (NOT covered by any spoke) is named
+# once for clarity.
+gating_sets_by_spoke:
+  SUBTASK_bar_screens_entry_auth:        # Landing, sign-up, sign-in, recover, set-new-credential, sign-out,
+                                         # per-screen states, land-right/no-leak/interlink
+    gating:    [040, 041, 042, 043, 044, 045, 046, 047, 048, 049, 050]   # 11
+    note: "REQ-UX-050 is gating for the sign-up->onboarding landing and the sign-out no-leak (REQ-PROD-032,
+           REQ-PROD-014); its three-way interlinks ride the non-gating REQ-UX-015 and are NOT the gating basis."
+  SUBTASK_bar_screens_core_loop:         # home timeline (own+followed, newest-first, bounded), catch-up,
+                                         # timeline states, 280-char compose limit, publish lock/confirm/keep-draft,
+                                         # one compose surface in three placements
+    gating:    [051, 052, 053, 054, 055, 056]                            # 6
+  SUBTASK_bar_screens_social_profiles:   # reply-from-conversation + reply-to-gone, like toggle, follow control
+                                         # (no self-follow); public profile, owner profile w/ edit entry,
+                                         # followers/following paginated lists
+    gating:    [058, 059, 060, 061, 062, 063]                            # 6
+  SUBTASK_bar_screens_account_lifecycle: # onboarding explains+never-dead-ends; edit-profile persist + in-place
+                                         # validation; settings hub; contact control+verification; sessions;
+                                         # server-side sign-out no-leak; data export; delete confirm/consequence +
+                                         # explicit-confirmation flow
+    gating:    [065, 066, 067, 068, 069, 070, 073, 074, 075, 076, 077]   # 11
+  SUBTASK_bar_screens_safety_states:     # report acknowledged; help & support from both shells; stated rules a
+                                         # report points to; not-found screen; AND the cross-screen state patterns
+                                         # (considered states per surface; empty-explained; loading shows shape &
+                                         # never forever; failures at point of action; session/transient recovery)
+    gating:    [079, 082, 083, 084, 085, 086, 087, 088, 089]             # 9
+# Total release-gating REQ-UX-* in the screens slice = 11 + 6 + 6 + 11 + 9 = 43.
+# Non-gating in the screens band (NOT covered by any spoke): 057, 064, 071, 072, 078, 080, 081.
+
+bar_fragment:                   # what each spoke's outputs/bar-screens-<chapter>.md MUST contain
+  format: markdown
+  per_bar_block_fields:         # one block per BAR-*, carrying exactly the inherited field set (unchanged)
+    - id                        # BAR-NNN, within the spoke's sub-range
+    - statement                 # concrete, testable release condition in the user's terms (NOT a REQ restatement)
+    - references                # >=1 REQ-UX-* (and/or REQ-PROD-*) it enforces (the gating requirement(s))
+    - verification_method       # one of: manual_user_check | automated_test | inspection | operational_check
+    - proposed_stage            # usable_early | releasable  -- the SPOKE's proposal (synthesis finalizes within screens)
+  also_required:
+    - "A coverage note: list every release-gating REQ-UX-* in the spoke's chapter and the BAR-* that covers it,
+       so the synthesis gate asserts SCREENS_GATING_REQ_COVERAGE per chapter without re-deriving the gating set."
+
+staging_split:                  # who proposes vs. finalizes the usable-early vs releasable line
+  proposed_by_spoke: proposed_stage
+  finalized_within_screens_by: SUBTASK_bar_screens_synthesis
+  finalized_within_ux_by: SUBTASK_bar_ux_synthesis         # the parent UX hub reconciles across the five UX areas
+  finalized_across_areas_by: SUBTASK_bar_synthesis         # the whole-product line
+  rule: "Spokes PROPOSE a stage per BAR-* from their chapter view. SUBTASK_bar_screens_synthesis reconciles the
+         five chapter sub-fragments into one coherent per-BAR stage for bar-ux-screens.md; the parent UX hub and
+         then the whole-bar synthesis may still move a BAR-* for wider coherence."
+
+bar_ux_screens_md:              # the single screens fragment the synthesis spoke assembles
+  path: "SUBTASK_bar_ux_screens/outputs/bar-ux-screens.md"   # SUBTASK_bar_ux_screens's declared output;
+                                                             # consumed by SUBTASK_bar_ux_synthesis
+  contents:
+    - the consolidated BAR-230..264 register (one block per BAR-*, inherited field set)
+    - the coverage note (every release-gating REQ-UX-* in 040..089 -> the BAR-* covering it)
+  hygiene: "repository-ready: no host/system/taskflow detail, no attribution trailer"

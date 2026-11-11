@@ -1,0 +1,184 @@
+{
+  "current_pointer": "overseer/I263",
+  "checked_at": "2026-11-05T01:01:00Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "CLEARED",
+      "cleared_at": "2026-11-03T05:08:16Z",
+      "cleared_in": "overseer/I145"
+    },
+    "escalation_ferric_async_forms_budget_exhausted": {
+      "status": "ACTIVE",
+      "label": "ferric-async-forms remediation budget exhausted — 3 unresolved blockers after 2 code DAG attempts + 1 full review cycle",
+      "pr": 193,
+      "blockers": [
+        "B1: Resource fire-once, no reactive re-fetch (REQ-ASYNC-001, 003, 005)",
+        "B2: No prevent_default/stop_propagation path from handler (REQ-ASYNC-023)",
+        "B3: Bind DOM→signal direction broken in WASM (REQ-ASYNC-042)"
+      ],
+      "escalated_in": "overseer/I220",
+      "escalation_comment": "https://github.com/Nousix-LLC/nswe-demo/pull/193#issuecomment-6624409600",
+      "decision_needed": "Fix blockers and re-submit (budget extension needed) OR defer epic #130 to later milestone",
+      "clearing_condition": "User comments on PR #193 or files a follow-up issue indicating choice (extend budget or defer)",
+      "checked_in": "overseer/I263",
+      "check_result": "No user response (last check 2026-11-05T01:01:00Z). Escalation still ACTIVE."
+    },
+    "escalation_review_ferric_http_r2_stall": {
+      "status": "CLEARED",
+      "cleared_at": "2026-11-04T21:35:16Z",
+      "cleared_in": "overseer/I245"
+    }
+  },
+  "prs": {
+    "PR113": { "status": "MERGED", "note": "Epic #56 and sub-issues Done." },
+    "PR128": { "status": "MERGED", "note": "Design: Ferric 1.0 framework design. All 10 design docs on main." },
+    "PR182": { "status": "MERGED" },
+    "PR183": { "status": "MERGED" },
+    "PR187": { "status": "MERGED" },
+    "PR188": { "status": "MERGED", "note": "#129 and authoring model sub-issues Done." },
+    "PR193": {
+      "status": "OPEN",
+      "branch": "work/ferric-async-forms-r2",
+      "escalated": true,
+      "note": "Escalated to user. 3 blockers. No user response."
+    },
+    "PR203": { "status": "MERGED", "note": "#131 and router sub-issues Done." },
+    "PR209": { "status": "MERGED", "note": "#206 Done." },
+    "PR210": { "status": "MERGED", "note": "#132 and #148 Done." },
+    "PR228": {
+      "status": "OPEN",
+      "branch": "work/ferric-ssr-r1",
+      "note": "SSR render_to_string + client-side hydration + Axum integration. All 6 CI: PASS. MERGEABLE/CLEAN. Under review (review-ferric-ssr-r1).",
+      "issues": ["#223", "#224", "#226"]
+    }
+  },
+  "dags_in_flight": [
+    {
+      "dag_id": "review-ferric-ssr-r1",
+      "goal_slug": "ferric-ssr",
+      "goal": "Review PR #228 — SSR render_to_string + client-side hydration + Axum integration (issues #223, #224, #226)",
+      "issues": ["#223", "#224", "#226"],
+      "branch": "work/ferric-ssr-r1",
+      "kind": "review",
+      "agent": "swe-reviewer",
+      "workspace_path": "taskflow/dags/review-ferric-ssr-r1",
+      "observation_seam": "taskflow/dags/review-ferric-ssr-r1/SYNTHESIS.md",
+      "forked_in": "overseer/I263",
+      "forked_at": "2026-11-05T01:01:00Z",
+      "state": "RUNNING"
+    }
+  ],
+  "dags_folded": [
+    {
+      "slug": "review-ferric-http-r2",
+      "goal": "Re-review PR #210 after ferric-http-r2 remediation",
+      "issues": ["#132", "#148"],
+      "kind": "review",
+      "state": "FOLDED",
+      "verdict": "APPROVE",
+      "synthesis_path": "taskflow/dags/review-ferric-http-r2/SYNTHESIS.md",
+      "folded_confirmed_in": "overseer/I245"
+    },
+    {
+      "slug": "ferric-ssr-r1",
+      "goal": "Scope-limited SSR and hydration foundation: BAR-003 + BAR-004 + BAR-006",
+      "issues": ["#223", "#224", "#226"],
+      "kind": "code",
+      "state": "FOLDED",
+      "verdict": "FAIL",
+      "synthesis_path": "taskflow/dags/ferric-ssr-r1/SYNTHESIS.md",
+      "note": "client-hydrate spoke never ran; hydrate.rs remains todo!() stub; marker-format-agreement FAIL",
+      "folded_confirmed_in": "overseer/I255"
+    },
+    {
+      "slug": "ferric-ssr-r2",
+      "goal": "SSR+hydration remediation attempt 1: hydrate.rs (BAR-004/#224) + mismatch detection (BAR-006/#226)",
+      "issues": ["#223", "#224", "#226"],
+      "kind": "code",
+      "state": "FOLDED",
+      "verdict": "FAIL",
+      "synthesis_path": "taskflow/dags/ferric-ssr-r2/SYNTHESIS.md",
+      "note": "CI failures: fmt, clippy, doc. Remediated by ferric-ssr-r3.",
+      "folded_confirmed_in": "overseer/I262"
+    },
+    {
+      "slug": "ferric-ssr-r3",
+      "goal": "SSR+hydration remediation attempt 2: resolve CI failures (fmt, clippy, doc) on PR #228",
+      "issues": ["#223", "#224", "#226"],
+      "kind": "code",
+      "state": "FOLDED",
+      "verdict": "PASS",
+      "synthesis_path": "taskflow/dags/ferric-ssr-r3/SYNTHESIS.md",
+      "note": "All 6 CI checks PASS. Commit 4994a08 on work/ferric-ssr-r1. PR #228 MERGEABLE/CLEAN. Machine gate PASS.",
+      "folded_confirmed_in": "overseer/I262"
+    }
+  ],
+  "ferric_ssr_goal": {
+    "goal_slug": "ferric-ssr",
+    "issues": ["#223", "#224", "#226"],
+    "branch": "work/ferric-ssr-r1",
+    "pr": 228,
+    "remediation_budget": 2,
+    "remediation_attempts_used": 2,
+    "current_dag": null,
+    "current_review_dag": "review-ferric-ssr-r1",
+    "note": "ferric-ssr-r1 FAIL (attempt 0); ferric-ssr-r2 FAIL (attempt 1); ferric-ssr-r3 PASS (attempt 2). Machine gate PASS. Review-ferric-ssr-r1 forked (I263). Remediation budget exhausted — if review finds blockers, escalate rather than launch 3rd code DAG.",
+    "board_status": "In Review (In Progress on GitHub — no In Review column)"
+  },
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-11-05T01:01:00Z",
+    "hygiene_actions_I263": [
+      "review-ferric-ssr-r1 forked (swe-reviewer) in I263; PR #228 under review",
+      "Issues #223, #224, #226 remain In Progress (no In Review column on GitHub project)",
+      "ferric-ssr-r2 moved to dags_folded (verdict: FAIL); ferric-ssr-r3 moved to dags_folded (verdict: PASS)"
+    ],
+    "note": "I263: Launched review-ferric-ssr-r1. 1 DAG in flight. I264 (review fold watch) next."
+  },
+  "ssr_analysis": {
+    "bar_003_server_rendering": {
+      "issue": 223,
+      "blocked_on_130": false,
+      "note": "MET in ferric-ssr-r3. render_to_string fully implemented. Under review."
+    },
+    "bar_004_hydration_must_have": {
+      "issue": 224,
+      "blocked_on_130": false,
+      "note": "Implemented in ferric-ssr-r3 (hydrate.rs). Under review."
+    },
+    "bar_005_state_carry_resource_resume": {
+      "issue": 225,
+      "blocked_on_130": true,
+      "note": "REQ-SSR-007 requires async resource primitive from #130. Blocked. NOT part of ferric-ssr goal."
+    },
+    "bar_006_mismatch_axum": {
+      "issue": 226,
+      "blocked_on_130": false,
+      "note": "Implemented in ferric-ssr-r3 (mismatch detection + Axum integration). Under review."
+    }
+  },
+  "product_readiness": {
+    "issue_35": {
+      "title": "Logged-out reading and a useful landing with accurate states",
+      "dependencies": ["#56 (durable persistence) — DONE"],
+      "needs_130": false,
+      "needs_133": false,
+      "status": "UNBLOCKED — waiting for ferric-ssr goal to land (PR #228 under review)",
+      "note": "Dispatch after ferric-ssr lands and goal is confirmed closed."
+    },
+    "issues_36_to_42": {
+      "note": "Most require #83 (identity/sessions, still open) or #130 (forms/events). Not ready."
+    }
+  },
+  "forward_plan": {
+    "I264": "EVALUATE — review fold watch: watch for review-ferric-ssr-r1 SYNTHESIS.md; check escalation; bounded wake (fork-completion OR +10min)",
+    "after_review_folded_approve": "process review (sort findings, file non-blockers as board issues) → land PR #228 (merge, close #223/#224/#226, update STATE) → dispatch #35 goal",
+    "after_review_folded_request_changes": "escalate to user (remediation budget exhausted; review blockers; request decision)"
+  },
+  "main_sha": "945fade38abd6b053268501f3801734756f02502",
+  "deployment_check": {
+    "last_checked": "2026-11-04T21:41:48Z",
+    "verdict": "CURRENT — pod chirp-server Running 1/1 (sha256:f845ca8c). No change needed."
+  },
+  "free_dag_slots": 3
+}

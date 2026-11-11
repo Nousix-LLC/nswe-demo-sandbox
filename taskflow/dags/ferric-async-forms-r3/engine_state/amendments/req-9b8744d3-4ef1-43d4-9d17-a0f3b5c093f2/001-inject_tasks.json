@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T22:33:05.230776690Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_b1_reactive_resource"
+      ],
+      "placement_parent_task_id": "ferric-async-forms-r3"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_b1_reactive_resource",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "B1 is an independent concern (reactive create_resource constructor in async_resource.rs) that must commit to work/ferric-async-forms-r2 before B2+B3 work can safely proceed on the same branch.",
+        "task_id": "ferric-async-forms-r3"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1_reactive_resource": [],
+      "ferric-async-forms-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1_reactive_resource",
+          "ferric-async-forms-r3"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

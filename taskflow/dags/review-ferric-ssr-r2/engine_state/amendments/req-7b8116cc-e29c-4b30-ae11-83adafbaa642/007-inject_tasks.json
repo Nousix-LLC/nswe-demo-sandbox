@@ -1,0 +1,67 @@
+{
+  "sequence": 7,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T00:32:19.857841570Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_security"
+      ],
+      "placement_parent_task_id": "SUBTASK_regression-quality-sec"
+    },
+    "resulting_version": 7,
+    "summary": "inject tasks: SUBTASK_security",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_regression-quality-sec: spoke 3 — security review of new code for HTML injection paths and escaping gaps",
+        "task_id": "SUBTASK_regression-quality-sec"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1-verify": [],
+      "SUBTASK_b2-verify": [],
+      "SUBTASK_code-quality": [],
+      "SUBTASK_regression-check": [],
+      "SUBTASK_regression-quality-sec": [],
+      "SUBTASK_security": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_b1-verify",
+        "SUBTASK_b2-verify",
+        "SUBTASK_regression-quality-sec"
+      ],
+      "review-ferric-ssr-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1-verify",
+          "SUBTASK_b2-verify",
+          "SUBTASK_code-quality",
+          "SUBTASK_regression-check",
+          "SUBTASK_regression-quality-sec",
+          "SUBTASK_security",
+          "review-ferric-ssr-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

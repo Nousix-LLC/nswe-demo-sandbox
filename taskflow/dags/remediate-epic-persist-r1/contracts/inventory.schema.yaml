@@ -1,0 +1,47 @@
+# inventory.schema.yaml — the correction-record schema shared across the subtree (read-only).
+# SUBTASK_assess PRODUCES a list of records conforming to this schema in INVENTORY.md.
+# SUBTASK_apply_fixes CONSUMES them and records, per record id, the applied fix in CHANGESET.md.
+# SUBTASK_synthesis asserts coverage (every record id resolved) against this schema.
+
+schema_version: 1
+record:
+  id:
+    type: string
+    description: Stable identifier for the hazard, e.g. CI-01, H-02, H-03 ...
+    required: true
+  file:
+    type: string
+    description: Repository-relative path (e.g. crates/chirp-server/src/repository/in_memory.rs).
+    required: true
+  anchor:
+    type: string
+    description: >
+      The item/symbol the doc comment is attached to, plus an approximate line (lines drift; the
+      symbol is the stable anchor). E.g. "fn export_user_data (~L787)".
+    required: true
+  hazard_kind:
+    type: enum
+    values: [public_to_private_link, ungated_to_gated_link, stale_scaffold_doc, internal_vocab]
+    required: true
+  current:
+    type: string
+    description: The exact current doc text / link / attribute that is the hazard.
+    required: true
+  rework:
+    type: string
+    description: >
+      The exact replacement — e.g. a plain code span `ExportDocument`, a reworded sentence, a gated
+      doc attribute, or accurate prose describing the implemented behavior. Must stay docs-only.
+    required: true
+  criterion:
+    type: enum
+    values: [CI-01, "#118"]
+    description: Which acceptance criterion this correction serves.
+    required: true
+
+notes:
+  - The inventory must be COMPLETE: a public->private or ungated->gated link left out will resurface
+    as the next -D warnings error once the first is fixed (rustdoc reports only the first failing
+    crate). The diagnose task surveys the whole changed crate, not only the three named examples.
+  - Every record must be docs-only: no record may propose a change to store logic, schema, migrations,
+    the ChirpRepository seam, or wiring.

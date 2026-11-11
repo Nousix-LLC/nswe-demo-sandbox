@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T04:53:27.616686826Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "chirp-logged-out-r4-explore"
+      ],
+      "placement_parent_task_id": "chirp-logged-out-r4"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: chirp-logged-out-r4-explore",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Group 0 exploration child: reads codebase and creates the work/chirp-logged-out branch before backend and frontend spokes begin.",
+        "task_id": "chirp-logged-out-r4"
+      }
+    },
+    "updated_graph_edges": {
+      "chirp-logged-out-r4": [],
+      "chirp-logged-out-r4-explore": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "chirp-logged-out-r4",
+          "chirp-logged-out-r4-explore"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

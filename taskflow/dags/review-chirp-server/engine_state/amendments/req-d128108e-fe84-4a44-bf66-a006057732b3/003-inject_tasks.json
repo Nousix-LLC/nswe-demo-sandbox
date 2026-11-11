@@ -1,0 +1,47 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T05:18:33.407322935Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_test_adequacy_review"
+      ],
+      "placement_parent_task_id": "review-chirp-server"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_test_adequacy_review",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the test-adequacy review spoke (one of four parallel review lenses).",
+        "task_id": "review-chirp-server"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_architecture_contract_review": [],
+      "SUBTASK_rust_soundness_review": [],
+      "SUBTASK_test_adequacy_review": [],
+      "review-chirp-server": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_architecture_contract_review",
+          "SUBTASK_rust_soundness_review",
+          "SUBTASK_test_adequacy_review",
+          "review-chirp-server"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

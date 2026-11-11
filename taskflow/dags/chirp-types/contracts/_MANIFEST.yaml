@@ -1,0 +1,69 @@
+# Contract manifest for the chirp-types subtree.
+# Kind: yaml_schema — a THIN handoff/convention manifest. The one cross-sibling edge
+# (synthesis_gate consumes implement_crate's built clone) is SERIALIZED by the task
+# dependency, so the gate reads the REAL output, not a mock. This manifest freezes only the
+# forced/stable shared conventions both children must agree on before implement_crate runs,
+# plus the gate's assertion set (each identity carries a runnable check).
+# READ-ONLY for all descendants.
+
+kind: yaml_schema
+subtree: chirp-types
+work_item: "#7 — crates/chirp-types shared domain model + API contract"
+
+# ---------------------------------------------------------------------------
+# Frozen shared conventions (forced/stable: dictated by the brief; not discovery-dependent)
+# ---------------------------------------------------------------------------
+conventions:
+  repo: "Nousix-LLC/nswe-demo"
+  base_branch: "main"
+  work_branch: "work/chirp-types"
+  crate_name: "chirp-types"
+  crate_path: "crates/chirp-types"          # relative to the clone root
+  clone_dir: "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-types/checkout"
+  edition_min: "2021"
+  toolchain: "stable"
+  dependency_policy: "serde + serde_json; a uuid/time crate ONLY if justified; NO server or wasm deps"
+  pr_title: "chirp-types: shared domain model + API contract"
+  pr_body_must_end_with: "Closes #7"
+  fold_record_path: "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-types/SYNTHESIS.md"
+
+# ---------------------------------------------------------------------------
+# Ownership — every artifact has exactly one producer.
+# ---------------------------------------------------------------------------
+ownership:
+  SUBTASK_implement_crate:
+    - "checkout/ (the single isolated clone — created here)"
+    - "checkout/crates/chirp-types/** (all crate source, tests, README, Cargo.toml)"
+    - "root Cargo.toml workspace-members edit adding crates/chirp-types"
+    - "local commits on branch work/chirp-types"
+    - "SUBTASK_implement_crate/IMPLEMENTATION_NOTES.md (declared handoff output)"
+  SUBTASK_synthesis_gate:
+    - "the pushed work/chirp-types branch + the PR into main"
+    - "SYNTHESIS.md at the subtree root (the fold record / observation seam)"
+
+# ---------------------------------------------------------------------------
+# Identities — invariants over the combined output. The synthesis gate runs each as an
+# assertion and reports the verdict honestly; it MUST NOT silently plug a failure.
+# ---------------------------------------------------------------------------
+identities:
+  - id: workspace_builds
+    must: "The crate slots into the virtual workspace and the whole workspace compiles."
+    check: "cd checkout && cargo build --workspace"
+  - id: native_tests_pass
+    must: "Native unit tests (serde round-trips + invariants) pass on the host target."
+    check: "cd checkout && cargo test -p chirp-types"
+  - id: fmt_clean
+    must: "Formatting is clean."
+    check: "cd checkout && cargo fmt --check"
+  - id: clippy_clean
+    must: "No clippy warnings (warnings denied)."
+    check: "cd checkout && cargo clippy --all-targets -- -D warnings"
+  - id: pr_opened
+    must: "A PR into main exists whose body ends with 'Closes #7'."
+    check: "gh pr view work/chirp-types --json url,body"
+
+# ---------------------------------------------------------------------------
+# Derived artifacts: none. The edge is serialized (real output consumed between groups),
+# so no mocks are generated for siblings.
+# ---------------------------------------------------------------------------
+derived_artifacts: []

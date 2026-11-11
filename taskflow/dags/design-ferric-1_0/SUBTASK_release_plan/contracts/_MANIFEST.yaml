@@ -1,0 +1,68 @@
+# Contract manifest — SUBTASK_release_plan
+# READ-ONLY for every descendant task. This is a thin seam contract: the children
+# inherit the parent's id_and_traceability_schema.yaml (which defines the epic/work-item
+# schemas) and the shared seam here is the intermediate artifacts and their ownership.
+
+kind: yaml_artifact_manifest
+
+purpose: >
+  Fix the intermediate seam for this three-child decomposition of the release-plan task.
+  The parent's id_and_traceability_schema.yaml already defines the epic and work-item
+  schemas; this manifest declares intermediate artifact ownership so the children
+  compose mechanically into release-plan.md without blind-guessing what the prior
+  child produced.
+
+inherited_contracts:
+  - path: ../../contracts/id_and_traceability_schema.yaml
+    role: >
+      Defines the REQ-* and BAR-FERRIC-* id schemas, the epic/work-item field schemas,
+      the stage vocabulary (usable_early / one_oh), and the trace rules (I6/I7).
+      Every child MUST conform to the epic and work-item schemas defined there.
+      Amendments are additive only.
+  - path: ../../contracts/design_artifact_map.yaml
+    role: >
+      Maps release-plan.md to design/ferric/release-plan.md in the repo.
+      SUBTASK_rplan_synthesis must write release-plan.md; SUBTASK_design_pr copies it.
+
+artifacts:
+  - file: epics-and-order.md
+    producer: SUBTASK_rplan_epics
+    consumers: [SUBTASK_rplan_work_items, SUBTASK_rplan_synthesis]
+    declares: >
+      The epic landscape: what each epic is (title, design-doc area(s), stage,
+      dependencies on other epics), the dependency order reaching a usable framework
+      early then the full 1.0 bar, and the explicit #5/#6 fold specification
+      (which issues each router/HTTP epic extends/supersedes).
+
+  - file: work-items.md
+    producer: SUBTASK_rplan_work_items
+    consumers: [SUBTASK_rplan_synthesis]
+    declares: >
+      Per-epic work-items: title, epic parent, acceptance criteria citing the REQ-*
+      and BAR-FERRIC-* each item satisfies (plus the design-doc section), and
+      depends_on edges within and across epics.
+
+  - file: release-plan.md
+    producer: SUBTASK_rplan_synthesis
+    consumers: [SUBTASK_design_pr, SUBTASK_file_backlog]
+    declares: >
+      The complete, assembled release plan: epics + work-items in one document, in
+      dependency order, with the #5/#6 fold explicit. Repo target:
+      design/ferric/release-plan.md via SUBTASK_design_pr.
+
+ownership:
+  epics-and-order.md: SUBTASK_rplan_epics
+  work-items.md:      SUBTASK_rplan_work_items
+  release-plan.md:    SUBTASK_rplan_synthesis
+
+identities:
+  J1_epic_ids_consistent: >
+    Every epic id that appears in work-items.md matches an epic in epics-and-order.md.
+    No orphan work-items.
+  J2_fold_explicit: >
+    epics-and-order.md names the exact GitHub issue numbers (#5, #6) each
+    router/HTTP epic supersedes/extends. release-plan.md repeats those numbers
+    verbatim. (Satisfies identity I7 from the parent contract.)
+  J3_bar_coverage: >
+    Every one_oh BAR-FERRIC-* id in the parent's release-bar.md is referenced by
+    at least one work-item acceptance criterion in work-items.md. (Satisfies I6.)

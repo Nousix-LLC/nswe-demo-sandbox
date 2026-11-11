@@ -1,0 +1,20 @@
+# evidence_seam.yaml — READ-ONLY. The shared format of the verification evidence.
+evidence_record:
+  one_section_per_identity: true
+  fields: [identity_id, verdict, evidence, failing_items]   # verdict in {PASS, FAIL}; failing_items empty on PASS
+  evidence_rule: "Concrete and re-checkable: counts, ids, headings, and line references into ../outputs/screens-flows.md. An assertion with no evidence is a FAIL."
+  tooling: "A verifier may author and run a script under its own workspace calculations/; the script path is cited in the evidence file."
+assembly_order:
+  - "screens_and_flows / get_in"
+  - "screens_and_flows / core_loop"
+  - "screens_and_flows / account_lifecycle"
+  - "screens_and_flows / safety_notifications"
+  - "empty_error_loading_states"
+  - "consolidated REQ-UX-040..089 register"
+spoke_sources:   # paths relative to SUBTASK_screens_flows (the subtree root)
+  get_in:               "SUBTASK_get_in/outputs/screens-get-in.md"
+  core_loop:            "SUBTASK_core_loop/outputs/screens-core-loop.md"
+  account_lifecycle:    "SUBTASK_account_lifecycle/outputs/screens-account-lifecycle.md"
+  safety_notifications: "SUBTASK_safety_notifications/outputs/screens-safety-notifications.md"
+  considered_states:    "SUBTASK_considered_states/outputs/empty-error-loading-states.md"
+failure_rule: "A FAIL never stops the evidence being written. The fold reads every verdict; a fixable FAIL is remediated by amending the plan (a remediation task), and the node is not folded to COMPLETED while a FAIL stands unremediated."

@@ -1,0 +1,71 @@
+# Findings — Concerns 8 and 10
+
+PR #263, `Nousix-LLC/nswe-demo`, pinned commit `decb6196c2c1e6ed421d393a642f0c844cc333ba`.
+
+---
+
+## Verdict
+
+FINDINGS
+
+---
+
+## Findings
+
+### Finding 1: Client-side JSON deserialization failure propagates serde_json error into the UI banner
+
+- **Location**: `crates/ferric-http/src/error.rs`, line 111; `crates/chirp-frontend/src/error.rs`, line 60 at commit `decb6196c2c1e6ed421d393a642f0c844cc333ba`
+- **Principle at stake**: User-facing errors must not expose internal implementation details — stack traces, schema structure, or any detail beyond what the user needs to act.
+- **Why it matters**: When a 2xx server response fails client-side JSON deserialization (for example, during a rolling deployment where the server and client types are mismatched), `AppError::from_http` reaches the catch-all arm at line 60 (`other => AppError::Transport(other.to_string())`). For `HttpError::Deserialize`, `to_string()` calls the Display impl at `ferric-http/src/error.rs` line 111, producing `"failed to deserialize response body: {serde_error}"`. The serde_json error message then flows through `user_message()` as `"Something went wrong: failed to deserialize response body: missing field \`chirps\` at line 1 column 2"` and is rendered verbatim in the error banner (`landing.rs` line 248, 359). The exposed text names expected JSON fields from the response type — `chirps`, `hasMore`, etc. — which are the wire schema's field names. While these are camelCase (not raw Rust field names), they reveal the expected response structure to anyone who encounters the error. This path is reachable in production during deployments.
+- **Severity**: non-blocking
+- **Satisfying condition**: `AppError::from_http` should handle `HttpError::Deserialize` explicitly before the catch-all arm, producing a fixed message such as `"failed to process server response"` and suppressing the serde_json detail from `user_message()`. The serde error should be retained for logging, not surfaced to the banner.
+
+---
+
+### Finding 2: HTTP status error with non-JSON body includes the API endpoint URL in the UI banner
+
+- **Location**: `crates/chirp-frontend/src/error.rs`, lines 53–57 at commit `decb6196c2c1e6ed421d393a642f0c844cc333ba`
+- **Principle at stake**: User-facing error messages should not embed implementation details the user cannot act on.
+- **Why it matters**: When the server returns a non-2xx response with a body that does not decode as `ApiError` JSON (for example, a proxy-level 502 returning HTML), `AppError::from_http` constructs `format!("HTTP status {status} {status_text} for {url}")` and stores it in `AppError::Transport`. This message, including the full API endpoint URL, reaches the error banner via `user_message()`: `"Something went wrong: HTTP status 502 Bad Gateway for /api/timeline"`. The URL is the client-constructed path, not an internal server filesystem path, but it still embeds API endpoint structure in a user-visible string. The endpoint paths are visible in browser DevTools, so the exposure is low; still, the URL adds no information the user can act on and a generic form suffices.
+- **Severity**: non-blocking
+- **Satisfying condition**: The Status-with-non-JSON-body branch should emit a message that includes the status code but omits the URL — for example `"HTTP status {status}"` or `"HTTP status {status} {status_text}"`. The full URL and body should be logged for diagnostics rather than surfaced in `user_message()`.
+
+---
+
+### Finding 3: hydrate.rs::set_events uses Closure::forget() without documenting the bounded memory leak
+
+- **Location**: `crates/ferric/src/hydrate.rs`, line 473 at commit `decb6196c2c1e6ed421d393a642f0c844cc333ba`
+- **Principle at stake**: Intentional memory leaks must be documented at or near the call site, so the trade-off remains visible to maintainers of that file.
+- **Why it matters**: `hydrate.rs::set_events` (line 417) is structurally identical to `dom.rs::set_events` (line 229). The `dom.rs` module comment at lines 27–33 explains that `Closure::forget()` permanently leaks the Rust closure allocation for each handler slot: the stash/detach protocol removes the DOM listener reference, but the underlying `Box<dyn FnMut(web_sys::Event)>` allocated by `Closure::wrap` is unrecoverable once forgotten. `hydrate.rs` carries the same leaking call at line 473 with no equivalent note. A maintainer changing event-handler lifecycle in `hydrate.rs` has no prompt to check whether a future migration to a deterministic closure registry (described in `dom.rs` line 33 as a planned improvement) would need to cover `hydrate.rs` as well.
+- **Severity**: non-blocking
+- **Satisfying condition**: Add a comment to `hydrate.rs` — in the module doc or immediately above `set_events` — stating that `Closure::forget()` permanently leaks the closure allocation and that this is a bounded trade-off (one allocation per active handler slot per element), matching the note at `dom.rs` lines 27–33.
+
+---
+
+### Finding 4: Resource::new and Resource::new_fallible call spawn_local without a wasm32 cfg gate or API doc note
+
+- **Location**: `crates/ferric/src/async_resource.rs`, lines 112 and 133 at commit `decb6196c2c1e6ed421d393a642f0c844cc333ba`
+- **Principle at stake**: WASM-only entry points should state their target restriction in their API documentation, or use `#[cfg]` gates consistently with equivalent functions in the same module.
+- **Why it matters**: `create_resource` (line 207) wraps its `spawn_local` call at line 237 in `#[cfg(target_arch = "wasm32")]` and documents the native fallback in a "WASM gate" doc section. `Resource::new` (line 112) and `Resource::new_fallible` (line 133) call `spawn_local` unconditionally — these methods compile only on WASM. A developer reading the doc comment for `Resource::new` sees no indication of the target restriction; a developer extending the resource API by following the `Resource::new` pattern will produce a WASM-only constructor without noticing the alternative `create_resource` establishes. The asymmetry is noted only in a test comment at line 426, which is not part of the public API surface.
+- **Severity**: non-blocking
+- **Satisfying condition**: Either (a) add a `# Platform notes` or `# WASM gate` section to the `Resource::new` and `Resource::new_fallible` doc comments stating these methods require `wasm32` and citing `create_resource` for the native-compatible pattern, or (b) add `#[cfg(target_arch = "wasm32")]` to both methods and add `#[cfg(not(target_arch = "wasm32"))]` stubs that drop the future and return a resource in `Loading` state, matching `create_resource`'s behavior.
+
+---
+
+## Clean Account
+
+- **Concern 8 — `AppError::Api` path (server-authored messages)**: Checked `IntoResponse` for `ServerError` in `crates/chirp-server/src/error.rs`. `Internal` and `Unavailable` are sanitized at the wire boundary: the SQLx/database error is logged under `tracing::error!` and the wire `ApiError.message` is hardcoded to `"an internal server error occurred"`. All SQLx errors in `crates/chirp-server/src/repository/postgres.rs` are wrapped in `ServerError::Internal`, none in user-visible variants. The human-authored strings for `NotFound`, `Conflict`, `Unauthorized`, and `Forbidden` describe domain facts (e.g., `"user 'alice'"`, `"invalid or expired session token"`) without including database error text, SQL, stack traces, or internal paths. The `InvalidBody` variant stores `axum::extract::rejection::JsonRejection::body_text()`, which for a JSON deserialization failure names camelCase field names from the public request schema rather than internal Rust type names; found no internal-implementation detail in this path. Found Finding 1 and Finding 2 on the `AppError::Transport` path; the `AppError::Api` path itself is clean.
+
+- **Concern 8 — `AppError::Network` path**: Checked `HttpError::Network` in `crates/ferric-http/src/error.rs`. Network errors originate in the browser Fetch API (messages such as `"Failed to fetch"`), not from server internals. `user_message()` for this variant produces `"Network error: {message}"`. No server-side implementation detail is exposed. Clean.
+
+- **Concern 8 — `AppError::Transport` path**: Checked `AppError::from_http` in `crates/chirp-frontend/src/error.rs` and the full `HttpError` Display impls in `crates/ferric-http/src/error.rs`. The `HttpError::Status` branch with a non-JSON body includes the API endpoint URL in the banner string (Finding 2). The catch-all arm passes `HttpError::Deserialize`'s `to_string()` — a serde_json error — directly into `user_message()` (Finding 1). The `Builder` and `Body` variants produce client-side error descriptions (`"failed to build request: …"`, `"failed to read response body: …"`) with no server-internal content; found clean.
+
+- **Concern 8 — UI rendering path**: Checked `user_message()` call sites in `crates/chirp-frontend/src/landing.rs` (lines 248, 359). The return value of `user_message()` is passed as a string argument to `error_banner()` and rendered in the DOM. No escaping or further filtering occurs between `user_message()` and the visible banner text, confirming that whatever `user_message()` returns reaches the user verbatim.
+
+- **Concern 10 — spawn_local for async effects**: Checked `crates/ferric/src/async_resource.rs` lines 112–148 (`Resource::new`, `Resource::new_fallible`) and 207–244 (`create_resource`). `wasm_bindgen_futures::spawn_local` is the idiomatic WASM equivalent of `tokio::spawn` and is the correct mechanism for running futures from synchronous reactive code. Captured closures hold only signal keys — generational arena handles that become silent no-ops if the backing node is disposed — so there is no harmful fire-and-forget concern. `create_resource` applies a generation counter (lines 217–240) to discard results from superseded in-flight fetches. `Resource::new` and `Resource::new_fallible` omit the counter because each instance spawns exactly one future. Finding 4 (documentation gap, non-blocking).
+
+- **Concern 10 — thread_local! + RefCell for reactive state**: Checked `crates/ferric/src/signal.rs` lines 50–56 (RUNTIME declaration and `with_rt`). The reactive runtime is stored as `thread_local! { static RUNTIME: RefCell<Runtime> }`. The `with_rt` accessor acquires `borrow_mut()`, runs the callback, and releases the borrow before returning. Per-node values live in separate `Rc<RefCell<Box<dyn Any>>>` cells; user closure execution in `run_computation` (lines 349–395) holds no RUNTIME borrow during the closure call, so there is no re-entrant borrow panic risk in normal usage. `Cell<bool>` and `Cell<u32>` in `async_resource.rs` (not `RefCell`) are used for the suspense tracking statics where no borrow check is needed. The same pattern underlies Leptos's reactive runtime. Clean.
+
+- **Concern 10 — Cell<bool> for the started guard**: Checked `crates/ferric/src/async_resource.rs` lines 28–33 (`SUSPENSE_DEPTH: Cell<u32>` at line 30 and `SUSPENSE_HAS_LOADING: Cell<bool>` at line 32). `Cell<T>` for `Copy` types has no borrow-check overhead and no panic risk. WASM is single-threaded; `thread_local!` enforces that these statics are accessed only from one thread, making `Cell` sufficient and `AtomicBool`/`AtomicU32` unnecessary. The flag is reset to `false` at each `suspense()` entry and read back before exiting — no cross-invocation state bleed. The `const { Cell::new(0) }` initializer avoids lazy-init overhead. Clean.
+
+- **Concern 10 — Closure::forget() in hydrate.rs**: Checked `crates/ferric/src/hydrate.rs` lines 417–487 (`set_events`). Event handler closures must outlive the calling frame: `add_event_listener_with_callback` registers a JS function reference held by the DOM, and dropping the Rust `Closure` would invalidate that reference. `closure.forget()` at line 473 is the correct choice for a persistent event handler. The stash/detach protocol (steps 1–2 of `set_events`) correctly removes old DOM listeners before each re-bind. The `dom.rs` module comment (lines 27–33) documents the resulting bounded memory leak; `hydrate.rs` carries the same leaking call without the same documentation. Finding 3 (documentation gap, non-blocking).

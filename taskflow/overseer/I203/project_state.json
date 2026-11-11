@@ -1,0 +1,244 @@
+{
+  "current_pointer": "overseer/I203",
+  "checked_at": "2026-11-04T03:30:00Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "CLEARED",
+      "label": "Bug5 dispatch fault — frozen DAGs never real-dispatched",
+      "cleared_at": "2026-11-03T05:08:16Z",
+      "cleared_by": "review-epic-persist-r2 Dispatch entry in scheduler/logs/scheduler_decisions.jsonl",
+      "cleared_in": "overseer/I145",
+      "recorded_in": "overseer/I146",
+      "github_issue": "none filed"
+    }
+  },
+  "prs": {
+    "PR113": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T17:46:59Z",
+      "merge_commit": "0d5917dc6b10d25b15e47a867f41a450239007f6",
+      "issues_closed": ["#65", "#66", "#67", "#64", "#180"],
+      "review_dag": "review-epic-persist-r2",
+      "note": "Squash-merged. Epic #56 and issues #65/#66/#67 moved to Done. #64 closed 2026-11-03 after image digest pinned (commit a255baf). #180 closed by pin-image-digest-r1."
+    },
+    "PR128": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T18:11:07Z",
+      "merge_commit": "9a24c281f1380644801e246b79b85f13a11cb33d",
+      "branch": "work/design-ferric-1_0",
+      "title": "design: Ferric 1.0 framework design",
+      "head": "ade5bdde424638b9f993c5699219c638d02e0e59",
+      "review_dag": "review-design-ferric-1_0-r4",
+      "review_verdict": "APPROVE",
+      "blocking_findings_resolved": 5,
+      "non_blocking_follow_up": "#181 (release-bar.md §5 gap→deferred for REQ-FW-019 and REQ-FW-021)",
+      "note": "Design complete. Ten Ferric 1.0 design documents now on main. All 29 BAR-FERRIC-* criteria checked. Implementation tracked via epics #129–#136."
+    },
+    "PR182": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T19:08:01Z",
+      "merge_commit": "c3f9f558fc7b254c2b0d431c31a7fc9a095fe0d5",
+      "branch": "work/security-persist-r1",
+      "title": "fix(security): hash credentials with argon2id + require TLS for CronJob (#120)",
+      "issues_closed": ["#120"],
+      "code_dag": "security-persist-r1",
+      "code_dag_verdict": "PASS",
+      "review_dag": "review-security-persist-r1",
+      "review_verdict": "APPROVE",
+      "follow_up_issues": ["#184"],
+      "note": "Squash-merged under delegated authority at 2026-11-03T19:08:01Z. Issue #120 closed and Done on board. #184 filed (credential helper polish, non-blockers). ArgoCD sync pending — awaiting CI image build on c3f9f558 (non-blocking, expected to auto-sync)."
+    },
+    "PR187": {
+      "status": "MERGED",
+      "branch": "work/update-sweep-digest-r1",
+      "title": "deploy(chirp): pin sweep CronJob to febeb151 image (CI run 41710206505)",
+      "machine_gate": "PASS",
+      "ci_run": "41711824375",
+      "ci_conclusion": "success",
+      "review_dag": "review-update-sweep-digest-r1",
+      "review_status": "APPROVE",
+      "review_verdict": "APPROVE",
+      "review_folded_in": "overseer/I183",
+      "closes_issues": [],
+      "merged_at": "2026-11-03T20:54:06Z",
+      "merge_commit": "65413bbe59cb65641d6f1a85123a87f300900b83",
+      "landed_in": "overseer/I184",
+      "note": "Devops digest update — 50-transient-sweep-cronjob.yaml image digest from sha256:adaa4c26... to sha256:2c5eafbe... (febeb151 build). Squash-merged under delegated authority at 2026-11-03T20:54:06Z. Branch work/update-sweep-digest-r1 deleted. No issues closed. 2 nits noted (stale comment, minor PR description inaccuracy) — not blocking, left as-is per review. ArgoCD expected to sync to new commit and CronJob to use correct binary."
+    },
+    "PR183": {
+      "status": "MERGED",
+      "branch": "work/sweep-seam-r1",
+      "title": "fix(#117): replace psql sweep CronJob with chirp-server sweep subcommand",
+      "merged_at": "2026-11-03T20:11:06Z",
+      "merge_commit": "febeb151ba50f6c2635d922b5c3da6e01371c617",
+      "issues_closed": ["#117"],
+      "ci": {
+        "fmt": "SUCCESS",
+        "clippy": "SUCCESS",
+        "test": "SUCCESS",
+        "wasm": "SUCCESS",
+        "doc": "SUCCESS",
+        "image": "SUCCESS"
+      },
+      "ci_run": "41705065393",
+      "code_dag": "sweep-seam-r1",
+      "code_dag_verdict": "PASS",
+      "review_dag": "review-sweep-seam-r1",
+      "review_verdict": "APPROVE",
+      "follow_up_issues": [185, 186],
+      "note": "Squash-merged under delegated authority at 2026-11-03T20:11:06Z. Issue #117 closed and Done on board. #185 (sslmode=require startup validation) and #186 (CLI dispatch smoke tests) filed (non-blockers) and added to board Todo. Post-merge action required: update image digest in deploy/chirp/50-transient-sweep-cronjob.yaml once CI image build on febeb151 completes."
+    },
+    "PR188": {
+      "status": "OPEN",
+      "branch": "work/ferric-epic-authoring-r1",
+      "title": "feat(ferric): Ferric 1.0 Authoring Model — view!, components, context (#129)",
+      "opened_at": "2026-11-03T23:58:12Z",
+      "mergeable": "MERGEABLE",
+      "head_sha": "e29e2f4",
+      "ci_run": "41743675354",
+      "ci": {
+        "fmt": "SUCCESS",
+        "clippy": "SUCCESS",
+        "test": "SUCCESS",
+        "wasm": "SUCCESS",
+        "doc": "SUCCESS",
+        "image": "SUCCESS"
+      },
+      "closes_issues": ["#129", "#137", "#138", "#139", "#140", "#141", "#142"],
+      "code_dag": "ferric-epic-authoring-r1",
+      "code_dag_verdict": "PARTIAL",
+      "machine_gate": "PASS",
+      "review_dag": "review-ferric-epic-authoring-r1",
+      "review_dag_status": "FOLDED",
+      "review_verdict": "APPROVE",
+      "review_non_blockers": [190, 191],
+      "note": "Ferric 1.0 Authoring Model — epic #129 + sub-issues. CI all 6 PASS on e29e2f4. PARTIAL verdict: all functional ACs met, IA6 gap (view! trybuild fixtures never committed). Machine gate PASS. IA6 follow-up: #189. Review FOLDED APPROVE at I202 wake (03:17Z). All landing conditions met: machine PASS + review APPROVE + MERGEABLE + config delegated/auto_land. Non-blockers: #190 (conditional render test), #191 (macro refactor nits). #190 and #191 added to board (Todo) in I203. Landing via I204."
+    }
+  },
+  "dags_in_flight": [],
+  "dags_folded": [
+    {
+      "slug": "review-ferric-epic-authoring-r1",
+      "goal": "Review PR #188 (feat(ferric): Ferric 1.0 Authoring Model — view!, components, context (#129))",
+      "issues": ["#129", "#137", "#138", "#139", "#140", "#141", "#142"],
+      "kind": "review",
+      "state": "FOLDED",
+      "verdict": "APPROVE",
+      "forked_in": "overseer/I201",
+      "folded_confirmed_in": "overseer/I202",
+      "launch_agent": "swe-reviewer",
+      "branch": "work/ferric-epic-authoring-r1",
+      "pr": 188,
+      "synthesis_path": "taskflow/dags/review-ferric-epic-authoring-r1/SYNTHESIS.md",
+      "review_non_blockers": [190, 191],
+      "note": "6 concerns checked; all PASS. 0 blockers. 2 non-blocking findings: #190 (conditional rendering conformance test + vnode_eq helper), #191 (build_panic_builder struct refactor; is_named_slot_type limitation; Computed/Memo naming alignment). IA6 gap assessed not a blocker (usable_early bar). APPROVE for auto-land under delegated authority."
+    },
+    {
+      "slug": "ferric-epic-authoring-r1",
+      "goal": "Ferric 1.0 — Authoring Model (epic #129, usable_early): reactive signals, vdom, view! macro, component model, diagnostics, context",
+      "issues": ["#129", "#137", "#138", "#139", "#140", "#141", "#142"],
+      "kind": "code",
+      "state": "FOLDED",
+      "verdict": "PARTIAL",
+      "machine_gate": "PASS",
+      "pr": 188,
+      "head_sha": "e29e2f4",
+      "ci_run": "41743675354",
+      "forked_in": "overseer/I187",
+      "folded_in": "overseer/I199",
+      "launch_agent": "swe-coder",
+      "branch": "work/ferric-epic-authoring-r1",
+      "synthesis_path": "taskflow/dags/ferric-epic-authoring-r1/SYNTHESIS.md",
+      "note": "Folded at I199 (~2026-11-04T00:20Z). All 6 CI jobs PASS (run 41743675354, commit e29e2f4). All 6 sub-issues closed. IA1–IA5 PASS. IA6 PARTIAL: view! trybuild fixtures from T02 never committed (§2.9 error cases fire correctly but no test suite committed). Machine gate PASS. IA6 follow-up: issue #189 filed (board Todo) in I200. Review DAG review-ferric-epic-authoring-r1 forked in I201."
+    },
+    {
+      "slug": "review-update-sweep-digest-r1",
+      "goal": "Review PR #187 (deploy(chirp): pin sweep CronJob to febeb151 image)",
+      "issues": [],
+      "kind": "review",
+      "state": "FOLDED",
+      "verdict": "APPROVE",
+      "forked_in": "overseer/I182",
+      "processed_in": "overseer/I183",
+      "launch_agent": "swe-reviewer",
+      "branch": "work/update-sweep-digest-r1",
+      "pr": 187,
+      "synthesis_path": "taskflow/dags/review-update-sweep-digest-r1/SYNTHESIS.md",
+      "note": "5 concerns checked; all PASS. 0 blockers. 2 nits: stale inline comment in 50-transient-sweep-cronjob.yaml (mismatched image comment after divergence), minor inaccuracy in PR description build reference. Neither blocks. APPROVE for auto-land."
+    },
+    {
+      "slug": "review-sweep-seam-r1",
+      "goal": "Review PR #183 (fix(#117): replace psql sweep CronJob with chirp-server sweep subcommand)",
+      "issues": ["#117"],
+      "kind": "review",
+      "state": "FOLDED",
+      "verdict": "APPROVE",
+      "folded_at": "2026-11-03T19:55:06Z",
+      "forked_in": "overseer/I176",
+      "processed_in": "overseer/I179",
+      "launch_agent": "swe-reviewer",
+      "branch": "work/sweep-seam-r1",
+      "pr": 183,
+      "synthesis_path": "taskflow/dags/review-sweep-seam-r1/SYNTHESIS.md",
+      "note": "7 concerns checked; all PASS. 0 blockers. 2 non-blocking findings: #185 (sslmode=require startup validation), #186 (CLI dispatch smoke tests). Both filed and placed on board Todo. PR #183 landed."
+    }
+  ],
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-11-04T03:30:00Z",
+    "total_items": 173,
+    "open_issues_count": 34,
+    "hygiene_finding": "CLEARED",
+    "note": "I203: Added issues #190 (PVTI_lADOEB9jls4BlZH4zhF3eeo) and #191 (PVTI_lADOEB9jls4BlZH4zhF3egA) to board project (status: Todo). Board total 171 → 173. All landing conditions met for PR #188. I204: land PR #188."
+  },
+  "work_items": [
+    {
+      "item_slug": "sweep-seam-r1",
+      "issues_closed": [117],
+      "issues_returned": [],
+      "pr": 183,
+      "landed_commit_shas": ["febeb151ba50f6c2635d922b5c3da6e01371c617"],
+      "machine_gate": "PASS",
+      "review_verdict": "APPROVE",
+      "gate_outcome": "LANDED",
+      "landed_at": "2026-11-03T20:11:06Z",
+      "review_outcome": {
+        "blockers_resolved": 0,
+        "uncovered_concerns": [],
+        "followup_issues": [185, 186]
+      },
+      "note": "Replace psql sweep CronJob with chirp-server sweep subcommand. Eliminates duplicate SQL / second source of truth. Self-migrating (migrations run on connect). CI all 6 jobs SUCCESS. Review: APPROVE (7 concerns PASS). Non-blockers: #185 (sslmode=require startup validation), #186 (CLI dispatch smoke tests). Post-merge: image digest update required in deploy/chirp/50-transient-sweep-cronjob.yaml (devops DAG planned in I180)."
+    },
+    {
+      "item_slug": "security-persist-r1",
+      "issues_closed": [120],
+      "pr": 182,
+      "landed_commit_shas": ["c3f9f558fc7b254c2b0d431c31a7fc9a095fe0d5"],
+      "machine_gate": "PASS",
+      "review_verdict": "APPROVE",
+      "gate_outcome": "LANDED",
+      "landed_at": "2026-11-03T19:08:01Z",
+      "review_outcome": {
+        "blockers_resolved": 0,
+        "uncovered_concerns": [],
+        "followup_issues": [184]
+      },
+      "note": "Argon2id credential hashing + TLS enforcement for CronJob. #184 filed for non-blocking polish items."
+    }
+  ],
+  "main_sha": "65413bbe59cb65641d6f1a85123a87f300900b83",
+  "deployment_check": {
+    "status": "fix applied — CronJob updated to sha256:2c5eafbe; ArgoCD synced to 65413bbe; server endpoint HTTP 200; residual Degraded from old failed CronJob job pods (pre-fix, will GC) + cosmetic postgres StatefulSet OutOfSync",
+    "checked_at": "2026-11-03T21:00:00Z",
+    "endpoint_check": "HTTP 200 at http://100.90.75.93:8081/"
+  },
+  "free_dag_slots": 2,
+  "checked_at": "2026-11-04T03:30:00Z",
+  "forward_series": {
+    "I199": "EVALUATE — DONE. Board check ~2026-11-04T00:20Z (reconstruction): ferric-epic-authoring-r1 DAG FOLDED (root SYNTHESIS.md confirmed). Verdict: PARTIAL — all CI PASS (run 41743675354, e29e2f4), all 6 sub-issues closed, IA1–IA5 PASS, IA6 PARTIAL (view! trybuild fixtures from T02 never committed). PR #188 OPEN MERGEABLE. Machine gate PASS. No new external GitHub activity. free_dag_slots=2. Scheduled I200 (fold-read: load WORK_SESSION + REVIEW_GATE; file IA6 follow-up issue; schedule review launch).",
+    "I200": "EVALUATE — DONE. Fold-read: ferric-epic-authoring-r1 SYNTHESIS.md confirmed PARTIAL (all CI PASS, IA6 gap only). Machine gate PASS (PARTIAL verdict is test-coverage gap, not CI failure). PR #188 confirmed OPEN MERGEABLE. IA6 follow-up issue #189 filed (board Todo, item PVTI_lADOEB9jls4BlZH4zhF29XE). Scheduled I201 (ACT: launch review for PR #188) and I202 (EVALUATE: board check / watch review fold).",
+    "I201": "ACT — DONE. Loaded REVIEW_GATE.md + WORK_SESSION.md. Wrote review brief at taskflow/dags/review-ferric-epic-authoring-r1/_BRIEF.md (6 concerns: correctness, code quality, test coverage [IA6 noted], security, Rust idiom, API/contract stability). Forked review-ferric-epic-authoring-r1 (swe-reviewer). STATE updated: review-ferric-epic-authoring-r1 confirmed in dags_in_flight, free_dag_slots=1. I202 follows (board check / watch review fold).",
+    "I202": "EVALUATE (reconstruction wake 03:17Z) — DONE. review-ferric-epic-authoring-r1 FOLDED APPROVE (SYNTHESIS.md confirmed). All 6 CI PASS. All 6 concerns PASS. 0 blockers. Non-blockers: #190 (conditional render test), #191 (macro refactor nits). PR #188 OPEN/MERGEABLE. Config: delegated/auto_land/headless. All landing conditions met. 2 new issues since I201 (#190, #191 — filed by review DAG, not yet on board project). Scheduled series: I203 (process review: add #190/#191 to board), I204 (land PR #188 under delegated authority), I205 (deployment check), I206 (board check / next goal).",
+    "I203": "ACT — DONE. Processed review-ferric-epic-authoring-r1 APPROVE. Added #190 (item PVTI_lADOEB9jls4BlZH4zhF3eeo) and #191 (item PVTI_lADOEB9jls4BlZH4zhF3egA) to board project (status: Todo). Both item IDs recorded in _CONFIG.yaml. Board total: 171 → 173. I204 scheduled (land PR #188 under delegated authority)."
+  }
+}

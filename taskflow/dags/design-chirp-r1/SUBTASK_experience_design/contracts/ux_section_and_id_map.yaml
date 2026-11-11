@@ -1,0 +1,93 @@
+# ux_section_and_id_map.yaml — the experience-design subtree seam.
+# READ-ONLY. Children compose against this and MUST NOT redefine it (extend additively via amendment
+# only). It fixes WHICH child writes WHICH section of the final experience-design.md, WHICH REQ-UX id
+# sub-range each child mints from, the two shared vocabularies and their producers, and the trace rule
+# every REQ-UX-* obeys. It EXTENDS ../../contracts/ (parent); it never overrides it.
+
+# --- The final deliverable and its required sections (owner per section) ------------------------
+# Section names are verbatim from ../../contracts/design_artifact_map.yaml (experience-design.md).
+# Order in the assembled document is the order listed here.
+deliverable:
+  repo_path: "design/experience-design.md"          # assembled later by the parent SUBTASK_design_pr
+  produced_at: "outputs/experience-design.md"        # SUBTASK_synthesis writes it at this subtree root
+  sections_in_order:
+    - name: information_architecture_and_interaction
+      owner: SUBTASK_ia_interaction
+      source: "SUBTASK_ia_interaction/outputs/ia-interaction.md"
+    - name: screens_and_flows
+      owner: SUBTASK_screens_flows
+      source: "SUBTASK_screens_flows/outputs/screens-flows.md"
+    - name: empty_error_loading_states
+      owner: SUBTASK_screens_flows
+      source: "SUBTASK_screens_flows/outputs/screens-flows.md"
+    - name: visual_language_and_design_system
+      owner: SUBTASK_visual_system
+      source: "SUBTASK_visual_system/outputs/visual-system.md"
+    - name: responsive_layout
+      owner: SUBTASK_responsive
+      source: "SUBTASK_responsive/outputs/responsive.md"
+    - name: accessibility
+      owner: SUBTASK_accessibility
+      source: "SUBTASK_accessibility/outputs/accessibility.md"
+    - name: requirements_and_acceptance_criteria     # REQ-UX-* register, consolidated from all children
+      owner: SUBTASK_synthesis
+      source: "all children's REQ-UX entries"
+
+# --- REQ-UX id-range partition (parent scheme: REQ-UX-NNN, 3-digit, unique within area) ----------
+req_ux_id_ranges:
+  SUBTASK_ia_interaction: { from: "REQ-UX-001", to: "REQ-UX-019" }
+  SUBTASK_visual_system:  { from: "REQ-UX-020", to: "REQ-UX-039" }
+  SUBTASK_screens_flows:  { from: "REQ-UX-040", to: "REQ-UX-089" }
+  SUBTASK_responsive:     { from: "REQ-UX-090", to: "REQ-UX-099" }
+  SUBTASK_accessibility:  { from: "REQ-UX-100", to: "REQ-UX-119" }
+
+# Each REQ-UX-* carries exactly the parent's field set (../../contracts/id_and_traceability_schema.yaml):
+req_ux_fields: [id, statement, acceptance_criteria, release_gating]
+
+# --- Shared vocabularies (the seam carried by the dependency edges) ------------------------------
+# Produced by one child, composed against by the later children via their declared dependencies.
+shared_vocabularies:
+  screen_inventory:
+    produced_by: SUBTASK_ia_interaction
+    published_in: "SUBTASK_ia_interaction/outputs/ia-interaction.md"
+    heading: "Screen inventory"
+    required_shape: "A table/list of every screen: screen name, route (user-facing), archetype, auth state (signed-out / signed-in), and its purpose. Siblings refer to screens by these names."
+    consumed_by: [SUBTASK_visual_system, SUBTASK_screens_flows, SUBTASK_responsive, SUBTASK_accessibility]
+  component_library:
+    produced_by: SUBTASK_visual_system
+    published_in: "SUBTASK_visual_system/outputs/visual-system.md"
+    heading: "Component library"
+    required_shape: "A list of named reusable components (e.g. ChirpCard, ComposeBox, PrimaryButton, TextField, NavShell, Dialog, Toast, EmptyState, InlineError, LoadingState) with each component's purpose and states. Siblings refer to components by these names."
+    consumed_by: [SUBTASK_screens_flows, SUBTASK_responsive, SUBTASK_accessibility]
+
+# --- The trace rule every REQ-UX-* obeys ---------------------------------------------------------
+trace_rule:
+  references_req_prod: ">=1"                 # every REQ-UX-* names at least one REQ-PROD-* it serves
+  acceptance_criteria: "testable by someone who never met the author, exercisable on the live product"
+  release_gating: "true | false  (false carries a one-line reason)"
+  product_requirements_source: "../../SUBTASK_product_requirements/outputs/product-requirements.md"
+
+# --- Coverage the synthesis gate checks (user-facing UX surfaces) --------------------------------
+# Not an id list — a checklist of surfaces that MUST be designed-with-states or recorded out-of-scope.
+required_surfaces:
+  - first_visit_landing            # J1 / REQ-PROD-030,031
+  - sign_up                        # J2 / REQ-PROD-008,009,031
+  - sign_in                        # J3 / REQ-PROD-010,011
+  - account_recovery               # J3a / REQ-PROD-012,013
+  - sign_out                       # J3b / REQ-PROD-014
+  - home_timeline                  # J4 / REQ-PROD-002
+  - compose_and_post               # J4 / REQ-PROD-001
+  - reply_and_conversation         # J4 / REQ-PROD-003,004
+  - like_unlike                    # J4 / REQ-PROD-005
+  - follow_unfollow                # J4 / REQ-PROD-006
+  - discovery_find_people          # J4 / REQ-PROD-042
+  - view_profile                   # J4 / REQ-PROD-007
+  - onboarding_empty_state         # J5 / REQ-PROD-032
+  - edit_profile                   # J6 / REQ-PROD-016
+  - account_settings               # J6 / REQ-PROD-017,018
+  - data_export                    # J8 / REQ-PROD-019
+  - account_deletion               # J8 / REQ-PROD-020,021,022
+  - notifications                  # J7 / REQ-PROD-029
+  - report_and_block               # J7 / REQ-PROD-025,026,027
+  - help_support_entry             # J9 / REQ-PROD-028 (user-facing entry only; operator tooling is OPS)
+  - considered_states_global       # REQ-PROD-033,034 — empty/loading/error + expired-session recovery

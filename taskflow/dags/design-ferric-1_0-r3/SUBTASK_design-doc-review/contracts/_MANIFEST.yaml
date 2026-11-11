@@ -1,0 +1,53 @@
+# Contract Manifest — design-doc-review subtree
+# Read-only for all descendants.
+
+kind: yaml_schema
+
+# Artifacts declared at this level; each has exactly one producer.
+ownership:
+  - artifact: SUBTASK_completeness-review/completeness-findings.yaml
+    owner: SUBTASK_completeness-review
+  - artifact: SUBTASK_release-bar-quality/release-bar-findings.yaml
+    owner: SUBTASK_release-bar-quality
+  - artifact: SUBTASK_traceability-review/traceability-findings.yaml
+    owner: SUBTASK_traceability-review
+  - artifact: ../design-doc-findings.md
+    owner: SUBTASK_findings-synthesis
+
+# Identities that MUST hold across the combined outputs.
+# The synthesis task asserts these with recorded evidence.
+identities:
+  - id: I-1
+    description: >
+      Each spoke's output has a concern_ids field containing exactly the concern
+      number(s) that spoke addresses (1, 2, or 3); no overlap, no omission.
+  - id: I-2
+    description: >
+      Every finding in every spoke output has severity (BLOCKING or non-blocking),
+      concern (1-5), location, statement, and recommendation fields populated.
+  - id: I-3
+    description: >
+      The merged ../design-doc-findings.md covers concern_ids [1, 2, 3] and
+      contains every finding from every spoke without silent omission.
+  - id: I-4
+    description: >
+      summary.blocking_count in the merged output equals the count of findings
+      where severity == BLOCKING.
+
+# Derived artifacts (generated from schema declarations, delivered read-only).
+derived_artifacts:
+  - artifact: contracts/spoke_findings_schema.yaml
+    generated_from: parent findings_schema.yaml (structural subset)
+    consumed_by:
+      - SUBTASK_completeness-review
+      - SUBTASK_release-bar-quality
+      - SUBTASK_traceability-review
+      - SUBTASK_findings-synthesis
+
+# Inherited contracts from ancestor decompositions.
+inherited_contracts:
+  - name: parent-findings-schema
+    path: taskflow/dags/design-ferric-1_0-r3/contracts/findings_schema.yaml
+    binds: >
+      The final ../design-doc-findings.md must conform to this schema.
+      It is the ancestor structural constraint; this level may not override it.

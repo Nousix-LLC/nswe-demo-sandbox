@@ -1,0 +1,190 @@
+{
+  "sequence": 6,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T01:15:13.478269415Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_screens_flows"
+      ],
+      "placement_parent_task_id": "SUBTASK_experience_design"
+    },
+    "resulting_version": 6,
+    "summary": "inject tasks: SUBTASK_screens_flows",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the screens & flows child; it composes the screen inventory and component vocabulary into every journey's designed screens with empty/error/loading states.",
+        "task_id": "SUBTASK_experience_design"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_delivery_backlog": [
+        "SUBTASK_design_pr",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_design_pr": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_domain_app_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_domain_model": [],
+      "SUBTASK_experience_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_ia_interaction": [],
+      "SUBTASK_identity_trust": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_module_structure": [
+        "SUBTASK_domain_model"
+      ],
+      "SUBTASK_operational_readiness": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design"
+      ],
+      "SUBTASK_persistence_state": [
+        "SUBTASK_domain_model"
+      ],
+      "SUBTASK_product_requirements": [],
+      "SUBTASK_product_requirements/SUBTASK_pr_synthesis": [
+        "SUBTASK_product_requirements/SUBTASK_product_definition",
+        "SUBTASK_product_requirements/SUBTASK_users_and_journeys",
+        "SUBTASK_product_requirements/SUBTASK_requirements"
+      ],
+      "SUBTASK_product_requirements/SUBTASK_product_definition": [],
+      "SUBTASK_product_requirements/SUBTASK_requirements": [
+        "SUBTASK_product_requirements/SUBTASK_product_definition",
+        "SUBTASK_product_requirements/SUBTASK_users_and_journeys"
+      ],
+      "SUBTASK_product_requirements/SUBTASK_users_and_journeys": [],
+      "SUBTASK_release_bar": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness"
+      ],
+      "SUBTASK_screens_flows": [
+        "SUBTASK_ia_interaction",
+        "SUBTASK_visual_system"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_design_pr",
+        "SUBTASK_delivery_backlog",
+        "SUBTASK_release_bar",
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness"
+      ],
+      "SUBTASK_visual_system": [
+        "SUBTASK_ia_interaction"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_domain_model",
+          "SUBTASK_ia_interaction",
+          "SUBTASK_product_requirements",
+          "SUBTASK_product_requirements/SUBTASK_product_definition",
+          "SUBTASK_product_requirements/SUBTASK_users_and_journeys"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_domain_app_design",
+          "SUBTASK_experience_design",
+          "SUBTASK_identity_trust",
+          "SUBTASK_module_structure",
+          "SUBTASK_persistence_state",
+          "SUBTASK_product_requirements/SUBTASK_requirements",
+          "SUBTASK_visual_system"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_operational_readiness",
+          "SUBTASK_product_requirements/SUBTASK_pr_synthesis",
+          "SUBTASK_screens_flows"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_release_bar"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "SUBTASK_design_pr"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "group_index": 5,
+        "task_ids": [
+          "SUBTASK_delivery_backlog"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "group_index": 6,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

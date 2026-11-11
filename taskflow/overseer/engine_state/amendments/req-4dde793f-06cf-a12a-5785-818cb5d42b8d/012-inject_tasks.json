@@ -1,0 +1,191 @@
+{
+  "sequence": 12,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T00:58:36.240008266Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "I12"
+      ],
+      "placement_parent_task_id": "I11"
+    },
+    "resulting_version": 4,
+    "summary": "inject tasks: I12",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Serial thread composition: schedule the next overseer iteration I12 (depends_on I11) at the tail of the project chain, BEFORE this iteration's atomic fork, so the chain is self-perpetuating regardless of the fork outcome. I12 will watch the review-ferric-router DAG (#5) fold → gate/LAND #5, fork the queued ferric-http #6 review DAG, and watch chirp-types #7.",
+        "task_id": "I11"
+      }
+    },
+    "updated_graph_edges": {
+      "I0": [],
+      "I1": [],
+      "I10": [
+        "I9"
+      ],
+      "I11": [
+        "I10"
+      ],
+      "I12": [
+        "I11"
+      ],
+      "I2": [],
+      "I3": [],
+      "I4": [
+        "I3"
+      ],
+      "I5": [
+        "I4"
+      ],
+      "I6": [
+        "I5"
+      ],
+      "I7": [
+        "I6"
+      ],
+      "I8": [
+        "I7"
+      ],
+      "I9": [
+        "I8"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "I0",
+          "I1",
+          "I2",
+          "I3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "I4"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "I5"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "I6"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "I7"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "group_index": 5,
+        "task_ids": [
+          "I8"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "group_index": 6,
+        "task_ids": [
+          "I9"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "group_index": 7,
+        "task_ids": [
+          "I10"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "group_index": 8,
+        "task_ids": [
+          "I11"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "group_index": 9,
+        "task_ids": [
+          "I12"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

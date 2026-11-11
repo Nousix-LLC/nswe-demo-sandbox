@@ -1,0 +1,72 @@
+# Contract manifest — SUBTASK_screens_flows (internal seam for the screens-&-flows subtree)
+# kind: yaml_schema. READ-ONLY for every descendant. Extends the PARENT contract
+# (../../contracts/) ADDITIVELY — it sub-ranges the REQ-UX-040..089 id space among the spokes and maps
+# section-parts and surfaces to owners; it never overrides the parent's REQ-<AREA>-NNN format, field set,
+# the experience-design.md section list, the required_surfaces checklist, or the trace rule.
+# Where this manifest and an ancestor disagree, the ancestor wins.
+
+kind: yaml_schema
+
+extends: "../../contracts/"   # experience-design seam: REQ-UX scheme + sections + required_surfaces + vocabularies + trace rule
+
+artifacts:
+  - file: screens_seam.yaml
+    declares: "Section-part->owning spoke; surface->owning spoke (every required surface + every screen-inventory screen); the REQ-UX-040..089 sub-range per spoke; the shared-vocabulary composition rule; the per-REQ-UX trace rule."
+
+# One producer per section-part / surface cluster / id sub-range. An unowned surface is a hole;
+# a double-written one is a race.
+ownership:
+  "section:screens_and_flows/get_in":                 SUBTASK_get_in
+  "section:screens_and_flows/core_loop":              SUBTASK_core_loop
+  "section:screens_and_flows/account_lifecycle":      SUBTASK_account_lifecycle
+  "section:screens_and_flows/safety_notifications":   SUBTASK_safety_notifications
+  "section:empty_error_loading_states":               SUBTASK_considered_states
+  "register:req_ux_040_089":                          SUBTASK_synthesis   # consolidated from all spokes
+  "file:outputs/screens-flows.md":                    SUBTASK_synthesis
+  "file:SYNTHESIS.md":                                SUBTASK_synthesis
+
+req_ux_id_ranges:          # REQ-UX-NNN, 3-digit, unique within area (parent scheme); sub-ranged here within 040..089
+  SUBTASK_get_in:               "REQ-UX-040..REQ-UX-050"
+  SUBTASK_core_loop:            "REQ-UX-051..REQ-UX-064"
+  SUBTASK_account_lifecycle:    "REQ-UX-065..REQ-UX-077"
+  SUBTASK_safety_notifications: "REQ-UX-078..REQ-UX-085"
+  SUBTASK_considered_states:    "REQ-UX-086..REQ-UX-089"
+
+# Inherited, NOT redefined — the frozen upstream vocabularies every spoke composes against by name.
+inherited_vocabularies:
+  screen_inventory:
+    source: "../../SUBTASK_ia_interaction/outputs/ia-interaction.md (heading: Screen inventory)"
+    rule: "Refer to screens by their inventory names and routes. Do not invent a screen outside the inventory without an additive amendment to this contract."
+  component_library:
+    source: "../../SUBTASK_visual_system/outputs/visual-system.md (heading: Component library)"
+    rule: "Build each screen from named components; use each component's own named states (default/empty/error/loading/disabled). Do not invent a component outside the library without an additive amendment to this contract."
+
+# Invariants SUBTASK_synthesis asserts with recorded evidence; a failing identity is reported and
+# remediated by decomposing a remediation subtree — never silently plugged.
+identities:
+  - id: SECTION_PART_COVERAGE
+    statement: "screens_and_flows and empty_error_loading_states are both present and assembled in order; every section-part maps to exactly one spoke (no hole, no double-write)."
+  - id: ID_UNIQUE_IN_RANGE
+    statement: "Every REQ-UX-040..089 id is unique and within its owning spoke's sub-range; no collisions, no out-of-range ids."
+  - id: SURFACE_COVERAGE
+    statement: "Every surface in the parent required_surfaces checklist, and every screen-inventory screen, is designed with its empty/error/loading states by its owning spoke OR recorded out-of-scope with a reason."
+  - id: NOT_SKELETAL
+    statement: "Each designed screen specifies layout, content, and a primary action, and its empty, error, and loading states — not a bare route name."
+  - id: UX_TESTABLE_AND_GATED
+    statement: "Every REQ-UX-* has a statement, an acceptance_criteria a stranger could check on the live product, and a release_gating flag (false carries a one-line reason)."
+  - id: UX_TRACES_TO_PROD
+    statement: "Every REQ-UX-* references >=1 REQ-PROD-*."
+  - id: COMPOSES_AGAINST_VOCAB
+    statement: "Every screen refers to screen-inventory screens by name and is built from component-library components by name; nothing redefined; no new screen/component without an additive contract amendment."
+  - id: STATES_CONSISTENT
+    statement: "Each per-screen empty/error/loading state is consistent with the global patterns in the empty_error_loading_states section and with the components' own named states."
+  - id: HYGIENE
+    statement: "Nothing in screens-flows.md carries host/system/taskflow detail, workspace paths, agent/DAG/run ids, or an attribution trailer."
+
+derived_artifacts:
+  - name: req_ux_register_040_089
+    generated_from: "each spoke's REQ-UX entries (get_in/core_loop/account_lifecycle/safety_notifications/considered_states)"
+    consumed_by: SUBTASK_synthesis
+  - name: "outputs/screens-flows.md"
+    assembled_from: "screens-get-in.md + screens-core-loop.md + screens-account-lifecycle.md + screens-safety-notifications.md + empty-error-loading-states.md + consolidated REQ-UX register"
+    produced_by: SUBTASK_synthesis

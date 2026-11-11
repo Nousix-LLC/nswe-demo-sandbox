@@ -1,0 +1,27 @@
+kind: review_findings
+version: "1.0"
+
+description: >
+  Contract for the review-ferric-http-r2 spoke tasks. Each spoke produces a
+  findings file following findings_schema.yaml. The verdict task reads all three
+  and assembles SYNTHESIS.md.
+
+artifacts:
+  - path: SUBTASK_correctness/correctness_findings.md
+    owner: SUBTASK_correctness
+    schema: contracts/findings_schema.yaml
+  - path: SUBTASK_code_quality/code_quality_findings.md
+    owner: SUBTASK_code_quality
+    schema: contracts/findings_schema.yaml
+  - path: SUBTASK_security/security_findings.md
+    owner: SUBTASK_security
+    schema: contracts/findings_schema.yaml
+  - path: SYNTHESIS.md
+    owner: SUBTASK_verdict
+    schema: null  # free-form synthesis record per kernel named-state contract
+
+identities:
+  - "Every verified item (B1, B2, SF3, SF4, SF5) has an explicit RESOLVED/UNRESOLVED/PARTIAL status in correctness_findings.md"
+  - "Every concern area (Correctness, Code Quality, Security) has a verdict contribution"
+  - "The verdict in SYNTHESIS.md matches the verdict posted on PR #210"
+  - "No BLOCKER finding coexists with an APPROVE verdict"

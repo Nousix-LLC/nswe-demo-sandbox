@@ -1,0 +1,129 @@
+{
+  "sequence": 14,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T22:27:28.482103924Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "ferric-tests-conformance"
+      ],
+      "placement_parent_task_id": "ferric-authoring-139-view-tests"
+    },
+    "resulting_version": 14,
+    "summary": "inject tasks: ferric-tests-conformance",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_tests into two independent authoring spokes and a synthesis gate. SUBTASK_conformance owns the native conformance test file (lowering.rs) — writing #[test] functions for each §2.12 lowering table row.",
+        "task_id": "ferric-authoring-139-view-tests"
+      }
+    },
+    "updated_graph_edges": {
+      "ferric-authoring-137-138": [],
+      "ferric-authoring-139-view": [
+        "ferric-authoring-137-138"
+      ],
+      "ferric-authoring-139-view-impl": [],
+      "ferric-authoring-139-view-impl-macro": [
+        "ferric-authoring-139-view-impl-scaffold"
+      ],
+      "ferric-authoring-139-view-impl-scaffold": [],
+      "ferric-authoring-139-view-impl-synthesis": [
+        "ferric-authoring-139-view-impl-macro",
+        "ferric-authoring-139-view-impl-wire"
+      ],
+      "ferric-authoring-139-view-impl-wire": [
+        "ferric-authoring-139-view-impl-scaffold"
+      ],
+      "ferric-authoring-139-view-synthesis": [
+        "ferric-authoring-139-view-tests"
+      ],
+      "ferric-authoring-139-view-tests": [
+        "ferric-authoring-139-view-impl"
+      ],
+      "ferric-authoring-140-comp": [
+        "ferric-authoring-139-view"
+      ],
+      "ferric-authoring-141-diag": [
+        "ferric-authoring-140-comp"
+      ],
+      "ferric-authoring-142-ctx": [
+        "ferric-authoring-140-comp"
+      ],
+      "ferric-authoring-synthesis": [
+        "ferric-authoring-141-diag",
+        "ferric-authoring-142-ctx"
+      ],
+      "ferric-epic-authoring-r1": [],
+      "ferric-tests-conformance": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-authoring-137-138",
+          "ferric-authoring-139-view-impl",
+          "ferric-authoring-139-view-impl-scaffold",
+          "ferric-epic-authoring-r1",
+          "ferric-tests-conformance"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "ferric-authoring-139-view",
+          "ferric-authoring-139-view-impl-macro",
+          "ferric-authoring-139-view-impl-wire",
+          "ferric-authoring-139-view-tests"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "ferric-authoring-139-view-impl-synthesis",
+          "ferric-authoring-139-view-synthesis",
+          "ferric-authoring-140-comp"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "ferric-authoring-141-diag",
+          "ferric-authoring-142-ctx"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "ferric-authoring-synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

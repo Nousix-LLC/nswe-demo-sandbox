@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T01:47:01.104604367Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_integration_tests_and_docs"
+      ],
+      "placement_parent_task_id": "chirp-server"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_integration_tests_and_docs",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Verify-by-test + document stage: end-to-end API integration tests over the assembled server (status + DTO round-trips + error paths) plus the crate README and rustdoc polish. Depends on the API layer's committed code.",
+        "task_id": "chirp-server"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_api_layer": [
+        "SUBTASK_scaffold_and_repository"
+      ],
+      "SUBTASK_integration_tests_and_docs": [
+        "SUBTASK_api_layer"
+      ],
+      "SUBTASK_scaffold_and_repository": [],
+      "chirp-server": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scaffold_and_repository",
+          "chirp-server"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_api_layer"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_integration_tests_and_docs"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

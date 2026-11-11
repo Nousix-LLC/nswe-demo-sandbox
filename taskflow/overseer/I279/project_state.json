@@ -1,0 +1,296 @@
+{
+ "current_pointer": "overseer/I279",
+ "checked_at": "2026-11-05T22:10:00Z",
+ "escalations": {
+  "escalation_i77_dispatch_fault": {
+   "status": "CLEARED",
+   "cleared_at": "2026-11-03T05:08:16Z",
+   "cleared_in": "overseer/I145"
+  },
+  "escalation_ferric_async_forms_budget_exhausted": {
+   "status": "CLEARED",
+   "label": "ferric-async-forms remediation budget exhausted — 3 unresolved blockers after 2 code DAG attempts + 1 full review cycle",
+   "pr": 193,
+   "blockers": [
+    "B1: Resource fire-once, no reactive re-fetch (REQ-ASYNC-001, 003, 005)",
+    "B2: No prevent_default/stop_propagation path from handler (REQ-ASYNC-023)",
+    "B3: Bind DOM→signal direction broken in WASM (REQ-ASYNC-042)"
+   ],
+   "escalated_in": "overseer/I220",
+   "escalation_comment": "https://github.com/Nousix-LLC/nswe-demo/pull/193#issuecomment-6624409600",
+   "cleared_at": "2026-11-05T22:00:00Z",
+   "cleared_reason": "Reclassified per corrected app policy: a REQUEST-CHANGES review with fixable blockers is ordinary remediation (two successful DAGs), not a budget-exhausted user-gate escalation. Remediate autonomously; do not wait on a human.",
+   "cleared_in": "overseer/I279",
+   "action_taken": "Dispatched ferric-async-forms-r3 (swe-coder) to fix B1+B2+B3"
+  },
+  "escalation_review_ferric_http_r2_stall": {
+   "status": "CLEARED",
+   "cleared_at": "2026-11-04T21:35:16Z",
+   "cleared_in": "overseer/I245"
+  },
+  "escalation_ferric_ssr_budget_exhausted": {
+   "status": "CLEARED",
+   "label": "ferric-ssr remediation budget exhausted — 2 hard blockers after 2 code DAG attempts + 1 full review cycle",
+   "pr": 228,
+   "blockers": [
+    "B1 REQ-HYD-003: hydrate() never called from WASM entry point — SSR+hydration not wired end-to-end",
+    "B2 REQ-SSR-006/Area-E: zero wasm-bindgen-test in hydrate.rs — #224 and #226 require headless coverage"
+   ],
+   "escalated_in": "overseer/I267",
+   "escalation_comment": "https://github.com/Nousix-LLC/nswe-demo/pull/228#issuecomment-6666246221",
+   "cleared_at": "2026-11-05T22:00:00Z",
+   "cleared_reason": "Reclassified per corrected app policy: a REQUEST-CHANGES review with fixable blockers is ordinary remediation (two successful DAGs), not a budget-exhausted user-gate escalation. Remediate autonomously; do not wait on a human.",
+   "cleared_in": "overseer/I279",
+   "action_taken": "Dispatched ferric-ssr-r4 (swe-coder) to fix B1+B2"
+  }
+ },
+ "prs": {
+  "PR113": {
+   "status": "MERGED",
+   "note": "Epic #56 and sub-issues Done."
+  },
+  "PR128": {
+   "status": "MERGED",
+   "note": "Design: Ferric 1.0 framework design. All 10 design docs on main."
+  },
+  "PR182": {
+   "status": "MERGED"
+  },
+  "PR183": {
+   "status": "MERGED"
+  },
+  "PR187": {
+   "status": "MERGED"
+  },
+  "PR188": {
+   "status": "MERGED",
+   "note": "#129 and authoring model sub-issues Done."
+  },
+  "PR193": {
+   "status": "OPEN",
+   "branch": "work/ferric-async-forms-r2",
+   "escalated": false,
+   "note": "Escalation cleared. ferric-async-forms-r3 dispatched (I279) to fix B1 (reactive Resource), B2 (prevent_default/stop_propagation), B3 (DOM→signal binding). Awaiting DAG synthesis."
+  },
+  "PR203": {
+   "status": "MERGED",
+   "note": "#131 and router sub-issues Done."
+  },
+  "PR209": {
+   "status": "MERGED",
+   "note": "#206 Done."
+  },
+  "PR210": {
+   "status": "MERGED",
+   "note": "#132 and #148 Done."
+  },
+  "PR228": {
+   "status": "OPEN",
+   "branch": "work/ferric-ssr-r1",
+   "note": "Escalation cleared. ferric-ssr-r4 dispatched (I279) to fix B1 (hydrate() wiring) and B2 (wasm-bindgen-test coverage). Awaiting DAG synthesis.",
+   "issues": [
+    "#223",
+    "#224",
+    "#226"
+   ],
+   "review_verdict": "REQUEST-CHANGES",
+   "review_comment": "https://github.com/Nousix-LLC/nswe-demo/pull/228#issuecomment-6647644348",
+   "review_synthesis": "taskflow/dags/review-ferric-ssr-r1/SYNTHESIS.md",
+   "blockers": [
+    "B1 REQ-HYD-003: hydrate() never called from WASM entry point — SSR+hydration not wired end-to-end",
+    "B2 REQ-SSR-006/Area-E: zero wasm-bindgen-test in hydrate.rs — #224 and #226 require headless coverage"
+   ],
+   "non_blockers_filed": [
+    "#229", "#230", "#231", "#232", "#233", "#234", "#235",
+    "#236", "#237", "#238", "#239", "#240", "#241", "#242"
+   ],
+   "non_blockers_on_board": true,
+   "escalation_comment": "https://github.com/Nousix-LLC/nswe-demo/pull/228#issuecomment-6666246221",
+   "escalation_cleared_in": "overseer/I279"
+  }
+ },
+ "dags_in_flight": [
+  {
+   "slug": "ferric-ssr-r4",
+   "goal": "SSR+hydration remediation: fix B1 (hydrate() wiring from WASM entry point) and B2 (wasm-bindgen-test coverage in hydrate.rs)",
+   "issues": ["#223", "#224", "#226"],
+   "kind": "code",
+   "state": "RUNNING",
+   "dispatched_in": "overseer/I279",
+   "synthesis_path": "taskflow/dags/ferric-ssr-r4/SYNTHESIS.md",
+   "pr": 228,
+   "branch": "work/ferric-ssr-r1"
+  },
+  {
+   "slug": "ferric-async-forms-r3",
+   "goal": "async-forms remediation: fix B1 (reactive Resource/create_resource), B2 (prevent_default/stop_propagation), B3 (DOM→signal binding)",
+   "issues": ["#130"],
+   "kind": "code",
+   "state": "RUNNING",
+   "dispatched_in": "overseer/I279",
+   "synthesis_path": "taskflow/dags/ferric-async-forms-r3/SYNTHESIS.md",
+   "pr": 193,
+   "branch": "work/ferric-async-forms-r2"
+  }
+ ],
+ "dags_folded": [
+  {
+   "slug": "review-ferric-http-r2",
+   "goal": "Re-review PR #210 after ferric-http-r2 remediation",
+   "issues": ["#132", "#148"],
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "APPROVE",
+   "synthesis_path": "taskflow/dags/review-ferric-http-r2/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I245"
+  },
+  {
+   "slug": "ferric-ssr-r1",
+   "goal": "Scope-limited SSR and hydration foundation: BAR-003 + BAR-004 + BAR-006",
+   "issues": ["#223", "#224", "#226"],
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "FAIL",
+   "synthesis_path": "taskflow/dags/ferric-ssr-r1/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I255"
+  },
+  {
+   "slug": "ferric-ssr-r2",
+   "goal": "SSR+hydration remediation attempt 1: hydrate.rs (BAR-004/#224) + mismatch detection (BAR-006/#226)",
+   "issues": ["#223", "#224", "#226"],
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "FAIL",
+   "synthesis_path": "taskflow/dags/ferric-ssr-r2/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I262"
+  },
+  {
+   "slug": "ferric-ssr-r3",
+   "goal": "SSR+hydration remediation attempt 2: resolve CI failures (fmt, clippy, doc) on PR #228",
+   "issues": ["#223", "#224", "#226"],
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/ferric-ssr-r3/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I262"
+  },
+  {
+   "slug": "review-ferric-ssr-r1",
+   "goal": "Review PR #228 — SSR render_to_string + client-side hydration + Axum integration (issues #223, #224, #226)",
+   "issues": ["#223", "#224", "#226"],
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "REQUEST-CHANGES",
+   "synthesis_path": "taskflow/dags/review-ferric-ssr-r1/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I265",
+   "blockers": [
+    "B1 REQ-HYD-003: hydrate() never called from WASM entry point",
+    "B2 REQ-SSR-006/Area-E: zero wasm-bindgen-test in hydrate.rs"
+   ],
+   "review_comment": "https://github.com/Nousix-LLC/nswe-demo/pull/228#issuecomment-6647644348"
+  },
+  {
+   "slug": "ferric-async-forms-r1",
+   "goal": "async-forms-events first implementation attempt",
+   "issues": ["#130"],
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "FAIL",
+   "synthesis_path": "taskflow/dags/ferric-async-forms-r1/SYNTHESIS.md"
+  },
+  {
+   "slug": "ferric-async-forms-r2",
+   "goal": "async-forms-events second implementation attempt",
+   "issues": ["#130"],
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/ferric-async-forms-r2/SYNTHESIS.md"
+  },
+  {
+   "slug": "review-ferric-async-forms-r2",
+   "goal": "Review PR #193 — async resources, expanded events, form binding (#130)",
+   "issues": ["#130"],
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "REQUEST-CHANGES",
+   "synthesis_path": "taskflow/dags/review-ferric-async-forms-r2/SYNTHESIS.md",
+   "blockers": [
+    "B1: Resource fire-once, no reactive re-fetch (REQ-ASYNC-001, 003, 005)",
+    "B2: No prevent_default/stop_propagation path from handler (REQ-ASYNC-023)",
+    "B3: Bind DOM→signal direction broken in WASM (REQ-ASYNC-042)"
+   ],
+   "review_comment": "https://github.com/Nousix-LLC/nswe-demo/pull/193#issuecomment-6624208222"
+  }
+ ],
+ "ferric_ssr_goal": {
+  "goal_slug": "ferric-ssr",
+  "issues": ["#223", "#224", "#226"],
+  "branch": "work/ferric-ssr-r1",
+  "pr": 228,
+  "remediation_budget": "unlimited (escalation reclassified — ordinary remediation)",
+  "current_dag": "ferric-ssr-r4",
+  "review_verdict": "REQUEST-CHANGES (from review-ferric-ssr-r1)",
+  "review_blockers": [
+   "B1 REQ-HYD-003: hydrate() never called from WASM entry point — not functional end-to-end",
+   "B2 REQ-SSR-006/Area-E: zero wasm-bindgen-test in hydrate.rs — #224/#226 require headless coverage"
+  ],
+  "note": "ferric-ssr-r4 dispatched in I279 to fix B1 and B2. Awaiting synthesis.",
+  "board_status": "In Progress (ferric-ssr-r4 running)"
+ },
+ "ferric_async_forms_goal": {
+  "goal_slug": "ferric-async-forms",
+  "issues": ["#130"],
+  "branch": "work/ferric-async-forms-r2",
+  "pr": 193,
+  "remediation_budget": "unlimited (escalation reclassified — ordinary remediation)",
+  "current_dag": "ferric-async-forms-r3",
+  "review_verdict": "REQUEST-CHANGES (from review-ferric-async-forms-r2)",
+  "review_blockers": [
+   "B1: Resource fire-once, no reactive re-fetch (REQ-ASYNC-001, 003, 005)",
+   "B2: No prevent_default/stop_propagation path from handler (REQ-ASYNC-023)",
+   "B3: Bind DOM→signal direction broken in WASM (REQ-ASYNC-042)"
+  ],
+  "note": "ferric-async-forms-r3 dispatched in I279 to fix B1, B2, B3. Awaiting synthesis.",
+  "board_status": "In Progress (ferric-async-forms-r3 running)"
+ },
+ "board": {
+  "project_id": "PVT_kwDOEB9jls4BlZH4",
+  "latest_issue_update": "2026-11-05T22:10:00Z",
+  "hygiene_actions_I279": [
+   "Confirmed PR #228: no user response (3 comments: review + 2 escalations — all overseer-authored)",
+   "Confirmed PR #193: no user response (2 comments: review + escalation — all overseer-authored)",
+   "Reclassified both escalations as ordinary remediation per corrected app policy",
+   "Dispatched ferric-ssr-r4 (swe-coder) for PR #228 B1+B2",
+   "Dispatched ferric-async-forms-r3 (swe-coder) for PR #193 B1+B2+B3",
+   "Scheduled I280 as bounded watch for DAG completion"
+  ]
+ },
+ "product_readiness": {
+  "issue_35": {
+   "title": "Logged-out reading and a useful landing with accurate states",
+   "dependencies": ["#56 (durable persistence) — DONE"],
+   "needs_130": false,
+   "needs_133": false,
+   "status": "BLOCKED — waiting for ferric-ssr goal to land (ferric-ssr-r4 in flight)",
+   "note": "Dispatch after ferric-ssr lands."
+  },
+  "issues_36_to_42": {
+   "note": "Most require #83 (identity/sessions, still open) or #130 (forms/events). Not ready until async-forms lands."
+  }
+ },
+ "forward_plan": {
+  "I279": "DONE — reclassified escalations, dispatched ferric-ssr-r4 and ferric-async-forms-r3",
+  "I280": "Bounded watch for ferric-ssr-r4 and ferric-async-forms-r3 DAG completion. On PASS: dispatch review DAGs. On FAIL: dispatch fresh code DAG with failure lesson.",
+  "after_ferric_ssr_r4_pass": "Dispatch review-ferric-ssr-r2 for PR #228",
+  "after_ferric_ssr_review_approve": "Land PR #228, close #223/#224/#226, dispatch issue #35 goal",
+  "after_ferric_async_forms_r3_pass": "Dispatch review-ferric-async-forms-r3 for PR #193",
+  "after_ferric_async_forms_review_approve": "Land PR #193, close #130"
+ },
+ "main_sha": "945fade38abd6b053268501f3801734756f02502",
+ "deployment_check": {
+  "last_checked": "2026-11-04T21:41:48Z",
+  "verdict": "CURRENT — pod chirp-server Running 1/1 (sha256:f845ca8c). No change needed."
+ },
+ "free_dag_slots": 2
+}

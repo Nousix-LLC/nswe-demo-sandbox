@@ -1,0 +1,53 @@
+# Sub-contract manifest — SUBTASK_router_and_http
+# The co-designed structural output of this subtree's decomposition, alongside the task tree in ../_GLOBAL.md.
+# READ-ONLY for descendants. EXTENDS the parent contract (../../contracts/); it does NOT override it:
+# it partitions this subtree's two id namespaces between the two spokes and adds composition identities.
+# Amendments are additive only.
+
+kind: [yaml_schema]
+
+purpose: >
+  Fix the thin seam the router spoke and the HTTP-client spoke share so the synthesis gate can compose them
+  mechanically into one deliverable: the per-spoke register ownership (REQ-RT-* vs REQ-HTTP-*), a consistent
+  per-doc section layout, and the identities the gate asserts. The REQ/BAR id schema, verification-method and
+  stage vocabularies, and the design-artifact map are inherited unchanged from the parent contract
+  (../../contracts/id_and_traceability_schema.yaml, ../../contracts/design_artifact_map.yaml).
+
+inherited_contract:
+  from: ../../contracts/
+  binds: >
+    REQ-<AREA>-<NNN> id schema; the RT and HTTP areas both owned by SUBTASK_router_and_http in the parent
+    manifest are partitioned here between this subtree's two spokes (additive, not an override — the children
+    inherit this task's identity). Parent identities I1, I7, I8, I9 are realized within this subtree by SI1,
+    SI3, SI4, SI2 respectively. Descendants compose against the parent contract; they do not modify it.
+
+# Ownership: every register and artifact has exactly one producer.
+ownership:
+  REQ-RT-*:   SUBTASK_router      # router: route table, path params, nested routes, links, History-API navigation, outlet (folds #5)
+  REQ-HTTP-*: SUBTASK_http        # HTTP/JSON client: typed fetch (serde), request building, error model (folds #6)
+  router.md:              SUBTASK_router
+  http.md:                SUBTASK_http
+  router-and-http.md:     SUBTASK_synthesis   # the composed deliverable, at the parent workspace
+  SYNTHESIS.md:           SUBTASK_synthesis   # the fold record, at the parent workspace
+
+# Per-doc section layout each spoke follows, so the gate composes mechanically (SI4).
+doc_layout:
+  sections:
+    - overview:                 "What the capability is, for whom (personas A1/A2 from scope-and-requirements), in one or two paragraphs."
+    - relationship_to_frozen:   "The existing frozen prelude surface (exact items), and exactly what the 1.0 adds — each addition flagged additive (SI2)."
+    - requirements_register:    "The REQ-RT-* (router) or REQ-HTTP-* (http) register: id, statement (what-not-how), rationale (peer evidence), acceptance_criteria, stage, release_gating, references. Conforms to ../../contracts/id_and_traceability_schema.yaml."
+    - peer_comparison:          "Named comparison — routers: leptos_router, Dioxus router; http: reqwest, gloo-net."
+    - board_fold:               "How the board issue (#5 for router, #6 for http) is superseded/extended by this design (SI3)."
+
+# Identities the synthesis gate evaluates as assertions. A failure is a structured signal, never a silent plug.
+identities:
+  SI1_disjoint_sub_registers: "SUBTASK_router writes only REQ-RT-*; SUBTASK_http writes only REQ-HTTP-*; the namespaces do not overlap. (Realizes parent I1.)"
+  SI2_additive_over_frozen:   "Each spoke's design is additive over its crate's frozen prelude; any change to an existing exported item is flagged additive, never a silent redefinition. (Realizes parent I9.)"
+  SI3_fold_recorded:          "router.md states how board issue #5 is superseded/extended; http.md states how #6 is. (Feeds parent I7.)"
+  SI4_composed_once:          "The gate composes both registers into one router-and-http.md that lands exactly once at design/ferric/router-and-http.md; no spoke content dropped or double-placed. (Realizes parent I8.)"
+  SI5_realizes_req_fw_007:    "The combined REQ-RT-*/REQ-HTTP-* registers cover REQ-FW-007: client routing with params, nested routes, in-app links, plus a typed JSON request/response that treats a non-2xx status as an error."
+  SI6_testable_criteria:      "Every REQ-RT-*/REQ-HTTP-* has >=1 acceptance criterion a stranger could check, using a verification_method from the parent schema (automated_test / example_build / doc_inspection)."
+
+derived_artifacts:
+  - "router.md + http.md are the source the synthesis gate composes into router-and-http.md."
+  - "router-and-http.md is the artifact SUBTASK_design_pr places at design/ferric/router-and-http.md (parent identity I8)."

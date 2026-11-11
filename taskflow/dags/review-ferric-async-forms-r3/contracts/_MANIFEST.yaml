@@ -1,0 +1,40 @@
+kind: yaml_schema
+description: >
+  Findings schema and ownership manifest for review-ferric-async-forms-r3 spokes.
+  Each spoke produces one findings.md following this structure; SUBTASK_synthesis
+  reads all three and produces SYNTHESIS.md at the DAG root.
+
+ownership:
+  - artifact: SUBTASK_correctness_concurrency/findings.md
+    owner: SUBTASK_correctness_concurrency
+  - artifact: SUBTASK_quality_tests_idiom/findings.md
+    owner: SUBTASK_quality_tests_idiom
+  - artifact: SUBTASK_security/findings.md
+    owner: SUBTASK_security
+  - artifact: SYNTHESIS.md
+    owner: SUBTASK_synthesis
+
+findings_schema:
+  description: >
+    Each findings.md MUST contain at least two sections:
+    1. ## Findings — a list of issues with severity, location, and description.
+       severity values: blocker | non-blocker | clean
+       A "clean" finding documents what was checked and found sound.
+    2. ## What was examined — an enumeration of files, lines, and concerns the
+       spoke checked, so the synthesis can confirm coverage without gaps.
+
+identities:
+  - name: requirements_coverage
+    assertion: >
+      Across all three spoke findings files, every requirement in scope
+      (REQ-ASYNC-001, REQ-ASYNC-003, REQ-ASYNC-005, REQ-ASYNC-016,
+      REQ-ASYNC-023, REQ-ASYNC-042) must appear in at least one spoke's
+      findings — either explicitly verified clean or as a finding.
+  - name: blocker_has_location
+    assertion: >
+      Any finding with severity=blocker must name its requirement ID and
+      repository-relative file:line location.
+  - name: synthesis_verdict_supported
+    assertion: >
+      SYNTHESIS.md verdict (APPROVE or REQUEST-CHANGES) must be derivable
+      from the three spoke findings files with no unresolved contradiction.

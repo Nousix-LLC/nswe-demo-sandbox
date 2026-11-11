@@ -1,0 +1,47 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T01:57:06.619725472Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_security"
+      ],
+      "placement_parent_task_id": "review-ferric-async-forms-r3"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_security",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing review: security pass spoke (concern 5)",
+        "task_id": "review-ferric-async-forms-r3"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_correctness_concurrency": [],
+      "SUBTASK_quality_tests_idiom": [],
+      "SUBTASK_security": [],
+      "review-ferric-async-forms-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_correctness_concurrency",
+          "SUBTASK_quality_tests_idiom",
+          "SUBTASK_security",
+          "review-ferric-async-forms-r3"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

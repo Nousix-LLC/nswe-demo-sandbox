@@ -1,0 +1,69 @@
+# Contract manifest — SUBTASK_synthesis (verification-gate + fold subtree)
+# kind: yaml_schema. Extends ../../contracts/ ADDITIVELY (never overrides the inherited
+# id scheme, traceability-matrix columns, live_status vocab, verification-method vocab,
+# or the eight identities). READ-ONLY for every descendant of this subtree.
+
+kind: yaml_schema
+
+extends: "../../contracts/_MANIFEST.yaml"   # the eight DAG identities, one-owner-per-artifact
+also_inherits:
+  - "../../contracts/id_and_traceability_schema.yaml"   # REQ/BAR/epic/issue ids; matrix columns; live_status + verification-method vocab
+  - "../../contracts/design_artifact_map.yaml"          # area -> design file
+
+# ---------------------------------------------------------------------------
+# The seam: ONE whole-DAG traceability matrix, columns split across two children
+# and joined by the fold. Inherited column set (authoritative, not redefined):
+#   [req_id, release_gating, bar_ids, epic, issue_numbers, design_doc_ref, live_status]
+#   live_status vocab: [met, partial, missing, not_applicable]
+# ---------------------------------------------------------------------------
+
+matrix_column_ownership:
+  # SUBTASK_identity_traceability produces the matrix SKELETON — every column EXCEPT live_status,
+  # one row per REQ-* (release-gating REQ-* required; non-gating MAY appear), with its bar_ids.
+  skeleton_columns: [req_id, release_gating, bar_ids, epic, issue_numbers, design_doc_ref]
+  skeleton_owner: SUBTASK_identity_traceability
+  # SUBTASK_live_measurement produces a BAR-keyed verdict table: one row per BAR-* with its
+  # live_status (from the inherited vocab) and a recorded observation.
+  live_status_source_owner: SUBTASK_live_measurement
+  live_status_key: bar_id          # measurement is per BAR-*; one verdict per BAR-*
+  # SUBTASK_fold joins: a req_id row's live_status is derived from the live_status of its bar_ids
+  # (worst-case roll-up: any missing bar => row missing; else any partial => partial; else met;
+  #  not_applicable bars excluded from the roll-up). The fold owns the assembled final matrix.
+  join_owner: SUBTASK_fold
+  join_rule: "req row live_status = worst-case roll-up over its bar_ids' live_status (missing > partial > met; not_applicable excluded)"
+
+ownership:
+  "outputs/identity-and-traceability.md":            SUBTASK_identity_traceability   # 8 identity verdicts + matrix skeleton
+  "outputs/live-measurement.md":                     SUBTASK_live_measurement        # per-BAR live_status + observations
+  "SYNTHESIS.md (at design-chirp-r1/ root)":         SUBTASK_fold                    # the DAG verdict/fold seam
+  "remediation subtree (if any fixable gap found)":  SUBTASK_fold                    # authored + materialized by the fold node
+
+# Identities this gate asserts over the children's combined output (ADDITIVE to the inherited 8,
+# which SUBTASK_identity_traceability asserts directly). No silent plugs: a failure is reported
+# and, if fixable, remediated by a decomposed subtree.
+identities:
+  - id: IDENTITIES_ALL_ASSERTED
+    statement: "Each of the eight inherited identities (ONE_OWNER_PER_FILE, CONCERN_COVERAGE, BAR_COVERS_GATING_REQS, BAR_TESTABLE, ISSUE_TRACES, GAP_HAS_ISSUE, SURFACE_COVERAGE, GITHUB_HYGIENE) carries a recorded pass/fail with evidence; none is silently plugged."
+  - id: MATRIX_COMPLETE
+    statement: "Every release-gating REQ-* appears as a matrix row carrying bar_ids (>=1), covering epic + issue_numbers, and a design_doc_ref."
+  - id: LIVE_STATUS_TOTAL
+    statement: "Every BAR-* defined in the release bar has exactly one live_status in {met, partial, missing, not_applicable} with a recorded observation grounded in the live product at c805525 or a repository artifact."
+  - id: GAP_MAPPED
+    statement: "Every BAR-* judged missing or partial maps to >=1 filed issue/epic (the inherited GAP_HAS_ISSUE, made concrete for the measurement); any gap with no covering issue is itself a fixable gap to remediate."
+  - id: VERDICT_COMPLETE
+    statement: "design-chirp-r1/SYNTHESIS.md states the release bar, indexes the filed issues by epic, and gives the measured live-product standing with each gap mapped to its covering epic/issue."
+  - id: VERDICT_HYGIENE
+    statement: "design-chirp-r1/SYNTHESIS.md carries no host/system/taskflow detail and no attribution trailer — repository identity only."
+
+derived_artifacts:
+  - name: traceability_matrix_final
+    generated_from: "identity-and-traceability.md skeleton joined with live-measurement.md live_status per the join_rule"
+    produced_by: SUBTASK_fold
+    consumed_by: "design-chirp-r1/SYNTHESIS.md (the measured-standing section)"
+
+# Fold wiring (described, not over-specified; the fold agent resolves exact syscalls at its runtime
+# against the kernel fold contract and the parent records it reads):
+#   - SUBTASK_fold authors the DAG verdict at design-chirp-r1/SYNTHESIS.md (the _FORK observation seam).
+#   - It resolves the suspended ancestors so the DAG root design-chirp-r1 reaches COMPLETED with that
+#     verdict as its fold seam (SUBTASK_synthesis is this DAG's designated root-synthesis child; folding
+#     chains through it to the root).

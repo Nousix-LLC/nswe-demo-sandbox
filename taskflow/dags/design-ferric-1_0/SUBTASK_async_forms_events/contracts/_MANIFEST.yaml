@@ -1,0 +1,97 @@
+# Sub-contract manifest — SUBTASK_async_forms_events (concern 4 of the Ferric 1.0 design)
+# ADDITIVE extension of the parent contract at ../../contracts/ (READ-ONLY for every descendant here).
+# This level splits the single REQ-ASYNC-* register and its one output doc (async-forms-events.md) into
+# three capability fragments that recompose into exactly that one register and that one doc.
+#
+# INHERITANCE: this sub-contract EXTENDS, never overrides, the parent contract. The parent fixes the
+#   REQ-ASYNC-<NNN> id pattern, the requirement/bar field schemas, the stage vocabulary
+#   (usable_early | one_oh | post_one_oh), the verification_method vocabulary, release_gating, and the
+#   output path design/ferric/async-forms-events.md. None of those is redefined here.
+
+kind: [yaml_schema]
+
+extends: ../../contracts/            # parent contract (id_and_traceability_schema.yaml + design_artifact_map.yaml)
+
+purpose: >
+  Freeze the one seam the three capability children of concern 4 share so they recompose mechanically
+  into a single REQ-ASYNC-* register and the single design/ferric/async-forms-events.md artifact:
+  (a) a DISJOINT sub-partition of the REQ-ASYNC-<NNN> number space, one range per child; and
+  (b) the EVENT-PAYLOAD HANDLER SEAM — the payload-carrying handler form that forms two-way binding
+  and the full event surface both rely on — owned by exactly one child and composed against read-only
+  by the other. Narrative lives in ../_GLOBAL.md; this file is structure only.
+
+# ---------------------------------------------------------------------------
+# Sub-partition of the inherited REQ-ASYNC-<NNN> namespace (identity J1).
+# The pattern REQ-ASYNC-<NNN> is the PARENT's; it is NOT redefined. This only carves disjoint NNN
+# ranges so the three children never collide while all writing the one REQ-ASYNC register.
+# ---------------------------------------------------------------------------
+req_async_subpartition:
+  pattern: "REQ-ASYNC-<NNN>"                         # inherited verbatim from parent; 3-digit, zero-padded
+  ranges:
+    async_resources:    { ids: "REQ-ASYNC-001 .. REQ-ASYNC-019", owner: SUBTASK_afe_async_resources }
+    events_and_payloads:{ ids: "REQ-ASYNC-020 .. REQ-ASYNC-039", owner: SUBTASK_afe_events_payloads }
+    forms_binding:      { ids: "REQ-ASYNC-040 .. REQ-ASYNC-059", owner: SUBTASK_afe_forms_binding }
+  note: >
+    A child assigns ids monotonically WITHIN its own range only. Ranges are generous; a child will not
+    exhaust ~19 ids. Cross-references to another child's REQ-ASYNC id are READ-ONLY.
+
+# ---------------------------------------------------------------------------
+# The event-payload handler seam (identity J3). This is the design decision that both the event
+# surface and forms two-way binding stand on: today crates/ferric vdom.rs binds EventHandler = Rc<dyn
+# Fn()> (zero-arg, no payload), so a handler cannot read the triggering event (e.g. an input's value).
+# The vdom module doc already sanctions an ADDITIVE handler enrichment "to carry a web_sys::Event".
+# ---------------------------------------------------------------------------
+event_payload_seam:
+  owner: SUBTASK_afe_events_payloads
+  owns_requirement: >
+    The payload-carrying handler form — how a handler optionally receives the triggering event's data
+    while the frozen zero-arg EventHandler = Rc<dyn Fn()> form stays valid — is specified as a
+    REQ-ASYNC-02x requirement owned by SUBTASK_afe_events_payloads.
+  consumed_by: SUBTASK_afe_forms_binding
+  consumption_rule: >
+    SUBTASK_afe_forms_binding specifies two-way binding ON TOP OF the payload-carrying handler form; it
+    references the owning REQ-ASYNC-02x id read-only and MUST NOT redefine the handler form. Therefore
+    forms_binding declares a dependency on events_and_payloads (precursor -> dependent).
+
+# ---------------------------------------------------------------------------
+# Ownership: one producer per fragment + the assembled artifact.
+# ---------------------------------------------------------------------------
+ownership:
+  "REQ-ASYNC-001..019 + async-resources.md":   SUBTASK_afe_async_resources
+  "REQ-ASYNC-020..039 + events-and-payloads.md":SUBTASK_afe_events_payloads
+  "REQ-ASYNC-040..059 + forms-binding.md":      SUBTASK_afe_forms_binding
+  "async-forms-events.md (assembled) + SYNTHESIS.md (fold) at ../": SUBTASK_afe_synthesis
+
+# ---------------------------------------------------------------------------
+# Identities the synthesis child (SUBTASK_afe_synthesis) evaluates as assertions. No silent plugs.
+# These are ADDITIVE to the parent identities I1-I9, which still bind this subtree.
+# ---------------------------------------------------------------------------
+identities:
+  J1_disjoint_subregisters: "Each child writes REQ-ASYNC ids only within its assigned range; ranges do not overlap."
+  J2_covers_req_fw_006: >
+    The three capabilities together cover every clause of the upstream REQ-FW-006 (async data with
+    loading/empty/loaded/error states; two-way form binding; DOM events beyond click/input with payloads).
+    Each clause is referenced by >=1 REQ-ASYNC requirement.
+  J3_payload_seam_honored: >
+    Every forms two-way-binding REQ-ASYNC references the payload-carrying handler REQ-ASYNC-02x owned by
+    events_and_payloads read-only; the handler form is defined in exactly one place (events_and_payloads).
+  J4_additive_over_frozen: >
+    Every REQ-ASYNC that touches the baseline (EventKind enum, EventHandler = Rc<dyn Fn()>, VElement.on,
+    dom::mount, signal/effect) is ADDITIVE: it extends the frozen ferric surface, never redefines or
+    removes a frozen item. (Mirrors parent I9 for this subtree.)
+  J5_ssr_by_reference_only: >
+    Async-resource SSR composition is stated by referencing REQ-SSR-* read-only; NO REQ-SSR-* id is
+    minted here (parent identity I1: REQ-SSR-* belongs to SUBTASK_ssr_hydration).
+  J6_one_assembled_artifact: >
+    Exactly one async-forms-events.md is assembled at the parent workspace, carrying one continuous
+    REQ-ASYNC register (the three ranges merged, in order) with sections for the three capabilities;
+    no fragment left unplaced or double-placed (serves parent I8 for this doc).
+  J7_conforms_parent_schema: >
+    Every REQ-ASYNC conforms to ../../contracts/id_and_traceability_schema.yaml (requirement_fields,
+    stage vocabulary, verification_method vocabulary, release_gating). This sub-contract adds none of
+    those vocabularies and redefines none.
+
+derived_artifacts:
+  - "This _MANIFEST.yaml is the validator shape SUBTASK_afe_synthesis runs J1-J7 against."
+  - "The three fragment docs (async-resources.md, events-and-payloads.md, forms-binding.md) are the"
+  - "  source SUBTASK_afe_synthesis merges into ../async-forms-events.md (the parent's declared output)."

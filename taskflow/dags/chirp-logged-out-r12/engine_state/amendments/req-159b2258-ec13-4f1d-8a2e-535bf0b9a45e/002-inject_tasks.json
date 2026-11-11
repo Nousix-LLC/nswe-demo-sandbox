@@ -1,0 +1,45 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T09:00:47.295010584Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_frontend_check"
+      ],
+      "placement_parent_task_id": "chirp-logged-out-r12"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_frontend_check",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Adding SUBTASK_frontend_check: inspects crates/chirp-frontend for AC-1 through AC-4 compliance and produces frontend_verdict.md.",
+        "task_id": "chirp-logged-out-r12"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_backend_check": [],
+      "SUBTASK_frontend_check": [],
+      "chirp-logged-out-r12": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_backend_check",
+          "SUBTASK_frontend_check",
+          "chirp-logged-out-r12"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

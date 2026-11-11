@@ -1,0 +1,38 @@
+kind: spoke_partial_schema
+version: "1.0"
+description: >
+  Schema for intermediate findings files produced by SUBTASK_format_check,
+  SUBTASK_placement_check, and SUBTASK_completeness_check.
+  SUBTASK_synthesis reads all three and merges them into code_quality_findings.md
+  following the parent's findings_schema.yaml.
+
+required_sections:
+  - name: "## Concerns Covered"
+    description: >
+      List the concern numbers (from parent brief) this task covered,
+      with a one-line description of each. Example:
+        - Concern 1 (structural coherence)
+        - Concern 4 (formatting consistency)
+
+  - name: "## Summary"
+    description: >
+      One paragraph: what was checked, overall result (clean / N findings raised).
+
+  - name: "## Findings"
+    description: |
+      Zero or more findings, each following this structure:
+        **[SEVERITY] [item-id or short label]**: description
+        - Principle: <what standard is at stake>
+        - Evidence: <specific lines or values seen>
+        - Resolution: <what would satisfy this finding>
+
+      Severity values: BLOCKER | SHOULD_FIX | ADVISORY | CLEAN
+      A CLEAN finding explicitly names an item checked and found sound.
+      CLEAN entries are required: "no findings" means nothing without an account of
+      what was examined.
+
+severity_values:
+  BLOCKER: "Must be resolved before APPROVE; prevents merge"
+  SHOULD_FIX: "Should be resolved; does not block by itself unless stated"
+  ADVISORY: "Non-blocking note or observation"
+  CLEAN: "Item examined and found sound; explicitly recorded"

@@ -1,0 +1,9 @@
+inputs:
+  spokes:
+    timeline_reading: "../../SUBTASK_timeline_reading/outputs/screens-timeline-reading.md"
+    posting_conversation: "../../SUBTASK_posting_conversation/outputs/screens-posting-conversation.md"
+    social_actions: "../../SUBTASK_social_actions/outputs/screens-social-actions.md"
+    profiles_discovery: "../../SUBTASK_profiles_discovery/outputs/screens-profiles-discovery.md"
+req_ux_ranges: {timeline_reading: "051..053", posting_conversation: "054..058", social_actions: "059..060", profiles_discovery: "061..064"}
+evidence_format: "one section per identity: verdict (PASS|FAIL), checks performed, concrete citations (ids, headings, line refs), gaps found"
+on_failure: "report as FAIL with the gap; do not edit spoke outputs or plug the deliverable; SUBTASK_fold records it and requests a remediation amendment"

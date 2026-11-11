@@ -1,0 +1,32 @@
+{"timestamp":"2026-11-06T03:04:48.870973581Z","action":{"Dispatch":{"task_ids":["chirp-logged-out"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-06T03:05:29.064963011Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out"]}},"reason":"task chirp-logged-out transitioned to Ready"}
+{"timestamp":"2026-11-06T03:05:29.065129749Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out"]}},"reason":"task chirp-logged-out transitioned to Running"}
+{"timestamp":"2026-11-06T03:11:55.437201342Z","action":{"Dispatch":{"task_ids":["SUBTASK_server_public_timeline"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-06T03:12:14.217075856Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out"]}},"reason":"task chirp-logged-out suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-06T03:12:34.733196383Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_server_public_timeline"]}},"reason":"task SUBTASK_server_public_timeline transitioned to Ready"}
+{"timestamp":"2026-11-06T03:12:34.733433038Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_server_public_timeline"]}},"reason":"task SUBTASK_server_public_timeline transitioned to Running"}
+{"timestamp":"2026-11-06T03:23:25.524342429Z","action":{"Dispatch":{"task_ids":["CHILD_skeleton"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-06T03:23:41.704923445Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_server_public_timeline"]}},"reason":"task SUBTASK_server_public_timeline suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-06T03:24:28.837897330Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_skeleton"]}},"reason":"task CHILD_skeleton transitioned to Ready"}
+{"timestamp":"2026-11-06T03:24:28.838177037Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_skeleton"]}},"reason":"task CHILD_skeleton transitioned to Running"}
+{"timestamp":"2026-11-06T03:28:07.986095947Z","action":{"Dispatch":{"task_ids":["CHILD_in_memory"],"group_index":1}},"reason":"task CHILD_skeleton completed, dispatching ready successors"}
+{"timestamp":"2026-11-06T03:28:44.922318132Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_in_memory"]}},"reason":"task CHILD_in_memory transitioned to Ready"}
+{"timestamp":"2026-11-06T03:28:44.922626343Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_in_memory"]}},"reason":"task CHILD_in_memory transitioned to Running"}
+{"timestamp":"2026-11-06T03:29:32.718387571Z","action":{"Dispatch":{"task_ids":["CHILD_postgres"],"group_index":2}},"reason":"task CHILD_in_memory completed, dispatching ready successors"}
+{"timestamp":"2026-11-06T03:30:19.198471156Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_postgres"]}},"reason":"task CHILD_postgres transitioned to Ready"}
+{"timestamp":"2026-11-06T03:30:19.198657782Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_postgres"]}},"reason":"task CHILD_postgres transitioned to Running"}
+{"timestamp":"2026-11-06T03:34:17.292352940Z","action":{"Dispatch":{"task_ids":["CHILD_tests"],"group_index":3}},"reason":"task CHILD_postgres completed, dispatching ready successors"}
+{"timestamp":"2026-11-06T03:35:08.039325167Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_tests"]}},"reason":"task CHILD_tests transitioned to Ready"}
+{"timestamp":"2026-11-06T03:35:08.039616973Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_tests"]}},"reason":"task CHILD_tests transitioned to Running"}
+{"timestamp":"2026-11-06T03:40:25.939873332Z","action":{"Dispatch":{"task_ids":["CHILD_write_tests"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-06T03:41:10.543202075Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_write_tests"]}},"reason":"task CHILD_write_tests transitioned to Ready"}
+{"timestamp":"2026-11-06T03:41:10.543786818Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_write_tests"]}},"reason":"task CHILD_write_tests transitioned to Running"}
+{"timestamp":"2026-11-06T03:42:30.031237312Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_tests"]}},"reason":"task CHILD_tests suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-06T03:43:57.024026051Z","action":{"Dispatch":{"task_ids":["CHILD_ci_verify"],"group_index":1}},"reason":"task CHILD_write_tests completed, dispatching ready successors"}
+{"timestamp":"2026-11-06T03:44:39.529650186Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_ci_verify"]}},"reason":"task CHILD_ci_verify transitioned to Ready"}
+{"timestamp":"2026-11-06T03:44:39.529994938Z","action":{"WaitForCompletion":{"pending_task_ids":["CHILD_ci_verify"]}},"reason":"task CHILD_ci_verify transitioned to Running"}
+{"timestamp":"2026-11-06T03:48:58.758811768Z","action":{"SubtreeResolved":{"parent_task_id":"CHILD_tests","child_task_ids":["CHILD_write_tests","CHILD_ci_verify"],"success":false}},"reason":"all children of CHILD_tests reached terminal state (success=false)"}
+{"timestamp":"2026-11-06T03:48:58.759383690Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_server_public_timeline","chirp-logged-out"]}},"reason":"task CHILD_ci_verify failed, continuing with independent tasks (best-effort)"}
+{"timestamp":"2026-11-06T03:48:58.771968122Z","action":{"SubtreeResolved":{"parent_task_id":"SUBTASK_server_public_timeline","child_task_ids":["CHILD_skeleton","CHILD_in_memory","CHILD_postgres","CHILD_tests"],"success":false}},"reason":"all children of SUBTASK_server_public_timeline reached terminal state (success=false)"}
+{"timestamp":"2026-11-06T03:48:58.772322414Z","action":{"SubtreeResolved":{"parent_task_id":"chirp-logged-out","child_task_ids":["SUBTASK_server_public_timeline","SUBTASK_frontend_logged_out","SUBTASK_synthesis"],"success":false}},"reason":"all children of chirp-logged-out reached terminal state (success=false)"}
+{"timestamp":"2026-11-06T03:48:58.772503497Z","action":{"Complete":{"success":false}},"reason":"all tasks reached terminal state (subtree cascade)"}

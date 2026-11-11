@@ -1,0 +1,55 @@
+{"timestamp":"2026-10-06T19:33:54.574203532Z","action":{"Dispatch":{"task_ids":["ferric-router"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-06T19:36:21.834245693Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task ferric-router transitioned to Ready"}
+{"timestamp":"2026-10-06T19:36:21.834610476Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task ferric-router transitioned to Running"}
+{"timestamp":"2026-10-06T19:45:16.563931929Z","action":{"Dispatch":{"task_ids":["SUBTASK_scaffold"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-06T19:46:05.909246991Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_scaffold"]}},"reason":"task SUBTASK_scaffold transitioned to Ready"}
+{"timestamp":"2026-10-06T19:46:05.911838777Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_scaffold"]}},"reason":"task SUBTASK_scaffold transitioned to Running"}
+{"timestamp":"2026-10-06T19:46:17.691081254Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task ferric-router suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-06T19:50:39.582512712Z","action":{"Dispatch":{"task_ids":["SUBTASK_matcher"],"group_index":1}},"reason":"task SUBTASK_scaffold completed, dispatching ready successors"}
+{"timestamp":"2026-10-06T19:51:34.126718195Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_matcher"]}},"reason":"task SUBTASK_matcher transitioned to Ready"}
+{"timestamp":"2026-10-06T19:51:34.127248162Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_matcher"]}},"reason":"task SUBTASK_matcher transitioned to Running"}
+{"timestamp":"2026-10-06T19:54:52.996651195Z","action":{"Dispatch":{"task_ids":["SUBTASK_navigation"],"group_index":2}},"reason":"task SUBTASK_matcher completed, dispatching ready successors"}
+{"timestamp":"2026-10-06T19:56:22.284806106Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_navigation"]}},"reason":"task SUBTASK_navigation transitioned to Ready"}
+{"timestamp":"2026-10-06T19:56:22.285410072Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_navigation"]}},"reason":"task SUBTASK_navigation transitioned to Running"}
+{"timestamp":"2026-10-07T00:36:57.179841506Z","action":{"Dispatch":{"task_ids":["SUBTASK_navigation"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T00:38:19.951725787Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_navigation"]}},"reason":"task SUBTASK_navigation transitioned to Ready"}
+{"timestamp":"2026-10-07T00:38:19.952092452Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_navigation"]}},"reason":"task SUBTASK_navigation transitioned to Running"}
+{"timestamp":"2026-10-07T00:40:15.854475360Z","action":{"Dispatch":{"task_ids":["SUBTASK_view"],"group_index":0}},"reason":"task SUBTASK_navigation completed, dispatching ready successors"}
+{"timestamp":"2026-10-07T00:40:53.562866918Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_view"]}},"reason":"task SUBTASK_view transitioned to Ready"}
+{"timestamp":"2026-10-07T00:40:53.563179692Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_view"]}},"reason":"task SUBTASK_view transitioned to Running"}
+{"timestamp":"2026-10-07T00:48:35.948654957Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"task SUBTASK_view completed, dispatching ready successors"}
+{"timestamp":"2026-10-07T00:49:48.785950598Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-07T00:49:48.786267828Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-07T00:55:50.249532365Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task SUBTASK_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T03:12:57.646821493Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T03:14:07.466966865Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-07T03:14:07.467475763Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-07T03:18:56.272815735Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task SUBTASK_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T04:06:48.430485748Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T04:07:40.591235020Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-07T04:07:40.591907238Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-07T04:14:43.579351468Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task SUBTASK_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T04:14:47.043685581Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-07T04:15:13.580631755Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-07T16:15:56.739568974Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-07T16:17:26.161177692Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-07T16:17:26.161339812Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-07T16:22:07.784982048Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task SUBTASK_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-07T16:22:11.764166330Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-07T16:22:37.786077767Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T00:36:05.757843537Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T00:37:00.390182466Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-22T00:37:00.390639544Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-22T00:45:21.086167224Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task SUBTASK_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T00:45:24.973108612Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T00:45:51.087545186Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T16:04:21.604620595Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:08:16.710239234Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-22T16:08:16.710472005Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-22T16:12:58.924271206Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task SUBTASK_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:13:02.695539143Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T16:13:28.924829124Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T16:41:27.610936650Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:43:57.540008621Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-22T16:43:57.540331678Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-22T16:48:32.546551324Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router"]}},"reason":"task SUBTASK_synthesis failed, continuing with independent tasks (best-effort)"}

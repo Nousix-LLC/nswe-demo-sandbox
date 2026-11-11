@@ -1,0 +1,48 @@
+# Contract manifest — SUBTASK_domain_app_design subtree
+# kind: yaml_schema. EXTENDS the inherited design-chirp-r1 contract (../../contracts/); never overrides it.
+# READ-ONLY for every descendant (SUBTASK_domain_model / persistence_state / module_structure / synthesis).
+
+kind: yaml_schema
+
+extends:
+  - ../../contracts/_MANIFEST.yaml                 # one-owner-per-file; this node owns domain-application-design.md + REQ-DOM-*
+  - ../../contracts/design_artifact_map.yaml       # required sections of domain-application-design.md
+  - ../../contracts/id_and_traceability_schema.yaml # REQ-<AREA>-NNN format; area DOM -> this node; per-REQ fields
+
+artifacts:
+  - file: req_dom_partition.yaml
+    declares: "REQ-DOM-NNN number range per part, required-section ownership per part, and the entity-vocabulary seam."
+
+# One producer per artifact. REQ-DOM number ranges are disjoint so parts compose without id collision.
+ownership:
+  "section:domain_model":                 SUBTASK_domain_model      # + REQ-DOM-001..049 + entity vocabulary
+  "section:persistence_requirement":      SUBTASK_persistence_state # + REQ-DOM-100..149
+  "section:modules_and_responsibilities": SUBTASK_module_structure  # + REQ-DOM-200..249 (shared with next)
+  "section:interfaces_and_entry_points":  SUBTASK_module_structure  # + REQ-DOM-200..249
+  "outputs/domain-application-design.md": SUBTASK_dad_synthesis     # consolidated file (all required sections)
+  "section:requirements_and_acceptance_criteria": SUBTASK_dad_synthesis # union of all REQ-DOM-* from the three parts
+  "SYNTHESIS.md":                         SUBTASK_dad_synthesis     # fold record at this node's directory
+
+# Invariants the combined parts MUST satisfy. Asserted by SUBTASK_synthesis with recorded evidence.
+# A failing identity is reported and remediated by decomposing a remediation subtree — never silently plugged.
+# Asserted by SUBTASK_dad_synthesis (Task Kind: synthesis).
+identities:
+  - id: ALL_REQUIRED_SECTIONS_PRESENT
+    statement: "outputs/domain-application-design.md contains every required section in ../../contracts/design_artifact_map.yaml for domain-application-design.md."
+  - id: REQ_DOM_WELL_FORMED
+    statement: "Every REQ-DOM-* has id, statement, testable acceptance_criteria, and a release_gating (true|false) flag, per the inherited id schema."
+  - id: REQ_DOM_NO_COLLISION
+    statement: "REQ-DOM-* ids are unique; each part stays within its declared range (001..049 / 100..149 / 200..249)."
+  - id: ONE_ENTITY_VOCABULARY
+    statement: "persistence-state.md and module-structure.md reference only entities defined in domain-model.md's entity vocabulary; no part introduces an entity the model does not name."
+  - id: DURABILITY_TESTABLE
+    statement: "The persistence_requirement names a concrete list of what must survive a restart, checkable by an operational_check."
+  - id: REQ_DOM_TRACES_PROD
+    statement: "Every REQ-DOM-* that restates or refines a product requirement cites the REQ-PROD-* it traces to."
+  - id: REPO_HYGIENE
+    statement: "Repo-destined content (the consolidated file + REQ-DOM-*) carries no host/system/taskflow detail and no attribution trailer."
+
+derived_artifacts:
+  - name: "outputs/domain-application-design.md"
+    generated_from: "domain-model.md + persistence-state.md + module-structure.md"
+    produced_by: SUBTASK_dad_synthesis

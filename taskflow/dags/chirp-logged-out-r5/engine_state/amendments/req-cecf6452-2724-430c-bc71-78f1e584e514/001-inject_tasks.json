@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T06:05:01.258660798Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "chirp-logged-out-r5-discovery"
+      ],
+      "placement_parent_task_id": "chirp-logged-out-r5"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: chirp-logged-out-r5-discovery",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Discovery child: reads the implementation on work/chirp-logged-out against each AC-1 through AC-5 and produces a verification report consumed by synthesis.",
+        "task_id": "chirp-logged-out-r5"
+      }
+    },
+    "updated_graph_edges": {
+      "chirp-logged-out-r5": [],
+      "chirp-logged-out-r5-discovery": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "chirp-logged-out-r5",
+          "chirp-logged-out-r5-discovery"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

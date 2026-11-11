@@ -1,0 +1,30 @@
+{"timestamp":"2026-11-04T04:19:45.120310511Z","action":{"Dispatch":{"task_ids":["ferric-router-r1"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-04T04:20:31.452544488Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r1"]}},"reason":"task ferric-router-r1 transitioned to Ready"}
+{"timestamp":"2026-11-04T04:20:31.452775631Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r1"]}},"reason":"task ferric-router-r1 transitioned to Running"}
+{"timestamp":"2026-11-04T04:33:53.984742065Z","action":{"Dispatch":{"task_ids":["navigate-replace"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-04T04:34:17.275309600Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r1"]}},"reason":"task ferric-router-r1 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-04T04:35:14.911531449Z","action":{"WaitForCompletion":{"pending_task_ids":["navigate-replace"]}},"reason":"task navigate-replace transitioned to Ready"}
+{"timestamp":"2026-11-04T04:35:14.911893760Z","action":{"WaitForCompletion":{"pending_task_ids":["navigate-replace"]}},"reason":"task navigate-replace transitioned to Running"}
+{"timestamp":"2026-11-04T04:39:07.431345500Z","action":{"Dispatch":{"task_ids":["active-link"],"group_index":1}},"reason":"task navigate-replace completed, dispatching ready successors"}
+{"timestamp":"2026-11-04T04:40:16.392201092Z","action":{"WaitForCompletion":{"pending_task_ids":["active-link"]}},"reason":"task active-link transitioned to Ready"}
+{"timestamp":"2026-11-04T04:40:16.392690731Z","action":{"WaitForCompletion":{"pending_task_ids":["active-link"]}},"reason":"task active-link transitioned to Running"}
+{"timestamp":"2026-11-04T04:42:20.461561896Z","action":{"Dispatch":{"task_ids":["nested-routes"],"group_index":2}},"reason":"task active-link completed, dispatching ready successors"}
+{"timestamp":"2026-11-04T04:43:19.725645263Z","action":{"WaitForCompletion":{"pending_task_ids":["nested-routes"]}},"reason":"task nested-routes transitioned to Ready"}
+{"timestamp":"2026-11-04T04:43:19.725865017Z","action":{"WaitForCompletion":{"pending_task_ids":["nested-routes"]}},"reason":"task nested-routes transitioned to Running"}
+{"timestamp":"2026-11-04T04:51:05.065457217Z","action":{"Dispatch":{"task_ids":["synthesis-gate"],"group_index":3}},"reason":"task nested-routes completed, dispatching ready successors"}
+{"timestamp":"2026-11-04T04:51:34.134008029Z","action":{"WaitForCompletion":{"pending_task_ids":["synthesis-gate"]}},"reason":"task synthesis-gate transitioned to Ready"}
+{"timestamp":"2026-11-04T04:51:34.134432674Z","action":{"WaitForCompletion":{"pending_task_ids":["synthesis-gate"]}},"reason":"task synthesis-gate transitioned to Running"}
+{"timestamp":"2026-11-04T05:02:59.879209647Z","action":{"SubtreeResolved":{"parent_task_id":"ferric-router-r1","child_task_ids":["navigate-replace","active-link","nested-routes","synthesis-gate"],"success":true}},"reason":"all children of ferric-router-r1 reached terminal state (success=true)"}
+{"timestamp":"2026-11-04T05:02:59.879741557Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-11-04T05:02:59.880109646Z","action":{"Dispatch":{"task_ids":["ferric-router-r1"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-04T05:03:40.966528978Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r1"]}},"reason":"task ferric-router-r1 transitioned to Ready"}
+{"timestamp":"2026-11-04T05:03:40.966769266Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r1"]}},"reason":"task ferric-router-r1 transitioned to Running"}
+{"timestamp":"2026-11-04T05:11:50.469757982Z","action":{"Dispatch":{"task_ids":["clippy-fix"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-04T05:12:08.889184789Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-router-r1"]}},"reason":"task ferric-router-r1 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-04T05:12:43.036341209Z","action":{"WaitForCompletion":{"pending_task_ids":["clippy-fix"]}},"reason":"task clippy-fix transitioned to Ready"}
+{"timestamp":"2026-11-04T05:12:43.036615296Z","action":{"WaitForCompletion":{"pending_task_ids":["clippy-fix"]}},"reason":"task clippy-fix transitioned to Running"}
+{"timestamp":"2026-11-04T05:17:08.685970876Z","action":{"Dispatch":{"task_ids":["synthesis-verify"],"group_index":1}},"reason":"task clippy-fix completed, dispatching ready successors"}
+{"timestamp":"2026-11-04T05:17:55.346566444Z","action":{"WaitForCompletion":{"pending_task_ids":["synthesis-verify"]}},"reason":"task synthesis-verify transitioned to Ready"}
+{"timestamp":"2026-11-04T05:17:55.346759182Z","action":{"WaitForCompletion":{"pending_task_ids":["synthesis-verify"]}},"reason":"task synthesis-verify transitioned to Running"}
+{"timestamp":"2026-11-04T05:22:56.196618844Z","action":{"SubtreeResolved":{"parent_task_id":"ferric-router-r1","child_task_ids":["clippy-fix","synthesis-verify"],"success":true}},"reason":"all children of ferric-router-r1 reached terminal state (success=true)"}
+{"timestamp":"2026-11-04T05:22:56.196986068Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T04:01:32.260911759Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesize-root"
+      ],
+      "placement_parent_task_id": "design-ferric-1_0-r2"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_synthesize-root",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Synthesis gate: reads all finalized design artifacts and the remediation report, produces the root SYNTHESIS.md with the Ferric 1.0 release bar and issue index, and folds the parent node via engine_resume_suspended.",
+        "task_id": "design-ferric-1_0-r2"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_remediate": [
+        "SUBTASK_review-validate"
+      ],
+      "SUBTASK_review-validate": [],
+      "SUBTASK_synthesize-root": [
+        "SUBTASK_remediate"
+      ],
+      "design-ferric-1_0-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_review-validate",
+          "design-ferric-1_0-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_remediate"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesize-root"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

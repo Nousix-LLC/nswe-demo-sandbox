@@ -1,0 +1,61 @@
+# Contract manifest — SUBTASK_bar_ux subtree
+# kind: yaml_schema. Extends the inherited ../contracts/ (SUBTASK_release_bar BAR partition) and
+# ../../contracts/ (DAG-root id/traceability schema) ADDITIVELY: it sub-partitions this subtree's
+# BAR-200..299 range across the five experience-area spokes + the synthesis cross-cutting range, and
+# fixes the sub-fragment layout. Redefines nothing inherited. READ-ONLY for every descendant.
+
+kind: yaml_schema
+
+extends:
+  - "../contracts/"      # SUBTASK_release_bar: this subtree owns BAR-200..299 + the bar-ux.md fragment;
+                         # the per-BAR field set, the proposed_stage convention, the fragment+coverage-note layout.
+  - "../../contracts/"   # DAG root: BAR-<NNN> 3-digit format, closed verification_methods vocab,
+                         # stage vocabulary {usable_early, releasable}.
+# This sub-contract MUST NOT override any of the above.
+
+artifacts:
+  - file: bar_ux_partition.yaml
+    declares: "Disjoint BAR-<NNN> sub-range per experience-area spoke within BAR-200..299 + the synthesis
+               cross-cutting sub-range; the per-area release-gating REQ-UX-* set each spoke must cover;
+               the per-BAR field set (from the inherited schema); the sub-fragment layout each spoke emits."
+
+# One producer per artifact. An artifact with no owner is a hole; with two owners, a race.
+ownership:
+  "SUBTASK_bar_ux_ia/outputs/bar-ux-ia.md":                 SUBTASK_bar_ux_ia          # BAR-200..214 (REQ-UX-001..019 gating)
+  "SUBTASK_bar_ux_visual/outputs/bar-ux-visual.md":         SUBTASK_bar_ux_visual      # BAR-215..229 (REQ-UX-020..039 gating)
+  "SUBTASK_bar_ux_screens/outputs/bar-ux-screens.md":       SUBTASK_bar_ux_screens     # BAR-230..264 (REQ-UX-040..089 gating)
+  "SUBTASK_bar_ux_responsive/outputs/bar-ux-responsive.md": SUBTASK_bar_ux_responsive  # BAR-265..274 (REQ-UX-090..099 gating)
+  "SUBTASK_bar_ux_a11y/outputs/bar-ux-a11y.md":             SUBTASK_bar_ux_a11y        # BAR-275..294 (REQ-UX-100..119 gating)
+  "outputs/bar-ux.md":                                      SUBTASK_bar_ux_synthesis   # SUBTASK_bar_ux's declared output (assembled)
+  "BAR-295..299 (cross-cutting)":                           SUBTASK_bar_ux_synthesis   # only for a finding no single sub-area owns
+  "SYNTHESIS.md":                                           SUBTASK_bar_ux_synthesis   # fold record at the SUBTASK_bar_ux workspace
+
+# Invariants the combined outputs MUST satisfy. Asserted by SUBTASK_bar_ux_synthesis (the gate) with recorded
+# evidence. A failing identity is reported and remediated (amend/decompose), NEVER silently plugged.
+identities:
+  - id: UX_BAR_RANGE_RESPECTED
+    statement: "Every BAR-NNN lies within its owning spoke's assigned sub-range; no spoke wrote outside its sub-range."
+  - id: UX_NO_BAR_COLLISION
+    statement: "All BAR-NNN ids across the five sub-fragments plus the synthesis cross-cutting bars are distinct."
+  - id: UX_GATING_REQ_COVERAGE
+    statement: "Every release-gating REQ-UX-* (the 106 with release_gating: true) is referenced by >=1 BAR-*,
+                evaluated per sub-area against that sub-area's gating set listed in bar_ux_partition.yaml."
+  - id: UX_BAR_TESTABLE
+    statement: "Every BAR-* names a verification_method from the frozen vocabulary and references >=1 REQ-*."
+  - id: UX_BAR_STAGED
+    statement: "Every BAR-* carries a stage in {usable_early, releasable}; the assembled fragment states one
+                stage per BAR-* (no criterion staged two ways). These are the UX-view proposal; the parent
+                SUBTASK_bar_synthesis owns the final cross-area MVP-vs-releasable line."
+  - id: UX_NONGATING_EXCLUDED
+    statement: "No BAR-* is justified SOLELY by a non-gating REQ-UX-* (release_gating: false). The non-gating
+                REQ-UX-* are: 015, 019, 023, 024, 030, 057, 064, 071, 072, 078, 080, 081, 105."
+  - id: UX_COVERAGE_NOTE_PRESENT
+    statement: "bar-ux.md carries the coverage note mapping every release-gating REQ-UX-* to the BAR-*(s) that
+                cover it, so the parent synthesis gate asserts UX GATING_REQ_COVERAGE without re-deriving the set."
+  - id: UX_HYGIENE
+    statement: "bar-ux.md carries no host/system/taskflow detail and no attribution trailer."
+
+derived_artifacts:
+  - name: ux_bar_req_coverage_map
+    generated_from: "the five UX sub-fragments (BAR-* -> REQ-UX-* references) + each sub-area's release-gating REQ set"
+    consumed_by: "SUBTASK_bar_ux_synthesis (this subtree, as the bar-ux.md coverage note) then SUBTASK_bar_synthesis (parent)"

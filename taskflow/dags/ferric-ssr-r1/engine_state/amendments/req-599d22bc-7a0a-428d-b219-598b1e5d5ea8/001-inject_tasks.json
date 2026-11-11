@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T22:14:18.299995469Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "ferric-ssr-r1-skeleton"
+      ],
+      "placement_parent_task_id": "ferric-ssr-r1"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: ferric-ssr-r1-skeleton",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Walking skeleton: takes sole ownership of lib.rs and Cargo.toml, creates stubs for ssr.rs and hydrate.rs, leaves branch work/ferric-ssr-r1 in clean build state on both native and wasm32 targets.",
+        "task_id": "ferric-ssr-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "ferric-ssr-r1": [],
+      "ferric-ssr-r1-skeleton": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-ssr-r1",
+          "ferric-ssr-r1-skeleton"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

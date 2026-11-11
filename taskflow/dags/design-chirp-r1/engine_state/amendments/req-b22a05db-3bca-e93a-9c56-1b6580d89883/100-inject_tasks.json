@@ -1,0 +1,541 @@
+{
+  "sequence": 100,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-29T04:45:02.535836670Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_fold"
+      ],
+      "placement_parent_task_id": "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis"
+    },
+    "resulting_version": 27,
+    "summary": "inject tasks: SUBTASK_fold",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Fold child (synthesis kind) of the account-lifecycle gate; depends on assembly and verification.",
+        "task_id": "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_delivery_backlog": [
+        "SUBTASK_design_pr",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_design_pr": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_domain_app_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_domain_app_design/SUBTASK_dad_synthesis": [
+        "SUBTASK_domain_app_design/SUBTASK_domain_model",
+        "SUBTASK_domain_app_design/SUBTASK_persistence_state",
+        "SUBTASK_domain_app_design/SUBTASK_module_structure"
+      ],
+      "SUBTASK_domain_app_design/SUBTASK_domain_model": [],
+      "SUBTASK_domain_app_design/SUBTASK_module_structure": [
+        "SUBTASK_domain_app_design/SUBTASK_domain_model"
+      ],
+      "SUBTASK_domain_app_design/SUBTASK_persistence_state": [
+        "SUBTASK_domain_app_design/SUBTASK_domain_model"
+      ],
+      "SUBTASK_experience_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_experience_design/SUBTASK_accessibility": [
+        "SUBTASK_experience_design/SUBTASK_ia_interaction",
+        "SUBTASK_experience_design/SUBTASK_visual_system"
+      ],
+      "SUBTASK_experience_design/SUBTASK_ia_interaction": [],
+      "SUBTASK_experience_design/SUBTASK_responsive": [
+        "SUBTASK_experience_design/SUBTASK_ia_interaction",
+        "SUBTASK_experience_design/SUBTASK_visual_system"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows": [
+        "SUBTASK_experience_design/SUBTASK_ia_interaction",
+        "SUBTASK_experience_design/SUBTASK_visual_system"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_leaving": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_onboarding_profile": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_account_contact": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_notification_prefs": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_sessions_devices": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_settings_hub": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_synthesis": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_onboarding_profile",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_leaving"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_assemble": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_fold": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_assemble",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_verify"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_verify": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_assemble"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_considered_states": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation/SUBTASK_compose_post": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation/SUBTASK_reply_conversation": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation/SUBTASK_synthesis": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation/SUBTASK_compose_post",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation/SUBTASK_reply_conversation"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_profiles_discovery": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_social_actions": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_timeline_reading",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_social_actions",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_profiles_discovery"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_assemble": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_assemble/SUBTASK_build_register": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_assemble/SUBTASK_join_surfaces": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_fold": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_assemble",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_verify_content",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_verify_structure"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_verify_content": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_assemble"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_verify_structure": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_assemble"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_timeline_reading": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_get_in": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_safety_notifications": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_assemble_deliverable": [],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_fold": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_verify_design",
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_verify_register"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_verify_design": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_assemble_deliverable"
+      ],
+      "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_verify_register": [
+        "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_assemble_deliverable"
+      ],
+      "SUBTASK_experience_design/SUBTASK_synthesis": [
+        "SUBTASK_experience_design/SUBTASK_ia_interaction",
+        "SUBTASK_experience_design/SUBTASK_visual_system",
+        "SUBTASK_experience_design/SUBTASK_screens_flows",
+        "SUBTASK_experience_design/SUBTASK_responsive",
+        "SUBTASK_experience_design/SUBTASK_accessibility"
+      ],
+      "SUBTASK_experience_design/SUBTASK_visual_system": [
+        "SUBTASK_experience_design/SUBTASK_ia_interaction"
+      ],
+      "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_component_library": [
+        "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_visual_language"
+      ],
+      "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis": [
+        "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_visual_language",
+        "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_component_library"
+      ],
+      "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis/SUBTASK_assemble_deliverable": [],
+      "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis/SUBTASK_fold_record": [
+        "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis/SUBTASK_assemble_deliverable",
+        "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis/SUBTASK_verify_identities"
+      ],
+      "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis/SUBTASK_verify_identities": [
+        "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis/SUBTASK_assemble_deliverable"
+      ],
+      "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_visual_language": [],
+      "SUBTASK_identity_trust": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_identity_trust/SUBTASK_abuse_privacy": [],
+      "SUBTASK_identity_trust/SUBTASK_accounts_lifecycle": [],
+      "SUBTASK_identity_trust/SUBTASK_auth_sessions": [],
+      "SUBTASK_identity_trust/SUBTASK_authorization": [],
+      "SUBTASK_identity_trust/SUBTASK_synthesis": [
+        "SUBTASK_identity_trust/SUBTASK_accounts_lifecycle",
+        "SUBTASK_identity_trust/SUBTASK_auth_sessions",
+        "SUBTASK_identity_trust/SUBTASK_authorization",
+        "SUBTASK_identity_trust/SUBTASK_abuse_privacy"
+      ],
+      "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_fold_gate": [
+        "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_verify_coverage",
+        "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_verify_hygiene",
+        "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_verify_register"
+      ],
+      "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_verify_coverage": [],
+      "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_verify_hygiene": [],
+      "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_verify_register": [],
+      "SUBTASK_operational_readiness": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design"
+      ],
+      "SUBTASK_operational_readiness/SUBTASK_ops_backups_recovery": [
+        "SUBTASK_operational_readiness/SUBTASK_ops_durable_data"
+      ],
+      "SUBTASK_operational_readiness/SUBTASK_ops_durable_data": [],
+      "SUBTASK_operational_readiness/SUBTASK_ops_limits_quotas": [],
+      "SUBTASK_operational_readiness/SUBTASK_ops_observability": [],
+      "SUBTASK_operational_readiness/SUBTASK_ops_status_incident": [
+        "SUBTASK_operational_readiness/SUBTASK_ops_observability"
+      ],
+      "SUBTASK_operational_readiness/SUBTASK_ops_synthesis": [
+        "SUBTASK_operational_readiness/SUBTASK_ops_durable_data",
+        "SUBTASK_operational_readiness/SUBTASK_ops_backups_recovery",
+        "SUBTASK_operational_readiness/SUBTASK_ops_limits_quotas",
+        "SUBTASK_operational_readiness/SUBTASK_ops_observability",
+        "SUBTASK_operational_readiness/SUBTASK_ops_status_incident"
+      ],
+      "SUBTASK_product_requirements": [],
+      "SUBTASK_product_requirements/SUBTASK_pr_synthesis": [
+        "SUBTASK_product_requirements/SUBTASK_product_definition",
+        "SUBTASK_product_requirements/SUBTASK_users_and_journeys",
+        "SUBTASK_product_requirements/SUBTASK_requirements"
+      ],
+      "SUBTASK_product_requirements/SUBTASK_product_definition": [],
+      "SUBTASK_product_requirements/SUBTASK_requirements": [
+        "SUBTASK_product_requirements/SUBTASK_product_definition",
+        "SUBTASK_product_requirements/SUBTASK_users_and_journeys"
+      ],
+      "SUBTASK_product_requirements/SUBTASK_users_and_journeys": [],
+      "SUBTASK_release_bar": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness"
+      ],
+      "SUBTASK_release_bar/SUBTASK_bar_dom": [],
+      "SUBTASK_release_bar/SUBTASK_bar_id": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ops": [],
+      "SUBTASK_release_bar/SUBTASK_bar_prod": [],
+      "SUBTASK_release_bar/SUBTASK_bar_synthesis": [
+        "SUBTASK_release_bar/SUBTASK_bar_prod",
+        "SUBTASK_release_bar/SUBTASK_bar_dom",
+        "SUBTASK_release_bar/SUBTASK_bar_ux",
+        "SUBTASK_release_bar/SUBTASK_bar_id",
+        "SUBTASK_release_bar/SUBTASK_bar_ops"
+      ],
+      "SUBTASK_release_bar/SUBTASK_bar_synthesis/SUBTASK_staging_gap_review": [],
+      "SUBTASK_release_bar/SUBTASK_bar_synthesis/SUBTASK_verify_and_fold": [
+        "SUBTASK_release_bar/SUBTASK_bar_synthesis/SUBTASK_staging_gap_review"
+      ],
+      "SUBTASK_release_bar/SUBTASK_bar_ux": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_a11y": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_ia": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_responsive": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_account_lifecycle": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_core_loop": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_entry_auth": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_safety_states": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_social_profiles": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_synthesis": [
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_entry_auth",
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_core_loop",
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_social_profiles",
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_account_lifecycle",
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_safety_states"
+      ],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_synthesis": [
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_ia",
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_visual",
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens",
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_responsive",
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_a11y"
+      ],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_synthesis/SUBTASK_synth_fold": [
+        "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_synthesis/SUBTASK_synth_verify"
+      ],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_synthesis/SUBTASK_synth_verify": [],
+      "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_visual": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_design_pr",
+        "SUBTASK_delivery_backlog",
+        "SUBTASK_release_bar",
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness"
+      ],
+      "SUBTASK_synthesis/SUBTASK_fold": [
+        "SUBTASK_synthesis/SUBTASK_identity_traceability",
+        "SUBTASK_synthesis/SUBTASK_live_measurement"
+      ],
+      "SUBTASK_synthesis/SUBTASK_fold/SUBTASK_bar_issue_index": [],
+      "SUBTASK_synthesis/SUBTASK_fold/SUBTASK_join_gap": [],
+      "SUBTASK_synthesis/SUBTASK_fold/SUBTASK_verdict_fold": [
+        "SUBTASK_synthesis/SUBTASK_fold/SUBTASK_bar_issue_index",
+        "SUBTASK_synthesis/SUBTASK_fold/SUBTASK_join_gap"
+      ],
+      "SUBTASK_synthesis/SUBTASK_identity_traceability": [],
+      "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_assemble": [
+        "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_matrix_prod_dom",
+        "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_matrix_ux",
+        "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_matrix_id_ops",
+        "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_bar_mapping",
+        "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_backlog_pr",
+        "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_concern_surface"
+      ],
+      "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_backlog_pr": [],
+      "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_bar_mapping": [],
+      "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_concern_surface": [],
+      "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_matrix_id_ops": [],
+      "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_matrix_prod_dom": [],
+      "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_matrix_ux": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_automated_tests": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_inspection_checks": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_accessibility": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_account_lifecycle": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_core_loop": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_getin_identity": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_journeys_fold": [
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_getin_identity",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_core_loop",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_account_lifecycle",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_resilience_states",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_safety_trust_support",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_visual_craft_nav",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_responsive_phone",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_accessibility",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_web_delivery_api"
+      ],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_resilience_states": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_responsive_phone": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_safety_trust_support": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_visual_craft_nav": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_web_delivery_api": [],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_measurement_fold": [
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_automated_tests",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_inspection_checks",
+        "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_operational_checks"
+      ],
+      "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_operational_checks": [],
+      "design-chirp-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_domain_app_design/SUBTASK_domain_model",
+          "SUBTASK_experience_design/SUBTASK_ia_interaction",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_leaving",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_onboarding_profile",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_account_contact",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_notification_prefs",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_sessions_devices",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_settings_hub",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_settings_management/SUBTASK_synthesis",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_assemble",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_considered_states",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation/SUBTASK_compose_post",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation/SUBTASK_reply_conversation",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_profiles_discovery",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_social_actions",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_assemble",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_assemble/SUBTASK_build_register",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_assemble/SUBTASK_join_surfaces",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_timeline_reading",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_get_in",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_safety_notifications",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_assemble_deliverable",
+          "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis/SUBTASK_assemble_deliverable",
+          "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_visual_language",
+          "SUBTASK_identity_trust/SUBTASK_abuse_privacy",
+          "SUBTASK_identity_trust/SUBTASK_accounts_lifecycle",
+          "SUBTASK_identity_trust/SUBTASK_auth_sessions",
+          "SUBTASK_identity_trust/SUBTASK_authorization",
+          "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_verify_coverage",
+          "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_verify_hygiene",
+          "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_verify_register",
+          "SUBTASK_operational_readiness/SUBTASK_ops_durable_data",
+          "SUBTASK_operational_readiness/SUBTASK_ops_limits_quotas",
+          "SUBTASK_operational_readiness/SUBTASK_ops_observability",
+          "SUBTASK_product_requirements",
+          "SUBTASK_product_requirements/SUBTASK_product_definition",
+          "SUBTASK_product_requirements/SUBTASK_users_and_journeys",
+          "SUBTASK_release_bar/SUBTASK_bar_dom",
+          "SUBTASK_release_bar/SUBTASK_bar_id",
+          "SUBTASK_release_bar/SUBTASK_bar_ops",
+          "SUBTASK_release_bar/SUBTASK_bar_prod",
+          "SUBTASK_release_bar/SUBTASK_bar_synthesis/SUBTASK_staging_gap_review",
+          "SUBTASK_release_bar/SUBTASK_bar_ux",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_a11y",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_ia",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_responsive",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_account_lifecycle",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_core_loop",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_entry_auth",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_safety_states",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_social_profiles",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_synthesis/SUBTASK_synth_verify",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_visual",
+          "SUBTASK_synthesis/SUBTASK_fold/SUBTASK_bar_issue_index",
+          "SUBTASK_synthesis/SUBTASK_fold/SUBTASK_join_gap",
+          "SUBTASK_synthesis/SUBTASK_identity_traceability",
+          "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_backlog_pr",
+          "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_bar_mapping",
+          "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_concern_surface",
+          "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_matrix_id_ops",
+          "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_matrix_prod_dom",
+          "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_matrix_ux",
+          "SUBTASK_synthesis/SUBTASK_live_measurement",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_automated_tests",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_inspection_checks",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_accessibility",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_account_lifecycle",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_core_loop",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_getin_identity",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_resilience_states",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_responsive_phone",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_safety_trust_support",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_visual_craft_nav",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_web_delivery_api",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_operational_checks",
+          "design-chirp-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_domain_app_design",
+          "SUBTASK_domain_app_design/SUBTASK_module_structure",
+          "SUBTASK_domain_app_design/SUBTASK_persistence_state",
+          "SUBTASK_experience_design",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_verify",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_posting_conversation/SUBTASK_synthesis",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_verify_content",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_verify_structure",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_verify_design",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_verify_register",
+          "SUBTASK_experience_design/SUBTASK_visual_system",
+          "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_component_library",
+          "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis/SUBTASK_verify_identities",
+          "SUBTASK_identity_trust",
+          "SUBTASK_identity_trust/SUBTASK_synthesis",
+          "SUBTASK_identity_trust/SUBTASK_synthesis/SUBTASK_fold_gate",
+          "SUBTASK_operational_readiness/SUBTASK_ops_backups_recovery",
+          "SUBTASK_operational_readiness/SUBTASK_ops_status_incident",
+          "SUBTASK_product_requirements/SUBTASK_requirements",
+          "SUBTASK_release_bar/SUBTASK_bar_synthesis",
+          "SUBTASK_release_bar/SUBTASK_bar_synthesis/SUBTASK_verify_and_fold",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_screens/SUBTASK_bar_screens_synthesis",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_synthesis",
+          "SUBTASK_release_bar/SUBTASK_bar_ux/SUBTASK_bar_ux_synthesis/SUBTASK_synth_fold",
+          "SUBTASK_synthesis/SUBTASK_fold",
+          "SUBTASK_synthesis/SUBTASK_fold/SUBTASK_verdict_fold",
+          "SUBTASK_synthesis/SUBTASK_identity_traceability/SUBTASK_assemble",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_live_journeys/SUBTASK_journeys_fold",
+          "SUBTASK_synthesis/SUBTASK_live_measurement/SUBTASK_measurement_fold"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_domain_app_design/SUBTASK_dad_synthesis",
+          "SUBTASK_experience_design/SUBTASK_accessibility",
+          "SUBTASK_experience_design/SUBTASK_responsive",
+          "SUBTASK_experience_design/SUBTASK_screens_flows",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_account_lifecycle/SUBTASK_synthesis/SUBTASK_fold",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_core_loop/SUBTASK_synthesis/SUBTASK_fold",
+          "SUBTASK_experience_design/SUBTASK_screens_flows/SUBTASK_synthesis/SUBTASK_fold",
+          "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis",
+          "SUBTASK_experience_design/SUBTASK_visual_system/SUBTASK_synthesis/SUBTASK_fold_record",
+          "SUBTASK_operational_readiness",
+          "SUBTASK_operational_readiness/SUBTASK_ops_synthesis",
+          "SUBTASK_product_requirements/SUBTASK_pr_synthesis"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_experience_design/SUBTASK_synthesis",
+          "SUBTASK_release_bar"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "SUBTASK_design_pr"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "group_index": 5,
+        "task_ids": [
+          "SUBTASK_delivery_backlog"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "group_index": 6,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

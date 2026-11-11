@@ -1,0 +1,63 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T02:02:08.807876837Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_b1_concurrency"
+      ],
+      "placement_parent_task_id": "SUBTASK_correctness_concurrency"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: SUBTASK_b1_concurrency",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_correctness_concurrency: B1+concurrency analysis of async_resource.rs is an independent spoke (REQ-ASYNC-001/003/005/016 + spawn_local hazard assessment)",
+        "task_id": "SUBTASK_correctness_concurrency"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1_concurrency": [],
+      "SUBTASK_correctness_concurrency": [],
+      "SUBTASK_quality_tests_idiom": [],
+      "SUBTASK_security": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_correctness_concurrency",
+        "SUBTASK_quality_tests_idiom",
+        "SUBTASK_security"
+      ],
+      "review-ferric-async-forms-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1_concurrency",
+          "SUBTASK_correctness_concurrency",
+          "SUBTASK_quality_tests_idiom",
+          "SUBTASK_security",
+          "review-ferric-async-forms-r3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

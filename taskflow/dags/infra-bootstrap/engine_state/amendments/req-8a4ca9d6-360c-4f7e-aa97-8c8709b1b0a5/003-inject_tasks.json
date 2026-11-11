@@ -1,0 +1,57 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T05:59:19.733074322Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_gitops_argocd"
+      ],
+      "placement_parent_task_id": "infra-bootstrap"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_gitops_argocd",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "infra-bootstrap (#10) decomposition — spoke 3 of 4: ArgoCD GitOps control-plane install into its own namespace, readiness proof, access/credential-retrieval docs + RBAC posture. Depends on SUBTASK_cluster_k3s (installs into the running cluster — runtime serialize edge, Group 1).",
+        "task_id": "infra-bootstrap"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_cluster_k3s": [],
+      "SUBTASK_gitops_argocd": [
+        "SUBTASK_cluster_k3s"
+      ],
+      "SUBTASK_wasm_toolchain": [],
+      "infra-bootstrap": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_cluster_k3s",
+          "SUBTASK_wasm_toolchain",
+          "infra-bootstrap"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_gitops_argocd"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

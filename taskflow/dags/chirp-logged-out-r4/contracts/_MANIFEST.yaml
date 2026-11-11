@@ -1,0 +1,33 @@
+kind: feature_implementation
+description: "Logged-out visitor experience for Chirp — public timeline + public user profiles"
+
+ownership:
+  SUBTASK_explore_and_setup:
+    - "taskflow/dags/chirp-logged-out-r4/SUBTASK_explore_and_setup/analysis.md"
+    - "design/** (READ ONLY — this task reads, never writes, design docs)"
+    - "crates/** (READ ONLY — this task reads, never writes, crate code)"
+  SUBTASK_backend:
+    - "crates/chirp-server/**"
+  SUBTASK_frontend:
+    - "crates/chirp-frontend/**"
+  SUBTASK_synthesis:
+    - ".git/** (branch creation, staging, committing)"
+    - "taskflow/dags/chirp-logged-out-r4/SYNTHESIS.md"
+
+identities:
+  - "Every new GET endpoint returns 200 without an Authorization header"
+  - "Frontend home route is accessible without authentication"
+  - "Loading, empty, error, and end-of-list states are each distinct components/views"
+  - "Sign-up and sign-in navigation links are present on the landing page"
+  - "cargo fmt --check passes on all modified crates"
+  - "cargo clippy passes on all modified crates"
+  - "cargo test passes on all modified crates"
+  - "One PR is open against main with 'Closes #35' in the body"
+
+derived_artifacts:
+  - artifact: "contracts/public_api_spec.md"
+    generated_from: "hub decomposition"
+    consumed_by:
+      - SUBTASK_backend
+      - SUBTASK_frontend
+    purpose: "Frozen JSON API shape for the two public endpoints"

@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T03:48:59.927121316Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_walking_skeleton"
+      ],
+      "placement_parent_task_id": "ferric-async-forms-r1"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_walking_skeleton",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Walking skeleton: create branch, GitHub issues, extend EventKind, add module stubs — freezes the shared seam before feature spokes execute.",
+        "task_id": "ferric-async-forms-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_walking_skeleton": [],
+      "ferric-async-forms-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_walking_skeleton",
+          "ferric-async-forms-r1"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

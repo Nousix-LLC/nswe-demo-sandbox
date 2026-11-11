@@ -1,0 +1,75 @@
+kind: document_assembly
+description: >
+  Intermediate survey outputs produced by parallel exploration spokes, consumed
+  by the synthesis spoke to produce analysis.md. Each survey file has exactly
+  one owner; the synthesis task reads all four and writes the final deliverable
+  at the parent workspace.
+
+inherited_contracts:
+  - path: "../../contracts/_MANIFEST.yaml"
+    binding: "analysis.md is owned by SUBTASK_explore-codebase; synthesis child produces it at this workspace root"
+  - path: "../../contracts/public_api_contract.md"
+    binding: "Survey children read this for context on the required API surface"
+
+ownership:
+  - artifact: "SUBTASK_explore-survey-design/design-survey.md"
+    owner: SUBTASK_explore-survey-design
+    description: >
+      Extracted acceptance criteria (AC-1 through AC-5), relevant requirement IDs,
+      and screen/state specifications from the three design documents.
+
+  - artifact: "SUBTASK_explore-survey-backend/backend-survey.md"
+    owner: SUBTASK_explore-survey-backend
+    description: >
+      Existing API routes in crates/chirp-server/ with their auth requirements;
+      whether a public timeline endpoint and public user profile endpoint exist;
+      handler patterns; recommendation (add new / make optional / reuse with changes).
+
+  - artifact: "SUBTASK_explore-survey-frontend/frontend-survey.md"
+    owner: SUBTASK_explore-survey-frontend
+    description: >
+      Router configuration in crates/chirp-frontend/; existing routes; what the
+      home/landing route currently renders for a logged-out visitor; what the user
+      profile route currently renders.
+
+  - artifact: "SUBTASK_explore-survey-ferric/ferric-survey.md"
+    owner: SUBTASK_explore-survey-ferric
+    description: >
+      Async resource and loading/error-state primitives available in crates/ferric/
+      after PRs #193, #203, #228; component patterns; SSR and hydration support.
+
+  - artifact: "analysis.md"
+    owner: SUBTASK_explore-synthesis
+    description: >
+      Final gap analysis document at the parent workspace root. Must include:
+      branch status, API endpoint survey, frontend route survey, Ferric primitives,
+      per-AC gap analysis (AC-1 through AC-5), implementation plan summary.
+
+  - artifact: "SYNTHESIS.md"
+    owner: SUBTASK_explore-synthesis
+    description: >
+      Subtree synthesis record at the parent workspace root. Terminal lifecycle
+      record for this decomposition; also the fold record for engine_resume_suspended.
+
+identities:
+  - id: analysis_sections
+    assertion: >
+      analysis.md MUST contain all six sections declared in the parent brief:
+      (1) branch status, (2) API endpoint survey with auth requirements,
+      (3) frontend route survey, (4) Ferric primitives, (5) per-AC gap analysis
+      for AC-1 through AC-5, (6) implementation plan summary.
+    verified_by: SUBTASK_explore-synthesis
+
+  - id: branch_first
+    assertion: >
+      Branch work/chirp-logged-out MUST be created from cb1ced3ffe6efc678d96a26ae16a63cb948d4237
+      before analysis.md is written, so the branch status section reflects reality.
+    verified_by: SUBTASK_explore-synthesis
+
+  - id: no_code_changes
+    assertion: >
+      No file under crates/ MUST be modified by any survey or synthesis child.
+      Exploration only.
+    verified_by: SUBTASK_explore-synthesis
+
+derived_artifacts: []

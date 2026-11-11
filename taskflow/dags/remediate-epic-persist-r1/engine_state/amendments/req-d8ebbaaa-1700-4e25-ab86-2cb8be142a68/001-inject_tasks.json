@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T16:17:42.377398432Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_assess"
+      ],
+      "placement_parent_task_id": "remediate-epic-persist-r1"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_assess",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the diagnose spoke: survey work/epic-persist and produce the complete, schema-conforming doc-hazard correction inventory that the remediation step consumes.",
+        "task_id": "remediate-epic-persist-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_assess": [],
+      "remediate-epic-persist-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_assess",
+          "remediate-epic-persist-r1"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,41 @@
+kind: contract_manifest
+version: "1.0"
+task: chirp-logged-out-r5
+
+# ── Seam: discovery → synthesis ──────────────────────────────────────────────
+seam:
+  description: >
+    SUBTASK_discovery writes a review document assessing each AC against the
+    implementation on work/chirp-logged-out. SUBTASK_synthesis reads that review
+    to decide whether gaps require fixes before writing SYNTHESIS.md.
+  handoff_artifact: "taskflow/dags/chirp-logged-out-r5/SUBTASK_discovery/review.md"
+
+# ── Artifact ownership ────────────────────────────────────────────────────────
+ownership:
+  - artifact: "taskflow/dags/chirp-logged-out-r5/SUBTASK_discovery/review.md"
+    owner: SUBTASK_discovery
+    group: 0
+  - artifact: "taskflow/dags/chirp-logged-out-r5/SYNTHESIS.md"
+    owner: SUBTASK_synthesis
+    group: 1
+
+# ── Identity constraints on handoff artifact ─────────────────────────────────
+review_md_identity:
+  - "Must assess each of AC-1 through AC-5 with status (MET / PARTIAL / UNMET)"
+  - "Each AC assessment must cite specific source file(s) and line(s) as evidence"
+  - "Must include a PR status section: PR number, 'Closes #35' present (yes/no), CI check results"
+  - "Must list any gaps that require code fixes before the PR can be merged"
+
+# ── Identity constraints on SYNTHESIS.md ─────────────────────────────────────
+synthesis_md_identity:
+  - "Must be authored at: taskflow/dags/chirp-logged-out-r5/SYNTHESIS.md"
+  - "Must address each of AC-1 through AC-5 (met, or not met and why)"
+  - "Must record the final PR URL and confirm 'Closes #35' in body"
+  - "Must record final CI check results (all 6 checks)"
+  - "Must reference the branch name and HEAD commit SHA at time of synthesis"
+
+# ── Out-of-scope guard ────────────────────────────────────────────────────────
+out_of_scope:
+  - "Do not touch main branch or any branch other than work/chirp-logged-out"
+  - "Do not create new PRs if PR #263 already satisfies the constraints"
+  - "Do not expose host paths, SSH key paths, server addresses, or taskflow references in git commits or PR text"

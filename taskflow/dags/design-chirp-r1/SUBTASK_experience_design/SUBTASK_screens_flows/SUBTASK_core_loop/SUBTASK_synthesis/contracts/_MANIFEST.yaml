@@ -1,0 +1,24 @@
+# Contract manifest — SUBTASK_synthesis (internal seam of the core-loop verification gate). READ-ONLY for descendants.
+# Extends ../contracts/ (core-loop seam) additively; never overrides it. Ancestor wins on conflict.
+kind: yaml_schema
+extends:
+  - "../contracts/"
+artifacts:
+  - file: synthesis_seam.yaml
+    declares: "Which child owns which deliverable/evidence file and which identities each verifier asserts."
+ownership:
+  "file:../outputs/screens-core-loop.md":             SUBTASK_assemble
+  "register:req_ux_051_064 (inside the deliverable)": SUBTASK_assemble
+  "file:outputs/evidence-structure.md":               SUBTASK_verify_structure
+  "file:outputs/evidence-content.md":                 SUBTASK_verify_content
+  "file:SYNTHESIS.md (this node fold record)":        SUBTASK_fold
+  "file:../SYNTHESIS.md (core_loop fold record)":     SUBTASK_fold
+identity_assignment:        # every identity in ../contracts/_MANIFEST.yaml is asserted by exactly one child
+  SUBTASK_verify_structure: [SURFACE_COVERAGE, ID_UNIQUE_IN_RANGE, NOT_SKELETAL, HYGIENE]
+  SUBTASK_verify_content:   [UX_TESTABLE_AND_GATED, UX_TRACES_TO_PROD, COMPOSES_AGAINST_VOCAB, STATES_CONSISTENT]
+assembly_order: [timeline_reading, posting_conversation, social_actions, profiles_discovery]
+identities:
+  - id: ALL_EIGHT_ASSERTED
+    statement: "Each of the eight core-loop identities has recorded evidence from exactly one verifier; SUBTASK_fold records any failure as a gap, never a silent plug."
+  - id: DELIVERABLE_VERBATIM
+    statement: "The assembled deliverable reproduces each spoke's design content without redesign; changes are limited to ordering, heading levels, de-duplication of front matter, and removal of non-repository-ready detail."

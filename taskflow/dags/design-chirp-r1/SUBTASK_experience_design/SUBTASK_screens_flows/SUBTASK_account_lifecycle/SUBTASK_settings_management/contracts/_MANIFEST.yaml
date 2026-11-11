@@ -1,0 +1,72 @@
+# Contract manifest — SUBTASK_settings_management (internal seam for the account-settings subtree)
+# kind: yaml_schema. READ-ONLY for every descendant. Extends the PARENT contract (../../contracts/,
+# account-lifecycle), the GRANDPARENT (../../../contracts/, screens-&-flows), and the great-grandparent
+# (../../../../contracts/, experience-design) ADDITIVELY — it sub-ranges the REQ-UX-069..074 id space
+# among the four spokes and maps this node's four surfaces to owners. It never overrides an ancestor's
+# REQ-<AREA>-NNN format, field set, section list, required_surfaces checklist, surface map, or trace
+# rule. Where this manifest and an ancestor disagree, the ancestor wins.
+
+kind: yaml_schema
+
+extends:
+  - "../../contracts/"        # account-lifecycle seam: settings_management surfaces, REQ-UX-069..074 range, surface map, vocab + trace + STATES_CONSISTENT rules
+  - "../../../contracts/"     # screens-&-flows seam: account_lifecycle part, surface map, trace rule
+  - "../../../../contracts/"  # experience-design seam: REQ-UX scheme + field set + required_surfaces
+
+artifacts:
+  - file: settings_management_seam.yaml
+    declares: "Surface->owning spoke (all four account-settings surfaces); the REQ-UX-069..074 sub-range per spoke; the shared-vocabulary composition rule; the per-REQ-UX trace rule; the sub-section link list the Settings hub references without designing."
+
+# One producer per surface / id sub-range. An unowned surface is a hole; a double-written one is a race.
+ownership:
+  "surface:settings_hub":              SUBTASK_settings_hub          # Settings (/settings)
+  "surface:account_and_contact":       SUBTASK_account_contact       # Account & contact (/settings/account)
+  "surface:notification_preferences":  SUBTASK_notification_prefs    # Notification preferences (/settings/notifications)
+  "surface:sessions_and_devices":      SUBTASK_sessions_devices      # Sessions & devices (/settings/sessions)
+  "register:req_ux_069_074":           SUBTASK_synthesis             # consolidated from the four spokes
+  "file:outputs/screens-settings-management.md": SUBTASK_synthesis
+  "file:SYNTHESIS.md":                 SUBTASK_synthesis
+
+req_ux_id_ranges:            # REQ-UX-NNN, 3-digit, unique within area (ancestor scheme); sub-ranged here within 069..074
+  SUBTASK_settings_hub:        "REQ-UX-069..REQ-UX-069"   # 1 id
+  SUBTASK_account_contact:     "REQ-UX-070..REQ-UX-071"   # 2 ids
+  SUBTASK_notification_prefs:  "REQ-UX-072..REQ-UX-072"   # 1 id
+  SUBTASK_sessions_devices:    "REQ-UX-073..REQ-UX-074"   # 2 ids
+
+# Inherited, NOT redefined — the frozen upstream vocabularies every spoke composes against by name.
+inherited_vocabularies:
+  screen_inventory:
+    source: "../../../../SUBTASK_ia_interaction/outputs/ia-interaction.md (heading: Screen inventory)"
+    rule: "Refer to screens by their inventory names and routes. Do not invent a screen outside the inventory without an additive amendment to this contract."
+  component_library:
+    source: "../../../../SUBTASK_visual_system/outputs/visual-system.md (heading: Component library)"
+    rule: "Build each screen from named components; use each component's own named states (default/empty/error/loading/disabled). A state a component records as 'does not apply' is recorded so with that reason, not invented. Do not invent a component outside the library without an additive amendment to this contract."
+
+# Invariants SUBTASK_synthesis asserts with recorded evidence; a failing identity is reported and
+# remediated by decomposing a remediation subtree — never silently plugged.
+identities:
+  - id: SURFACE_COVERAGE
+    statement: "Each of the four owned surfaces (Settings hub, Account & contact, Notification preferences, Sessions & devices) is designed with its empty/error/loading states by its owning spoke, OR a state is recorded 'does not apply' with a reason matching the composed component's own not-applicable decision."
+  - id: ID_UNIQUE_IN_RANGE
+    statement: "Every REQ-UX-069..074 id is unique and within its owning spoke's sub-range; no collisions, no out-of-range ids, no gaps claimed as covered."
+  - id: NOT_SKELETAL
+    statement: "Each designed screen specifies layout, content, and a primary action, and its empty, error, and loading states — not a bare route name."
+  - id: UX_TESTABLE_AND_GATED
+    statement: "Every REQ-UX-* has a statement, an acceptance_criteria a stranger could check on the live product, and a release_gating flag (false carries a one-line reason)."
+  - id: UX_TRACES_TO_PROD
+    statement: "Every REQ-UX-* references >=1 REQ-PROD-*."
+  - id: COMPOSES_AGAINST_VOCAB
+    statement: "Every screen refers to screen-inventory screens by name and is built from component-library components by name; nothing redefined; no new screen/component without an additive contract amendment."
+  - id: STATES_CONSISTENT
+    statement: "Each per-screen empty/error/loading state is consistent with the components' own named states and with the product-wide patterns owned by the sibling ../../SUBTASK_considered_states."
+  - id: HYGIENE
+    statement: "Nothing in screens-settings-management.md carries host/system/taskflow detail, workspace paths, agent/DAG/run ids, or an attribution trailer."
+
+derived_artifacts:
+  - name: req_ux_register_069_074
+    generated_from: "each spoke's REQ-UX entries (settings_hub/account_contact/notification_prefs/sessions_devices)"
+    consumed_by: SUBTASK_synthesis
+  - name: "outputs/screens-settings-management.md"
+    assembled_from: "screen-settings-hub.md + screen-account-contact.md + screen-notification-prefs.md + screen-sessions-devices.md + consolidated REQ-UX register, in screen-inventory order"
+    produced_by: SUBTASK_synthesis
+    consumed_by: "parent SUBTASK_synthesis (account-lifecycle) as the settings_management section-part"

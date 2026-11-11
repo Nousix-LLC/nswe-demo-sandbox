@@ -1,0 +1,61 @@
+{
+  "sequence": 4,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T06:31:27.966410703Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis_gate"
+      ],
+      "placement_parent_task_id": "review-infra-bootstrap"
+    },
+    "resulting_version": 4,
+    "summary": "inject tasks: SUBTASK_synthesis_gate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the synthesis verification gate that folds the three lens outputs into the authoritative APPROVE/REQUEST-CHANGES verdict, asserts identities R1-R7, posts the gh review, and folds the subtree closed.",
+        "task_id": "review-infra-bootstrap"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_review_correctness_repro": [],
+      "SUBTASK_review_honesty_scope_ops": [],
+      "SUBTASK_review_security_rbac": [],
+      "SUBTASK_synthesis_gate": [
+        "SUBTASK_review_correctness_repro",
+        "SUBTASK_review_honesty_scope_ops",
+        "SUBTASK_review_security_rbac"
+      ],
+      "review-infra-bootstrap": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_review_correctness_repro",
+          "SUBTASK_review_honesty_scope_ops",
+          "SUBTASK_review_security_rbac",
+          "review-infra-bootstrap"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis_gate"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

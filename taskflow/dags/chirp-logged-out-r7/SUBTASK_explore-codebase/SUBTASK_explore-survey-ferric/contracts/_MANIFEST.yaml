@@ -1,0 +1,40 @@
+kind: yaml_schema
+description: >
+  Contract for the Ferric Framework Survey subtree.
+  Three spoke tasks each survey one PR area and produce a notes file.
+  The synthesis task reads all notes and writes ferric-survey.md.
+
+schema_ref: notes-schema.yaml
+
+ownership:
+  - artifact: "SUBTASK_ferric-async-survey/ferric-async-notes.md"
+    owner: "SUBTASK_ferric-async-survey"
+    description: "API notes for PR #193: async resource types, loading/error/data state, component creation, form/event binding"
+
+  - artifact: "SUBTASK_ferric-router-survey/ferric-router-notes.md"
+    owner: "SUBTASK_ferric-router-survey"
+    description: "API notes for PR #203: router type, route declaration, navigation, not-found/redirect handling"
+
+  - artifact: "SUBTASK_ferric-ssr-survey/ferric-ssr-notes.md"
+    owner: "SUBTASK_ferric-ssr-survey"
+    description: "API notes for PR #228: render_to_string equivalent, client hydration, Axum integration point"
+
+  - artifact: "ferric-survey.md"
+    owner: "SUBTASK_ferric-survey-synthesis"
+    description: "Complete Ferric framework survey covering all 6 sections from the parent brief"
+
+  - artifact: "SYNTHESIS.md"
+    owner: "SUBTASK_ferric-survey-synthesis"
+    description: "Fold record authored at the parent workspace (this workspace)"
+
+identities:
+  - id: "signatures_present"
+    assertion: "Each notes file contains at least one Rust type signature in a fenced code block"
+  - id: "state_model_present"
+    assertion: "Each notes file includes a section describing the loading/error/data state model"
+  - id: "source_locations_valid"
+    assertion: "Each notes file references actual file paths within crates/ferric/ as source locations"
+  - id: "survey_completeness"
+    assertion: "ferric-survey.md covers all 6 sections: crate structure, async primitives, router API, SSR/hydration, component pattern, gaps"
+
+derived_artifacts: []

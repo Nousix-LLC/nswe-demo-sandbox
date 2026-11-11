@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-06T19:45:33.996729651Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_navigation"
+      ],
+      "placement_parent_task_id": "ferric-router"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_navigation",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the navigation spoke: implements src/router.rs (Router, route table, reactive current-path over ferric signals, navigate, current_path, History API pushState/popstate, outlet). Depends on matcher (composes against the real RoutePattern/Params, L0).",
+        "task_id": "ferric-router"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_matcher": [
+        "SUBTASK_scaffold"
+      ],
+      "SUBTASK_navigation": [
+        "SUBTASK_matcher"
+      ],
+      "SUBTASK_scaffold": [],
+      "ferric-router": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scaffold",
+          "ferric-router"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_matcher"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_navigation"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

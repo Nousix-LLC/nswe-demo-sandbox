@@ -1,0 +1,67 @@
+# Contract manifest — SUBTASK_account_lifecycle (internal seam for the account-lifecycle subtree)
+# kind: yaml_schema. READ-ONLY for every descendant. Extends the PARENT contract (../../contracts/,
+# screens-&-flows) and GRANDPARENT contract (../../../contracts/, experience-design) ADDITIVELY — it
+# sub-ranges the REQ-UX-065..077 id space among the spokes and maps this node's surfaces to owners. It
+# never overrides an ancestor's REQ-<AREA>-NNN format, field set, section list, required_surfaces
+# checklist, surface map, or trace rule. Where this manifest and an ancestor disagree, the ancestor wins.
+
+kind: yaml_schema
+
+extends:
+  - "../../contracts/"      # screens-&-flows seam: account_lifecycle part, REQ-UX-065..077 range, surface map, vocab + trace rules
+  - "../../../contracts/"   # experience-design seam: REQ-UX scheme + field set + required_surfaces
+
+artifacts:
+  - file: account_lifecycle_seam.yaml
+    declares: "Surface->owning spoke (all eight account-lifecycle surfaces); the REQ-UX-065..077 sub-range per spoke; the shared-vocabulary composition rule; the per-REQ-UX trace rule."
+
+# One producer per surface cluster / id sub-range. An unowned surface is a hole; a double-written one is a race.
+ownership:
+  "surfaces:onboarding_profile":        SUBTASK_onboarding_profile   # Onboarding, Edit profile
+  "surfaces:settings_management":       SUBTASK_settings_management  # Settings hub, Account & contact, Notification preferences, Sessions & devices
+  "surfaces:leaving":                   SUBTASK_leaving              # Data export, Account deletion
+  "register:req_ux_065_077":            SUBTASK_synthesis            # consolidated from the three spokes
+  "file:outputs/screens-account-lifecycle.md": SUBTASK_synthesis
+  "file:SYNTHESIS.md":                  SUBTASK_synthesis
+
+req_ux_id_ranges:            # REQ-UX-NNN, 3-digit, unique within area (ancestor scheme); sub-ranged here within 065..077
+  SUBTASK_onboarding_profile:  "REQ-UX-065..REQ-UX-068"   # 4 ids
+  SUBTASK_settings_management: "REQ-UX-069..REQ-UX-074"   # 6 ids
+  SUBTASK_leaving:             "REQ-UX-075..REQ-UX-077"   # 3 ids
+
+# Inherited, NOT redefined — the frozen upstream vocabularies every spoke composes against by name.
+inherited_vocabularies:
+  screen_inventory:
+    source: "../../../SUBTASK_ia_interaction/outputs/ia-interaction.md (heading: Screen inventory)"
+    rule: "Refer to screens by their inventory names and routes. Do not invent a screen outside the inventory without an additive amendment to this contract."
+  component_library:
+    source: "../../../SUBTASK_visual_system/outputs/visual-system.md (heading: Component library)"
+    rule: "Build each screen from named components; use each component's own named states (default/empty/error/loading/disabled). Do not invent a component outside the library without an additive amendment to this contract."
+
+# Invariants SUBTASK_synthesis asserts with recorded evidence; a failing identity is reported and
+# remediated by decomposing a remediation subtree — never silently plugged.
+identities:
+  - id: SURFACE_COVERAGE
+    statement: "Each of the eight owned surfaces (Onboarding, Edit profile, Settings hub, Account & contact, Notification preferences, Sessions & devices, Data export, Account deletion) is designed with its empty/error/loading states by its owning spoke OR recorded out-of-scope with a reason."
+  - id: ID_UNIQUE_IN_RANGE
+    statement: "Every REQ-UX-065..077 id is unique and within its owning spoke's sub-range; no collisions, no out-of-range ids."
+  - id: NOT_SKELETAL
+    statement: "Each designed screen specifies layout, content, and a primary action, and its empty, error, and loading states — not a bare route name."
+  - id: UX_TESTABLE_AND_GATED
+    statement: "Every REQ-UX-* has a statement, an acceptance_criteria a stranger could check on the live product, and a release_gating flag (false carries a one-line reason)."
+  - id: UX_TRACES_TO_PROD
+    statement: "Every REQ-UX-* references >=1 REQ-PROD-*."
+  - id: COMPOSES_AGAINST_VOCAB
+    statement: "Every screen refers to screen-inventory screens by name and is built from component-library components by name; nothing redefined; no new screen/component without an additive contract amendment."
+  - id: STATES_CONSISTENT
+    statement: "Each per-screen empty/error/loading state is consistent with the components' own named states and with the product-wide patterns owned by the sibling SUBTASK_considered_states."
+  - id: HYGIENE
+    statement: "Nothing in screens-account-lifecycle.md carries host/system/taskflow detail, workspace paths, agent/DAG/run ids, or an attribution trailer."
+
+derived_artifacts:
+  - name: req_ux_register_065_077
+    generated_from: "each spoke's REQ-UX entries (onboarding_profile/settings_management/leaving)"
+    consumed_by: SUBTASK_synthesis
+  - name: "outputs/screens-account-lifecycle.md"
+    assembled_from: "screens-onboarding-profile.md + screens-settings-management.md + screens-leaving.md + consolidated REQ-UX register"
+    produced_by: SUBTASK_synthesis

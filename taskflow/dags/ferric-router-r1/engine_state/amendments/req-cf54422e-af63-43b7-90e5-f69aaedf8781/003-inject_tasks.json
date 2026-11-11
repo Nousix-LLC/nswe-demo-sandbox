@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T04:34:01.573507063Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "nested-routes"
+      ],
+      "placement_parent_task_id": "ferric-router-r1"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: nested-routes",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Third serial spoke: implements nested routes, nested outlet, and per-level fallback",
+        "task_id": "ferric-router-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "active-link": [
+        "navigate-replace"
+      ],
+      "ferric-router-r1": [],
+      "navigate-replace": [],
+      "nested-routes": [
+        "active-link"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-router-r1",
+          "navigate-replace"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "active-link"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "nested-routes"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

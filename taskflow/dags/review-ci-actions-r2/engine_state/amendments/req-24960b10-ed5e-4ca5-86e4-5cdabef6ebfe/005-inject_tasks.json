@@ -1,0 +1,64 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-08T01:45:51.792252092Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis"
+      ],
+      "placement_parent_task_id": "review-ci-actions-r2"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: SUBTASK_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Synthesis verification gate for the PR #21 review DAG: verifies spoke findings conformance, de-duplicates, maps issue-#11 acceptance criteria (concern 6), aggregates severities, applies the verdict rule, and authors the root SYNTHESIS.md that folds the parent. Depends on all four review spokes.",
+        "task_id": "review-ci-actions-r2"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_folded_minors": [],
+      "SUBTASK_image_job": [],
+      "SUBTASK_supply_chain_security": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_folded_minors",
+        "SUBTASK_image_job",
+        "SUBTASK_supply_chain_security",
+        "SUBTASK_workflow_correctness"
+      ],
+      "SUBTASK_workflow_correctness": [],
+      "review-ci-actions-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_folded_minors",
+          "SUBTASK_image_job",
+          "SUBTASK_supply_chain_security",
+          "SUBTASK_workflow_correctness",
+          "review-ci-actions-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,50 @@
+# Schema: per-concern findings file
+#
+# Each concern-checker task (SUBTASK_check-ac2, SUBTASK_check-ac3, SUBTASK_check-ac4p)
+# produces a markdown file following this structure.
+#
+# The synthesis task reads these three files and assembles FINDINGS.md.
+
+---
+document_type: concern_findings
+format: markdown
+
+required_sections:
+  concern_id:
+    description: >
+      The acceptance criterion being checked (e.g. "AC-2", "AC-3", "AC-4 (partial)").
+    heading_level: 2
+    example: "## Concern: AC-2 — empty_view() content and CTA"
+
+  status:
+    description: >
+      One of: clean | has_findings
+    heading_level: 2
+    example: "**Status**: clean"
+
+  checked:
+    description: >
+      Narrative of what code was examined and what criteria were applied.
+      Must name the specific function(s) or code paths examined.
+      Must cite the pinned commit.
+    heading_level: 2
+
+  findings:
+    description: >
+      List of findings. If status=clean, this section may say "None." Each finding
+      must include: location, principle, rationale, severity, resolution.
+    heading_level: 2
+
+  clean_notes:
+    description: >
+      For each sub-criterion that passed: what was examined and what was found sound.
+      Even if status=has_findings, record what parts were clean.
+    heading_level: 2
+
+location_format:
+  pattern: "crates/chirp-frontend/src/landing.rs:<line> at decb6196c2c1e6ed421d393a642f0c844cc333ba"
+  example: "crates/chirp-frontend/src/landing.rs:42 at decb6196c2c1e6ed421d393a642f0c844cc333ba"
+
+severity_values:
+  - blocker
+  - non-blocking

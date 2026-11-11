@@ -1,0 +1,102 @@
+# req_id_partition.yaml — REQ-ID number-space partition + section ownership + partial format.
+# READ-ONLY. Extends the root contract additively. Each child mints REQ-ID-* ONLY within its range.
+
+req_id_area: ID                      # from root id_and_traceability_schema.yaml (area_owner.ID = SUBTASK_identity_trust)
+req_id_format: "REQ-ID-<NNN>"        # NNN zero-padded 3-digit, unique within the ID area (inherited; not redefined)
+
+# Per-child range + the identity-security.md section each child owns. Ranges are generous so no child collides;
+# a child need not fill its range — it mints only the requirements its concern warrants.
+partition:
+  - child: SUBTASK_accounts_lifecycle
+    req_id_range: "REQ-ID-001 .. REQ-ID-029"
+    owns_section: accounts_and_lifecycle
+    covers: >
+      The account object and its full lifecycle, from the user's side: sign-up establishes a real credential
+      (not a handle alone); a verified point of contact is captured for recovery/notifications; self-service
+      recovery through that contact; profile edit (display name, bio); an account-settings surface (contact,
+      active sessions/devices, notification prefs); a stated handle-change policy; self-service data export in a
+      portable form; self-service account deletion with a defined, confirmed outcome for content and handle.
+    primary_req_prod_traces: [REQ-PROD-008, REQ-PROD-009, REQ-PROD-012, REQ-PROD-013, REQ-PROD-016, REQ-PROD-017, REQ-PROD-018, REQ-PROD-019, REQ-PROD-020, REQ-PROD-021, REQ-PROD-022]
+
+  - child: SUBTASK_auth_sessions
+    req_id_range: "REQ-ID-030 .. REQ-ID-059"
+    owns_section: authentication_and_sessions
+    covers: >
+      Real authentication (what "real auth, not a stub" must mean for chirp: a secret only the owner holds,
+      owner-only sign-in, a clear not-found vs failed-credential signal that does not leak which accounts exist
+      beyond what is already public, credential-strength and anti-guessing expectations stated as requirements —
+      not crypto-how); sessions safe to expose on the public internet (issuance, expiry, server-side
+      invalidation / sign-out, protection of the session token in transit and from theft/fixation, bounded
+      lifetime, stay-signed-in on a trusted device as an explicit convenience); and an explicit in/out-of-scope
+      decision for MFA and third-party/social login for the release bar, each with a stated reason.
+    primary_req_prod_traces: [REQ-PROD-008, REQ-PROD-010, REQ-PROD-011, REQ-PROD-014, REQ-PROD-015]
+
+  - child: SUBTASK_authorization
+    req_id_range: "REQ-ID-060 .. REQ-ID-079"
+    owns_section: authorization
+    covers: >
+      The authority model from the user's and operator's side: a signed-in person may act only as themselves and
+      may change only their own account and content (post/reply/like/follow/edit/delete scoped to the actor);
+      the public-vs-private field boundary (which fields any viewer may read vs which are the owner's alone);
+      unauthenticated read scope (public profiles/chirps) vs authenticated actions; and the authorization model
+      for the supported operator/admin/support actions (who is authorized to assist recovery, remove content,
+      action an abusive account, and under what principle — least privilege, separation from ordinary users).
+    primary_req_prod_traces: [REQ-PROD-023, REQ-PROD-024, REQ-PROD-028, REQ-PROD-007]
+
+  - child: SUBTASK_abuse_privacy
+    req_id_range: "REQ-ID-080 .. REQ-ID-099"
+    owns_section: abuse_and_privacy_basics
+    covers: >
+      The minimum abuse-resistance and privacy/data-rights surface for a public social product: reporting a
+      chirp or account, stated rules/terms a report references, block/mute to stop unwanted interaction, and
+      rate/volume limits as a first line against abuse (stated as an identity/trust requirement that COORDINATES
+      with REQ-OPS-* — do not mint REQ-OPS-*; trace to REQ-PROD-041 and name the OPS area for the enforcement
+      detail); plus privacy basics: data minimization (collect only what the account needs), private-field
+      protection (contact, credential, session data never exposed to other users or in public responses),
+      retention and erasure-on-deletion tied to the deletion outcome, and a lawful-basis / data-rights baseline
+      (access, export, erasure) proportionate to a public microblog — stated as requirements, not legal advice.
+    primary_req_prod_traces: [REQ-PROD-024, REQ-PROD-025, REQ-PROD-026, REQ-PROD-027, REQ-PROD-041, REQ-PROD-021]
+
+  - child: SUBTASK_synthesis
+    req_id_range: "REQ-ID-100 .. REQ-ID-119"
+    owns_section: threat_model          # also assembles requirements_and_acceptance_criteria (consolidated)
+    covers: >
+      The threat model over chirp's public, internet-facing surface (a STRIDE-style walk: spoofing an identity,
+      tampering with content/attribution, repudiation of actions, information disclosure of private fields,
+      denial of service, elevation beyond one's own account), DERIVED from the four areas above. For each threat,
+      name what the design answers (which REQ-ID-* mitigates it) or record the residual risk and why it is
+      acceptable for the bar. Mint REQ-ID-100..119 ONLY for threat-driven requirements not already covered by a
+      spoke (e.g. a cross-cutting transport/confidentiality requirement, an anti-automation/bot requirement, an
+      audit/traceability-of-admin-action requirement). Then assemble the consolidated register.
+    primary_req_prod_traces: [REQ-PROD-010, REQ-PROD-024, REQ-PROD-041]
+
+# The markdown partial every spoke writes, so SUBTASK_synthesis can assemble mechanically.
+partial_output_format:
+  path: "<child_workspace>/outputs/<child-slug-file>.md"   # e.g. SUBTASK_accounts_lifecycle/outputs/accounts-lifecycle.md
+  structure: |
+    # <Section title matching owns_section>
+
+    <Section prose: the requirements narrative for this concern — what must be true and why, from the
+     user's / operator's / attacker's side. Plain, checkable voice per the hub's writing-voice rule.
+     State requirements, not implementation; where a "how" is tempting, name the owning code area in prose.>
+
+    ## Requirements (REQ-ID-*)
+
+    ### REQ-ID-<NNN> — <short title>
+    - **statement**: <what must be true, from the user's/operator's side — never how it is built>
+    - **acceptance_criteria**: <testable by a stranger exercising the live product or inspecting an artifact>
+    - **release_gating**: <true | false>   # if false, state the reason inline
+    - **verification_method**: <manual_user_check | automated_test | inspection | operational_check>  # where it anchors a bar
+    - **traces_to**: <REQ-PROD-NNN[, REQ-PROD-NNN ...]>   # >=1, each must exist in product-requirements.md
+    <repeat per requirement, ascending within the child's range>
+
+    ## Notes for synthesis
+    <Any cross-area seams this child noticed (overlaps/handoffs with sibling areas), and any REQ-PROD identity
+     need this child believes is better carried by a sibling area, with the reason. The threat each requirement
+     is meant to answer, if the child wants to hint it to the threat-model synthesis.>
+
+verification_methods_reminder:   # inherited vocabulary (do not redefine) — choose from these only
+  - manual_user_check            # a person exercises the live product and observes the result
+  - automated_test               # a test in the repo asserts it
+  - inspection                   # inspect a config/manifest/code artifact for a declared property
+  - operational_check            # observe a production property (e.g. session invalidated across a restart)

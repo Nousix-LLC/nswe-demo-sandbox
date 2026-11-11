@@ -1,0 +1,96 @@
+# contracts/_MANIFEST.yaml — frozen seam for the `ferric` framework-core decomposition
+# Kind: rust_trait (an in-process Rust public-API surface; enforcement tool = the compiler/rustdoc).
+# Read-only for every descendant. Amendments are ADDITIVE ONLY (new items may be added; frozen
+# public signatures must not be removed or changed in place — request a plan amendment instead).
+#
+# Why this contract exists: this decomposition splits ONE crate (`ferric`) into layered modules
+# that share the crate's public surface and its composition root (`src/lib.rs` + prelude). The
+# layers execute SERIALLY (each layer's tests exercise the real lower layer, so no layer mocks
+# another — mock depth L0), but they all compose into one public API that later engagement
+# work-items (ferric-router, ferric-http, chirp-frontend) will depend on. This manifest freezes
+# that public surface and assigns every owned file to exactly one child.
+
+kind: rust_trait
+artifact: ferric_api.rs   # the frozen public-API reference; implementers match these signatures
+mock_depth: L0            # serialized pipeline: every consumer reads its predecessor's REAL output
+
+# ---------------------------------------------------------------------------
+# Ownership — every owned path has exactly ONE producing child.
+# The shared working tree is a single git clone at:
+#   <subtree_root>/checkout/   (created by SUBTASK_scaffold; subtree_root is this dir)
+# Children operate on that clone via its absolute path. Because the pipeline is serial, each
+# file has a single writer at the time it runs (no concurrent writers to any path).
+# ---------------------------------------------------------------------------
+ownership:
+  # Composition root + build wiring (the walking skeleton). Owns the shared files every layer
+  # would otherwise fight over; creates compiling `todo!()` stubs so `cargo build` is green
+  # end-to-end before any layer is implemented. Each spoke then fills in the body of ITS module.
+  SUBTASK_scaffold:
+    - checkout/                                 # the git clone + branch work/ferric-foundation
+    - checkout/Cargo.toml                       # virtual workspace root
+    - checkout/crates/ferric/Cargo.toml         # the ferric member crate manifest
+    - checkout/crates/ferric/src/lib.rs         # module decls + prelude re-exports (mount points)
+    - checkout/crates/ferric/src/signal.rs      # STUB only (todo!()); impl owned by reactive_core
+    - checkout/crates/ferric/src/vdom.rs         # STUB only; impl owned by view_and_diff
+    - checkout/crates/ferric/src/component.rs    # STUB only; impl owned by view_and_diff
+    - checkout/crates/ferric/src/dom.rs          # STUB only; impl owned by dom_runtime
+
+  SUBTASK_reactive_core:
+    - checkout/crates/ferric/src/signal.rs      # final implementation: Signal/Memo/effect/batch
+
+  SUBTASK_view_and_diff:
+    - checkout/crates/ferric/src/vdom.rs        # VNode tree + keyed diff/patch
+    - checkout/crates/ferric/src/component.rs   # Component trait + function components
+
+  SUBTASK_dom_runtime:
+    - checkout/crates/ferric/src/dom.rs         # mount() + web-sys patch application + events
+    - checkout/crates/ferric/examples/counter.rs # the wasm counter example
+    - checkout/crates/ferric/README.md          # counter usage + architecture note
+
+  SUBTASK_synthesis:
+    - SYNTHESIS.md                              # the gate verdict (at the subtree root)
+    # also: pushes work/ferric-foundation and opens the PR into main (delivery of the verified result)
+
+# ---------------------------------------------------------------------------
+# Identities — invariants the combined output MUST satisfy. The synthesis gate enumerates each
+# and runs its `check` (exit code is the verdict). "Don't assert what you didn't freeze; don't
+# freeze what you can't assert." All checks run inside the clone (`checkout/`).
+# ---------------------------------------------------------------------------
+identities:
+  - id: workspace_builds
+    must: "The virtual workspace compiles for the host target."
+    check: "cargo build --workspace"
+  - id: ferric_wasm_builds
+    must: "The ferric crate compiles for wasm32-unknown-unknown."
+    check: "cargo build -p ferric --target wasm32-unknown-unknown"
+  - id: native_tests_pass
+    must: "Native unit tests for the reactive core (and any other native tests) pass without a browser."
+    check: "cargo test --workspace"
+  - id: fmt_clean
+    must: "All code is rustfmt-clean."
+    check: "cargo fmt --all --check"
+  - id: clippy_clean
+    must: "No clippy warnings across all targets."
+    check: "cargo clippy --all-targets -- -D warnings"
+  - id: public_api_surface
+    must: >
+      The frozen prelude surface is present and importable: `use ferric::prelude::*;` brings
+      Signal, create_signal, Memo, create_memo, create_effect, batch, VNode, Component, mount
+      into scope (names/roles per ferric_api.rs). Changes to this surface are additive-only.
+    check: "a compile-only integration test that does `use ferric::prelude::*;` and names each item"
+  - id: no_stale_subscriber_leak
+    must: >
+      The reactive core does not retain subscribers after their effect/scope is dropped: setting a
+      signal after its only subscriber is gone must not call into freed state, and must not grow
+      the subscriber set unboundedly.
+    check: "a native #[test] in signal.rs that drops a subscriber/effect then sets the signal and asserts cleanup"
+  - id: counter_example_wasm_builds
+    must: "The counter example compiles to wasm (proves the end-to-end mount/render/event path builds)."
+    check: "cargo build -p ferric --example counter --target wasm32-unknown-unknown"
+
+# A note on browser tests (wasm-bindgen-test): headless-browser availability is environmental.
+# If wasm-bindgen-test-runner / a headless browser is unavailable, that is documented in
+# SYNTHESIS.md and the NATIVE tests remain the gate — per the brief, do NOT fail the item on
+# missing browser tooling. `counter_example_wasm_builds` (compile, not run) stays mandatory.
+
+derived_artifacts: []   # none — L0 mock depth; serialized reads of real outputs

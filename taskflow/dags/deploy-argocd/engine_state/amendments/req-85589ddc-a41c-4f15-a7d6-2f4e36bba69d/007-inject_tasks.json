@@ -1,0 +1,85 @@
+{
+  "sequence": 7,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-08T17:23:11.174695848Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_land_pr"
+      ],
+      "placement_parent_task_id": "SUBTASK_synthesis"
+    },
+    "resulting_version": 7,
+    "summary": "inject tasks: SUBTASK_land_pr",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the landing stage: create work/deploy-argocd based at ada3aa9, bring the deploy manifests onto it, commit with no attribution trailers, push, and open a PR into main that Closes #13 (accurate body, CI green, not merged, main not pushed). Depends on the static gate (GO) and the reachability proof so the PR is accurate to what shipped. Git-only side effects; disjoint from the cluster stage.",
+        "task_id": "SUBTASK_synthesis"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_app_manifests": [
+        "SUBTASK_discovery"
+      ],
+      "SUBTASK_argocd_gitops": [
+        "SUBTASK_discovery"
+      ],
+      "SUBTASK_deploy_reach": [
+        "SUBTASK_static_gate"
+      ],
+      "SUBTASK_discovery": [],
+      "SUBTASK_land_pr": [
+        "SUBTASK_deploy_reach",
+        "SUBTASK_static_gate"
+      ],
+      "SUBTASK_static_gate": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_app_manifests",
+        "SUBTASK_argocd_gitops",
+        "SUBTASK_discovery"
+      ],
+      "deploy-argocd": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_discovery",
+          "SUBTASK_static_gate",
+          "deploy-argocd"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_app_manifests",
+          "SUBTASK_argocd_gitops",
+          "SUBTASK_deploy_reach"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_land_pr",
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,68 @@
+==============================================================================
+INDEPENDENT EXPERIENCE-DESIGN SYNTHESIS GATE  (fold-time re-derivation)
+==============================================================================
+deliverable: /home/user/nousix-runtime/nswe-demo/taskflow/dags/design-chirp-r1/SUBTASK_experience_design/outputs/experience-design.md  (334134 bytes, 4671 lines)
+register entries: 119   REQ-PROD register: 42 ids
+
+[PASS] SECTION_COVERAGE
+        7 top-level sections found
+        [1] slug=information_architecture_and_interaction      heading='Information architecture and interaction model' match=True
+        [2] slug=screens_and_flows                             heading='Screens and flows' match=True
+        [3] slug=empty_error_loading_states                    heading='Empty, loading, and error states' match=True
+        [4] slug=visual_language_and_design_system             heading='Visual language and design system' match=True
+        [5] slug=responsive_layout                             heading='Responsive layout' match=True
+        [6] slug=accessibility                                 heading='Accessibility' match=True
+        [7] slug=requirements_and_acceptance_criteria          heading='Requirements and acceptance criteria' match=True
+
+[PASS] ID_UNIQUE_IN_RANGE
+        register entries parsed: 119
+        0 duplicate ids
+        0 out-of-range ids (all within 001..119 owner partitions)
+        contiguous 001..119, none missing
+          ia            001..019: 19 entries
+          visual        020..039: 20 entries
+          screens       040..089: 50 entries
+          responsive    090..099: 10 entries
+          accessibility 100..119: 20 entries
+
+[PASS] UX_TESTABLE_AND_GATED
+        gating: 106 true / 13 false  (sum=119 of 119)
+        missing-field entries: none
+        acceptance_criteria <25 chars: none
+        unparseable release_gating: none
+
+[PASS] UX_TRACES_TO_PROD
+        REQ-PROD ids in register: 42 (expect 42, contiguous=True)
+        forward: entries with no REQ-PROD ref: none
+        forward: dangling refs (not in prod register): none
+        reverse(contract required_surfaces union, 32 ids): uncovered=none
+        reverse(broader user-facing set, 36 ids): uncovered=[15, 23, 24]
+          -> broader residue [15, 23, 24] subset of recorded dispositions [15, 23, 24]: True
+        total distinct REQ-PROD covered by some REQ-UX: 34
+
+[PASS] COMPOSES_AGAINST_PARENT
+        bold bullet keys in register: {'statement': 119, 'acceptance_criteria': 119, 'release_gating': 119, 'references': 119}
+        foreign (non-parent) field keys: none
+        section list == parent design_artifact_map.yaml list (verified by SECTION_COVERAGE order check)
+
+[PASS] SURFACE_COVERAGE
+        required surfaces: 21
+        surfaces with no keyword hit: none
+        every required-surface REQ-PROD forward-covered by >=1 REQ-UX: True
+
+[PASS] NOT_SKELETAL
+        designed screen entries (#### / ##### with a route/archetype): 19
+        explicit States blocks (**States.** + 'States' subheadings): 23
+        **Layout** blocks: 25
+        'Primary action' markers: 58
+        'empty' mentions: 242
+        'error'/'failed' mentions: 188
+        'loading' mentions: 121
+        dedicated state-pattern sections in empty_error_loading_states: ['Empty — explain and offer a next step, never a blank', 'Loading — show the shape of what is coming, and never spin forever', 'Error — shown where the action was taken, in plain words, with a way forward', 'Expired session and transient error — recover without losing work', 'How per-screen states compose against these patterns']
+
+[PASS] HYGIENE
+        forbidden-token hits: none
+
+==============================================================================
+ALL IDENTITIES PASS
+==============================================================================

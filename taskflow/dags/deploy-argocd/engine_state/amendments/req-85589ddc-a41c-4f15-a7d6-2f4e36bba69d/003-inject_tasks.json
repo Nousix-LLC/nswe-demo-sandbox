@@ -1,0 +1,59 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-08T16:50:39.508353697Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_argocd_gitops"
+      ],
+      "placement_parent_task_id": "deploy-argocd"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_argocd_gitops",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the GitOps/ArgoCD authoring spoke (owns deploy/argocd/): ArgoCD Application tracking deploy/chirp + a least-privilege AppProject (#24 SEC-2/4). Disjoint-ownership parallel sibling of the app-manifests spoke; depends on discovery for the ArgoCD/AppProject apiVersion and destination server.",
+        "task_id": "deploy-argocd"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_app_manifests": [
+        "SUBTASK_discovery"
+      ],
+      "SUBTASK_argocd_gitops": [
+        "SUBTASK_discovery"
+      ],
+      "SUBTASK_discovery": [],
+      "deploy-argocd": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_discovery",
+          "deploy-argocd"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_app_manifests",
+          "SUBTASK_argocd_gitops"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

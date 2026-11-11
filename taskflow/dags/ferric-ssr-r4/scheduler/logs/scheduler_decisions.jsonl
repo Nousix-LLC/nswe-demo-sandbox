@@ -1,0 +1,15 @@
+{"timestamp":"2026-11-05T21:52:23.448528913Z","action":{"Dispatch":{"task_ids":["ferric-ssr-r4"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-05T21:53:02.573358758Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-ssr-r4"]}},"reason":"task ferric-ssr-r4 transitioned to Ready"}
+{"timestamp":"2026-11-05T21:53:02.573853941Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-ssr-r4"]}},"reason":"task ferric-ssr-r4 transitioned to Running"}
+{"timestamp":"2026-11-05T21:59:07.874818516Z","action":{"Dispatch":{"task_ids":["SUBTASK_b1_hydrate_fix"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-05T21:59:26.517735085Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-ssr-r4"]}},"reason":"task ferric-ssr-r4 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-05T21:59:54.073227835Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b1_hydrate_fix"]}},"reason":"task SUBTASK_b1_hydrate_fix transitioned to Ready"}
+{"timestamp":"2026-11-05T21:59:54.073455472Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b1_hydrate_fix"]}},"reason":"task SUBTASK_b1_hydrate_fix transitioned to Running"}
+{"timestamp":"2026-11-05T22:02:16.044981982Z","action":{"Dispatch":{"task_ids":["SUBTASK_b2_wasm_tests"],"group_index":1}},"reason":"task SUBTASK_b1_hydrate_fix completed, dispatching ready successors"}
+{"timestamp":"2026-11-05T22:03:28.729636281Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b2_wasm_tests"]}},"reason":"task SUBTASK_b2_wasm_tests transitioned to Ready"}
+{"timestamp":"2026-11-05T22:03:28.729886853Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b2_wasm_tests"]}},"reason":"task SUBTASK_b2_wasm_tests transitioned to Running"}
+{"timestamp":"2026-11-05T22:11:20.391309002Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis_report"],"group_index":2}},"reason":"task SUBTASK_b2_wasm_tests completed, dispatching ready successors"}
+{"timestamp":"2026-11-05T22:13:14.894079917Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_report"]}},"reason":"task SUBTASK_synthesis_report transitioned to Ready"}
+{"timestamp":"2026-11-05T22:13:14.894285634Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis_report"]}},"reason":"task SUBTASK_synthesis_report transitioned to Running"}
+{"timestamp":"2026-11-05T22:21:22.785076770Z","action":{"SubtreeResolved":{"parent_task_id":"ferric-ssr-r4","child_task_ids":["SUBTASK_b1_hydrate_fix","SUBTASK_b2_wasm_tests","SUBTASK_synthesis_report"],"success":true}},"reason":"all children of ferric-ssr-r4 reached terminal state (success=true)"}
+{"timestamp":"2026-11-05T22:21:22.785452327Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

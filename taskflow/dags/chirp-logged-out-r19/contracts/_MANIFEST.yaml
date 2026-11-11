@@ -1,0 +1,18 @@
+kind: yaml_schema
+description: >
+  Structural seam for the chirp-logged-out-r19 DAG. The verify-remediate task
+  produces ac-verdicts.yaml conforming to ac_verdict_schema.yaml. The synthesis
+  task reads it to produce SYNTHESIS.md.
+
+ownership:
+  - artifact: "SUBTASK_ac-verify-remediate/ac-verdicts.yaml"
+    owner: "SUBTASK_ac-verify-remediate"
+  - artifact: "SYNTHESIS.md"
+    owner: "SUBTASK_synthesis"
+
+identities:
+  - "ac-verdicts.yaml contains exactly five AC entries: AC-1, AC-2, AC-3, AC-4, AC-5"
+  - "each AC entry has a verdict field with value MET or NOT-MET"
+  - "SYNTHESIS.md references the verdict for each AC and contains an overall PASS or FAIL verdict"
+
+derived_artifacts: []

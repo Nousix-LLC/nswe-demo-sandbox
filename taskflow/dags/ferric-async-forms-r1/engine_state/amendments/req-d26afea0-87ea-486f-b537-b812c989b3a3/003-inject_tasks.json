@@ -1,0 +1,59 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T03:49:07.582665946Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_dom_events"
+      ],
+      "placement_parent_task_id": "ferric-async-forms-r1"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_dom_events",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "DOM events spoke: extend dom.rs event binding to cover all EventKind variants declared by the skeleton — depends on skeleton freezing the full EventKind set.",
+        "task_id": "ferric-async-forms-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_async_resource": [
+        "SUBTASK_walking_skeleton"
+      ],
+      "SUBTASK_dom_events": [
+        "SUBTASK_walking_skeleton"
+      ],
+      "SUBTASK_walking_skeleton": [],
+      "ferric-async-forms-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_walking_skeleton",
+          "ferric-async-forms-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_async_resource",
+          "SUBTASK_dom_events"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

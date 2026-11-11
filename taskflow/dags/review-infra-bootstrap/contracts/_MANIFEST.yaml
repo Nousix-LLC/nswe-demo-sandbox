@@ -1,0 +1,71 @@
+# Review contract for the review-infra-bootstrap subtree (PR #20 / #10).
+# Kind: taxonomy — a code-review decomposition's compositional schema (finding taxonomy +
+# severity rubric + acceptance-criteria enumeration + per-lens ownership + gate identities).
+# READ-ONLY for every descendant. The gate asserts the identities; it MUST NOT silently plug a failure.
+
+kind: taxonomy
+subject:
+  pr: 20
+  repo: Nousix-LLC/nswe-demo
+  closes_issue: 10
+  epic: 3           # devops
+  head: 016bd44c57e7ed8bcc60a67d4436402433a3a9b4
+  base: fcfc7a2e02d931ab1b499c8fac1747c77ec3a64e   # main
+  diff: "+912/-0 across 11 files, all under deploy/bootstrap/ (6 bash scripts + 4 READMEs + versions.txt)"
+
+# --- Structural declarations (see finding_schema.md for the full finding record shape) ---
+severity_vocabulary: [block, major, minor, nit]   # 'block' = must fix before land
+verdict_vocabulary:  [APPROVE, REQUEST-CHANGES]
+verdict_rule: >
+  REQUEST-CHANGES if and only if at least one OPEN finding of severity 'block' exists after the gate's
+  review. 'major' findings do not by themselves force REQUEST-CHANGES but the gate MUST state explicitly
+  whether each major is land-blocking or carry-as-follow-up. 'minor'/'nit' never block. APPROVE requires
+  zero open 'block' findings and an explicit decision on every open 'major'.
+
+finding_id_convention:
+  correctness_lens: "CORR-<n>"
+  security_lens:    "SEC-<n>"
+  honesty_scope_ops_lens: "HSO-<n>"
+  gate_level:       "GATE-<n>"
+  carried_code_dag_finding: "F1"   # the code DAG's own minor contract-wording finding, referenced not re-minted
+
+acceptance_criteria:   # the #10 rubric — each gets exactly one explicit pass/fail verdict in the gate
+  AC1_cluster:  "k3s cluster installed and proven Ready (install-k3s.sh + verify-cluster.sh); exact versions recorded."
+  AC2_gitops:   "ArgoCD installed into its own namespace and proven healthy (install-argocd.sh + verify-argocd.sh); kubeconfig + ArgoCD access documented, retrieved at runtime and never staged."
+  AC3_wasm:     "wasm32-unknown-unknown target + wasm-bindgen CLI set up and PROVEN by building crates/chirp-frontend to pkg/*.wasm; wasm-bindgen CLI version matches crate pin 0.2.129."
+  AC4_runbook:  "unified deploy/bootstrap/README.md gives run order + per-track verification wiring every script; scripts idempotent, re-runnable, pin versions, commit no secrets."
+
+# --- Ownership (every artifact + every review concern has exactly one producer) ---
+ownership:
+  artifacts:
+    "SUBTASK_review_correctness_repro/review_correctness.md": SUBTASK_review_correctness_repro
+    "SUBTASK_review_security_rbac/review_security.md":        SUBTASK_review_security_rbac
+    "SUBTASK_review_honesty_scope_ops/review_honesty_scope_ops.md": SUBTASK_review_honesty_scope_ops
+    "SYNTHESIS.md":                                          SUBTASK_synthesis_gate   # at the parent/fold location
+  concerns:
+    script_correctness:            SUBTASK_review_correctness_repro
+    reproducibility_idempotency:   SUBTASK_review_correctness_repro
+    code_quality_shell_k8s_gitops_idiom: SUBTASK_review_correctness_repro
+    security_secrets_posture:      SUBTASK_review_security_rbac
+    least_privilege_rbac_cluster_posture: SUBTASK_review_security_rbac
+    honest_blocker_k3d_substitution: SUBTASK_review_honesty_scope_ops
+    scope_conformance:             SUBTASK_review_honesty_scope_ops
+    operability:                   SUBTASK_review_honesty_scope_ops
+
+# --- Identities the synthesis gate evaluates as assertions (no silent plugs) ---
+identities:
+  R1_concern_coverage: "Each of the 8 named review concerns is covered by exactly one spoke's findings doc — none unowned, none double-owned."
+  R2_ac_verdict_coverage: "Each acceptance criterion AC1..AC4 carries an explicit pass/fail verdict in the gate, computed from the union of findings touching it."
+  R3_finding_wellformed: "Every finding carries all schema fields (id, lens, concern, severity in vocabulary, location, statement, evidence, remediation, acceptance_criteria_touched); no finding is a bare assertion lacking evidence or (for block/major) actionable remediation."
+  R4_k3d_verdict_once: "The k3d-vs-native substitution has exactly one explicit verdict (acceptable | blocking-weakening), owned by SUBTASK_review_honesty_scope_ops and carried into the gate, with reasoning on downstream #12/#13 targetability and caveat honesty/completeness."
+  R5_f1_disposition_once: "The code DAG finding F1 has exactly one explicit disposition (carry-as-tracked-issue | drop) in the gate verdict, with rationale."
+  R6_verdict_consistency: "Final verdict is in verdict_vocabulary and obeys verdict_rule w.r.t. the consolidated finding set (REQUEST-CHANGES iff >=1 open block; APPROVE requires zero open block + an explicit call on every open major)."
+  R7_review_only: "No task in this subtree modified the repo/branch/checkout/main (no edit/stage/commit/push/merge/relock/rebase). Reviewers only read; the only writes are the findings docs, SYNTHESIS.md, and the gh pr review comment."
+
+derived_artifacts: []   # review taxonomy; no mocks/stubs/fixtures/validators to generate
+
+notes: >
+  Cross-cutting assembly (AC N/N checklist + final verdict) is NOT a spoke responsibility; it is the
+  synthesis gate's, which folds the three lens outputs. Spokes produce concern-scoped findings only.
+  The code DAG's own SYNTHESIS.md (gate=PASS, I1-I6 PASS, finding F1 minor) is INPUT context for this
+  review, never its authority — this subtree's folded SYNTHESIS.md is the authoritative landing record.

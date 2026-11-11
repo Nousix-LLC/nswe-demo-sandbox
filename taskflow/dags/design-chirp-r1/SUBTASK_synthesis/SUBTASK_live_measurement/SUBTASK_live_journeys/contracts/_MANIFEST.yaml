@@ -1,0 +1,117 @@
+# Contract manifest — SUBTASK_live_journeys (manual_user_check measurement subtree)
+# kind: yaml_schema. Extends ../../contracts/_MANIFEST.yaml (measurement sub-contract) and
+# ../../../../contracts/id_and_traceability_schema.yaml ADDITIVELY. Never overrides the inherited live_status vocab,
+# the verification_method vocab, the verdict_row_schema columns, or the gate join seam.
+# READ-ONLY for every descendant of this subtree.
+
+kind: yaml_schema
+
+extends: "../../contracts/_MANIFEST.yaml"                        # measurement sub-contract: verdict_row_schema, live_status_key=bar_id
+also_inherits:
+  - "../../../../contracts/id_and_traceability_schema.yaml"      # live_status vocab; closed verification_method vocab
+
+# ---------------------------------------------------------------------------
+# The seam: ONE bar_id-keyed verdict table over the 139 manual_user_check BAR-*, partitioned across nine coherent
+# journey/surface clusters by the EXPLICIT per-cluster assignment below, then unioned and checked for totality by the
+# fold. Inherited, not redefined:
+#   live_status vocab: [met, partial, missing, not_applicable]
+#   verification_method: manual_user_check  (this whole subtree is that one partition of the parent measurement)
+#   verdict_row_schema.columns: [bar_id, live_status, observation]
+#   live_status_key: bar_id   (one verdict row per BAR-*)
+# ---------------------------------------------------------------------------
+
+# Each cluster child emits a verdict table with EXACTLY the inherited verdict_row_schema columns — one row per BAR-*
+# it owns. (Schema inherited from ../../contracts/_MANIFEST.yaml; not redefined here.)
+
+# The partition key is an EXPLICIT bar_id -> cluster assignment (NOT the release bar's area/number blocks: a journey
+# cluster deliberately cuts across area blocks). Disjoint by construction (each BAR-* listed under exactly one
+# cluster) and total (the nine lists union to all 139 manual_user_check BAR-*), verified before any child ran.
+partition_by: journey_cluster
+partition:
+  SUBTASK_getin_identity:        # get-in & identity journeys: signed-out entry, sign-up, sign-in, sign-out, session, recovery, verified contact
+    [BAR-014, BAR-015, BAR-112, BAR-113, BAR-114, BAR-115, BAR-116, BAR-200, BAR-206, BAR-207,
+     BAR-213, BAR-230, BAR-231, BAR-236, BAR-300, BAR-303, BAR-304, BAR-316, BAR-321, BAR-322,
+     BAR-323, BAR-338]
+  SUBTASK_core_loop:             # account model, compose & post, reply, like, follow, home timeline, public profiles
+    [BAR-100, BAR-101, BAR-102, BAR-104, BAR-105, BAR-106, BAR-107, BAR-108, BAR-109, BAR-110,
+     BAR-111, BAR-117, BAR-163, BAR-209, BAR-211, BAR-212, BAR-238, BAR-239, BAR-242, BAR-243,
+     BAR-244, BAR-245, BAR-246, BAR-247]
+  SUBTASK_account_lifecycle:     # settings hub, edit profile, verified-contact view/change, sessions/devices, export, deletion, data rights
+    [BAR-018, BAR-019, BAR-022, BAR-118, BAR-119, BAR-210, BAR-214, BAR-228, BAR-249, BAR-250,
+     BAR-251, BAR-254, BAR-317, BAR-318, BAR-319, BAR-325, BAR-327, BAR-328, BAR-330, BAR-411]
+  SUBTASK_resilience_states:     # empty/loading/failed/not-found states, onboarding, session-expiry recovery, action feedback
+    [BAR-026, BAR-027, BAR-028, BAR-029, BAR-226, BAR-240, BAR-248, BAR-259, BAR-260, BAR-261,
+     BAR-262, BAR-263]
+  SUBTASK_safety_trust_support:  # reporting, rules/terms, help & support, operator surface, status/degraded notice
+    [BAR-023, BAR-025, BAR-256, BAR-257, BAR-258, BAR-334, BAR-482, BAR-485]
+  SUBTASK_visual_craft_nav:      # navigation shell, consistency, layout, reading column, typography, contrast, layering, motion, copy, shared treatment
+    [BAR-201, BAR-202, BAR-204, BAR-208, BAR-215, BAR-216, BAR-217, BAR-219, BAR-220, BAR-221,
+     BAR-222, BAR-223, BAR-224, BAR-225, BAR-227, BAR-229]
+  SUBTASK_responsive_phone:      # typical-phone / responsive experience across the core loop and surfaces
+    [BAR-030, BAR-265, BAR-267, BAR-268, BAR-269, BAR-270, BAR-271, BAR-272, BAR-274]
+  SUBTASK_accessibility:         # keyboard & screen-reader path, WCAG checks
+    [BAR-031, BAR-218, BAR-276, BAR-277, BAR-278, BAR-279, BAR-280, BAR-281, BAR-282, BAR-283,
+     BAR-284, BAR-286, BAR-287, BAR-288, BAR-289, BAR-290, BAR-291, BAR-292]
+  SUBTASK_web_delivery_api:      # one web address, SPA routing, typed API operations as experienced, pagination, typed errors, health endpoint, data over time
+    [BAR-166, BAR-169, BAR-170, BAR-171, BAR-172, BAR-173, BAR-176, BAR-177, BAR-406, BAR-462]
+
+# Expected per-cluster counts (row tags, not prose). The fold asserts the unioned table matches these and totals 139;
+# a mismatch is a reported gap, never silently reconciled.
+expected_counts:
+  SUBTASK_getin_identity:       22
+  SUBTASK_core_loop:            24
+  SUBTASK_account_lifecycle:    20
+  SUBTASK_resilience_states:    12
+  SUBTASK_safety_trust_support:  8
+  SUBTASK_visual_craft_nav:     16
+  SUBTASK_responsive_phone:      9
+  SUBTASK_accessibility:        18
+  SUBTASK_web_delivery_api:     10
+  total:                       139
+
+ownership:
+  "SUBTASK_getin_identity/outputs/getin-identity-measurement.md":            SUBTASK_getin_identity
+  "SUBTASK_core_loop/outputs/core-loop-measurement.md":                      SUBTASK_core_loop
+  "SUBTASK_account_lifecycle/outputs/account-lifecycle-measurement.md":      SUBTASK_account_lifecycle
+  "SUBTASK_resilience_states/outputs/resilience-states-measurement.md":      SUBTASK_resilience_states
+  "SUBTASK_safety_trust_support/outputs/safety-trust-support-measurement.md": SUBTASK_safety_trust_support
+  "SUBTASK_visual_craft_nav/outputs/visual-craft-nav-measurement.md":        SUBTASK_visual_craft_nav
+  "SUBTASK_responsive_phone/outputs/responsive-phone-measurement.md":        SUBTASK_responsive_phone
+  "SUBTASK_accessibility/outputs/accessibility-measurement.md":              SUBTASK_accessibility
+  "SUBTASK_web_delivery_api/outputs/web-delivery-api-measurement.md":        SUBTASK_web_delivery_api
+  "outputs/live-journeys-measurement.md":                                    SUBTASK_journeys_fold   # the unioned bar_id-keyed table + preamble (this subtree's declared output)
+  "SYNTHESIS.md (at SUBTASK_live_journeys/ root)":                           SUBTASK_journeys_fold   # the fold record
+# No artifact has two owners. Each cluster child owns a disjoint partition; the fold owns only the union.
+
+identities:
+  - id: CLUSTER_DISJOINT_TOTAL
+    statement: "The nine clusters' bar_id sets are pairwise disjoint and union to exactly the 139 manual_user_check
+                BAR-* in the release bar; each such BAR-* appears under exactly one cluster, matching the partition
+                table above."
+  - id: MANUAL_STATUS_TOTAL
+    statement: "Every one of the 139 manual_user_check BAR-* carries exactly one live_status in {met, partial,
+                missing, not_applicable} with a recorded observation."
+  - id: OBSERVATION_GROUNDED
+    statement: "Every observation is grounded in an actual exercise of the live product or an actual repository/SPA/API
+                artifact at c805525; a criterion that cannot be observed in this environment is judged conservatively
+                with the reason stated — never assumed or confabulated, never judged optimistically."
+  - id: VOCAB_CONFORMS
+    statement: "Every live_status value is from the inherited vocab and every bar_id is a verbatim release-bar id."
+  - id: OUTPUT_HYGIENE
+    statement: "outputs/live-journeys-measurement.md (and anything that could reach GitHub) carries no
+                host/system/taskflow detail — repository identity only (owner/repo, commit SHA, repo-relative paths,
+                BAR-*/REQ- ids). Its preamble records only that the live product was reached (or why not), by
+                repository/commit identity."
+
+derived_artifacts:
+  - name: manual_user_check_table
+    generated_from: "union of the nine cluster verdict tables, keyed by bar_id"
+    produced_by: SUBTASK_journeys_fold
+    consumed_by: "SUBTASK_measurement_fold (parent) — unioned with the automated_test, inspection, and
+                  operational_check partitions into outputs/live-measurement.md"
+
+# Fold wiring (described, not over-specified; the fold agent resolves exact syscalls at runtime against the kernel
+# fold contract):
+#   - SUBTASK_journeys_fold reads the nine cluster outputs, unions them into ../outputs/live-journeys-measurement.md
+#     (this subtree's declared output), authors ../SYNTHESIS.md at this subtree root (the fold location), and resolves
+#     SUBTASK_live_journeys SUSPENDED -> COMPLETED with that record as the fold seam.

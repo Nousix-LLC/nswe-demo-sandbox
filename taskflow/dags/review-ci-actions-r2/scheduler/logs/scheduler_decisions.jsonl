@@ -1,0 +1,36 @@
+{"timestamp":"2026-10-08T01:34:18.915977369Z","action":{"Dispatch":{"task_ids":["review-ci-actions-r2"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-08T01:34:45.711809396Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2"]}},"reason":"task review-ci-actions-r2 transitioned to Ready"}
+{"timestamp":"2026-10-08T01:34:45.711936621Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2"]}},"reason":"task review-ci-actions-r2 transitioned to Running"}
+{"timestamp":"2026-10-08T01:45:24.269059636Z","action":{"Dispatch":{"task_ids":["SUBTASK_workflow_correctness"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-08T01:45:29.457531864Z","action":{"Dispatch":{"task_ids":["SUBTASK_supply_chain_security"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-08T01:45:35.335020963Z","action":{"Dispatch":{"task_ids":["SUBTASK_image_job"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-08T01:45:40.360558138Z","action":{"Dispatch":{"task_ids":["SUBTASK_folded_minors"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-08T01:46:09.336430752Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_workflow_correctness"]}},"reason":"task SUBTASK_workflow_correctness transitioned to Ready"}
+{"timestamp":"2026-10-08T01:46:09.336562871Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_workflow_correctness"]}},"reason":"task SUBTASK_workflow_correctness transitioned to Running"}
+{"timestamp":"2026-10-08T01:46:17.903205186Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_supply_chain_security"]}},"reason":"task SUBTASK_supply_chain_security transitioned to Ready"}
+{"timestamp":"2026-10-08T01:46:17.909399834Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_supply_chain_security"]}},"reason":"task SUBTASK_supply_chain_security transitioned to Running"}
+{"timestamp":"2026-10-08T01:46:20.262415436Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_image_job"]}},"reason":"task SUBTASK_image_job transitioned to Ready"}
+{"timestamp":"2026-10-08T01:46:20.262525025Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_image_job"]}},"reason":"task SUBTASK_image_job transitioned to Running"}
+{"timestamp":"2026-10-08T01:46:22.726829429Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2"]}},"reason":"task review-ci-actions-r2 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-08T01:46:26.763223027Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_folded_minors"]}},"reason":"task SUBTASK_folded_minors transitioned to Ready"}
+{"timestamp":"2026-10-08T01:46:26.763355949Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_folded_minors"]}},"reason":"task SUBTASK_folded_minors transitioned to Running"}
+{"timestamp":"2026-10-08T01:49:17.822947543Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2","SUBTASK_image_job","SUBTASK_workflow_correctness","SUBTASK_folded_minors"]}},"reason":"task SUBTASK_supply_chain_security completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-08T01:50:00.148780791Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2","SUBTASK_image_job","SUBTASK_workflow_correctness"]}},"reason":"task SUBTASK_folded_minors completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-08T01:50:36.507538478Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2","SUBTASK_image_job"]}},"reason":"task SUBTASK_workflow_correctness completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-08T01:50:46.826621492Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":1}},"reason":"task SUBTASK_image_job completed, dispatching ready successors"}
+{"timestamp":"2026-10-08T01:53:38.292212373Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-08T01:53:38.292309691Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-08T01:57:31.976705678Z","action":{"SubtreeResolved":{"parent_task_id":"review-ci-actions-r2","child_task_ids":["SUBTASK_workflow_correctness","SUBTASK_supply_chain_security","SUBTASK_image_job","SUBTASK_folded_minors","SUBTASK_synthesis"],"success":true}},"reason":"all children of review-ci-actions-r2 reached terminal state (success=true)"}
+{"timestamp":"2026-10-08T01:57:31.976808599Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-08T02:06:25.540898494Z","action":{"Dispatch":{"task_ids":["review-ci-actions-r2"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-08T02:10:10.798448741Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2"]}},"reason":"task review-ci-actions-r2 transitioned to Ready"}
+{"timestamp":"2026-10-08T02:10:10.798545763Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2"]}},"reason":"task review-ci-actions-r2 transitioned to Running"}
+{"timestamp":"2026-10-08T02:11:37.065330392Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T00:36:05.770775634Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T00:36:56.162135516Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-22T00:36:56.162325639Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-22T00:42:28.663964208Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2"]}},"reason":"task SUBTASK_synthesis completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:04:21.620212700Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:12:33.531756477Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-22T16:12:33.531989836Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-22T16:13:49.128536555Z","action":{"WaitForCompletion":{"pending_task_ids":["review-ci-actions-r2"]}},"reason":"task SUBTASK_synthesis completed, waiting for remaining tasks"}

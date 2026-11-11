@@ -1,0 +1,55 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T03:11:59.010115496Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_frontend_logged_out"
+      ],
+      "placement_parent_task_id": "chirp-logged-out"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_frontend_logged_out",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Frontend spoke: update ApiClient to call GET /api/public/timeline for logged-out sessions, ensure all four timeline states (loading/empty/error/end-of-list) are visually distinct, add sign-up/sign-in navigation for logged-out visitors.",
+        "task_id": "chirp-logged-out"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_frontend_logged_out": [
+        "SUBTASK_server_public_timeline"
+      ],
+      "SUBTASK_server_public_timeline": [],
+      "chirp-logged-out": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_server_public_timeline",
+          "chirp-logged-out"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_frontend_logged_out"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T08:58:50.715745309Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_backend_check"
+      ],
+      "placement_parent_task_id": "chirp-logged-out-r12"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_backend_check",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing chirp-logged-out-r12 into backend check, frontend check, and synthesis tasks. SUBTASK_backend_check inspects crates/chirp-server for AC-5 compliance.",
+        "task_id": "chirp-logged-out-r12"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_backend_check": [],
+      "chirp-logged-out-r12": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_backend_check",
+          "chirp-logged-out-r12"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

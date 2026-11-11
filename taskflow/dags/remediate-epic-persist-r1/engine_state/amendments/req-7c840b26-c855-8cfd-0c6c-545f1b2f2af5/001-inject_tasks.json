@@ -1,0 +1,86 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-29T17:11:46.422554872Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_ci_verify"
+      ],
+      "placement_parent_task_id": "SUBTASK_verify_deliver"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_ci_verify",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_verify_deliver: this child observes all required CI checks on PR #113 for commit e63e607 and records fresh evidence — a distinct concern (observation) that precedes the delivery concern.",
+        "task_id": "SUBTASK_verify_deliver"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_apply_fixes": [
+        "SUBTASK_assess"
+      ],
+      "SUBTASK_assess": [],
+      "SUBTASK_ci_verify": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_assess",
+        "SUBTASK_apply_fixes",
+        "SUBTASK_verify_deliver"
+      ],
+      "SUBTASK_verify_deliver": [
+        "SUBTASK_apply_fixes"
+      ],
+      "remediate-epic-persist-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_assess",
+          "SUBTASK_ci_verify",
+          "remediate-epic-persist-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_apply_fixes"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_verify_deliver"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

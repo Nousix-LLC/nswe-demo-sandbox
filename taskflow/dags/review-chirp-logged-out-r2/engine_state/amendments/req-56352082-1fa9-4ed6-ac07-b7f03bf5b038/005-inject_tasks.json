@@ -1,0 +1,62 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T16:57:37.320594007Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_ac4-verify"
+      ],
+      "placement_parent_task_id": "SUBTASK_verify-acs"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: SUBTASK_ac4-verify",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_verify-acs: spoke task to verify AC-4 (B2 fix and CTA routing at HEAD 7f4b684)",
+        "task_id": "SUBTASK_verify-acs"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_ac1-verify": [],
+      "SUBTASK_ac4-verify": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_verify-acs",
+        "SUBTASK_verify-fixes"
+      ],
+      "SUBTASK_verify-acs": [],
+      "SUBTASK_verify-fixes": [],
+      "review-chirp-logged-out-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_ac1-verify",
+          "SUBTASK_ac4-verify",
+          "SUBTASK_verify-acs",
+          "SUBTASK_verify-fixes",
+          "review-chirp-logged-out-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

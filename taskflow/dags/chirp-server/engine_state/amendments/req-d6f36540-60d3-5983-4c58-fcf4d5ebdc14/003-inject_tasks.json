@@ -1,0 +1,104 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T04:52:06.532170651Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_reverify_gate"
+      ],
+      "placement_parent_task_id": "SUBTASK_synthesis_gate"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_reverify_gate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Inject the round-1 re-verification gate: after the F1 fix lands, re-run the authoritative build/test/fmt/clippy + the four-check model over the fixed output; on PASS push work/chirp-server, open the PR into main (Closes #8), and write the authoritative PASS SYNTHESIS.md fold record at the hub seam. Depends on the F1 fix-task.",
+        "task_id": "SUBTASK_synthesis_gate"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_api_layer": [
+        "SUBTASK_scaffold_and_repository"
+      ],
+      "SUBTASK_api_layer/SUBTASK_api_synthesis": [
+        "SUBTASK_api_layer/SUBTASK_transport_foundations",
+        "SUBTASK_api_layer/SUBTASK_handlers",
+        "SUBTASK_api_layer/SUBTASK_router_and_bootstrap"
+      ],
+      "SUBTASK_api_layer/SUBTASK_handlers": [
+        "SUBTASK_api_layer/SUBTASK_transport_foundations"
+      ],
+      "SUBTASK_api_layer/SUBTASK_router_and_bootstrap": [
+        "SUBTASK_api_layer/SUBTASK_handlers"
+      ],
+      "SUBTASK_api_layer/SUBTASK_transport_foundations": [],
+      "SUBTASK_fix_validation_error_mapping": [],
+      "SUBTASK_integration_tests_and_docs": [
+        "SUBTASK_api_layer"
+      ],
+      "SUBTASK_reverify_gate": [
+        "SUBTASK_fix_validation_error_mapping"
+      ],
+      "SUBTASK_scaffold_and_repository": [],
+      "SUBTASK_synthesis_gate": [
+        "SUBTASK_scaffold_and_repository",
+        "SUBTASK_api_layer",
+        "SUBTASK_integration_tests_and_docs"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_api_layer/SUBTASK_transport_foundations",
+          "SUBTASK_fix_validation_error_mapping",
+          "SUBTASK_scaffold_and_repository"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_api_layer",
+          "SUBTASK_api_layer/SUBTASK_handlers",
+          "SUBTASK_reverify_gate"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_api_layer/SUBTASK_router_and_bootstrap",
+          "SUBTASK_integration_tests_and_docs"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_api_layer/SUBTASK_api_synthesis",
+          "SUBTASK_synthesis_gate"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

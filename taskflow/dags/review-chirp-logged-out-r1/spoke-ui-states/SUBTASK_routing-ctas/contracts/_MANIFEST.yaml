@@ -1,0 +1,47 @@
+kind: concern_outputs
+description: >
+  Structural contract for the SUBTASK_routing-ctas sub-decomposition.
+  Three spoke tasks each produce one concern analysis file; the synthesis
+  task assembles them into FINDINGS.md (the parent-level declared output).
+
+concern_output_schema:
+  required_sections:
+    - concern_name      # Which concern this covers (ac4-path | cta-link | annotation)
+    - checked           # What was examined (file + line references at pinned commit)
+    - verdict           # pass | fail (with reasoning)
+    - finding_or_clean  # Either a finding (with severity) or a clean-item record
+
+  finding_shape:
+    location: "file path + line reference at pinned commit decb6196c2c1e6ed421d393a642f0c844cc333ba"
+    principle: "what principle is at stake"
+    rationale: "why it matters in this system"
+    severity: "blocker | non-blocking"
+    resolution: "what would satisfy this finding"
+
+  clean_shape:
+    checked: "what was examined"
+    result: "what was found sound"
+
+findings_schema:
+  description: >
+    Schema for the final FINDINGS.md assembled by SUBTASK_synthesis.
+    Must also satisfy the ancestor contract at ../contracts/_MANIFEST.yaml.
+  required_sections:
+    - concerns_checked      # List of concerns examined with one-line summary per concern
+    - findings              # List of findings (may be empty if all clear)
+    - clean_items           # Account of what was checked and found sound
+
+ownership:
+  SUBTASK_ac4-path/concern-ac4.md: SUBTASK_ac4-path
+  SUBTASK_cta-link/concern-cta.md: SUBTASK_cta-link
+  SUBTASK_annotation/concern-annotation.md: SUBTASK_annotation
+  FINDINGS.md: SUBTASK_synthesis
+  SYNTHESIS.md: SUBTASK_synthesis
+
+identities:
+  - all_concerns_in_findings: >
+      All three concerns (ac4-path, cta-link, annotation) must appear in FINDINGS.md
+  - cite_pinned_commit: >
+      Every finding includes file path + line number at decb6196c2c1e6ed421d393a642f0c844cc333ba
+  - clean_partition: >
+      Each concern is addressed by exactly one spoke task (no overlap, no gap)

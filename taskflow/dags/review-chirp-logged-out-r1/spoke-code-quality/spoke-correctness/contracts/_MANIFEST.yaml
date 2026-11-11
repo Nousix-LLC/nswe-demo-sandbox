@@ -1,0 +1,37 @@
+kind: yaml_schema + markdown_schema
+description: >
+  Contract for the spoke-correctness subtree decomposition.
+  Each analysis child produces an independent FINDINGS.md covering its assigned
+  concern(s). The synthesis child merges them into the final FINDINGS.md at the
+  spoke-correctness workspace level, which is the artifact the parent spoke-code-quality
+  DAG expects at spoke-correctness/FINDINGS.md.
+
+schema_reference: ../contracts/findings_schema.md
+# Each analysis child's FINDINGS.md MUST conform to the parent's findings_schema.md.
+# The synthesis child's output MUST also conform to that schema (it IS the final FINDINGS.md).
+
+ownership:
+  - artifact: SUBTASK_sql-correctness/FINDINGS.md
+    owner: SUBTASK_sql-correctness
+    concerns: [3]
+  - artifact: SUBTASK_spec-deviation/FINDINGS.md
+    owner: SUBTASK_spec-deviation
+    concerns: [4]
+  - artifact: FINDINGS.md
+    owner: SUBTASK_synthesis
+    note: Final merged findings at the spoke-correctness workspace level.
+
+identities:
+  - "Concern 3 (SQL correctness) is covered in SUBTASK_sql-correctness/FINDINGS.md and
+     nowhere else in this subtree."
+  - "Concern 4 (spec deviation) is covered in SUBTASK_spec-deviation/FINDINGS.md and
+     nowhere else in this subtree."
+  - "The synthesis child's FINDINGS.md at spoke-correctness/FINDINGS.md contains a
+     ## Verdict section that reflects the union of both analysis children's verdicts:
+     FINDINGS if either child found a finding; PASS only if both found nothing."
+  - "Every Finding N referenced in a child FINDINGS.md appears exactly once in
+     the merged FINDINGS.md, renumbered consecutively if needed."
+  - "The ## Clean Account section in the final FINDINGS.md covers both concern 3
+     and concern 4, with one bullet each."
+
+derived_artifacts: []

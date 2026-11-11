@@ -1,0 +1,6 @@
+{"timestamp":"2026-11-06T10:35:39.555074600Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-r26"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-06T10:38:01.672815429Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r26"]}},"reason":"task chirp-logged-out-r26 transitioned to Ready"}
+{"timestamp":"2026-11-06T10:38:01.673020258Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r26"]}},"reason":"task chirp-logged-out-r26 transitioned to Running"}
+{"timestamp":"2026-11-06T14:36:18.530988079Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-r26"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-06T14:38:16.324535127Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r26"]}},"reason":"task chirp-logged-out-r26 transitioned to Ready"}
+{"timestamp":"2026-11-06T14:38:16.324838317Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r26"]}},"reason":"task chirp-logged-out-r26 transitioned to Running"}

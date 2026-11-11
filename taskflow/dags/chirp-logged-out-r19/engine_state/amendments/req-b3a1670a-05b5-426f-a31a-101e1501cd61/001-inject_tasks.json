@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T09:55:40.959123308Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_ac-verify-remediate"
+      ],
+      "placement_parent_task_id": "chirp-logged-out-r19"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_ac-verify-remediate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing chirp-logged-out-r19 into two serial tasks: (1) AC verification + gap remediation, (2) synthesis fold. This is task 1.",
+        "task_id": "chirp-logged-out-r19"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_ac-verify-remediate": [],
+      "chirp-logged-out-r19": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_ac-verify-remediate",
+          "chirp-logged-out-r19"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

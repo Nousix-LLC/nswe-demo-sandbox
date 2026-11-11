@@ -1,0 +1,80 @@
+# ferric-router-r1 contracts manifest
+# Seam declarations for the additive API surface each spoke must land.
+
+doc: ferric_router_r1_api.md
+
+seams:
+  - id: frozen_surface_preserved
+    description: >
+      Every frozen #5 prelude item is present with unchanged signatures at the end of the branch.
+      Specifically: Params (get, is_empty, len, iter), RoutePattern (new, match_path),
+      Router (new, route, fallback, mount_history, outlet), navigate(&str), current_path() -> String,
+      link(to, label) -> VNode, Link (new, class, build), LINK_CLASS.
+    owner: synthesis-gate (verified)
+    source_files:
+      - crates/ferric-router/src/lib.rs
+      - crates/ferric-router/src/router.rs
+      - crates/ferric-router/src/matcher.rs
+      - crates/ferric-router/src/link.rs
+
+  - id: navigate_replace_added
+    description: >
+      Function navigate_replace(path: &str) is present in crates/ferric-router/src/router.rs,
+      uses history.replaceState on wasm32 (or updates the reactive path without touching
+      the History API off-wasm), updates current_path() reactively, and is exported from
+      the prelude as `pub use crate::router::navigate_replace`.
+    owner: navigate-replace (implements), synthesis-gate (verified)
+    source_files:
+      - crates/ferric-router/src/router.rs
+      - crates/ferric-router/src/lib.rs
+
+  - id: active_link_awareness
+    description: >
+      Link::build() calls current_path() and conditionally adds aria-current="page"
+      to the emitted element when self.to equals the current path. When the paths do
+      not match, the element is identical to the frozen surface (no aria-current attribute).
+      The frozen link(to, label) -> VNode signature is unchanged.
+    owner: active-link (implements), synthesis-gate (verified)
+    source_files:
+      - crates/ferric-router/src/link.rs
+
+  - id: nested_routes_added
+    description: >
+      RoutePattern gains match_prefix(&self, path: &str) -> Option<(Params, String)> which
+      matches the pattern's segments against the beginning of path and returns the matched
+      params plus the remaining path with a leading '/'.
+      Router gains nest(prefix, layout, child_builder) -> Self which registers a nested route:
+      when current path begins with prefix, the layout closure is called with the matched
+      params and a reference to the child router's outlet as a &dyn Component; the child
+      outlet renders into the nested outlet and carries its own per-level fallback.
+      Router::outlet() is updated to try nested routes (prefix matching) before flat routes
+      (exact matching) in declaration order.
+    owner: nested-routes (implements), synthesis-gate (verified)
+    source_files:
+      - crates/ferric-router/src/matcher.rs
+      - crates/ferric-router/src/router.rs
+
+  - id: prelude_union
+    description: >
+      The prelude re-exports all frozen items plus the new navigate_replace. Specifically:
+        pub use crate::link::link;
+        pub use crate::matcher::{Params, RoutePattern};
+        pub use crate::router::{current_path, navigate, navigate_replace, Router};
+      (Link, LINK_CLASS are accessible via crate::link:: paths as before but are not
+      necessarily in the prelude unless the implementation chooses to add them.)
+    owner: navigate-replace (adds navigate_replace), synthesis-gate (verified)
+    source_files:
+      - crates/ferric-router/src/lib.rs
+
+  - id: test_coverage
+    description: >
+      Native cargo test covers: navigate_replace updates current_path without pushing history
+      (native only); active link emits aria-current="page" when to matches current path and
+      omits it when it does not; nested routing (two-level config) renders parent layout with
+      child view; per-level fallback renders nested level's own fallback for unmatched child;
+      frozen baseline tests pass unchanged.
+    owner: each spoke (adds its own tests), synthesis-gate (verified)
+    source_files:
+      - crates/ferric-router/src/router.rs
+      - crates/ferric-router/src/matcher.rs
+      - crates/ferric-router/src/link.rs

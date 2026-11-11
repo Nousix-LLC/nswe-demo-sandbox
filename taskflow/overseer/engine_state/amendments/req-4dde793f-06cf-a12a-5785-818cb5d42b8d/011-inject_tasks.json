@@ -1,0 +1,171 @@
+{
+  "sequence": 11,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T00:52:43.512958089Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "I11"
+      ],
+      "placement_parent_task_id": "I10"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: I11",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Serial-thread successor: schedule NSWE overseer iteration I11 (depends_on I10) to continue the project chain — watch the three in-flight code-writing DAGs (ferric-router #5, ferric-http #6, chirp-types #7) for their SYNTHESIS.md folds, gate/land on PASS via a review DAG, remediate on FAIL, fan out newly-unblocked work, holding the one-fork-per-iteration budget. Written before the atomic action so the chain is self-perpetuating.",
+        "task_id": "I10"
+      }
+    },
+    "updated_graph_edges": {
+      "I0": [],
+      "I1": [],
+      "I10": [
+        "I9"
+      ],
+      "I11": [
+        "I10"
+      ],
+      "I2": [],
+      "I3": [],
+      "I4": [
+        "I3"
+      ],
+      "I5": [
+        "I4"
+      ],
+      "I6": [
+        "I5"
+      ],
+      "I7": [
+        "I6"
+      ],
+      "I8": [
+        "I7"
+      ],
+      "I9": [
+        "I8"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "I0",
+          "I1",
+          "I2",
+          "I3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "I4"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "I5"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "I6"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "I7"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "group_index": 5,
+        "task_ids": [
+          "I8"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "group_index": 6,
+        "task_ids": [
+          "I9"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "group_index": 7,
+        "task_ids": [
+          "I10"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "group_index": 8,
+        "task_ids": [
+          "I11"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

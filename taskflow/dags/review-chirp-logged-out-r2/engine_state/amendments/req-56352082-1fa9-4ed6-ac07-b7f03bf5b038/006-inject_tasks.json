@@ -1,0 +1,64 @@
+{
+  "sequence": 6,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T16:57:41.135135615Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_ac235-confirm"
+      ],
+      "placement_parent_task_id": "SUBTASK_verify-acs"
+    },
+    "resulting_version": 6,
+    "summary": "inject tasks: SUBTASK_ac235-confirm",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_verify-acs: spoke task to confirm AC-2, AC-3, AC-5 remain PASS (files not modified by remediation diff)",
+        "task_id": "SUBTASK_verify-acs"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_ac1-verify": [],
+      "SUBTASK_ac235-confirm": [],
+      "SUBTASK_ac4-verify": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_verify-acs",
+        "SUBTASK_verify-fixes"
+      ],
+      "SUBTASK_verify-acs": [],
+      "SUBTASK_verify-fixes": [],
+      "review-chirp-logged-out-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_ac1-verify",
+          "SUBTASK_ac235-confirm",
+          "SUBTASK_ac4-verify",
+          "SUBTASK_verify-acs",
+          "SUBTASK_verify-fixes",
+          "review-chirp-logged-out-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

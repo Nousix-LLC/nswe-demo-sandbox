@@ -1,0 +1,84 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T07:10:53.519801767Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_explore-survey-design"
+      ],
+      "placement_parent_task_id": "SUBTASK_explore-codebase"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: SUBTASK_explore-survey-design",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize survey-design child: reads design docs, extracts ACs with requirement IDs and screen/state inventory, produces design-survey.md.",
+        "task_id": "SUBTASK_explore-codebase"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_backend-api": [
+        "SUBTASK_explore-codebase"
+      ],
+      "SUBTASK_explore-codebase": [],
+      "SUBTASK_explore-survey-design": [],
+      "SUBTASK_frontend-ui": [
+        "SUBTASK_backend-api"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_frontend-ui"
+      ],
+      "chirp-logged-out-r7": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_explore-codebase",
+          "SUBTASK_explore-survey-design",
+          "chirp-logged-out-r7"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_backend-api"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_frontend-ui"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

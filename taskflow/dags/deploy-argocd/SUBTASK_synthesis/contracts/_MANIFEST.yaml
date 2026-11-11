@@ -1,0 +1,69 @@
+# contracts/_MANIFEST.yaml — SUBTASK_synthesis sub-subtree contract
+# READ-ONLY for every child. Authored by the decomposing agent (SUBTASK_synthesis).
+# Kind: yaml_schema — output-artifact ownership + identity-coverage map + fold obligation.
+# This is a thin pipeline contract: every cross-sibling edge is a DECLARED DEPENDENCY (the
+# consumer reads the producer's real COMPLETED output), so NO frozen interface seam/mock exists.
+# The identities to ASSERT are the PARENT contract's (../../contracts/_MANIFEST.yaml) — referenced,
+# not duplicated here; this manifest maps which child asserts which.
+
+kind: yaml_schema
+
+artifacts:
+  - file: synthesis_gate_contract.yaml
+    kind: yaml_schema
+    declares: >
+      The output-artifact locations and minimal schemas the fold child composes: the static gate
+      report, the reachability evidence record, and the PR record. Fixed so SUBTASK_fold can read
+      them unambiguously without re-deriving paths.
+
+# Ownership — disjoint write-sets; one producer per artifact; disjoint SIDE-EFFECT domains.
+ownership:
+  - artifact: "SUBTASK_static_gate/outputs/static_gate_report.md"
+    owner: SUBTASK_static_gate
+    side_effects: "none (read-only over the sibling manifests + contracts)"
+  - artifact: "SUBTASK_deploy_reach/outputs/reachability_evidence.md"
+    owner: SUBTASK_deploy_reach
+    side_effects: "mutates the k3d 'nswe' CLUSTER only (kubectl apply / ArgoCD sync; out-of-band pull Secret)"
+  - artifact: "SUBTASK_land_pr/outputs/pr_record.md"
+    owner: SUBTASK_land_pr
+    side_effects: "mutates GIT only (branch work/deploy-argocd, commits, push, PR into main)"
+  - artifact: "../SYNTHESIS.md"   # at the deploy-argocd subtree root (one level above SUBTASK_synthesis)
+    owner: SUBTASK_fold
+    side_effects: "authors the root fold record; folds SUBTASK_synthesis and the deploy-argocd root to COMPLETED"
+
+# Shared READ-ONLY inputs (NOT owned by any child; read, never written, by multiple children):
+shared_read_only_inputs:
+  - "/home/user/nswe-demo/deploy/chirp/*       (produced by ../../SUBTASK_app_manifests)"
+  - "/home/user/nswe-demo/deploy/argocd/*      (produced by ../../SUBTASK_argocd_gitops)"
+  - "../../contracts/_MANIFEST.yaml, ../../contracts/deploy_contract.yaml  (parent identities)"
+  - "../../SUBTASK_discovery/outputs/ground_truth.md  (digest, ports, health path, ingress class, pull-secret need)"
+
+# Identity-coverage map — every PARENT identity (../../contracts/_MANIFEST.yaml `identities`) is asserted
+# by exactly one child; the fold aggregates the per-identity PASS/FAIL into the final verdict. No silent plug.
+identity_coverage:
+  image-pinned-by-digest:        SUBTASK_static_gate      # static manifest assertion
+  resources-and-probes:          SUBTASK_static_gate      # static manifest assertion
+  appproject-least-privilege:    SUBTASK_static_gate      # static assertion (no */*/*, scoped destinations)
+  namespace-isolation-no-secrets: SUBTASK_static_gate     # static: namespace on every resource + grep for committed secrets
+  service-selector-matches-pods: SUBTASK_deploy_reach     # runtime: kubectl get endpoints non-empty after rollout (+ static label/port diff at static_gate)
+  ingress-wires-service:         SUBTASK_deploy_reach     # runtime: live HTTP GET via localhost:8081 (+ static backend/class diff at static_gate)
+  argocd-application-wired:      SUBTASK_deploy_reach     # runtime: argocd app Synced/Healthy (+ static path/project diff at static_gate)
+  image-pull-works:              SUBTASK_deploy_reach     # runtime: rollout succeeds, no ImagePullBackOff
+  # NOTE: the static halves of the three runtime identities (selector/port, ingress backend/class, app path/project)
+  # are ALSO asserted statically by SUBTASK_static_gate; SUBTASK_deploy_reach proves the runtime half. The fold
+  # records both halves per identity.
+
+# Fold obligation — the structural contract SUBTASK_fold MUST satisfy (kernel resume_suspended fold).
+fold_obligation:
+  deliverable: "../SYNTHESIS.md at the deploy-argocd subtree root (the fold location / the SUBTASK_synthesis brief's required output)"
+  content: "machine-gate PASS/FAIL verdict; per-identity results (static + runtime halves); reachability evidence (request + response); decision record; PR link"
+  resolve: >
+    After authoring ../SYNTHESIS.md, fold the deploy-argocd subtree to COMPLETED: the SUBTASK_synthesis
+    node (this sub-subtree's root) and the deploy-argocd root are both SUSPENDED/NeedsDecompose and MUST be
+    resumed to COMPLETED via engine_resume_suspended, with ../SYNTHESIS.md as the seam record. SUBTASK_fold is
+    the synthesized (COMPLETED) task whose result folds them.
+
+notes:
+  - "Pure serial pipeline: no mocks, no frozen interface seam. A consumer reads its dependency's REAL output."
+  - "Any gate FAIL is remediated by injecting fix-tasks via engine_amend_plan { add_task } + re-verification —
+     never by silently editing the sibling manifests (those are the siblings' COMPLETED outputs)."

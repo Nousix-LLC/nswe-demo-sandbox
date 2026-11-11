@@ -1,0 +1,72 @@
+{
+  "sequence": 4,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T05:59:30.760711317Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis_gate"
+      ],
+      "placement_parent_task_id": "infra-bootstrap"
+    },
+    "resulting_version": 4,
+    "summary": "inject tasks: SUBTASK_synthesis_gate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "infra-bootstrap (#10) decomposition — task 4 of 4: the synthesis verification gate. Runs the four-check model over the combined spoke output against the contract identities, assembles the unified runbook, lands commits on work/infra-bootstrap + a PR into main (Closes #10, not merged), and authors the root SYNTHESIS.md verdict. Depends on all three spokes (Group 2); the single synthesis gate for this subtree.",
+        "task_id": "infra-bootstrap"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_cluster_k3s": [],
+      "SUBTASK_gitops_argocd": [
+        "SUBTASK_cluster_k3s"
+      ],
+      "SUBTASK_synthesis_gate": [
+        "SUBTASK_cluster_k3s",
+        "SUBTASK_gitops_argocd",
+        "SUBTASK_wasm_toolchain"
+      ],
+      "SUBTASK_wasm_toolchain": [],
+      "infra-bootstrap": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_cluster_k3s",
+          "SUBTASK_wasm_toolchain",
+          "infra-bootstrap"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_gitops_argocd"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis_gate"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

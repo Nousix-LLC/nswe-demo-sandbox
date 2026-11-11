@@ -1,0 +1,83 @@
+{
+  "sequence": 12,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T23:33:55.947089246Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_test_quality"
+      ],
+      "placement_parent_task_id": "SUBTASK_quality_check"
+    },
+    "resulting_version": 12,
+    "summary": "inject tasks: SUBTASK_test_quality",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_quality_check: spoke 2 reviews hydrate_wasm.rs new test code quality and checks for fresh non-blockers in hydrate_wasm.rs new code from ferric-ssr-r4 commits",
+        "task_id": "SUBTASK_quality_check"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_app_quality": [],
+      "SUBTASK_b1_verify": [],
+      "SUBTASK_b2_verify": [],
+      "SUBTASK_quality_check": [],
+      "SUBTASK_reg_criteria": [],
+      "SUBTASK_regression": [],
+      "SUBTASK_sec_check": [],
+      "SUBTASK_sec_quality": [],
+      "SUBTASK_secq_synthesis": [
+        "SUBTASK_quality_check",
+        "SUBTASK_sec_check"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_b1_verify",
+        "SUBTASK_b2_verify",
+        "SUBTASK_regression"
+      ],
+      "SUBTASK_test_quality": [],
+      "SUBTASK_verdict_synthesis": [
+        "SUBTASK_reg_criteria",
+        "SUBTASK_sec_quality"
+      ],
+      "review-ferric-ssr-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_app_quality",
+          "SUBTASK_b1_verify",
+          "SUBTASK_b2_verify",
+          "SUBTASK_quality_check",
+          "SUBTASK_reg_criteria",
+          "SUBTASK_regression",
+          "SUBTASK_sec_check",
+          "SUBTASK_sec_quality",
+          "SUBTASK_test_quality",
+          "review-ferric-ssr-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_secq_synthesis",
+          "SUBTASK_synthesis",
+          "SUBTASK_verdict_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

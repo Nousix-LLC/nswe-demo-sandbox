@@ -1,0 +1,53 @@
+kind: ownership_manifest
+version: 1
+
+description: >
+  Thin seam contract for the SUBTASK_hydrate-wasm-quality subtree.
+  Five independent dimension spokes each produce a small finding fragment.
+  The synthesis task reads all five and assembles hydrate-wasm-notes.md.
+
+ownership:
+  - artifact: SUBTASK_dim-naming/finding.md
+    owner: SUBTASK_dim-naming
+    description: Finding for test structure and naming dimension
+
+  - artifact: SUBTASK_dim-cleanup/finding.md
+    owner: SUBTASK_dim-cleanup
+    description: Finding for setup/teardown and DOM cleanup dimension
+
+  - artifact: SUBTASK_dim-strings/finding.md
+    owner: SUBTASK_dim-strings
+    description: Finding for hardcoded strings vs. imported constants dimension
+
+  - artifact: SUBTASK_dim-duplication/finding.md
+    owner: SUBTASK_dim-duplication
+    description: Finding for duplication dimension
+
+  - artifact: SUBTASK_dim-assertions/finding.md
+    owner: SUBTASK_dim-assertions
+    description: Finding for assertion quality dimension
+
+  - artifact: ../hydrate-wasm-notes.md
+    owner: SUBTASK_dim-synthesis
+    description: Combined finding notes file following parent contract format
+
+dimension_finding_format:
+  description: >
+    Each dimension spoke MUST produce a finding.md following this structure
+    so the synthesis task can assemble hydrate-wasm-notes.md mechanically.
+  required_sections:
+    - heading: "## <Dimension Name>"
+      severity: "one of: Blocker | Warning | Pass"
+      evidence: "hydrate_wasm.rs:line or N/A"
+      finding_text: "one or more sentences; plain voice; no AI-tell patterns"
+  optional_sections:
+    - "## Fresh Non-Blockers (if any)"
+
+identities:
+  - each finding.md contains severity label (Blocker / Warning / Pass)
+  - each finding.md contains evidence citation (hydrate_wasm.rs:line or N/A)
+  - each finding.md covers exactly the dimension assigned to its spoke
+  - ../hydrate-wasm-notes.md contains all five dimension sections in order
+  - ../hydrate-wasm-notes.md follows the finding-note format from ../../contracts/_MANIFEST.yaml
+
+derived_artifacts: []

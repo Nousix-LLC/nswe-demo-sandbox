@@ -1,0 +1,12 @@
+{"timestamp":"2026-11-06T05:56:00.847805679Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-r5"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-06T05:56:43.809940178Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r5"]}},"reason":"task chirp-logged-out-r5 transitioned to Ready"}
+{"timestamp":"2026-11-06T05:56:43.810155372Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r5"]}},"reason":"task chirp-logged-out-r5 transitioned to Running"}
+{"timestamp":"2026-11-06T06:05:01.257880647Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-r5-discovery"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-06T06:05:14.474039904Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r5"]}},"reason":"task chirp-logged-out-r5 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-06T06:05:34.417039346Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r5-discovery"]}},"reason":"task chirp-logged-out-r5-discovery transitioned to Ready"}
+{"timestamp":"2026-11-06T06:05:34.417408532Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r5-discovery"]}},"reason":"task chirp-logged-out-r5-discovery transitioned to Running"}
+{"timestamp":"2026-11-06T06:10:53.913216492Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-r5-synthesis"],"group_index":1}},"reason":"task chirp-logged-out-r5-discovery completed, dispatching ready successors"}
+{"timestamp":"2026-11-06T06:12:19.080484633Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r5-synthesis"]}},"reason":"task chirp-logged-out-r5-synthesis transitioned to Ready"}
+{"timestamp":"2026-11-06T06:12:19.080683155Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r5-synthesis"]}},"reason":"task chirp-logged-out-r5-synthesis transitioned to Running"}
+{"timestamp":"2026-11-06T06:25:57.225402853Z","action":{"SubtreeResolved":{"parent_task_id":"chirp-logged-out-r5","child_task_ids":["chirp-logged-out-r5-discovery","chirp-logged-out-r5-synthesis"],"success":true}},"reason":"all children of chirp-logged-out-r5 reached terminal state (success=true)"}
+{"timestamp":"2026-11-06T06:25:57.225592390Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

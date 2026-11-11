@@ -1,0 +1,36 @@
+kind: taxonomy
+description: >
+  Internal contract for the SUBTASK_verify-acs subtree.
+  Three spoke tasks produce per-AC verdict files; the synthesis
+  task assembles them into findings-acs.md conforming to the
+  parent-level contract at ../contracts/_MANIFEST.yaml.
+
+spoke_verdict_schema:
+  status_values: [PASS, FAIL]
+  required_fields_in_verdict-ac1:
+    - ac_1_verdict          # PASS | FAIL — with evidence sentence
+  required_fields_in_verdict-ac4:
+    - ac_4_verdict          # PASS | FAIL — with evidence sentence
+  required_fields_in_verdict-ac235:
+    - ac_2_verdict          # PASS | FAIL — with evidence sentence
+    - ac_3_verdict          # PASS | FAIL — with evidence sentence
+    - ac_5_verdict          # PASS | FAIL — with evidence sentence
+
+ownership:
+  - artifact: SUBTASK_ac1-verify/verdict-ac1.md
+    owner: SUBTASK_ac1-verify
+  - artifact: SUBTASK_ac4-verify/verdict-ac4.md
+    owner: SUBTASK_ac4-verify
+  - artifact: SUBTASK_ac235-confirm/verdict-ac235.md
+    owner: SUBTASK_ac235-confirm
+  - artifact: ../findings-acs.md
+    owner: SUBTASK_acs-gate
+
+identities:
+  - "verdict-ac1.md must contain exactly one ac_1_verdict: PASS or FAIL"
+  - "verdict-ac4.md must contain exactly one ac_4_verdict: PASS or FAIL"
+  - "verdict-ac235.md must contain ac_2_verdict, ac_3_verdict, and ac_5_verdict each PASS or FAIL"
+  - "findings-acs.md must conform to ../contracts/_MANIFEST.yaml required_sections_in_findings-acs"
+  - "synthesis MUST NOT produce findings-acs.md if any required verdict field is missing from a spoke output"
+
+derived_artifacts: []

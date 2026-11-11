@@ -1,0 +1,94 @@
+# contracts/_MANIFEST.yaml — deploy-ghcr-auth-r2 (thin seam)
+# READ-ONLY for every descendant. Structure only; rationale lives in ../_GLOBAL.md.
+kind: yaml_schema
+subtree: deploy-ghcr-auth-r2
+
+# -----------------------------------------------------------------------------
+# Deployment-identity constants — forced/stable; referenced IDENTICALLY by all
+# three children. These are identities to assert, not values to re-derive. Where
+# a value is a digest/sha the authoritative source is the committed manifest at
+# the integration-branch head; children READ it there rather than trusting a
+# transcription here.
+# -----------------------------------------------------------------------------
+identity_constants:
+  repo: "Nousix-LLC/nswe-demo"
+  main_head: "c805525"                       # owner's host-less-ingress commit; main HEAD at fork
+  integration_branch: "work/deploy-ghcr-auth-r2"
+  issue: 32
+  namespace: "chirp"
+  argocd_namespace: "argocd"
+  argocd_application: "chirp"
+  committed_digest_source: "deploy/chirp/10-deployment.yaml"   # image pinned @sha256:054af27… (read full value from here @ branch head)
+  image_pull_secret_name: "ghcr-pull"        # referenced by 10-deployment.yaml imagePullSecrets
+  ghcr_package: "ghcr.io/nousix-llc/chirp-server"   # private at attempt #1
+  appproject_secret_whitelisted: false       # Secret NOT in AppProject namespaceResourceWhitelist → out-of-band Secret survives selfHeal/prune
+  ingress_routes:                            # both must answer /healthz 200 from the digest pod
+    - "host-less (cluster external / tailnet address, any Host) — added by c805525"
+    - "chirp.localhost (pre-existing host rule)"
+
+# -----------------------------------------------------------------------------
+# diagnosis.md schema — the seam SUBTASK_remediate and SUBTASK_verify_synthesis
+# compose against. SUBTASK_diagnose MUST emit every required field so downstream
+# is input-complete without re-reading the whole live world.
+# -----------------------------------------------------------------------------
+diagnosis_schema:
+  required_fields:
+    observed_at: "timestamp of the live read (fresh clock)"
+    main_head_live: "HEAD the cluster's ArgoCD app is synced to, vs c805525"
+    digest_pod: "name/status/image of the committed-digest ReplicaSet pod (Running 1/1 | ImagePullBackOff | absent)"
+    stale_pod: "presence/status of any chirp:local (stale local-image) pod and whether it is a Service endpoint"
+    ghcr_pull_secret_present: "bool — does Secret ghcr-pull exist in ns chirp"
+    ghcr_pullable: "can the committed digest be pulled now (Secret present and valid, OR package now public)"
+    argocd_sync_status: "Synced | OutOfSync + target revision"
+    argocd_health: "Healthy | Degraded | Progressing | …"
+    ingress_healthz:
+      hostless_route: "HTTP status + which pod served it"
+      host_route: "HTTP status + which pod served it"
+    appproject_whitelist_intact: "bool — Secret still excluded; whitelist otherwise unchanged"
+    decision_branch: "one of: already-working | create-secret | blocked"
+    credential_reachability: "if create-secret/blocked: whether a read:packages credential is reachable now, and where the system expects it"
+    repo_change_needed: "bool + what, if any committed manifest change is required (default: none — the Secret is out-of-band)"
+
+# -----------------------------------------------------------------------------
+# Ownership — exactly one producer per artifact.
+# -----------------------------------------------------------------------------
+ownership:
+  "SUBTASK_diagnose/diagnosis.md": "SUBTASK_diagnose"
+  "SUBTASK_remediate/remediation.md": "SUBTASK_remediate"
+  "cluster change (ghcr-pull Secret / reconcile) in ns chirp": "SUBTASK_remediate"
+  "PR branch work/deploy-ghcr-auth-r2 (repo change, if any)": "SUBTASK_remediate"
+  "PR body 'Closes #32' finalization": "SUBTASK_verify_synthesis"   # verdict-gated
+  "SYNTHESIS.md (subtree root)": "SUBTASK_verify_synthesis"
+
+# -----------------------------------------------------------------------------
+# Identities — invariants that MUST hold across the combined outputs. These are
+# AC1–5 made runnable + the supply-chain invariants. The synthesis gate
+# enumerates and RUNS each check; it MUST NOT silently plug a failure. On the
+# blocked branch the reachability identities (I1–I4,I6,I7) are reported FAIL with
+# the precise external input named — a clean recorded verdict, not a silent plug.
+# -----------------------------------------------------------------------------
+identities:
+  I1_digest_running:
+    must: "the chirp-server pod runs the committed digest (image == digest in 10-deployment.yaml @ branch head), 1/1 Ready; stale local-image RS scaled to 0"
+    check: "kubectl -n chirp get pod -o jsonpath image == committed digest; kubectl -n chirp get rs shows stale chirp:local RS at 0 replicas"
+  I2_argocd_synced_healthy:
+    must: "ArgoCD Application chirp is Synced AND Healthy at the integration-branch head"
+    check: "argocd/kubectl app status == Synced + Healthy at target revision"
+  I3_healthz_from_digest:
+    must: "GET /healthz returns 200 served by the committed-digest pod (not the stale pod), through the ingress, at BOTH ingress_routes"
+    check: "curl /healthz via each ingress route → 200; correlate serving pod == digest pod"
+  I4_selfheal_survival:
+    must: "the fix survives ArgoCD selfHeal/prune"
+    check: "trigger/await a reconcile; the digest pod and (if created) the out-of-band ghcr-pull Secret persist (Secret survives because its kind is unmanaged by the AppProject)"
+  I5_supply_chain_posture:
+    must: "digest pin unchanged from main; no registry secret committed to the repo; no broad RBAC; AppProject scope unchanged"
+    check: "git diff main -- deploy/chirp/10-deployment.yaml shows no image/digest change; grep PR diff/branch for dockerconfigjson/base64 creds → none; AppProject namespaceResourceWhitelist unchanged (Secret still excluded)"
+  I6_single_endpoint:
+    must: "clean single-endpoint deployment on the committed digest (no stale endpoint masking)"
+    check: "kubectl -n chirp get endpoints chirp → only the digest pod's IP"
+  I7_no_host_facts_on_github:
+    must: "nothing posted to GitHub carries host/system facts (server address, SSH key path, user, host paths, taskflow internals)"
+    check: "review PR body/commits/comments → repository identities only"
+
+derived_artifacts:
+  - "none (serial pipeline; no sibling mocks — each consumer reads its producer's real output in a later execution group)"

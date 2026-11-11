@@ -1,0 +1,33 @@
+kind: sub_spoke_findings_schema
+version: "1.0"
+description: >
+  Schema for intermediate findings files from single-concern sub-spokes
+  (SUBTASK_placement_analysis or SUBTASK_duplication_analysis).
+  SUBTASK_synthesis reads both and merges them into placement_review_partial.md
+  following the ancestor ../contracts/spoke_partial_schema.yaml.
+
+required_sections:
+  - name: "## Concern Covered"
+    description: >
+      One line: concern number and its description.
+      Example: "Concern 2 (placement correctness)"
+
+  - name: "## Findings"
+    description: |
+      Zero or more findings. Each follows the ancestor spoke_partial_schema.yaml format:
+
+        **[SEVERITY] [item-id or short label]**: description
+        - Principle: <what standard is at stake>
+        - Evidence: <specific lines or values seen>
+        - Resolution: <what would satisfy this finding>
+
+      Severity values: BLOCKER | SHOULD_FIX | ADVISORY | CLEAN
+
+      CLEAN entries are required: when no defects are found, at least one CLEAN entry
+      must name what was examined and found sound. "No findings" is insufficient.
+
+severity_values:
+  BLOCKER: "Must be resolved before APPROVE; prevents merge"
+  SHOULD_FIX: "Should be resolved; does not block by itself unless stated"
+  ADVISORY: "Non-blocking note or observation"
+  CLEAN: "Item examined and found sound; explicitly recorded"

@@ -1,0 +1,53 @@
+# Contract manifest — SUBTASK_product_requirements subtree
+# kind: yaml_schema (section-ownership map + subtree identities)
+# READ-ONLY for every descendant. EXTENDS the parent contract at ../../contracts/ — adds section
+# ownership, the sole-REQ-PROD-minter rule, and subtree identities. MUST NOT override anything the
+# parent contract declares (the REQ-<AREA>-NNN scheme, each_requirement_has fields, the
+# product-requirements.md required-section list). Extend additively via plan amendment only.
+
+kind: yaml_schema
+
+inherits:
+  - path: "../../contracts/id_and_traceability_schema.yaml"
+    binds: "REQ-PROD-* format + each_requirement_has fields + release_gating flag. Not redefined here."
+  - path: "../../contracts/design_artifact_map.yaml"
+    binds: "product-requirements.md required_sections + owner (SUBTASK_product_requirements). Not redefined here."
+
+artifacts:
+  - file: section_ownership_map.yaml
+    declares: "Which fragment owns which required section of product-requirements.md; the sole-REQ-PROD-minter rule."
+
+# One producer per artifact. An artifact with no owner is a hole; with two owners, a race.
+ownership:
+  "product_definition_and_kind (section source)":        SUBTASK_product_definition
+  "product-kind scope draft (in/out-of-scope, kind lens)": SUBTASK_product_definition
+  "users_personas (section source)":                     SUBTASK_users_and_journeys
+  "user_journeys (section source)":                      SUBTASK_users_and_journeys
+  "requirements_and_acceptance_criteria + all REQ-PROD-*": SUBTASK_requirements
+  "in_scope_out_of_scope (consolidated section)":        SUBTASK_requirements
+  "outputs/product-requirements.md (assembled)":         SUBTASK_pr_synthesis
+  "SYNTHESIS.md":                                        SUBTASK_pr_synthesis
+
+# Invariants the combined outputs MUST satisfy. Asserted by SUBTASK_pr_synthesis (the integration gate)
+# with recorded evidence. A failing identity is reported and remediated by decomposing a remediation
+# subtree — NEVER silently plugged.
+identities:
+  - id: SECTION_COVERAGE
+    statement: "Assembled product-requirements.md contains all five required sections from ../../contracts/design_artifact_map.yaml, each sourced from its owning fragment."
+  - id: REQ_SINGLE_OWNER
+    statement: "Every REQ-PROD-* id is minted by SUBTASK_requirements alone; no other fragment defines a REQ-PROD-* id."
+  - id: REQ_WELL_FORMED
+    statement: "Every REQ-PROD-* carries id, statement, acceptance_criteria (stranger-testable), and release_gating (true|false), per inherited each_requirement_has."
+  - id: JOURNEY_TO_REQ
+    statement: "Every end-to-end journey (incl. first visit, daily use, and leaving: account deletion and data export) traces to >=1 REQ-PROD-*."
+  - id: KIND_IMPLICATIONS
+    statement: "The applicable product kind(s) are named with what each implies; each implication is reflected in a REQ-PROD-* OR recorded out-of-scope with a reason."
+  - id: SCOPE_RECORDED
+    statement: "in_scope_out_of_scope is present; any concern judged out-of-scope carries a reason."
+  - id: HYGIENE
+    statement: "No host/system/taskflow detail and no attribution trailer appears in any content bound for the repo (inherits parent GITHUB_HYGIENE)."
+
+derived_artifacts:
+  - name: "outputs/product-requirements.md"
+    generated_from: "product-definition.md + users-and-journeys.md + requirements.md, composed per section_ownership_map.yaml"
+    produced_by: SUBTASK_pr_synthesis

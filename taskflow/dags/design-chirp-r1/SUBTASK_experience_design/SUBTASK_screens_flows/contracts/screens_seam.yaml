@@ -1,0 +1,106 @@
+# screens_seam.yaml — the screens-&-flows subtree seam.
+# READ-ONLY. Spokes compose against this and MUST NOT redefine it (extend additively via amendment only).
+# It fixes WHICH spoke designs WHICH screens and section-part, WHICH REQ-UX sub-range each spoke mints
+# from, HOW spokes compose against the frozen upstream vocabularies, the per-screen<->global-pattern
+# cross-reference, and the trace rule every REQ-UX-* obeys. It EXTENDS ../../contracts/; never overrides it.
+
+# --- The two owned sections and how they split across spokes --------------------------------------
+# Section names are verbatim from ../../contracts/ux_section_and_id_map.yaml. Assembled order in
+# screens-flows.md: screens_and_flows (its four parts, in the order below), then empty_error_loading_states.
+sections:
+  screens_and_flows:
+    assembled_from_parts_in_order:
+      - part: get_in
+        owner: SUBTASK_get_in
+        source: "SUBTASK_get_in/outputs/screens-get-in.md"
+      - part: core_loop
+        owner: SUBTASK_core_loop
+        source: "SUBTASK_core_loop/outputs/screens-core-loop.md"
+      - part: account_lifecycle
+        owner: SUBTASK_account_lifecycle
+        source: "SUBTASK_account_lifecycle/outputs/screens-account-lifecycle.md"
+      - part: safety_notifications
+        owner: SUBTASK_safety_notifications
+        source: "SUBTASK_safety_notifications/outputs/screens-safety-notifications.md"
+  empty_error_loading_states:
+    owner: SUBTASK_considered_states
+    source: "SUBTASK_considered_states/outputs/empty-error-loading-states.md"
+
+# --- REQ-UX-040..089 sub-range partition (parent scheme: REQ-UX-NNN, 3-digit, unique within area) -
+req_ux_id_ranges:
+  SUBTASK_get_in:               { from: "REQ-UX-040", to: "REQ-UX-050" }   # 11 ids
+  SUBTASK_core_loop:            { from: "REQ-UX-051", to: "REQ-UX-064" }   # 14 ids
+  SUBTASK_account_lifecycle:    { from: "REQ-UX-065", to: "REQ-UX-077" }   # 13 ids
+  SUBTASK_safety_notifications: { from: "REQ-UX-078", to: "REQ-UX-085" }   #  8 ids
+  SUBTASK_considered_states:    { from: "REQ-UX-086", to: "REQ-UX-089" }   #  4 ids
+
+# Each REQ-UX-* carries exactly the parent's field set (../../contracts/ then id_and_traceability_schema):
+req_ux_fields: [id, statement, acceptance_criteria, release_gating]
+
+# --- Surface -> owning spoke ---------------------------------------------------------------------
+# Covers every surface in the parent required_surfaces checklist AND every screen in the IA screen
+# inventory, so SURFACE_COVERAGE is mechanically checkable. Each owner designs the surface with its
+# happy path AND its empty/error/loading states, mapping it to the named journeys/REQ-PROD.
+surface_ownership:
+  # get_in — entry & authentication (J1, J2, J3, J3a, J3b)
+  first_visit_landing:        SUBTASK_get_in            # Landing (J1 / REQ-PROD-030,031)
+  sign_up:                    SUBTASK_get_in            # Sign up (J2 / 008,009,031)
+  sign_in:                    SUBTASK_get_in            # Sign in (J3 / 010,011)
+  account_recovery:           SUBTASK_get_in            # Recover access + Set new credential (J3a / 012,013)
+  sign_out:                   SUBTASK_get_in            # Sign out confirmation (J3b / 014)
+  # core_loop — the reading/posting/social loop (J4)
+  home_timeline:              SUBTASK_core_loop         # Home timeline incl. bounded catch-up (J4 / 002)
+  compose_and_post:           SUBTASK_core_loop         # Compose (J4 / 001)
+  reply_and_conversation:     SUBTASK_core_loop         # Chirp / conversation (J4 / 003,004)
+  like_unlike:                SUBTASK_core_loop         # like/unlike in place (J4 / 005)
+  follow_unfollow:            SUBTASK_core_loop         # follow/unfollow in place (J4 / 006)
+  discovery_find_people:      SUBTASK_core_loop         # Explore / find people (J4 / 042)
+  view_profile:               SUBTASK_core_loop         # Public profile, Own profile, Followers, Following (J4 / 007)
+  # account_lifecycle — onboarding, management, leaving (J5, J6, J8)
+  onboarding_empty_state:     SUBTASK_account_lifecycle # Onboarding (J5 / 032)
+  edit_profile:               SUBTASK_account_lifecycle # Edit profile (J6 / 016)
+  account_settings:           SUBTASK_account_lifecycle # Settings hub + Account & contact + Notification preferences + Sessions & devices (J6 / 017,018)
+  data_export:                SUBTASK_account_lifecycle # Export your data (J8 / 019)
+  account_deletion:           SUBTASK_account_lifecycle # Delete account (J8 / 020,021,022)
+  # safety_notifications — safety, notifications, public-explanatory (J7, J9 entry)
+  notifications:              SUBTASK_safety_notifications  # Notifications surface (J7 / 029)
+  report_and_block:           SUBTASK_safety_notifications  # Report dialog + Block/mute + Blocked & muted (J7 / 025,026,027)
+  help_support_entry:         SUBTASK_safety_notifications  # Help & support entry (J9 / 028, user-facing entry only)
+  rules_and_terms:            SUBTASK_safety_notifications  # Rules & terms (J7 / 026) — the screen a report references
+  not_found:                  SUBTASK_safety_notifications  # Not found (any unresolved path)
+  # considered_states — the cross-cutting section (REQ-PROD-033,034)
+  considered_states_global:   SUBTASK_considered_states     # global empty/loading/error patterns + expired-session/transient-error recovery
+
+# --- Shared-vocabulary composition rule ----------------------------------------------------------
+shared_vocabulary_rule:
+  screen_inventory:
+    inherited_from: "../../SUBTASK_ia_interaction/outputs/ia-interaction.md"
+    rule: "Every screen a spoke designs is a screen named in the inventory, referred to by that name and route. A spoke MUST NOT introduce a screen absent from the inventory; if one is genuinely needed, request an additive amendment to this contract rather than inventing it silently."
+  component_library:
+    inherited_from: "../../SUBTASK_visual_system/outputs/visual-system.md"
+    rule: "Every screen is described as an arrangement of named components (ChirpCard, ComposeBox, TextField, Toggle, PrimaryButton, SecondaryButton, IconButton, NavShell, ListView, SettingRow, Dialog, Toast, InlineFeedback, InlineError, EmptyState, LoadingState, Avatar, ProfileHeader). A screen's empty/error/loading states are the relevant components' own named states, not new inventions. Refer to tokens and components by name; introduce no ad-hoc value."
+
+# --- The per-screen <-> global-pattern cross-reference (the one internal seam) --------------------
+states_cross_reference:
+  global_patterns_owner: SUBTASK_considered_states
+  rule: >
+    SUBTASK_considered_states owns the product-wide empty / loading / error PATTERNS and the
+    expired-session / transient-error recovery (keep-the-draft) behaviour, as the empty_error_loading_states
+    section. The four surface-cluster spokes design each screen's OWN empty/error/loading states by
+    composing the component library's named states and this global treatment — they do not invent a
+    conflicting per-screen pattern. Because all spokes compose against the same already-frozen component
+    library and IA session-expiry convention, the spokes run in parallel; SUBTASK_synthesis asserts
+    STATES_CONSISTENT across the assembled whole.
+
+# --- The trace rule every REQ-UX-* obeys ---------------------------------------------------------
+trace_rule:
+  references_req_prod: ">=1"                 # every REQ-UX-* names at least one REQ-PROD-* it serves
+  acceptance_criteria: "testable by someone who never met the author, exercisable on the live product"
+  release_gating: "true | false  (false carries a one-line reason)"
+  product_requirements_source: "../../../SUBTASK_product_requirements/outputs/product-requirements.md"
+  note: >
+    Honour the product requirements' own release_gating where a REQ-UX implements a non-gating REQ-PROD:
+    e.g. discovery/Explore rides REQ-PROD-042 (release_gating:false), notifications ride REQ-PROD-029
+    (false), block/mute rides REQ-PROD-027 (false), conversation reading rides REQ-PROD-004 (false),
+    handle-change rides REQ-PROD-018 (false), the second theme / stay-signed-in ride 023/024/015 (false).
+    A gated screen that also exposes a non-gating behaviour gates the parts its gated REQ-PROD requires.

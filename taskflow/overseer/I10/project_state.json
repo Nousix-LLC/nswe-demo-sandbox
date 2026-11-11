@@ -1,0 +1,239 @@
+{
+  "project_id": "nswe-demo",
+  "repo": "Nousix-LLC/nswe-demo",
+  "goal": "A small Rust/WebAssembly web-application framework (ferric) and a Twitter-style clone (chirp) built on it, production quality; built, tested, and continuously delivered via GitHub Actions CI and ArgoCD on k3s; reachable on the cluster. The GitHub Project, issues, and PRs are the working record.",
+  "created": "2026-10-01T23:20:44Z",
+  "updated": "2026-10-07T00:52:45Z",
+  "status": "active",
+  "working_branch": "main",
+  "flow": "Each unit of work is a forked swe-coder DAG on a feature branch -> pushes -> opens a PR into main referencing its issue -> overseer schedules a review DAG -> overseer gates/merges. CI via GitHub Actions; CD via ArgoCD on k3s. Bugs -> issues -> fix DAGs. (This PR-into-main flow follows the explicit user request and supersedes the app's local-first default.)",
+  "current_pointer": 1,
+  "engagement": {
+    "project_board": "https://github.com/orgs/Nousix-LLC/projects/1",
+    "project_id_gh": "PVT_kwDOEB9jls4BlZH4",
+    "status_field_id": "PVTSSF_lADOEB9jls4BlZH4zhkGLsc",
+    "status_options": {"Todo": "f75ad846", "In Progress": "47fc9ee4", "Done": "98236657"},
+    "project_item_ids": {"issue_4": "PVTI_lADOEB9jls4BlZH4zg-BHNo", "issue_5": "PVTI_lADOEB9jls4BlZH4zg-BHRk", "issue_6": "PVTI_lADOEB9jls4BlZH4zg-BHTA", "issue_7": "PVTI_lADOEB9jls4BlZH4zg-BHTs"},
+    "milestones": {"M1": 1, "M2": 2, "M3": 3},
+    "issues": {
+      "epic_ferric": 1, "epic_chirp": 2, "epic_devops": 3,
+      "ferric-foundation": 4, "ferric-router": 5, "ferric-http": 6,
+      "chirp-types": 7, "chirp-server": 8, "chirp-frontend": 9,
+      "infra-bootstrap": 10, "ci-actions": 11, "containerize": 12, "deploy-argocd": 13
+    },
+    "architecture": {
+      "framework": "ferric (crates/ferric): client-side WASM framework — reactive signals, component model, DOM rendering (wasm-bindgen/web-sys), router, fetch/JSON http client",
+      "app": "chirp: crates/chirp-types (shared contract), crates/chirp-server (axum REST API + persistence + static SPA serving), crates/chirp-frontend (ferric SPA)",
+      "deploy": "chirp-server containerized; k8s manifests under deploy/; ArgoCD Application tracking the repo deploys to k3s"
+    }
+  },
+  "dispatched_dags": [
+    {
+      "item_slug": "ferric-foundation",
+      "issue": 4,
+      "branch": "work/ferric-foundation",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-foundation",
+      "methodology_bundles": ["rust", "core", "code-quality", "testing"],
+      "dispatched_at": "2026-10-01T23:20:44Z",
+      "status": "landed-and-reaped",
+      "machine_gate": {"verdict": "PASS", "round": 1, "pr": 14, "synthesis": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-foundation/SYNTHESIS.md", "gated_by": "overseer/I1", "gated_at": "2026-10-06T12:20:00Z"},
+      "landed_by": "overseer/I2",
+      "landed_commit": "3c8d26408b3027cf625aa5ec0ca50e5cdd38c0fc"
+    },
+    {
+      "item_slug": "review-ferric-foundation",
+      "issue": 4,
+      "kind": "review",
+      "reviews_pr": 14,
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/review-ferric-foundation",
+      "methodology_bundles": ["code-review", "rust", "core"],
+      "dispatched_at": "2026-10-06T12:20:00Z",
+      "dispatched_by": "overseer/I1",
+      "status": "folded-and-reaped",
+      "verdict": "APPROVE",
+      "review_url": "https://github.com/Nousix-LLC/nswe-demo/pull/14#pullrequestreview-5433582590",
+      "note": "gh review posted as COMMENTED (self-review platform block; author==gh account); authoritative verdict APPROVE carried in SYNTHESIS.md"
+    },
+    {
+      "item_slug": "ferric-router",
+      "issue": 5,
+      "branch": "work/ferric-router",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-router",
+      "methodology_bundles": ["rust", "core", "code-quality", "testing"],
+      "dispatched_at": "2026-10-06T19:33:00Z",
+      "dispatched_by": "overseer/I2",
+      "forked_thread_id": "ferric-router",
+      "status": "dispatched",
+      "note": "I10 re-verified on disk (read-only, P1 held): DAG decomposed (NeedsDecompose) into a contract-first serial pipeline of 5 children — SUBTASK_scaffold/matcher/navigation/view/synthesis; root SUSPENDED(NeedsDecompose) with _GLOBAL.md + contracts/{_MANIFEST.yaml,ferric_router_api.rs} + root SUSPENSION.md + checkout/ + scheduler/. PROGRESS at I10: SUBTASK_scaffold + SUBTASK_matcher + SUBTASK_navigation + SUBTASK_view COMPLETE.md present (4 of 5 — view newly COMPLETE since I9); only SUBTASK_synthesis still carries just _BRIEF.md. STILL NO root SYNTHESIS.md and NO root COMPLETE.md -> subtree NOT folded. Nothing to gate at I10. Resumption: SUBTASK_synthesis authors SYNTHESIS.md (+PR Closes #5) at the root and resumes the parent SUSPENDED->COMPLETED; watch for that fold at I11+."
+    },
+    {
+      "item_slug": "ferric-http",
+      "issue": 6,
+      "branch": "work/ferric-http",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-http",
+      "methodology_bundles": ["rust", "core", "code-quality", "testing"],
+      "prepared_by": "overseer/I2",
+      "dispatched_at": "2026-10-07T00:39:38Z",
+      "dispatched_by": "overseer/I8",
+      "forked_thread_id": "ferric-http",
+      "status": "dispatched",
+      "note": "board=In Progress. Fork DENIED five consecutive times (I3-I7); GRANTED + SUCCEEDED on I8. I10 re-verified on disk (read-only): workspace top-level has _BRIEF.md + _FORK.md + checkout/ + scheduler/, NO SYNTHESIS.md yet -> running, not folded, nothing to gate at I10. Resumption: watch for terminal fold -> read SYNTHESIS.md verdict (I11+)."
+    },
+    {
+      "item_slug": "chirp-types",
+      "issue": 7,
+      "branch": "work/chirp-types",
+      "persona": "swe-coder",
+      "model": "claude-opus-4-8",
+      "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-types",
+      "methodology_bundles": ["rust", "core", "architecture"],
+      "prepared_by": "overseer/I2",
+      "dispatched_at": "2026-10-07T00:47:08Z",
+      "dispatched_by": "overseer/I9",
+      "forked_thread_id": "chirp-types",
+      "status": "dispatched",
+      "note": "board=In Progress. This was the LAST prepared-fork-pending DAG; I9 was granted the fork token and the fork SUCCEEDED (placement=peer). I10 re-verified on disk (read-only): workspace top-level has _BRIEF.md + _FORK.md + scheduler/, NO SYNTHESIS.md yet -> running (recently dispatched), not folded, nothing to gate at I10. Resumption: watch for the DAG's terminal fold -> read SYNTHESIS.md verdict (I11+)."
+    }
+  ],
+  "work_items": [
+    {
+      "item_slug": "ferric-foundation",
+      "issue": 4,
+      "pr": 14,
+      "acceptance_criteria": "Virtual Cargo workspace + crates/ferric; sound reactive signals (computed + batching, no stale-subscriber leaks); component model + mount; DOM rendering via wasm-bindgen/web-sys with keyed diff + click/input; wasm build + counter example; native tests (wasm-bindgen-test optional without headless browser); fmt/clippy clean, rustdoc, README.",
+      "landed_commit_shas": ["3c8d26408b3027cf625aa5ec0ca50e5cdd38c0fc"],
+      "diff_summary": "workspace + ferric core; ~3035 insertions, all additive (signal.rs reactive core, vdom.rs view tree + keyed diff, component.rs, dom.rs web-sys runtime, examples/counter.rs, README.md, workspace Cargo.toml/Cargo.lock).",
+      "dag_decision_record": "Four implementation spokes (reactive_core -> view_and_diff -> dom_runtime) over a scaffold. ABA-safe generational arena for signals; Rc<RefCell<Box<dyn Any>>> value cells so no borrow held across user closures; conditional-dependency re-tracking drops stale subscribers; lazy glitch-free memos; panic-safe BatchGuard. Keyed diff proven via shadow-DOM roundtrip. Zero unsafe, zero production unwrap. Synthesis gate PASS: workspace+wasm build OK, 36 unit + 6 doctests OK, fmt/clippy clean.",
+      "gate_outcome": "approved",
+      "machine_gate": "PASS (round 1)",
+      "review_verdict": "APPROVE (0 block/major findings; F1-F6 minor/nit/informational, none blocking)",
+      "landed_at": "2026-10-06T19:31:01Z",
+      "compacted": false
+    }
+  ],
+  "iterations": [
+    {
+      "iteration": "I3",
+      "persona": "swe-lead",
+      "woke_to": "finish the fan-out (fork ferric-http #6) and watch/gate dispatched DAGs",
+      "evaluation": "Continue",
+      "scheduled_successor": "I4 (depends_on I3)",
+      "atomic_action": "engine_fork ferric-http (#6) — DENIED",
+      "fork_denied": {"tool": "fork", "error": "PermissionDenied: missing token 'fork'", "retryable": false, "cause": "reconstructed taskflow node not granted a fork token this invocation", "handled": "no DAG dispatched this iteration; ferric-http #6 remains prepared-fork-pending; fork re-deferred to I4; chirp-types #7 to I5"},
+      "landed": "none",
+      "board_changes": "none",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I4",
+      "persona": "swe-lead",
+      "woke_to": "resume the fan-out (fork ferric-http #6, deferred from I3's denial) and watch/gate dispatched DAGs",
+      "evaluation": "Continue",
+      "scheduled_successor": "I5 (depends_on I4)",
+      "atomic_action": "engine_fork ferric-http (#6) — DENIED (second consecutive denial)",
+      "fork_denied": {"tool": "fork", "error": "PermissionDenied: missing token 'fork'", "retryable": false, "handled": "re-deferred to I5; did NOT retry; no inline fallback (P1)"},
+      "landed": "none",
+      "board_changes": "none",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I5",
+      "persona": "swe-lead",
+      "woke_to": "resume the fan-out (fork ferric-http #6, deferred from the I3+I4 denials) and watch/gate dispatched DAGs",
+      "evaluation": "Continue",
+      "scheduled_successor": "I6 (depends_on I5)",
+      "atomic_action": "engine_fork ferric-http (#6) — DENIED (THIRD consecutive denial)",
+      "fork_denied": {"tool": "fork", "error": "PermissionDenied: missing token 'fork'", "retryable": false, "handled": "re-deferred to I6; did NOT retry; no inline fallback (P1)"},
+      "landed": "none",
+      "board_changes": "none",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I6",
+      "persona": "swe-lead",
+      "woke_to": "resume the fan-out (fork ferric-http #6, deferred from the I3+I4+I5 denials) and watch/gate dispatched DAGs",
+      "evaluation": "Continue",
+      "scheduled_successor": "I7 (depends_on I6)",
+      "atomic_action": "engine_fork ferric-http (#6) — DENIED (FOURTH consecutive denial)",
+      "fork_denied": {"tool": "fork", "error": "PermissionDenied: missing token 'fork'", "retryable": false, "handled": "re-deferred to I7; did NOT retry; no inline fallback (P1)"},
+      "landed": "none",
+      "board_changes": "none",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I7",
+      "persona": "swe-lead",
+      "woke_to": "resume the fan-out (fork ferric-http #6, deferred from the I3+I4+I5+I6 denials) and watch/gate dispatched DAGs",
+      "evaluation": "Continue",
+      "scheduled_successor": "I8 (depends_on I7; execution group 5)",
+      "atomic_action": "engine_fork ferric-http (#6) — DENIED (FIFTH consecutive denial)",
+      "fork_denied": {"tool": "fork", "error": "PermissionDenied: missing token 'fork'", "retryable": false, "handled": "re-deferred to I8; did NOT retry; no inline fallback (P1)"},
+      "landed": "none",
+      "board_changes": "none",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I8",
+      "persona": "swe-lead",
+      "woke_to": "resume the fan-out (fork ferric-http #6, deferred from the I3+I4+I5+I6+I7 denials) and watch/gate dispatched DAGs",
+      "evaluation": "Continue",
+      "scheduled_successor": "I9 (depends_on I8; execution group 6)",
+      "reconnaissance": "ferric-router #5 pipeline 2/5 children (scaffold+matcher COMPLETE), not folded; ferric-http #6 + chirp-types #7 workspaces intact + well-formed.",
+      "atomic_action": "engine_fork ferric-http (#6) — GRANTED and SUCCEEDED (status=forked, forked_thread_id=ferric-http) — SIXTH attempt, FIRST success after I3-I7 denials. DAG now dispatched/running.",
+      "fork_denied": null,
+      "fork_succeeded": {"tool": "fork", "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-http", "launch_agent": "swe-coder", "result": "status=forked, forked_thread_id=ferric-http, placement=peer"},
+      "landed": "none",
+      "board_changes": "none (no land; #6 already In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I9",
+      "persona": "swe-lead",
+      "woke_to": "fork the last prepared-fork-pending DAG (chirp-types #7) and watch/gate dispatched DAGs — my case determined by I8's CONTINUE.md (I8's #6 fork SUCCEEDED -> I fork #7)",
+      "evaluation": "Continue",
+      "scheduled_successor": "I10 (depends_on I9; execution group 7)",
+      "reconnaissance": "Verified on disk (read-only, P1 held): ferric-router #5 3/5 children (scaffold+matcher+navigation COMPLETE), not folded; ferric-http #6 running, not folded; chirp-types #7 _FORK.md + _BRIEF.md read in full + well-formed.",
+      "atomic_action": "engine_fork chirp-types (#7) — GRANTED and SUCCEEDED (status=forked, forked_thread_id=chirp-types, placement=peer). The DAG is now dispatched/running. This was the LAST prepared-fork-pending DAG; the initial next-wave fan-out (#5+#6+#7) is now COMPLETE.",
+      "fork_denied": null,
+      "fork_succeeded": {"tool": "fork", "workspace": "/home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-types", "launch_agent": "swe-coder", "result": "status=forked, forked_thread_id=chirp-types, placement=peer"},
+      "landed": "none",
+      "board_changes": "none (no land; #7 already In Progress)",
+      "terminal": "continue"
+    },
+    {
+      "iteration": "I10",
+      "persona": "swe-lead",
+      "woke_to": "continue the chain — my case determined by I9's CONTINUE.md (I9's #7 fork SUCCEEDED -> no prepared-fork-pending DAGs remain; my one fork is demand-driven: review > remediation > newly-unblocked work, or none). Watch the three in-flight DAGs and fan out newly-unblocked work.",
+      "evaluation": "Continue",
+      "scheduled_successor": "I11 (depends_on I10; execution group 8; eligible promptly to keep watching the in-flight DAGs and gate/land on fold)",
+      "reconnaissance": "Verified on disk (read-only, P1 held — no build re-run, no code touched; the read-only watch IS this iteration's atomic action): NO SYNTHESIS.md exists anywhere under the three in-flight DAGs. ferric-router #5 ADVANCED to 4/5 children — SUBTASK_scaffold+matcher+navigation+view COMPLETE.md present (view newly COMPLETE since I9); only SUBTASK_synthesis still carries just _BRIEF.md; root SUSPENDED(NeedsDecompose) with only SUSPENSION.md -> NO root SYNTHESIS.md, NO root COMPLETE.md -> still NOT folded. ferric-http #6 top-level has _BRIEF.md + _FORK.md + checkout/ + scheduler/, NO SYNTHESIS.md -> running, not folded. chirp-types #7 top-level has _BRIEF.md + _FORK.md + scheduler/, NO SYNTHESIS.md -> running, not folded. Nothing re-authored.",
+      "atomic_action": "NONE — demand-driven fork: nothing had folded (no SYNTHESIS.md anywhere) and nothing newly landed, so no review DAG, no remediation DAG, and no newly-unblocked work DAG applied. Per the brief's Case-1 rule, forked nothing this iteration and held the one-fork budget in reserve. No engine_fork attempted.",
+      "fork_denied": null,
+      "fork_succeeded": null,
+      "landed": "none",
+      "board_changes": "none (no land; #5/#6/#7 already In Progress)",
+      "terminal": "continue"
+    }
+  ],
+  "turn_pointer": {
+    "landed": "ferric-foundation (#4) -> main @ 3c8d264; issue #4 Done/CLOSED",
+    "wave": "ferric foundation landed; the next-wave fan-out (#5 + #6 + #7) is COMPLETE — all three dispatched (ferric-router #5 by I2, ferric-http #6 by I8 after five I3-I7 denials, chirp-types #7 by I9). No prepared-fork-pending DAGs remain. As of I10 none has folded; the engagement is in the watch/gate/land phase.",
+    "running": [
+      "ferric-router #5 (forked by I2; decomposed into a 5-child contract-first serial pipeline; SUBTASK_scaffold+matcher+navigation+view COMPLETE (4/5 — view newly done since I9), SUBTASK_synthesis pending; root SUSPENDED NeedsDecompose, NOT folded as of I10)",
+      "ferric-http #6 (forked by I8; decompose->implement->synthesize against work/ferric-http; folds a SYNTHESIS.md verdict + PR Closes #6; running, NOT folded as of I10)",
+      "chirp-types #7 (forked by I9; decompose->implement->synthesize against work/chirp-types; folds a SYNTHESIS.md verdict + PR Closes #7; running, NOT folded as of I10)"
+    ],
+    "fork_pending_next_iterations": [],
+    "awaiting": "I11+ to watch/gate/land the three in-flight DAGs (ferric-router #5 nearest to folding at 4/5 children, ferric-http #6, chirp-types #7) as their SYNTHESIS.md verdicts land -> review DAG on machine PASS -> APPROVE+green LAND. No prepared-fork-pending DAGs remain; the next forks are demand-driven: review DAGs, remediation DAGs (budget 2 then escalate), and newly-unblocked work (#8 chirp-server after #7 lands; #9 chirp-frontend after ferric-* + #7; devops #10-#13 once buildable). One fork per iteration.",
+    "fork_token_note": "I3-I7 were denied the 'fork' token (reconstructed nodes); I8 (#6) and I9 (#7) were GRANTED it and both forks SUCCEEDED. I10 had NO fork to make (nothing foldable/unblocked) so it did not attempt one — a legitimate no-fork iteration, budget held. The chain is self-perpetuating (each schedules its successor BEFORE the atomic action). P1 held on every denial, every success, and the no-fork iteration: no iteration fell back to inline engineering.",
+    "remaining_backlog": ["chirp-server #8 (deps chirp-types #7)", "chirp-frontend #9 (deps ferric-router #5, ferric-http #6, chirp-types #7)", "infra-bootstrap #10", "ci-actions #11", "containerize #12", "deploy-argocd #13"]
+  }
+}

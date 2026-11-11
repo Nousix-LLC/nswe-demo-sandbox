@@ -1,0 +1,40 @@
+kind: yaml_schema
+description: >
+  Sub-task findings for the Concern 2 (code quality and design) decomposition of PR #193 review.
+  Four spoke tasks each examine one design question and produce sub_findings.md.
+  The synthesis task merges them into partial_findings.md at the parent workspace root.
+
+sub_finding_format:
+  required_sections:
+    - "## Findings"
+    - "## What was examined"
+  concern_label: code-quality
+  severity_values: [blocker, non-blocker, clean]
+  location_format: "crates/ferric/src/<file>.rs:<line> or 'structural'"
+  prohibited:
+    - "paths revealing host filesystem or taskflow workspace"
+    - "findings duplicating issues #196-#201"
+    - "severity blocker for style or preference observations"
+
+ownership:
+  - artifact: SUBTASK_q1_coupling/sub_findings.md
+    owner: SUBTASK_q1_coupling
+  - artifact: SUBTASK_q2_eventhandler/sub_findings.md
+    owner: SUBTASK_q2_eventhandler
+  - artifact: SUBTASK_q3_gen_counter/sub_findings.md
+    owner: SUBTASK_q3_gen_counter
+  - artifact: SUBTASK_q4_correct_use/sub_findings.md
+    owner: SUBTASK_q4_correct_use
+  - artifact: ../partial_findings.md
+    owner: SUBTASK_cq_synthesis
+  - artifact: SYNTHESIS.md
+    owner: SUBTASK_cq_synthesis
+
+identities:
+  - "All sub_findings.md files use concern: code-quality and no other concern label"
+  - "No finding duplicates issues #196, #197, #198, #199, #200, or #201"
+  - "Q1 coverage owned by SUBTASK_q1_coupling (responsibility and coupling)"
+  - "Q2 coverage owned by SUBTASK_q2_eventhandler (EventHandler abstraction boundary)"
+  - "Q3 coverage owned by SUBTASK_q3_gen_counter (generation counter clarity)"
+  - "Q4 coverage owned by SUBTASK_q4_correct_use (correct-use design)"
+  - "partial_findings.md conforms to ../contracts/findings_format.md"

@@ -1,0 +1,117 @@
+{
+  "current_pointer": "overseer/I248",
+  "checked_at": "2026-11-04T22:30:00Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "CLEARED",
+      "cleared_at": "2026-11-03T05:08:16Z",
+      "cleared_in": "overseer/I145"
+    },
+    "escalation_ferric_async_forms_budget_exhausted": {
+      "status": "ACTIVE",
+      "label": "ferric-async-forms remediation budget exhausted — 3 unresolved blockers after 2 code DAG attempts + 1 full review cycle",
+      "pr": 193,
+      "blockers": [
+        "B1: Resource fire-once, no reactive re-fetch (REQ-ASYNC-001, 003, 005)",
+        "B2: No prevent_default/stop_propagation path from handler (REQ-ASYNC-023)",
+        "B3: Bind DOM→signal direction broken in WASM (REQ-ASYNC-042)"
+      ],
+      "escalated_in": "overseer/I220",
+      "escalation_comment": "https://github.com/Nousix-LLC/nswe-demo/pull/193#issuecomment-6624409600",
+      "decision_needed": "Fix blockers and re-submit (budget extension needed) OR defer epic #130 to later milestone",
+      "clearing_condition": "User comments on PR #193 or files a follow-up issue indicating choice (extend budget or defer)",
+      "checked_in": "overseer/I248",
+      "check_result": "No user response (last check 2026-11-04T22:15:00Z). Escalation still ACTIVE."
+    },
+    "escalation_review_ferric_http_r2_stall": {
+      "status": "CLEARED",
+      "cleared_at": "2026-11-04T21:35:16Z",
+      "cleared_in": "overseer/I245"
+    }
+  },
+  "prs": {
+    "PR113": { "status": "MERGED", "note": "Epic #56 and sub-issues Done." },
+    "PR128": { "status": "MERGED", "note": "Design: Ferric 1.0 framework design. All 10 design docs on main." },
+    "PR182": { "status": "MERGED" },
+    "PR183": { "status": "MERGED" },
+    "PR187": { "status": "MERGED" },
+    "PR188": { "status": "MERGED", "note": "#129 and authoring model sub-issues Done." },
+    "PR193": {
+      "status": "OPEN",
+      "branch": "work/ferric-async-forms-r2",
+      "escalated": true,
+      "note": "Escalated to user. 3 blockers. No user response."
+    },
+    "PR203": { "status": "MERGED", "note": "#131 and router sub-issues Done." },
+    "PR209": { "status": "MERGED", "note": "#206 Done." },
+    "PR210": { "status": "MERGED", "note": "#132 and #148 Done." }
+  },
+  "dags_in_flight": [],
+  "dags_folded": [
+    {
+      "slug": "review-ferric-http-r2",
+      "goal": "Re-review PR #210 after ferric-http-r2 remediation",
+      "issues": ["#132", "#148"],
+      "kind": "review",
+      "state": "FOLDED",
+      "verdict": "APPROVE",
+      "synthesis_path": "taskflow/dags/review-ferric-http-r2/SYNTHESIS.md",
+      "folded_confirmed_in": "overseer/I245"
+    }
+  ],
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-11-04T22:30:00Z",
+    "hygiene_actions_I248": [
+      "#133 sub-issues filed: #223 (BAR-003), #224 (BAR-004), #225 (BAR-005), #226 (BAR-006) — all added to board (Todo)",
+      "#35 (Logged-out reading) blocked label removed — dependency #56 Done, so #35 is now unblocked"
+    ],
+    "note": "I248: Filed 4 sub-issues for #133. Assessed #34-#43 product work. Decided Option A: dispatch ferric-ssr-r1 for BAR-003+BAR-004+BAR-006 (independent of #130). I249 scheduled."
+  },
+  "ssr_analysis": {
+    "bar_003_server_rendering": {
+      "issue": 223,
+      "blocked_on_130": false,
+      "note": "vdom/component are off-wasm; render_to_string is a pure function. Independent."
+    },
+    "bar_004_hydration_must_have": {
+      "issue": 224,
+      "blocked_on_130": false,
+      "note": "Core hydration adopts DOM, wires Click/Input events. Event coverage extends automatically per REQ-SSR-005. Independent."
+    },
+    "bar_005_state_carry_resource_resume": {
+      "issue": 225,
+      "blocked_on_130": true,
+      "note": "REQ-SSR-007 requires async resource primitive from #130. Blocked."
+    },
+    "bar_006_mismatch_axum": {
+      "issue": 226,
+      "blocked_on_130": false,
+      "note": "Mismatch detection + Axum integration have no #130 dependency. Independent."
+    },
+    "decision": "Option A — dispatch ferric-ssr-r1 for BAR-003+BAR-004+BAR-006 as scope-limited goal"
+  },
+  "product_readiness": {
+    "issue_35": {
+      "title": "Logged-out reading and a useful landing with accurate states",
+      "dependencies": ["#56 (durable persistence) — DONE"],
+      "needs_130": false,
+      "needs_133": false,
+      "status": "UNBLOCKED — #56 Done; blocked label removed",
+      "note": "Read-only display using HTTP client (#132), router (#131), component model (#129). Can be dispatched after ferric-ssr-r1 lands."
+    },
+    "issues_36_to_42": {
+      "note": "Most require #83 (identity/sessions, still open) or #130 (forms/events). Not ready."
+    }
+  },
+  "forward_plan": {
+    "I249": "ACT — fork ferric-ssr-r1 code DAG for BAR-003+BAR-004+BAR-006 (issues #223, #224, #226)",
+    "after_I249": "Board check — watch for ferric-ssr-r1 fold; check escalation; note #35 unblocked and ready after ferric-ssr lands"
+  },
+  "main_sha": "945fade38abd6b053268501f3801734756f02502",
+  "deployment_check": {
+    "last_checked": "2026-11-04T21:41:48Z",
+    "verdict": "CURRENT — pod chirp-server Running 1/1 (sha256:f845ca8c). No change needed."
+  },
+  "free_dag_slots": 1
+}

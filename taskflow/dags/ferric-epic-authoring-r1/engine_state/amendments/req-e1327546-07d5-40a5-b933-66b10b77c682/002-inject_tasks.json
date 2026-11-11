@@ -1,0 +1,55 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T21:16:10.002422069Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "ferric-authoring-139-view"
+      ],
+      "placement_parent_task_id": "ferric-epic-authoring-r1"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: ferric-authoring-139-view",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing the ferric-epic-authoring-r1 hub: T02 implements the view! proc-macro per authoring-model.md §2, closing #139.",
+        "task_id": "ferric-epic-authoring-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "ferric-authoring-137-138": [],
+      "ferric-authoring-139-view": [
+        "ferric-authoring-137-138"
+      ],
+      "ferric-epic-authoring-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-authoring-137-138",
+          "ferric-epic-authoring-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "ferric-authoring-139-view"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

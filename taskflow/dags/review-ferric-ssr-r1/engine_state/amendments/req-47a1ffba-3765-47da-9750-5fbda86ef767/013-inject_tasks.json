@@ -1,0 +1,80 @@
+{
+  "sequence": 13,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T01:13:43.032388642Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_hydration"
+      ],
+      "placement_parent_task_id": "SUBTASK_correctness"
+    },
+    "resulting_version": 13,
+    "summary": "inject tasks: SUBTASK_hydration",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_correctness: spoke for hydrate() WASM hydration criteria (#224 REQ-HYD-001–004)",
+        "task_id": "SUBTASK_correctness"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_A_api_surface": [],
+      "SUBTASK_B_abstraction": [],
+      "SUBTASK_C_error_handling": [],
+      "SUBTASK_D_function_design": [],
+      "SUBTASK_E_test_coverage": [],
+      "SUBTASK_F_documentation": [],
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_hydration": [],
+      "SUBTASK_security_infra": [],
+      "SUBTASK_security_xss": [],
+      "SUBTASK_ssr_render": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_code_quality",
+        "SUBTASK_correctness",
+        "SUBTASK_security_infra",
+        "SUBTASK_security_xss"
+      ],
+      "review-ferric-ssr-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_A_api_surface",
+          "SUBTASK_B_abstraction",
+          "SUBTASK_C_error_handling",
+          "SUBTASK_D_function_design",
+          "SUBTASK_E_test_coverage",
+          "SUBTASK_F_documentation",
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "SUBTASK_hydration",
+          "SUBTASK_security_infra",
+          "SUBTASK_security_xss",
+          "SUBTASK_ssr_render",
+          "review-ferric-ssr-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

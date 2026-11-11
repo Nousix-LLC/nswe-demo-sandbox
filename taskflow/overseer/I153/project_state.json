@@ -1,0 +1,77 @@
+{
+  "current_pointer": "overseer/I153",
+  "checked_at": "2026-11-03T18:05:30Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "CLEARED",
+      "label": "Bug5 dispatch fault — frozen DAGs never real-dispatched",
+      "cleared_at": "2026-11-03T05:08:16Z",
+      "cleared_by": "review-epic-persist-r2 Dispatch entry in scheduler/logs/scheduler_decisions.jsonl",
+      "cleared_in": "overseer/I145",
+      "recorded_in": "overseer/I146",
+      "github_issue": "none filed"
+    }
+  },
+  "prs": {
+    "PR113": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T17:46:59Z",
+      "merge_commit": "0d5917dc6b10d25b15e47a867f41a450239007f6",
+      "issues_closed": ["#65", "#66", "#67", "#64", "#180"],
+      "review_dag": "review-epic-persist-r2",
+      "note": "Squash-merged. Epic #56 and issues #65/#66/#67 moved to Done. #64 closed 2026-11-03 after image digest pinned (commit a255baf). #180 closed by pin-image-digest-r1."
+    },
+    "PR128": {
+      "status": "OPEN",
+      "branch": "work/design-ferric-1_0",
+      "title": "design: Ferric 1.0 framework design",
+      "head": "ade5bdde424638b9f993c5699219c638d02e0e59",
+      "ci_all_green": true,
+      "mergeable": true,
+      "review_dag": "design-ferric-1_0-r3",
+      "review_dag_status": "REQUEST-CHANGES (superseded)",
+      "blocking_findings": 0,
+      "remediation_dag": "remediate-design-ferric-1_0-r1",
+      "remediation_dag_status": "COMPLETE (APPROVE — all 5 findings fixed in commit ade5bdd)",
+      "re_review_dag": "review-design-ferric-1_0-r4",
+      "re_review_dag_status": "RUNNING (no SYNTHESIS.md yet as of I153)",
+      "note": "Remediation complete. Re-review DAG forked in I152. Landing on APPROVE under delegated authority."
+    }
+  },
+  "dags_in_flight": [
+    {
+      "slug": "review-design-ferric-1_0-r4",
+      "goal": "Re-review PR#128 after remediation; confirm 5 fixes; post review; land on APPROVE",
+      "issues": [],
+      "kind": "review",
+      "state": "RUNNING",
+      "forked_in": "overseer/I152",
+      "launch_agent": "swe-reviewer"
+    }
+  ],
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-11-03T18:05:30Z",
+    "total_items": "~166"
+  },
+  "main_sha": "a255baf825e3fe3c63d4ffdb98d7cfe0b1e1f99d",
+  "deployment_check": {
+    "status": "Healthy",
+    "reason": "chirp-server running with correct image digest (sha256:adaa4c26...); postgres running; app returns HTTP 200 at load balancer",
+    "argocd_sync": "OutOfSync",
+    "argocd_health": "Healthy",
+    "argocd_revision": "a255baf825e3fe3c63d4ffdb98d7cfe0b1e1f99d",
+    "argocd_out_of_sync_resource": "StatefulSet/chirp-postgres (health OK; likely annotation drift; auto-heal in progress)",
+    "postgres_pod": "chirp-postgres-0 1/1 Running",
+    "chirp_server_new": "chirp-server-77d5d995c9-vr7j4 1/1 Running (correct digest sha256:adaa4c26)",
+    "chirp_server_old": "chirp-server-7895ffcd44-r4qkr 1/1 Running (rolling update in progress — old pod still live)",
+    "app_http": "HTTP 200 OK at http://100.90.75.93:8081/",
+    "sweep_pods": "chirp-transient-sweep-29895480-* 4 pods in Error — sessions table missing when ran; table now exists; next run expected to succeed",
+    "open_follow_ups": ["#117 sweep SQL second source of truth", "#119 deployment coherence", "#120 persistence security (priority:high)", "#121 minor correctness"],
+    "checked_at": "2026-11-03T18:05:30Z"
+  },
+  "free_dag_slots": 1,
+  "forward_series": {
+    "I154": "Observe review-design-ferric-1_0-r4; process verdict; if APPROVE — confirm PR#128 merged; if REQUEST-CHANGES — fork remediation; then pick next work item (candidate: #120 security)"
+  }
+}

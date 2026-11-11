@@ -1,0 +1,74 @@
+{
+  "sequence": 9,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T23:28:00.912059966Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_quality_check"
+      ],
+      "placement_parent_task_id": "SUBTASK_sec_quality"
+    },
+    "resulting_version": 9,
+    "summary": "inject tasks: SUBTASK_quality_check",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_sec_quality into code-quality spoke: app.rs new conditional quality, hydrate_wasm.rs test code quality, fresh non-blockers.",
+        "task_id": "SUBTASK_sec_quality"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1_verify": [],
+      "SUBTASK_b2_verify": [],
+      "SUBTASK_quality_check": [],
+      "SUBTASK_reg_criteria": [],
+      "SUBTASK_regression": [],
+      "SUBTASK_sec_check": [],
+      "SUBTASK_sec_quality": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_b1_verify",
+        "SUBTASK_b2_verify",
+        "SUBTASK_regression"
+      ],
+      "SUBTASK_verdict_synthesis": [
+        "SUBTASK_reg_criteria",
+        "SUBTASK_sec_quality"
+      ],
+      "review-ferric-ssr-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1_verify",
+          "SUBTASK_b2_verify",
+          "SUBTASK_quality_check",
+          "SUBTASK_reg_criteria",
+          "SUBTASK_regression",
+          "SUBTASK_sec_check",
+          "SUBTASK_sec_quality",
+          "review-ferric-ssr-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis",
+          "SUBTASK_verdict_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

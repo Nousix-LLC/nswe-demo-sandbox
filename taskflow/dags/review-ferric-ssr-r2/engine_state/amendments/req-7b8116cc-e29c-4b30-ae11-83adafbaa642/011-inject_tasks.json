@@ -1,0 +1,79 @@
+{
+  "sequence": 11,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T00:39:59.735896249Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_quality-synthesis"
+      ],
+      "placement_parent_task_id": "SUBTASK_code-quality"
+    },
+    "resulting_version": 11,
+    "summary": "inject tasks: SUBTASK_quality-synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_code-quality: synthesis/gate task that assembles code-quality.md after both spoke tasks complete",
+        "task_id": "SUBTASK_code-quality"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_app-rs-quality": [],
+      "SUBTASK_b1-verify": [],
+      "SUBTASK_b2-verify": [],
+      "SUBTASK_code-quality": [],
+      "SUBTASK_hydrate-wasm-quality": [],
+      "SUBTASK_quality-synthesis": [
+        "SUBTASK_app-rs-quality",
+        "SUBTASK_hydrate-wasm-quality"
+      ],
+      "SUBTASK_regression-check": [],
+      "SUBTASK_regression-quality-sec": [],
+      "SUBTASK_security": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_b1-verify",
+        "SUBTASK_b2-verify",
+        "SUBTASK_regression-quality-sec",
+        "SUBTASK_regression-check",
+        "SUBTASK_code-quality",
+        "SUBTASK_security"
+      ],
+      "review-ferric-ssr-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_app-rs-quality",
+          "SUBTASK_b1-verify",
+          "SUBTASK_b2-verify",
+          "SUBTASK_code-quality",
+          "SUBTASK_hydrate-wasm-quality",
+          "SUBTASK_regression-check",
+          "SUBTASK_regression-quality-sec",
+          "SUBTASK_security",
+          "review-ferric-ssr-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_quality-synthesis",
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

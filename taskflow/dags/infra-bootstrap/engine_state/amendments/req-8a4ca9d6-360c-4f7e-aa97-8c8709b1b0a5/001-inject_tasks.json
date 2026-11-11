@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T05:59:03.097084966Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_cluster_k3s"
+      ],
+      "placement_parent_task_id": "infra-bootstrap"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_cluster_k3s",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "infra-bootstrap (#10) decomposition — spoke 1 of 4: reproducible k3s cluster provisioning + real readiness verification + kubeconfig-access docs. Dependency-free (Group 0). Brief authored at workspace_path; composes against the subtree contract.",
+        "task_id": "infra-bootstrap"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_cluster_k3s": [],
+      "infra-bootstrap": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_cluster_k3s",
+          "infra-bootstrap"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

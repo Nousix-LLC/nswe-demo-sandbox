@@ -1,0 +1,55 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-10T02:02:22.643162097Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_remediate"
+      ],
+      "placement_parent_task_id": "deploy-ghcr-auth-r2"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_remediate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the 'transform' stage: make the change only (reconcile the live deployment to committed desired state along the diagnosed branch — create the least-privilege out-of-band ghcr-pull Secret iff a credential is reachable, reconcile drift, stale RS→0; open a PR iff a repo change is needed, without Closes #32). Depends on SUBTASK_diagnose's output.",
+        "task_id": "deploy-ghcr-auth-r2"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_diagnose": [],
+      "SUBTASK_remediate": [
+        "SUBTASK_diagnose"
+      ],
+      "deploy-ghcr-auth-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_diagnose",
+          "deploy-ghcr-auth-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_remediate"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

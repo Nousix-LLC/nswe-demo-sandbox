@@ -1,0 +1,91 @@
+# core_loop_seam.yaml — the core-loop screens subtree seam.
+# READ-ONLY. Spokes compose against this and MUST NOT redefine it (extend additively via amendment only).
+# It fixes WHICH spoke designs WHICH core-loop surfaces, WHICH REQ-UX sub-range each spoke mints from, HOW
+# spokes compose against the frozen upstream vocabularies, the per-screen<->global-pattern cross-reference,
+# and the trace rule every REQ-UX-* obeys. It EXTENDS the ancestor contracts; never overrides them.
+
+# --- The owned section-part and how it splits across spokes ----------------------------------------
+# This subtree owns the `core_loop` part of the parent `screens_and_flows` section (see
+# ../../contracts/screens_seam.yaml). Assembled order in screens-core-loop.md: timeline_reading, then
+# posting_conversation, then social_actions, then profiles_discovery (reading -> writing -> reacting ->
+# identity/finding), followed by the consolidated REQ-UX-051..064 register.
+section_part:
+  core_loop:
+    owner_subtree: SUBTASK_core_loop
+    parent_section: "screens_and_flows"              # verbatim from ../../contracts/
+    assembled_from_parts_in_order:
+      - part: timeline_reading
+        owner: SUBTASK_timeline_reading
+        source: "SUBTASK_timeline_reading/outputs/screens-timeline-reading.md"
+      - part: posting_conversation
+        owner: SUBTASK_posting_conversation
+        source: "SUBTASK_posting_conversation/outputs/screens-posting-conversation.md"
+      - part: social_actions
+        owner: SUBTASK_social_actions
+        source: "SUBTASK_social_actions/outputs/screens-social-actions.md"
+      - part: profiles_discovery
+        owner: SUBTASK_profiles_discovery
+        source: "SUBTASK_profiles_discovery/outputs/screens-profiles-discovery.md"
+
+# --- REQ-UX-051..064 sub-range partition (ancestor scheme: REQ-UX-NNN, 3-digit, unique within area) -
+req_ux_id_ranges:
+  SUBTASK_timeline_reading:     { from: "REQ-UX-051", to: "REQ-UX-053" }   # 3 ids
+  SUBTASK_posting_conversation: { from: "REQ-UX-054", to: "REQ-UX-058" }   # 5 ids
+  SUBTASK_social_actions:       { from: "REQ-UX-059", to: "REQ-UX-060" }   # 2 ids
+  SUBTASK_profiles_discovery:   { from: "REQ-UX-061", to: "REQ-UX-064" }   # 4 ids
+
+# Each REQ-UX-* carries exactly the ancestor's field set (../../contracts/ then the id/traceability schema):
+req_ux_fields: [id, statement, acceptance_criteria, release_gating]
+
+# --- Surface -> owning spoke ---------------------------------------------------------------------
+# Covers every core-loop surface in the parent required_surfaces checklist, so SURFACE_COVERAGE is
+# mechanically checkable. Each owner designs the surface with its happy path AND its empty/error/loading
+# states, mapping it to journey J4 and its REQ-PROD-*.
+surface_ownership:
+  # timeline_reading — reading the loop (J4 / REQ-PROD-002)
+  home_timeline:            SUBTASK_timeline_reading     # Home timeline incl. bounded pages + load-older + catch-up ("N new chirps")
+  # posting_conversation — writing and reading-in-context (J4 / REQ-PROD-001, 003, 004)
+  compose_and_post:         SUBTASK_posting_conversation # Compose (inline top-of-timeline, the Compose dialog, the reply position); 280-char limit
+  reply_and_conversation:   SUBTASK_posting_conversation # Chirp / conversation screen (a chirp with parent + replies); reply-to-a-gone-chirp not-found
+  # social_actions — in-place behaviors (J4 / REQ-PROD-005, 006)
+  like_unlike:              SUBTASK_social_actions       # in-place like control on ChirpCard; idempotent, accurate count
+  follow_unfollow:          SUBTASK_social_actions       # in-place follow control on profiles and person cards; cannot follow self
+  # profiles_discovery — identity and finding people (J4 / REQ-PROD-007, 042)
+  view_profile:             SUBTASK_profiles_discovery   # Public profile, Own profile, Followers, Following
+  discovery_find_people:    SUBTASK_profiles_discovery   # Explore / find people
+
+# --- Shared-vocabulary composition rule ----------------------------------------------------------
+shared_vocabulary_rule:
+  screen_inventory:
+    inherited_from: "../../../SUBTASK_ia_interaction/outputs/ia-interaction.md"
+    rule: "Every screen a spoke designs is a screen named in the inventory, referred to by that name and route. A spoke MUST NOT introduce a screen absent from the inventory; if one is genuinely needed, request an additive amendment to this contract rather than inventing it silently."
+  component_library:
+    inherited_from: "../../../SUBTASK_visual_system/outputs/visual-system.md"
+    rule: "Every screen is described as an arrangement of named components (NavShell, ListView, ChirpCard, ComposeBox, ProfileHeader, Avatar, IconButton, PrimaryButton, SecondaryButton, TextField, Dialog, Toast, InlineFeedback, InlineError, EmptyState, LoadingState). A screen's empty/error/loading states are the relevant components' own named states, not new inventions. Refer to tokens and components by name; introduce no ad-hoc value."
+
+# --- The per-screen <-> global-pattern cross-reference (the one internal seam) --------------------
+states_cross_reference:
+  global_patterns_owner: "SUBTASK_considered_states (sibling of ../, in the screens-&-flows subtree)"
+  rule: >
+    The sibling SUBTASK_considered_states (outside this subtree) owns the product-wide empty / loading /
+    error PATTERNS and the expired-session / transient-error recovery (keep-the-draft) behaviour, as the
+    empty_error_loading_states section. The four core-loop spokes design each screen's OWN
+    empty/error/loading states by composing the component library's named states (ListView.empty/error/
+    loading, ChirpCard.error/loading, ComposeBox.error/loading, ProfileHeader.*, EmptyState, LoadingState,
+    InlineError, InlineFeedback, Toast) and that global treatment — they do not invent a conflicting
+    per-screen pattern. Because all spokes compose against the same already-frozen component library and IA
+    conventions, the spokes run in parallel; SUBTASK_synthesis asserts STATES_CONSISTENT across the
+    assembled whole.
+
+# --- The trace rule every REQ-UX-* obeys ---------------------------------------------------------
+trace_rule:
+  references_req_prod: ">=1"                 # every REQ-UX-* names at least one REQ-PROD-* it serves
+  acceptance_criteria: "testable by someone who never met the author, exercisable on the live product"
+  release_gating: "true | false  (false carries a one-line reason)"
+  product_requirements_source: "../../../../SUBTASK_product_requirements/outputs/product-requirements.md"
+  note: >
+    Honour the product requirements' own release_gating where a REQ-UX implements a non-gating REQ-PROD:
+    discovery/Explore rides REQ-PROD-042 (release_gating:false) and reading a conversation rides
+    REQ-PROD-004 (false). The gated core-loop REQ-PROD are 001 (post), 002 (timeline), 003 (reply),
+    005 (like), 006 (follow), 007 (profile). A screen that is gated but also exposes a non-gating behaviour
+    gates the parts its gated REQ-PROD requires and marks the non-gating behaviour accordingly.

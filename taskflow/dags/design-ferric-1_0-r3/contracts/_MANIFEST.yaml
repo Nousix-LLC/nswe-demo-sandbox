@@ -1,0 +1,29 @@
+kind: yaml_schema
+
+description: >
+  Contract for the Ferric 1.0 design gap review subtree.
+  Every analysis spoke produces a findings file conforming to findings_schema.yaml.
+  The synthesis task reads those files, asserts the identities below, and produces
+  the final deliverables (SYNTHESIS.md, PR verdict, board issues).
+
+artifacts:
+  - name: findings_schema.yaml
+    path: contracts/findings_schema.yaml
+    role: schema that every spoke findings file must conform to
+
+ownership:
+  - artifact: SUBTASK_design-doc-review/design-doc-findings.md
+    owner: SUBTASK_design-doc-review
+  - artifact: SUBTASK_foundation-buildability/buildability-findings.md
+    owner: SUBTASK_foundation-buildability
+  - artifact: SUBTASK_ticket-review/ticket-findings.md
+    owner: SUBTASK_ticket-review
+  - artifact: SYNTHESIS.md
+    owner: SUBTASK_synthesis
+
+identities:
+  - every finding has severity in [BLOCKING, non-blocking]
+  - every finding has a non-empty location field
+  - every finding has a non-empty recommendation field
+  - verdict is REQUEST-CHANGES iff at least one BLOCKING finding exists across all findings files
+  - every non-blocking finding is filed as a board issue by the synthesis task

@@ -1,0 +1,50 @@
+# Contract manifest — operational-readiness subtree (design-chirp-r1)
+# kind: yaml_schema. EXTENDS ../contracts/ additively (sub-partitions the OPS number space
+# and assigns the seven required sections). Overrides nothing in any ancestor contract.
+# READ-ONLY for every child.
+
+kind: yaml_schema
+
+extends:
+  - path: ../../contracts/id_and_traceability_schema.yaml
+    binds: "REQ-OPS-NNN format; AREA=OPS owned by SUBTASK_operational_readiness; verification_methods vocabulary; per-requirement fields (statement, acceptance_criteria, release_gating)."
+  - path: ../../contracts/design_artifact_map.yaml
+    binds: "design/operational-readiness.md owner + its seven required sections (durable_data, backups_and_recovery, limits_and_quotas, observability, status_and_incident, existing_followups, requirements_and_acceptance_criteria)."
+
+artifacts:
+  - file: reqs_ops_partition.yaml
+    declares: "Per-child REQ-OPS-* number-space partition; per-section ownership; per-concern output-fragment paths; the consolidated-register and traceability derived artifacts."
+
+# One producer per artifact. An artifact with no owner is a hole; two owners is a race.
+ownership:
+  "outputs/durable-data.md":          SUBTASK_ops_durable_data       # + REQ-OPS-001..019; section durable_data
+  "outputs/backups-recovery.md":      SUBTASK_ops_backups_recovery   # + REQ-OPS-020..039; section backups_and_recovery
+  "outputs/limits-quotas.md":         SUBTASK_ops_limits_quotas      # + REQ-OPS-040..059; section limits_and_quotas
+  "outputs/observability.md":         SUBTASK_ops_observability      # + REQ-OPS-060..079; section observability
+  "outputs/status-incident.md":       SUBTASK_ops_status_incident    # + REQ-OPS-080..099; section status_and_incident
+  "outputs/operational-readiness.md": SUBTASK_ops_synthesis          # consolidated file + existing_followups + requirements_and_acceptance_criteria
+  "SYNTHESIS.md":                     SUBTASK_ops_synthesis          # fold record at the subtree root
+
+# Invariants the combined outputs MUST satisfy. Asserted by SUBTASK_ops_synthesis (the gate)
+# with recorded evidence. A failing identity is reported and remediated, NEVER silently plugged.
+identities:
+  - id: ALL_SECTIONS_PRESENT
+    statement: "operational-readiness.md contains all seven required sections from ../contracts/design_artifact_map.yaml, in order."
+  - id: CONCERN_COVERAGE
+    statement: "Each of the five concerns (durable_data, backups_and_recovery, limits_and_quotas, observability, status_and_incident) is covered by its fragment's REQ-OPS-* requirements."
+  - id: NO_NUMBER_COLLISION
+    statement: "No REQ-OPS-NNN number is used by two children; the consolidated register is the verbatim union of the five fragments."
+  - id: OPS_TESTABLE
+    statement: "Every REQ-OPS-* names a verification_method from the vocabulary and carries a release_gating flag; every release-gating REQ-OPS-* has a testable acceptance_criteria."
+  - id: OPS_TRACES
+    statement: "Every REQ-OPS-* that refines a product/domain requirement traces_to a real REQ-PROD-*/REQ-DOM-*."
+  - id: FOLLOWUPS_FOLDED
+    statement: "Issues #23, #24, #25 each appear exactly once, folded into the section they belong to and recorded in existing_followups, not duplicated where an existing requirement already covers them."
+
+derived_artifacts:
+  - name: ops_traceability_table
+    generated_from: "the five fragments' REQ-OPS lists (REQ-OPS-* -> REQ-PROD-*/REQ-DOM-*, release_gating)"
+    produced_by: SUBTASK_ops_synthesis
+  - name: consolidated_reqs_register
+    generated_from: "verbatim union of the five fragments' REQ-OPS-* requirements"
+    produced_by: SUBTASK_ops_synthesis

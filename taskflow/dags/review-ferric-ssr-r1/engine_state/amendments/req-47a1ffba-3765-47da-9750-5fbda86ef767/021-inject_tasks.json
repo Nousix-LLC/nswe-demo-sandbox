@@ -1,0 +1,112 @@
+{
+  "sequence": 21,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T01:27:56.226177860Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_hyd_synthesis"
+      ],
+      "placement_parent_task_id": "SUBTASK_hydration"
+    },
+    "resulting_version": 21,
+    "summary": "inject tasks: SUBTASK_hyd_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_hydration into criterion spokes; SUBTASK_hyd_synthesis is the verification gate that integrates all four criterion findings into hydration_findings.md and folds the parent.",
+        "task_id": "SUBTASK_hydration"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_A_api_surface": [],
+      "SUBTASK_B_abstraction": [],
+      "SUBTASK_C_error_handling": [],
+      "SUBTASK_D_function_design": [],
+      "SUBTASK_E_test_coverage": [],
+      "SUBTASK_F_documentation": [],
+      "SUBTASK_axum_mismatch": [],
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_correctness_synthesis": [
+        "SUBTASK_axum_mismatch",
+        "SUBTASK_hydration",
+        "SUBTASK_ssr_render"
+      ],
+      "SUBTASK_hyd001": [],
+      "SUBTASK_hyd002": [],
+      "SUBTASK_hyd003": [],
+      "SUBTASK_hyd004": [],
+      "SUBTASK_hyd_synthesis": [
+        "SUBTASK_hyd001",
+        "SUBTASK_hyd002",
+        "SUBTASK_hyd003",
+        "SUBTASK_hyd004"
+      ],
+      "SUBTASK_hydration": [],
+      "SUBTASK_security_infra": [],
+      "SUBTASK_security_xss": [],
+      "SUBTASK_ssr_render": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_code_quality",
+        "SUBTASK_correctness",
+        "SUBTASK_security_infra",
+        "SUBTASK_security_xss"
+      ],
+      "SUBTASK_synthesis_cq": [
+        "SUBTASK_A_api_surface",
+        "SUBTASK_B_abstraction",
+        "SUBTASK_C_error_handling",
+        "SUBTASK_D_function_design",
+        "SUBTASK_E_test_coverage",
+        "SUBTASK_F_documentation"
+      ],
+      "review-ferric-ssr-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_A_api_surface",
+          "SUBTASK_B_abstraction",
+          "SUBTASK_C_error_handling",
+          "SUBTASK_D_function_design",
+          "SUBTASK_E_test_coverage",
+          "SUBTASK_F_documentation",
+          "SUBTASK_axum_mismatch",
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "SUBTASK_hyd001",
+          "SUBTASK_hyd002",
+          "SUBTASK_hyd003",
+          "SUBTASK_hyd004",
+          "SUBTASK_hydration",
+          "SUBTASK_security_infra",
+          "SUBTASK_security_xss",
+          "SUBTASK_ssr_render",
+          "review-ferric-ssr-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_correctness_synthesis",
+          "SUBTASK_hyd_synthesis",
+          "SUBTASK_synthesis",
+          "SUBTASK_synthesis_cq"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

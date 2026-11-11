@@ -1,0 +1,101 @@
+{
+  "sequence": 8,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-08T17:23:21.304178712Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_fold"
+      ],
+      "placement_parent_task_id": "SUBTASK_synthesis"
+    },
+    "resulting_version": 8,
+    "summary": "inject tasks: SUBTASK_fold",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the fold/sub-synthesis stage: consolidate the static, reachability, and PR outputs into the authoritative PASS/FAIL verdict over the full parent contract-identity set, author the root SYNTHESIS.md fold record, and fold the deploy-argocd subtree (resume SUBTASK_synthesis and the deploy-argocd root to COMPLETED). Depends on all three prior stages. This is the synthesis verification gate's final verdict and the kernel fold for the decomposed synthesis node.",
+        "task_id": "SUBTASK_synthesis"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_app_manifests": [
+        "SUBTASK_discovery"
+      ],
+      "SUBTASK_argocd_gitops": [
+        "SUBTASK_discovery"
+      ],
+      "SUBTASK_deploy_reach": [
+        "SUBTASK_static_gate"
+      ],
+      "SUBTASK_discovery": [],
+      "SUBTASK_fold": [
+        "SUBTASK_deploy_reach",
+        "SUBTASK_land_pr",
+        "SUBTASK_static_gate"
+      ],
+      "SUBTASK_land_pr": [
+        "SUBTASK_deploy_reach",
+        "SUBTASK_static_gate"
+      ],
+      "SUBTASK_static_gate": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_app_manifests",
+        "SUBTASK_argocd_gitops",
+        "SUBTASK_discovery"
+      ],
+      "deploy-argocd": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_discovery",
+          "SUBTASK_static_gate",
+          "deploy-argocd"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_app_manifests",
+          "SUBTASK_argocd_gitops",
+          "SUBTASK_deploy_reach"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_land_pr",
+          "SUBTASK_synthesis"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_fold"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

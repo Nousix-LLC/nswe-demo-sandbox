@@ -1,0 +1,72 @@
+# Findings Schema — Ferric 1.0 Design Gap Review
+
+# Every findings file produced by an analysis spoke MUST be a YAML file conforming
+# to this schema. The synthesis task validates against these fields before compiling.
+
+type: object
+description: A structured findings document from one analysis spoke
+
+required_fields:
+  - spoke
+  - concern_ids
+  - findings
+
+fields:
+  spoke:
+    type: string
+    description: >
+      Which spoke produced this file.
+      Values: design-doc-review | foundation-buildability | ticket-review
+
+  concern_ids:
+    type: array
+    items: integer (1–5)
+    description: Which review concern numbers this spoke addresses
+
+  findings:
+    type: array
+    description: One entry per finding; may be empty if no issues found
+    item_fields:
+      id:
+        type: string
+        description: Unique id within this file (e.g. DDR-001, FB-001, TR-001)
+        required: true
+
+      severity:
+        type: string
+        enum: [BLOCKING, non-blocking]
+        required: true
+
+      concern:
+        type: integer (1–5)
+        description: Which review concern this finding addresses
+        required: true
+
+      location:
+        type: string
+        description: >
+          The specific document + section (e.g. "release-bar.md §3.2") or
+          issue number (e.g. "issue #133") where the gap was observed.
+        required: true
+
+      statement:
+        type: string
+        description: What is missing, wrong, or unclear — stated as a checkable claim
+        required: true
+
+      recommendation:
+        type: string
+        description: What action would resolve this finding
+        required: true
+
+  summary:
+    type: object
+    required: false
+    description: Optional summary counts for the synthesis task
+    fields:
+      blocking_count:
+        type: integer
+      non_blocking_count:
+        type: integer
+      notes:
+        type: string

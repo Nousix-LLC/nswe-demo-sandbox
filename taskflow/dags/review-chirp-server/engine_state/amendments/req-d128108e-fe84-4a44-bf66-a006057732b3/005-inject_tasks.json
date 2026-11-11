@@ -1,0 +1,64 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T05:18:51.813948322Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis_verdict"
+      ],
+      "placement_parent_task_id": "review-chirp-server"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: SUBTASK_synthesis_verdict",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the synthesis verification gate: integrates the four spoke findings against the findings contract, renders the authoritative APPROVE/REQUEST-CHANGES verdict, posts the gh review, writes the root SYNTHESIS.md fold record, and folds the root. Depends on all four spokes.",
+        "task_id": "review-chirp-server"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_architecture_contract_review": [],
+      "SUBTASK_code_review_quality_review": [],
+      "SUBTASK_rust_soundness_review": [],
+      "SUBTASK_synthesis_verdict": [
+        "SUBTASK_architecture_contract_review",
+        "SUBTASK_code_review_quality_review",
+        "SUBTASK_rust_soundness_review",
+        "SUBTASK_test_adequacy_review"
+      ],
+      "SUBTASK_test_adequacy_review": [],
+      "review-chirp-server": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_architecture_contract_review",
+          "SUBTASK_code_review_quality_review",
+          "SUBTASK_rust_soundness_review",
+          "SUBTASK_test_adequacy_review",
+          "review-chirp-server"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis_verdict"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

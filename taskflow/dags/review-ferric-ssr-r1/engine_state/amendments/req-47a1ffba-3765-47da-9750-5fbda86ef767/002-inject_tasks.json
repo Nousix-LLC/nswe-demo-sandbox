@@ -1,0 +1,45 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T01:07:37.123095263Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_code_quality"
+      ],
+      "placement_parent_task_id": "review-ferric-ssr-r1"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_code_quality",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "SUBTASK_code_quality covers API surface, abstraction boundaries, error handling, function design, test coverage, and documentation — a distinct analysis from correctness and security.",
+        "task_id": "review-ferric-ssr-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "review-ferric-ssr-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "review-ferric-ssr-r1"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

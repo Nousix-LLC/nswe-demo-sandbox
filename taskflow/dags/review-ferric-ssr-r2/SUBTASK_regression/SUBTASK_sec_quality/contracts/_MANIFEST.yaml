@@ -1,0 +1,21 @@
+kind: markdown
+description: >
+  Structural contract for the SUBTASK_sec_quality sub-decomposition.
+  Two parallel spokes produce raw findings files; a synthesis task
+  assembles them into the final sec_quality_findings.md.
+
+ownership:
+  - artifact: SUBTASK_sec_check/security_raw_findings.md
+    owner: SUBTASK_sec_check
+  - artifact: SUBTASK_quality_check/quality_raw_findings.md
+    owner: SUBTASK_quality_check
+  - artifact: sec_quality_findings.md
+    owner: SUBTASK_secq_synthesis
+
+identities:
+  - security_raw_findings.md carries a "## Security Findings" section with one subsection per concern (HTML injection, DOM spoofing, test injection safety) following the findings_schema.md Security Findings format
+  - quality_raw_findings.md carries a "## Code Quality Findings" section and a "## What Was Examined and Found Clean" section following findings_schema.md format
+  - sec_quality_findings.md assembles both spoke outputs into the full findings_schema.md structure (Security Findings + Code Quality Findings + What Was Examined and Found Clean)
+  - Every finding in both spoke outputs cites file + line at pinned commit 75c1eef
+
+derived_artifacts: []

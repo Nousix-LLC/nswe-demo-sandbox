@@ -1,0 +1,235 @@
+{
+  "sequence": 2,
+  "operation": "cancel_tasks",
+  "applied_at": "2026-10-29T07:00:26.304808943Z",
+  "applied_by": "decompose",
+  "reason": "invalid amendment: CancelTasks requires task 'SUBTASK_release_bar/SUBTASK_rbar_gap_review' to be Pending, but it is in Running state (spec precondition: `~/Nousix/agent_execution/SYSCALL_TABLE.md` engine_amend_plan preconditions PENDING-only)",
+  "payload": {
+    "operation": {
+      "kind": "cancel_tasks",
+      "task_ids": [
+        "SUBTASK_release_bar/SUBTASK_rbar_gap_review"
+      ]
+    },
+    "resulting_version": 2,
+    "summary": "cancel tasks: SUBTASK_release_bar/SUBTASK_rbar_gap_review",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Consolidating 3-child decomposition to a single synthesis child: rbar_gap_review and rbar_criteria as separate tasks push rbar_synthesis into group 4, causing a scheduling cycle with downstream release_plan (group 3). The single-child approach keeps the synthesis in group 2, where release_bar was originally placed.",
+        "task_id": "SUBTASK_release_bar"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_async_forms_events": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_async_forms_events/SUBTASK_afe_async_resources": [],
+      "SUBTASK_async_forms_events/SUBTASK_afe_events_payloads": [],
+      "SUBTASK_async_forms_events/SUBTASK_afe_forms_binding": [
+        "SUBTASK_async_forms_events/SUBTASK_afe_events_payloads"
+      ],
+      "SUBTASK_async_forms_events/SUBTASK_afe_synthesis": [
+        "SUBTASK_async_forms_events/SUBTASK_afe_async_resources",
+        "SUBTASK_async_forms_events/SUBTASK_afe_events_payloads",
+        "SUBTASK_async_forms_events/SUBTASK_afe_forms_binding"
+      ],
+      "SUBTASK_authoring_model": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_authoring_model/SUBTASK_components_props_slots": [],
+      "SUBTASK_authoring_model/SUBTASK_context": [],
+      "SUBTASK_authoring_model/SUBTASK_synthesis": [
+        "SUBTASK_authoring_model/SUBTASK_view_macro",
+        "SUBTASK_authoring_model/SUBTASK_components_props_slots",
+        "SUBTASK_authoring_model/SUBTASK_context"
+      ],
+      "SUBTASK_authoring_model/SUBTASK_view_macro": [],
+      "SUBTASK_design_pr": [
+        "SUBTASK_scope_and_requirements",
+        "SUBTASK_ssr_hydration",
+        "SUBTASK_authoring_model",
+        "SUBTASK_async_forms_events",
+        "SUBTASK_router_and_http",
+        "SUBTASK_docs_and_dx",
+        "SUBTASK_release_and_distribution",
+        "SUBTASK_performance_and_benchmark",
+        "SUBTASK_release_bar",
+        "SUBTASK_release_plan"
+      ],
+      "SUBTASK_docs_and_dx": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_file_backlog": [
+        "SUBTASK_release_plan",
+        "SUBTASK_design_pr"
+      ],
+      "SUBTASK_performance_and_benchmark": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_release_and_distribution": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_release_and_distribution/SUBTASK_publishing": [],
+      "SUBTASK_release_and_distribution/SUBTASK_rel_synthesis": [
+        "SUBTASK_release_and_distribution/SUBTASK_publishing",
+        "SUBTASK_release_and_distribution/SUBTASK_semver_changelog",
+        "SUBTASK_release_and_distribution/SUBTASK_versioning_compat"
+      ],
+      "SUBTASK_release_and_distribution/SUBTASK_semver_changelog": [],
+      "SUBTASK_release_and_distribution/SUBTASK_versioning_compat": [],
+      "SUBTASK_release_bar": [
+        "SUBTASK_scope_and_requirements",
+        "SUBTASK_ssr_hydration",
+        "SUBTASK_authoring_model",
+        "SUBTASK_async_forms_events",
+        "SUBTASK_router_and_http",
+        "SUBTASK_docs_and_dx",
+        "SUBTASK_release_and_distribution",
+        "SUBTASK_performance_and_benchmark"
+      ],
+      "SUBTASK_release_plan": [
+        "SUBTASK_scope_and_requirements",
+        "SUBTASK_ssr_hydration",
+        "SUBTASK_authoring_model",
+        "SUBTASK_async_forms_events",
+        "SUBTASK_router_and_http",
+        "SUBTASK_docs_and_dx",
+        "SUBTASK_release_and_distribution",
+        "SUBTASK_performance_and_benchmark",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_router_and_http": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_router_and_http/SUBTASK_http": [],
+      "SUBTASK_router_and_http/SUBTASK_router": [],
+      "SUBTASK_router_and_http/SUBTASK_synthesis": [
+        "SUBTASK_router_and_http/SUBTASK_router",
+        "SUBTASK_router_and_http/SUBTASK_http"
+      ],
+      "SUBTASK_scope_and_requirements": [],
+      "SUBTASK_ssr_hydration": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_scope_and_requirements",
+        "SUBTASK_ssr_hydration",
+        "SUBTASK_authoring_model",
+        "SUBTASK_async_forms_events",
+        "SUBTASK_router_and_http",
+        "SUBTASK_docs_and_dx",
+        "SUBTASK_release_and_distribution",
+        "SUBTASK_performance_and_benchmark",
+        "SUBTASK_release_bar",
+        "SUBTASK_release_plan",
+        "SUBTASK_design_pr",
+        "SUBTASK_file_backlog"
+      ],
+      "design-ferric-1_0": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_async_forms_events/SUBTASK_afe_async_resources",
+          "SUBTASK_async_forms_events/SUBTASK_afe_events_payloads",
+          "SUBTASK_authoring_model/SUBTASK_components_props_slots",
+          "SUBTASK_authoring_model/SUBTASK_context",
+          "SUBTASK_authoring_model/SUBTASK_view_macro",
+          "SUBTASK_release_and_distribution/SUBTASK_publishing",
+          "SUBTASK_release_and_distribution/SUBTASK_semver_changelog",
+          "SUBTASK_release_and_distribution/SUBTASK_versioning_compat",
+          "SUBTASK_router_and_http/SUBTASK_http",
+          "SUBTASK_router_and_http/SUBTASK_router",
+          "SUBTASK_scope_and_requirements",
+          "design-ferric-1_0"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_async_forms_events",
+          "SUBTASK_async_forms_events/SUBTASK_afe_forms_binding",
+          "SUBTASK_authoring_model",
+          "SUBTASK_authoring_model/SUBTASK_synthesis",
+          "SUBTASK_docs_and_dx",
+          "SUBTASK_performance_and_benchmark",
+          "SUBTASK_release_and_distribution",
+          "SUBTASK_release_and_distribution/SUBTASK_rel_synthesis",
+          "SUBTASK_router_and_http",
+          "SUBTASK_router_and_http/SUBTASK_synthesis",
+          "SUBTASK_ssr_hydration"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_async_forms_events/SUBTASK_afe_synthesis",
+          "SUBTASK_release_bar"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_release_plan"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "SUBTASK_design_pr"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "group_index": 5,
+        "task_ids": [
+          "SUBTASK_file_backlog"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "group_index": 6,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "rejected",
+    "error": "invalid amendment: CancelTasks requires task 'SUBTASK_release_bar/SUBTASK_rbar_gap_review' to be Pending, but it is in Running state (spec precondition: `~/Nousix/agent_execution/SYSCALL_TABLE.md` engine_amend_plan preconditions PENDING-only)"
+  }
+}

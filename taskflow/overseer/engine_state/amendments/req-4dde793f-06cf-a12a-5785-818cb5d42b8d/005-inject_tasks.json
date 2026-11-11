@@ -1,0 +1,74 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-06T19:45:53.537043233Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "I5"
+      ],
+      "placement_parent_task_id": "I4"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: I5",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Serial-chain successor: schedule overseer iteration I5 (depends_on I4) to continue the ferric fan-out (fork the next prepared code-writing DAG — chirp-types #7, or ferric-http #6 if I4's fork was denied) and watch the in-flight DAGs. Authored BEFORE the atomic fork so the project thread is self-perpetuating regardless of the fork outcome.",
+        "task_id": "I4"
+      }
+    },
+    "updated_graph_edges": {
+      "I0": [],
+      "I1": [],
+      "I3": [],
+      "I4": [
+        "I3"
+      ],
+      "I5": [
+        "I4"
+      ],
+      "overseer/I2": [
+        "I1"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "I0",
+          "I1",
+          "I3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "I4",
+          "overseer/I2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "I5"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

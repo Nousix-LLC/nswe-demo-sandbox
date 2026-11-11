@@ -1,0 +1,103 @@
+{
+  "sequence": 7,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-06T19:55:43.680362817Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "I7"
+      ],
+      "placement_parent_task_id": "I6"
+    },
+    "resulting_version": 7,
+    "summary": "inject tasks: I7",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Schedule the NSWE overseer's next-self successor I7 (depends_on I6) BEFORE this iteration's atomic fork, so the project thread chain is self-perpetuating regardless of the fork outcome (only an Exit evaluation severs it). I7 continues the fan-out/watch/gate/land loop per its authored _BRIEF.md.",
+        "task_id": "I6"
+      }
+    },
+    "updated_graph_edges": {
+      "I0": [],
+      "I1": [],
+      "I3": [],
+      "I4": [
+        "I3"
+      ],
+      "I5": [
+        "I4"
+      ],
+      "I6": [
+        "I5"
+      ],
+      "I7": [
+        "I6"
+      ],
+      "overseer/I2": [
+        "I1"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "I0",
+          "I1",
+          "I3"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "I4",
+          "overseer/I2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "I5"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "I6"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "I7"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

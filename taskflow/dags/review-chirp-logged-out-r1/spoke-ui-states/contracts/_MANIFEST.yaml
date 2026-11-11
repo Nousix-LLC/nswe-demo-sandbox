@@ -1,0 +1,38 @@
+kind: review_findings
+description: >
+  Structural contract for the spoke-ui-states sub-decomposition.
+  Both spoke tasks produce FINDINGS.md files in this shared schema;
+  the synthesis task consumes them to produce the final REVIEW.md.
+
+findings_schema:
+  required_sections:
+    - concerns_checked      # List of concerns examined with one-line summary per concern
+    - findings              # List of findings (may be empty if all clear)
+    - clean_items           # Account of what was checked and found sound
+
+  finding_shape:
+    location: "file path + line reference at pinned commit"
+    principle: "what principle is at stake"
+    rationale: "why it matters in this system"
+    severity: "blocker | non-blocking"
+    resolution: "what would satisfy this finding"
+
+  clean_item_shape:
+    concern: "which concern this covers"
+    checked: "what was examined"
+    result: "what was found"
+
+ownership:
+  SUBTASK_landing-states/FINDINGS.md: SUBTASK_landing-states
+  SUBTASK_routing-ctas/FINDINGS.md: SUBTASK_routing-ctas
+  REVIEW.md: SUBTASK_synthesis
+  SYNTHESIS.md: SUBTASK_synthesis
+
+identities:
+  - all_concerns_covered: >
+      Every AC-2, AC-3, and AC-4 sub-concern named in _GLOBAL.md Scope section
+      appears in at least one FINDINGS.md
+  - clean_partition: >
+      No concern is claimed by both SUBTASK_landing-states and SUBTASK_routing-ctas
+  - cite_pinned_commit: >
+      Every finding includes file path + line number at decb6196c2c1e6ed421d393a642f0c844cc333ba

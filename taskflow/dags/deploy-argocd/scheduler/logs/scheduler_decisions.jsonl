@@ -1,0 +1,53 @@
+{"timestamp":"2026-10-08T16:41:28.375347621Z","action":{"Dispatch":{"task_ids":["deploy-argocd"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-08T16:44:01.437579290Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-argocd"]}},"reason":"task deploy-argocd transitioned to Ready"}
+{"timestamp":"2026-10-08T16:44:01.437700493Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-argocd"]}},"reason":"task deploy-argocd transitioned to Running"}
+{"timestamp":"2026-10-08T16:50:24.870776657Z","action":{"Dispatch":{"task_ids":["SUBTASK_discovery"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-08T16:51:11.203734750Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-argocd"]}},"reason":"task deploy-argocd suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-08T16:51:20.876820768Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_discovery"]}},"reason":"task SUBTASK_discovery transitioned to Ready"}
+{"timestamp":"2026-10-08T16:51:20.877146475Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_discovery"]}},"reason":"task SUBTASK_discovery transitioned to Running"}
+{"timestamp":"2026-10-08T16:59:10.338207465Z","action":{"Dispatch":{"task_ids":["SUBTASK_app_manifests","SUBTASK_argocd_gitops"],"group_index":1}},"reason":"task SUBTASK_discovery completed, dispatching ready successors"}
+{"timestamp":"2026-10-08T17:00:09.143266117Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_app_manifests"]}},"reason":"task SUBTASK_app_manifests transitioned to Ready"}
+{"timestamp":"2026-10-08T17:00:09.143497893Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_app_manifests"]}},"reason":"task SUBTASK_app_manifests transitioned to Running"}
+{"timestamp":"2026-10-08T17:01:07.839604039Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_argocd_gitops"]}},"reason":"task SUBTASK_argocd_gitops transitioned to Ready"}
+{"timestamp":"2026-10-08T17:01:07.839875939Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_argocd_gitops"]}},"reason":"task SUBTASK_argocd_gitops transitioned to Running"}
+{"timestamp":"2026-10-08T17:07:09.950464064Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_argocd_gitops","deploy-argocd"]}},"reason":"task SUBTASK_app_manifests completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-08T17:08:48.957791087Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":2}},"reason":"task SUBTASK_argocd_gitops completed, dispatching ready successors"}
+{"timestamp":"2026-10-08T17:14:53.405595252Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-08T17:14:53.405795849Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-08T17:22:48.991722942Z","action":{"Dispatch":{"task_ids":["SUBTASK_static_gate"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-08T17:23:44.261634216Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-08T17:25:09.529982743Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_static_gate"]}},"reason":"task SUBTASK_static_gate transitioned to Ready"}
+{"timestamp":"2026-10-08T17:25:09.530134365Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_static_gate"]}},"reason":"task SUBTASK_static_gate transitioned to Running"}
+{"timestamp":"2026-10-08T17:29:02.476766941Z","action":{"Dispatch":{"task_ids":["SUBTASK_deploy_reach"],"group_index":1}},"reason":"task SUBTASK_static_gate completed, dispatching ready successors"}
+{"timestamp":"2026-10-08T17:29:55.419118340Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_deploy_reach"]}},"reason":"task SUBTASK_deploy_reach transitioned to Ready"}
+{"timestamp":"2026-10-08T17:29:55.419749814Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_deploy_reach"]}},"reason":"task SUBTASK_deploy_reach transitioned to Running"}
+{"timestamp":"2026-10-08T17:40:22.454472919Z","action":{"Dispatch":{"task_ids":["SUBTASK_land_pr"],"group_index":2}},"reason":"task SUBTASK_deploy_reach completed, dispatching ready successors"}
+{"timestamp":"2026-10-08T17:41:17.086880975Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_land_pr"]}},"reason":"task SUBTASK_land_pr transitioned to Ready"}
+{"timestamp":"2026-10-08T17:41:17.086989528Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_land_pr"]}},"reason":"task SUBTASK_land_pr transitioned to Running"}
+{"timestamp":"2026-10-08T17:48:27.766894692Z","action":{"Dispatch":{"task_ids":["SUBTASK_fold"],"group_index":3}},"reason":"task SUBTASK_land_pr completed, dispatching ready successors"}
+{"timestamp":"2026-10-08T17:50:41.229486114Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_fold"]}},"reason":"task SUBTASK_fold transitioned to Ready"}
+{"timestamp":"2026-10-08T17:50:41.229596756Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_fold"]}},"reason":"task SUBTASK_fold transitioned to Running"}
+{"timestamp":"2026-10-08T17:55:08.652125037Z","action":{"SubtreeResolved":{"parent_task_id":"SUBTASK_synthesis","child_task_ids":["SUBTASK_static_gate","SUBTASK_deploy_reach","SUBTASK_land_pr","SUBTASK_fold"],"success":true}},"reason":"all children of SUBTASK_synthesis reached terminal state (success=true)"}
+{"timestamp":"2026-10-08T17:55:08.652249847Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-argocd"]}},"reason":"task SUBTASK_fold completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-08T17:55:23.330188697Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T00:36:05.748858700Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis/SUBTASK_fold"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T00:37:25.619632415Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis/SUBTASK_fold"]}},"reason":"task SUBTASK_synthesis/SUBTASK_fold transitioned to Ready"}
+{"timestamp":"2026-10-22T00:37:25.620047070Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis/SUBTASK_fold"]}},"reason":"task SUBTASK_synthesis/SUBTASK_fold transitioned to Running"}
+{"timestamp":"2026-10-22T00:41:22.523013659Z","action":{"SubtreeResolved":{"parent_task_id":"SUBTASK_synthesis","child_task_ids":["SUBTASK_synthesis/SUBTASK_static_gate","SUBTASK_synthesis/SUBTASK_deploy_reach","SUBTASK_synthesis/SUBTASK_land_pr","SUBTASK_synthesis/SUBTASK_fold"],"success":true}},"reason":"all children of SUBTASK_synthesis reached terminal state (success=true)"}
+{"timestamp":"2026-10-22T00:41:22.523339680Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-argocd"]}},"reason":"task SUBTASK_synthesis/SUBTASK_fold completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T00:41:29.570983694Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T00:41:52.526271797Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T16:04:21.591476423Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis/SUBTASK_fold"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:08:20.106582469Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis/SUBTASK_fold"]}},"reason":"task SUBTASK_synthesis/SUBTASK_fold transitioned to Ready"}
+{"timestamp":"2026-10-22T16:08:20.106847841Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis/SUBTASK_fold"]}},"reason":"task SUBTASK_synthesis/SUBTASK_fold transitioned to Running"}
+{"timestamp":"2026-10-22T16:11:44.333925992Z","action":{"SubtreeResolved":{"parent_task_id":"SUBTASK_synthesis","child_task_ids":["SUBTASK_synthesis/SUBTASK_static_gate","SUBTASK_synthesis/SUBTASK_deploy_reach","SUBTASK_synthesis/SUBTASK_land_pr","SUBTASK_synthesis/SUBTASK_fold"],"success":true}},"reason":"all children of SUBTASK_synthesis reached terminal state (success=true)"}
+{"timestamp":"2026-10-22T16:11:44.334327581Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-argocd"]}},"reason":"task SUBTASK_synthesis/SUBTASK_fold completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:12:20.382019651Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T16:12:44.335805661Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}
+{"timestamp":"2026-10-22T16:41:27.601125344Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis/SUBTASK_fold"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-22T16:43:42.173977925Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis/SUBTASK_fold"]}},"reason":"task SUBTASK_synthesis/SUBTASK_fold transitioned to Ready"}
+{"timestamp":"2026-10-22T16:43:42.174351625Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis/SUBTASK_fold"]}},"reason":"task SUBTASK_synthesis/SUBTASK_fold transitioned to Running"}
+{"timestamp":"2026-10-22T16:45:58.124145464Z","action":{"SubtreeResolved":{"parent_task_id":"SUBTASK_synthesis","child_task_ids":["SUBTASK_synthesis/SUBTASK_static_gate","SUBTASK_synthesis/SUBTASK_deploy_reach","SUBTASK_synthesis/SUBTASK_land_pr","SUBTASK_synthesis/SUBTASK_fold"],"success":true}},"reason":"all children of SUBTASK_synthesis reached terminal state (success=true)"}
+{"timestamp":"2026-10-22T16:45:58.124331609Z","action":{"WaitForCompletion":{"pending_task_ids":["deploy-argocd"]}},"reason":"task SUBTASK_synthesis/SUBTASK_fold completed, waiting for remaining tasks"}
+{"timestamp":"2026-10-22T16:46:15.657050180Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T16:46:28.125306027Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state after stuck-state probe re-check (Bug 5 defense-in-depth)"}

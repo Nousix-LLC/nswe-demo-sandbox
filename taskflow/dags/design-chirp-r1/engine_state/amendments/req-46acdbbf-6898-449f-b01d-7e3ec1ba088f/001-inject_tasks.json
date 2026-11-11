@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-10T02:56:18.832433385Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_product_requirements"
+      ],
+      "placement_parent_task_id": "design-chirp-r1"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_product_requirements",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the foundation concern of the chirp product design: product definition/kind, users & journeys, and the core testable requirements (REQ-PROD-*) the rest of the design traces to.",
+        "task_id": "design-chirp-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_product_requirements": [],
+      "design-chirp-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_product_requirements",
+          "design-chirp-r1"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

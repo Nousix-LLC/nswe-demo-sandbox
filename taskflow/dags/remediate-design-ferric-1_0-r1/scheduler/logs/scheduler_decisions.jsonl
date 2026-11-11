@@ -1,0 +1,3 @@
+{"timestamp":"2026-11-03T17:50:26.344019750Z","action":{"Dispatch":{"task_ids":["remediate-design-ferric-1_0-r1"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-03T17:51:17.692836952Z","action":{"WaitForCompletion":{"pending_task_ids":["remediate-design-ferric-1_0-r1"]}},"reason":"task remediate-design-ferric-1_0-r1 transitioned to Ready"}
+{"timestamp":"2026-11-03T17:51:17.693089822Z","action":{"WaitForCompletion":{"pending_task_ids":["remediate-design-ferric-1_0-r1"]}},"reason":"task remediate-design-ferric-1_0-r1 transitioned to Running"}

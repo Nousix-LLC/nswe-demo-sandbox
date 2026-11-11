@@ -1,0 +1,73 @@
+{
+  "sequence": 8,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T20:25:11.596801112Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis"
+      ],
+      "placement_parent_task_id": "SUBTASK_code_quality"
+    },
+    "resulting_version": 8,
+    "summary": "inject tasks: SUBTASK_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_code_quality: synthesis task merges all three partial findings into final code_quality_findings.md",
+        "task_id": "SUBTASK_code_quality"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_code_quality": [],
+      "SUBTASK_completeness_check": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_format_check": [],
+      "SUBTASK_placement_check": [],
+      "SUBTASK_security": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_completeness_check",
+        "SUBTASK_format_check",
+        "SUBTASK_placement_check"
+      ],
+      "SUBTASK_verdict": [
+        "SUBTASK_code_quality",
+        "SUBTASK_correctness",
+        "SUBTASK_security"
+      ],
+      "review-ferric-http-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_code_quality",
+          "SUBTASK_completeness_check",
+          "SUBTASK_correctness",
+          "SUBTASK_format_check",
+          "SUBTASK_placement_check",
+          "SUBTASK_security",
+          "review-ferric-http-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis",
+          "SUBTASK_verdict"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

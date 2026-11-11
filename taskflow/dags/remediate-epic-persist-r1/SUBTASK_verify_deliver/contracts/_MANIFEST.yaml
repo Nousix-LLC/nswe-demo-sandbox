@@ -1,0 +1,55 @@
+kind: yaml_schema
+decomposition_root: SUBTASK_verify_deliver
+description: |
+  Contract for the SUBTASK_verify_deliver subtree. Declares per-child output ownership and the
+  schema for the two shared artifacts (CI_EVIDENCE.md and PR_UPDATE.md) that cross the ci_verify
+  → pr_update → synthesis pipeline.
+
+ownership:
+  - artifact: SUBTASK_ci_verify/CI_EVIDENCE.md
+    owner: SUBTASK_ci_verify
+    kind: verification_evidence
+  - artifact: SUBTASK_pr_update/PR_UPDATE.md
+    owner: SUBTASK_pr_update
+    kind: delivery_confirmation
+  - artifact: ../VERIFICATION.md
+    owner: SUBTASK_synthesis
+    kind: fold_record
+
+schemas:
+  CI_EVIDENCE.md:
+    description: |
+      Markdown document recording the observed CI check results for PR #113 on the verifying
+      commit. MUST include a section per required check (doc, clippy, fmt, test, wasm) with:
+      - observed status (PASSED / FAILED / PENDING)
+      - run reference (GitHub Actions run URL or `gh pr checks` output, by repository identity)
+      - verifying commit SHA
+    required_sections:
+      - "## Summary" # table of check name → status
+      - "## doc check" # the primary blocker — MUST record fresh evidence
+      - "## Other checks" # clippy, fmt, test, wasm grouped or individually
+
+  PR_UPDATE.md:
+    description: |
+      Markdown document confirming what was posted to GitHub on PR #113. MUST include:
+      - the PR number and repository identity
+      - confirmation of mergeability/clean state
+      - the text that was written to the PR description (or a statement that it was updated in
+        place via `gh pr edit`)
+      - which issues the PR description closes (#65, #66, #67)
+    constraints:
+      - MUST NOT contain host/absolute paths, SSH/cluster/credential details, or
+        taskflow/agent/run identifiers
+    required_sections:
+      - "## PR update"
+      - "## Description posted"
+
+identities:
+  - id: ci_doc_green
+    assertion: CI_EVIDENCE.md records the doc check as PASSED on commit e63e607
+  - id: no_regression
+    assertion: CI_EVIDENCE.md records clippy, fmt, test, wasm all PASSED
+  - id: delivery_confirmed
+    assertion: PR_UPDATE.md confirms PR #113 was updated in place
+  - id: output_hygiene
+    assertion: PR_UPDATE.md contains no host/SSH/cluster/credential/taskflow details

@@ -1,0 +1,242 @@
+# nswe-demo thread CONFIG SEAM  (_CONFIG.yaml)
+#
+# Conforms to the serial-thread CONFIG SEAM defined in the kernel at
+#   ~/Nousix/development/actors/thread/SERIAL_COMPOSITION_FRAMEWORK.md  (section: The Config Seam)
+#
+# This is the NSWE overseer thread's durable operating configuration. The engine provides the
+# seam; the NSWE app defines these contents (the thread analog of a DAG contract). It is a
+# first-class on-disk file at the thread root (taskflow/overseer/), read by every overseer
+# iteration at boot and writable in place; reconstruction surfaces it on every resume.
+#
+# It carries the operating variables that previously lived (fragile) only in the prose
+# `engagement` block of project_state.json and were dropped at I127 -- which reverted the
+# overseer to the app-files human-at-gate default and parked PR #113. Restored from the
+# last-good engagement block at taskflow/overseer/I126/project_state.json.
+
+schema: nswe-overseer/config.v1
+
+# --- Landing authority (the variable whose prose-only life caused the I127 regression) ---
+landing_authority: delegated   # overseer holds delegated authority to land PRs
+auto_land: true                # auto-land on machine PASS + review APPROVE; no human approve step
+headless: true                 # headless engagement -- no interactive human-at-gate channel exists
+
+# --- Engagement identity ---
+project_id: nswe-demo
+repo: Nousix-LLC/nswe-demo
+working_branch: main
+
+# --- GitHub Project (board) identifiers ---
+github_project:
+  project_board: "https://github.com/orgs/Nousix-LLC/projects/1"
+  project_id_gh: PVT_kwDOEB9jls4BlZH4
+  status_field_id: PVTSSF_lADOEB9jls4BlZH4zhkGLsc
+  status_options:   # opaque GitHub option ids -- kept as strings (never coerce to int)
+    Todo: "f75ad846"
+    "In Progress": "47fc9ee4"
+    Done: "98236657"
+  project_item_ids:
+    issue_1: PVTI_lADOEB9jls4BlZH4zg-BHJY
+    issue_2: PVTI_lADOEB9jls4BlZH4zg-BHKw
+    issue_3: PVTI_lADOEB9jls4BlZH4zg-BHL4
+    issue_4: PVTI_lADOEB9jls4BlZH4zg-BHNo
+    issue_5: PVTI_lADOEB9jls4BlZH4zg-BHRk
+    issue_6: PVTI_lADOEB9jls4BlZH4zg-BHTA
+    issue_7: PVTI_lADOEB9jls4BlZH4zg-BHTs
+    issue_8: PVTI_lADOEB9jls4BlZH4zg-BHUs
+    issue_9: PVTI_lADOEB9jls4BlZH4zg-BHWM
+    issue_10: PVTI_lADOEB9jls4BlZH4zg-BHY4
+    issue_11: PVTI_lADOEB9jls4BlZH4zg-BHZw
+    issue_12: PVTI_lADOEB9jls4BlZH4zg-BHbE
+    issue_13: PVTI_lADOEB9jls4BlZH4zg-BHcE
+    issue_107: PVTI_lADOEB9jls4BlZH4zhAm-4k
+    issue_108: PVTI_lADOEB9jls4BlZH4zhAm-7Q
+    issue_114: PVTI_lADOEB9jls4BlZH4zhCkw_U
+    issue_115: PVTI_lADOEB9jls4BlZH4zhCwyF8
+    issue_116: PVTI_lADOEB9jls4BlZH4zhCwyJk
+    issue_117: PVTI_lADOEB9jls4BlZH4zhCwyMw
+    issue_118: PVTI_lADOEB9jls4BlZH4zhCwyQA
+    issue_119: PVTI_lADOEB9jls4BlZH4zhCwyTM
+    issue_120: PVTI_lADOEB9jls4BlZH4zhCwyWI
+    issue_121: PVTI_lADOEB9jls4BlZH4zhCwyYo
+    issue_125: PVTI_lADOEB9jls4BlZH4zhEYv1U
+    issue_126: PVTI_lADOEB9jls4BlZH4zhEYv30
+    issue_127: PVTI_lADOEB9jls4BlZH4zhEYv6I
+    # Ferric 1.0 epics (usable_early: #129–#132; must-have: #133; one_oh: #134–#136)
+    issue_129: PVTI_lADOEB9jls4BlZH4zhFl_HY
+    issue_130: PVTI_lADOEB9jls4BlZH4zhFl_I0
+    issue_131: PVTI_lADOEB9jls4BlZH4zhFl_Kc
+    issue_132: PVTI_lADOEB9jls4BlZH4zhFl_MI
+    issue_133: PVTI_lADOEB9jls4BlZH4zhFl_O4
+    issue_134: PVTI_lADOEB9jls4BlZH4zhFl_Qs
+    issue_135: PVTI_lADOEB9jls4BlZH4zhFl_Sc
+    issue_136: PVTI_lADOEB9jls4BlZH4zhFl_Uc
+    # Ferric 1.0 implementation sub-issues (#137–#164)
+    issue_137: PVTI_lADOEB9jls4BlZH4zhFl_XI
+    issue_138: PVTI_lADOEB9jls4BlZH4zhFl_aQ
+    issue_139: PVTI_lADOEB9jls4BlZH4zhFl_bc
+    issue_140: PVTI_lADOEB9jls4BlZH4zhFl_dM
+    issue_141: PVTI_lADOEB9jls4BlZH4zhFl_e8
+    issue_142: PVTI_lADOEB9jls4BlZH4zhFl_go
+    issue_143: PVTI_lADOEB9jls4BlZH4zhFl_h4
+    issue_144: PVTI_lADOEB9jls4BlZH4zhFl_jk
+    issue_145: PVTI_lADOEB9jls4BlZH4zhFl_lE
+    issue_146: PVTI_lADOEB9jls4BlZH4zhFl_mw
+    issue_147: PVTI_lADOEB9jls4BlZH4zhFl_n8
+    issue_148: PVTI_lADOEB9jls4BlZH4zhFl_pM
+    issue_149: PVTI_lADOEB9jls4BlZH4zhFl_rQ
+    issue_150: PVTI_lADOEB9jls4BlZH4zhFl_ss
+    issue_151: PVTI_lADOEB9jls4BlZH4zhFl_u0
+    issue_152: PVTI_lADOEB9jls4BlZH4zhFl_wU
+    issue_153: PVTI_lADOEB9jls4BlZH4zhFl_xs
+    issue_154: PVTI_lADOEB9jls4BlZH4zhFl_y0
+    issue_155: PVTI_lADOEB9jls4BlZH4zhFl_0o
+    issue_156: PVTI_lADOEB9jls4BlZH4zhFl_2Y
+    issue_157: PVTI_lADOEB9jls4BlZH4zhFl_38
+    issue_158: PVTI_lADOEB9jls4BlZH4zhFl_5M
+    issue_159: PVTI_lADOEB9jls4BlZH4zhFl_7M
+    issue_160: PVTI_lADOEB9jls4BlZH4zhFl_88
+    issue_161: PVTI_lADOEB9jls4BlZH4zhFl_-c
+    issue_162: PVTI_lADOEB9jls4BlZH4zhFmAAU
+    issue_163: PVTI_lADOEB9jls4BlZH4zhFmACQ
+    issue_164: PVTI_lADOEB9jls4BlZH4zhFmADM
+    # Design review follow-ups (#165–#181)
+    issue_165: PVTI_lADOEB9jls4BlZH4zhFwXOo
+    issue_166: PVTI_lADOEB9jls4BlZH4zhFwXRw
+    issue_167: PVTI_lADOEB9jls4BlZH4zhFwXT8
+    issue_168: PVTI_lADOEB9jls4BlZH4zhFwXXM
+    issue_169: PVTI_lADOEB9jls4BlZH4zhFwXZw
+    issue_170: PVTI_lADOEB9jls4BlZH4zhFwXyA
+    issue_171: PVTI_lADOEB9jls4BlZH4zhFwXvM
+    issue_172: PVTI_lADOEB9jls4BlZH4zhFwXsY
+    issue_173: PVTI_lADOEB9jls4BlZH4zhFwXo4
+    issue_174: PVTI_lADOEB9jls4BlZH4zhFwXlQ
+    issue_175: PVTI_lADOEB9jls4BlZH4zhFwXg8
+    issue_176: PVTI_lADOEB9jls4BlZH4zhFwXeg
+    issue_177: PVTI_lADOEB9jls4BlZH4zhFwXb8
+    issue_178: PVTI_lADOEB9jls4BlZH4zhFwX24
+    issue_179: PVTI_lADOEB9jls4BlZH4zhFwX0M
+    issue_180: PVTI_lADOEB9jls4BlZH4zhFwfxs
+    issue_181: PVTI_lADOEB9jls4BlZH4zhFwwSs
+    # Code / review follow-ups
+    issue_184: PVTI_lADOEB9jls4BlZH4zhFxodY
+    issue_185: PVTI_lADOEB9jls4BlZH4zhFye8k
+    issue_186: PVTI_lADOEB9jls4BlZH4zhFye-w
+    # Ferric 1.0 implementation follow-ups
+    issue_189: PVTI_lADOEB9jls4BlZH4zhF29XE
+    # Ferric epic authoring review non-blockers
+    issue_190: PVTI_lADOEB9jls4BlZH4zhF3eeo
+    issue_191: PVTI_lADOEB9jls4BlZH4zhF3egA
+    # Ferric router review non-blockers (from review-ferric-router-r1)
+    issue_194: PVTI_lADOEB9jls4BlZH4zhF5Jpg
+    issue_195: PVTI_lADOEB9jls4BlZH4zhF5Jr8
+    # Ferric async-forms-r2 review non-blockers
+    issue_196: PVTI_lADOEB9jls4BlZH4zhF5XgQ
+    issue_197: PVTI_lADOEB9jls4BlZH4zhF5XiU
+    issue_198: PVTI_lADOEB9jls4BlZH4zhF5Xkc
+    issue_199: PVTI_lADOEB9jls4BlZH4zhF5XnI
+    issue_200: PVTI_lADOEB9jls4BlZH4zhF5Xo0
+    issue_201: PVTI_lADOEB9jls4BlZH4zhF5Xr0
+    # ferric-router-r3 review non-blockers
+    issue_204: PVTI_lADOEB9jls4BlZH4zhF7IB8
+    issue_205: PVTI_lADOEB9jls4BlZH4zhF7IEk
+    # devops: chirp-server image digest update
+    issue_206: PVTI_lADOEB9jls4BlZH4zhF7WNw
+    # ferric-http-r1 review non-blockers (review-ferric-http-r1, from I239)
+    issue_211: PVTI_lADOEB9jls4BlZH4zhGFRrA
+    issue_212: PVTI_lADOEB9jls4BlZH4zhGFRt0
+    issue_213: PVTI_lADOEB9jls4BlZH4zhGFRv8
+    # ferric-http-r2 review non-blockers (review-ferric-http-r2, from I242)
+    issue_214: PVTI_lADOEB9jls4BlZH4zhGGmcY
+    issue_215: PVTI_lADOEB9jls4BlZH4zhGGmeE
+    issue_216: PVTI_lADOEB9jls4BlZH4zhGGmgg
+    issue_217: PVTI_lADOEB9jls4BlZH4zhGGmiU
+    issue_218: PVTI_lADOEB9jls4BlZH4zhGGmkw
+    issue_219: PVTI_lADOEB9jls4BlZH4zhGGmnE
+    issue_220: PVTI_lADOEB9jls4BlZH4zhGGmow
+    issue_221: PVTI_lADOEB9jls4BlZH4zhGGmq0
+    issue_222: PVTI_lADOEB9jls4BlZH4zhGGmsg
+    # #133 SSR/Hydration sub-issues (filed I248)
+    issue_223: PVTI_lADOEB9jls4BlZH4zhGG3PE
+    issue_224: PVTI_lADOEB9jls4BlZH4zhGG3RY
+    issue_225: PVTI_lADOEB9jls4BlZH4zhGG3UU
+    issue_226: PVTI_lADOEB9jls4BlZH4zhGG3XA
+    # ferric-ssr-r1 review non-blockers (review-ferric-ssr-r1, from I266)
+    issue_229: PVTI_lADOEB9jls4BlZH4zhGW-mQ
+    issue_230: PVTI_lADOEB9jls4BlZH4zhGW-n8
+    issue_231: PVTI_lADOEB9jls4BlZH4zhGW-pY
+    issue_232: PVTI_lADOEB9jls4BlZH4zhGW-qw
+    issue_233: PVTI_lADOEB9jls4BlZH4zhGW-tI
+    issue_234: PVTI_lADOEB9jls4BlZH4zhGW-uw
+    issue_235: PVTI_lADOEB9jls4BlZH4zhGW-wA
+    issue_236: PVTI_lADOEB9jls4BlZH4zhGW-xw
+    issue_237: PVTI_lADOEB9jls4BlZH4zhGW-zY
+    issue_238: PVTI_lADOEB9jls4BlZH4zhGW-1c
+    issue_239: PVTI_lADOEB9jls4BlZH4zhGW-3c
+    issue_240: PVTI_lADOEB9jls4BlZH4zhGW-6c
+    issue_241: PVTI_lADOEB9jls4BlZH4zhGW-8Q
+    issue_242: PVTI_lADOEB9jls4BlZH4zhGW--o
+    # ferric-ssr-r2 review non-blockers (review-ferric-ssr-r2, from I285)
+    issue_245: PVTI_lADOEB9jls4BlZH4zhGblXw
+    issue_246: PVTI_lADOEB9jls4BlZH4zhGblYo
+    issue_247: PVTI_lADOEB9jls4BlZH4zhGblZ0
+    # ferric-async-forms-r3 review non-blockers (review-ferric-async-forms-r3, from I293)
+    issue_248: PVTI_lADOEB9jls4BlZH4zhGcfUQ
+    issue_249: PVTI_lADOEB9jls4BlZH4zhGcfWc
+    issue_250: PVTI_lADOEB9jls4BlZH4zhGcfX8
+    issue_251: PVTI_lADOEB9jls4BlZH4zhGcfbQ
+    issue_252: PVTI_lADOEB9jls4BlZH4zhGcfcw
+    issue_253: PVTI_lADOEB9jls4BlZH4zhGcfew
+    # ferric-async-forms sub-issues (#143/#144/#145) — added to board Done in I295
+    issue_143: PVTI_lADOEB9jls4BlZH4zhFl_h4
+    issue_144: PVTI_lADOEB9jls4BlZH4zhFl_jk
+    issue_145: PVTI_lADOEB9jls4BlZH4zhFl_lE
+    # ferric non-blockers from review-ferric-async-forms-r3 (filed ~03:02Z, added to board I392)
+    issue_254: PVTI_lADOEB9jls4BlZH4zhGg3Rc
+    issue_255: PVTI_lADOEB9jls4BlZH4zhGg3UY
+    issue_256: PVTI_lADOEB9jls4BlZH4zhGg3Ws
+    issue_257: PVTI_lADOEB9jls4BlZH4zhGg3ZI
+    issue_258: PVTI_lADOEB9jls4BlZH4zhGg3b4
+    issue_259: PVTI_lADOEB9jls4BlZH4zhGg3fE
+    issue_260: PVTI_lADOEB9jls4BlZH4zhGg3iE
+    issue_261: PVTI_lADOEB9jls4BlZH4zhGg3k4
+    issue_262: PVTI_lADOEB9jls4BlZH4zhGg3og
+    # chirp-logged-out review-r1 non-blockers (filed I418)
+    issue_264: PVTI_lADOEB9jls4BlZH4zhGm_cM
+    issue_265: PVTI_lADOEB9jls4BlZH4zhGm_fQ
+    issue_266: PVTI_lADOEB9jls4BlZH4zhGm_iQ
+    issue_267: PVTI_lADOEB9jls4BlZH4zhGm_lA
+    issue_268: PVTI_lADOEB9jls4BlZH4zhGm_m0
+    issue_269: PVTI_lADOEB9jls4BlZH4zhGm_qY
+    issue_270: PVTI_lADOEB9jls4BlZH4zhGm_ss
+    issue_271: PVTI_lADOEB9jls4BlZH4zhGm_wU
+    # chirp-logged-out review-r2 non-blockers / TC findings (filed I425)
+    issue_272: PVTI_lADOEB9jls4BlZH4zhGoKPE
+    issue_273: PVTI_lADOEB9jls4BlZH4zhGoKUk
+
+# --- Milestones ---
+milestones:   # milestone numbers (integers)
+  M1: 1
+  M2: 2
+  M3: 3
+
+# --- Issue -> number map ---
+issues:   # GitHub issue numbers (integers)
+  epic_ferric: 1
+  epic_chirp: 2
+  epic_devops: 3
+  ferric-foundation: 4
+  ferric-router: 5
+  ferric-http: 6
+  chirp-types: 7
+  chirp-server: 8
+  chirp-frontend: 9
+  infra-bootstrap: 10
+  ci-actions: 11
+  containerize: 12
+  deploy-argocd: 13
+
+# --- Architecture summary ---
+architecture:
+  framework: "ferric (crates/ferric): client-side WASM framework — reactive signals, component model, DOM rendering (wasm-bindgen/web-sys), router, fetch/JSON http client"
+  app: "chirp: crates/chirp-types (shared contract), crates/chirp-server (axum REST API + persistence + static SPA serving), crates/chirp-frontend (ferric SPA)"
+  deploy: "chirp-server containerized; k8s manifests under deploy/; ArgoCD Application tracking the repo deploys to k3s"

@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T00:54:31.359703160Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_implement_crate"
+      ],
+      "placement_parent_task_id": "chirp-types"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_implement_crate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the implementation spoke of the chirp-types decomposition: author the full crate (domain model + API-contract DTOs + serde + inline tests + rustdoc + README) in an isolated clone and commit it to work/chirp-types. Group 0, no dependencies.",
+        "task_id": "chirp-types"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_implement_crate": [],
+      "chirp-types": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_implement_crate",
+          "chirp-types"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

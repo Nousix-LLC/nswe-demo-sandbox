@@ -1,0 +1,4 @@
+{"timestamp":"2026-11-04T05:22:56.197316813Z","action":{"Dispatch":{"task_ids":["ferric-async-forms-r2"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-04T05:23:33.767644558Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r2"]}},"reason":"task ferric-async-forms-r2 transitioned to Ready"}
+{"timestamp":"2026-11-04T05:23:33.767877004Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r2"]}},"reason":"task ferric-async-forms-r2 transitioned to Running"}
+{"timestamp":"2026-11-04T05:43:30.322472952Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

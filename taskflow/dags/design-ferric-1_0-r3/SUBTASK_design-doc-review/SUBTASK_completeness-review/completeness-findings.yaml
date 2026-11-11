@@ -1,0 +1,147 @@
+spoke: design-doc-review
+concern_ids: [1]
+
+# Concern 1 — Completeness against directive #114
+#
+# Review question: Does the design cover every capability the directive calls for, and every
+# surface a 1.0 Rust/Wasm UI framework with SSR is expected to include?
+#
+# Sources read:
+#   - GitHub issue #114 (directive)
+#   - design/ferric/README.md
+#   - design/ferric/scope-and-requirements.md  (REQ-FW-001..021)
+#   - design/ferric/ssr-hydration.md           (REQ-SSR-001..012)
+#   - design/ferric/authoring-model.md         (REQ-API-001..070)
+#   - design/ferric/async-forms-events.md      (REQ-ASYNC-001..059)
+#   - design/ferric/router-and-http.md         (REQ-RT-001..009, REQ-HTTP-001..013)
+#   - design/ferric/docs-and-dx.md             (REQ-DX-001..010)
+#   - design/ferric/release-and-distribution.md (REQ-REL-001..047)
+#   - design/ferric/performance-and-benchmark.md (REQ-PERF-001..010)
+#   - design/ferric/release-bar.md             (BAR-FERRIC-001..029, including §5 gap sweep)
+#   - design/ferric/release-plan.md            (8 epics, work items, fold table)
+#   - design/ferric/contracts/_MANIFEST.yaml
+#   - design/ferric/contracts/design_artifact_map.yaml
+#   - design/ferric/contracts/id_and_traceability_schema.yaml
+#
+# Directive #114 must-have coverage:
+#   SSR + hydration                            → REQ-SSR-*, BAR-FERRIC-003..006     COVERED
+#   view! / JSX-style macro                    → REQ-API-001..028, BAR-FERRIC-007..008  COVERED
+#   Component props / children / slots         → REQ-API-030..052, BAR-FERRIC-009..010  COVERED
+#   Context                                    → REQ-API-060..068, BAR-FERRIC-011    COVERED
+#   Async resources with suspense              → REQ-ASYNC-001..016, BAR-FERRIC-012  COVERED
+#   Forms with two-way binding                 → REQ-ASYNC-040..043, BAR-FERRIC-014  COVERED
+#   Full DOM event coverage                    → REQ-ASYNC-020..024, BAR-FERRIC-013  COVERED
+#   Router with params / nested routes / links → REQ-RT-001..008, BAR-FERRIC-015..016  COVERED
+#   HTTP / JSON client                         → REQ-HTTP-001..013, BAR-FERRIC-017..018  COVERED
+#   Docs (guide / tutorial / API / examples / starter) → REQ-DX-001..010, BAR-FERRIC-019..022  COVERED
+#   crates.io with semver and changelog        → REQ-REL-001..047, BAR-FERRIC-023..025..029  COVERED
+#   js-framework-benchmark with honest comparisons → REQ-PERF-001..010, BAR-FERRIC-026..028  COVERED
+#
+# Directive post-1.0 deferrals:
+#   Scoped CSS / styling   → explicitly deferred, REQ-FW-015 post_one_oh   CORRECTLY DEFERRED
+#   Devtools               → explicitly deferred, REQ-FW-016 post_one_oh   CORRECTLY DEFERRED
+#   Hot reload             → explicitly deferred, REQ-FW-017 post_one_oh   CORRECTLY DEFERRED
+#   Desktop / mobile       → explicitly deferred, REQ-FW-018 post_one_oh   CORRECTLY DEFERRED
+#
+# Expected surfaces for a 1.0 Rust/Wasm UI framework with SSR (beyond the directive):
+#   Reactive state, VNode/keyed diff                    COVERED (REQ-FW-005, REQ-FW-009)
+#   SSR/hydration isomorphic contract                   COVERED (REQ-SSR-001..012)
+#   Hydration mismatch detection                        COVERED (REQ-SSR-009, BAR-FERRIC-006)
+#   MSRV policy                                         COVERED (REQ-FW-003, REQ-REL-040..041)
+#   Licensing                                           COVERED (REQ-REL-001, design identifies gap + requires fix)
+#   Semver + changelog                                  COVERED (REQ-REL-020..033)
+#   Compatibility policy                                COVERED (REQ-REL-040..047, BAR-FERRIC-029)
+#   Performance characterization / peer comparison      COVERED (REQ-PERF-001..010)
+#   Content injection safety (SSR)                      COVERED (REQ-SSR-010; ssr-hydration.md §2.1 states text escaping)
+#   Content injection safety (client-side, view!)       COVERED by architecture (VNode renders via DOM text node APIs, not innerHTML)
+#   Streaming SSR                                       CORRECTLY deferred (explicitly out-of-1.0 in ssr-hydration.md)
+#   Server functions / server actions                   CORRECTLY deferred (explicitly out-of-1.0)
+#   Islands / partial hydration                         CORRECTLY deferred (explicitly out-of-1.0)
+#   URL query / search-string parameters                CORRECTLY deferred (REQ-RT-009)
+#   Framework-level accessibility contract              Explicitly deferred (REQ-FW-019 post_one_oh) — GAP: no 1.0 posture statement
+#   App-author testing story                            Explicitly deferred (REQ-FW-021 post_one_oh) — GAP: no docs coverage
+#   Supported browser versions                          Not stated anywhere — GAP
+
+findings:
+
+  - id: DDR-C-001
+    severity: non-blocking
+    concern: 1
+    location: "docs-and-dx.md (REQ-DX-001..010 — no testing-guidance requirement); release-bar.md §5 (gap finding: testing story)"
+    statement: >
+      No REQ-DX-* or REQ-FW-* requires the 1.0 documentation to cover how app authors test
+      Ferric components, routes, or async flows. REQ-FW-021 (component testing utilities) is
+      explicitly deferred to post-1.0. The design provides no fallback: there is no requirement
+      for a testing-guidance section in the guide or tutorial that tells authors what they can
+      do at 1.0 with cargo test and wasm-bindgen-test, what requires manual DOM setup, and
+      what framework-provided support arrives post-1.0. The release-bar.md §5 identifies this
+      as a known gap and defers the decision to the release plan, but the release plan
+      (release-plan.md) does not add a testing-guidance work item to Docs and DX (epic #134).
+    recommendation: >
+      Add an acceptance criterion to REQ-DX-001 (conceptual guide) or as a new REQ-DX-011
+      that the 1.0 docs include a testing section covering: what app-author tests are practical
+      at 1.0 using cargo test and wasm-bindgen-test, the manual setup required to mount a
+      component in a test environment, and a pointer to the post-1.0 testing utilities that
+      will remove that overhead. This closes the gap without requiring REQ-FW-021 to move
+      into 1.0 scope.
+
+  - id: DDR-C-002
+    severity: non-blocking
+    concern: 1
+    location: "scope-and-requirements.md §REQ-FW-019 (post_one_oh deferral); docs-and-dx.md (REQ-DX-001, REQ-DX-009 — no accessibility posture requirement); release-bar.md §5 (gap finding: accessibility of framework output)"
+    statement: >
+      REQ-FW-019 (framework-level accessibility contract) is explicitly deferred to post-1.0.
+      No DX requirement requires the 1.0 documentation to state what accessibility the framework
+      provides or does not provide at 1.0. The only accessibility requirements in the design
+      are REQ-RT-004 (Link component is keyboard-focusable and announced by AT) and REQ-RT-007
+      (aria-current="page" on the active Link). For a 1.0 framework whose reference consumer
+      (chirp) is a public-facing web app, this leaves authors without a posture statement:
+      does the view! macro pass ARIA attributes through to the DOM? Does the framework generate
+      semantic HTML for common elements? What are authors responsible for? The release-bar.md §5
+      identifies this as a gap and defers the decision to the release plan, but the release plan
+      does not add an accessibility-posture work item to Docs and DX (epic #134) or to
+      Release and Distribution (epic #136).
+    recommendation: >
+      Add an acceptance criterion to REQ-DX-009 (accurate README/landing) or REQ-DX-001
+      (conceptual guide) that the 1.0 docs include an accessibility posture statement covering:
+      the view! macro passes standard HTML attributes including ARIA attributes to the DOM
+      without filtering; app authors are responsible for writing accessible markup; the
+      framework's only framework-level ARIA guarantee at 1.0 is the Link component
+      (keyboard focus, aria-current). This documents the known 1.0 limitation without
+      requiring REQ-FW-019 to move into 1.0 scope.
+
+  - id: DDR-C-003
+    severity: non-blocking
+    concern: 1
+    location: "docs-and-dx.md (REQ-DX-007, REQ-DX-009 — no browser-support requirement); scope-and-requirements.md §REQ-FW-003 (stable Rust + WASM toolchain, no browser version stated)"
+    statement: >
+      No requirement in any design document states which browser versions or WebAssembly
+      baseline Ferric supports at 1.0. REQ-FW-003 requires stable Rust and the standard
+      WASM toolchain. REQ-DX-007 requires build and toolchain documentation. Neither
+      mandates a browser support statement. An author evaluating Ferric for a production
+      project needs to know the minimum browser requirement — whether the framework relies
+      only on the WebAssembly MVP (Baseline 2023, all modern browsers), or whether it uses
+      later Web APIs (SIMD, threads, component model) that narrow the supported set.
+      The BAR-FERRIC-022 README requirement names what the README must contain but does
+      not list a browser support matrix.
+    recommendation: >
+      Add an acceptance criterion to REQ-DX-007 (build/toolchain docs) or REQ-DX-009
+      (accurate README) that the 1.0 docs state Ferric's minimum browser requirement:
+      specifically, whether the only dependency is the WebAssembly MVP (which covers all
+      modern browsers since 2017), or whether any framework API relies on a later
+      WebAssembly feature that narrows the supported set. If the answer is the MVP baseline,
+      a one-sentence note in the README resolves the gap.
+
+summary:
+  blocking_count: 0
+  non_blocking_count: 3
+  notes: >
+    All directive #114 must-haves are covered by at least one REQ-* and at least one
+    BAR-FERRIC-* criterion. All directive post-1.0 deferrals (scoped CSS, devtools, hot reload,
+    desktop/mobile) are correctly recorded as post_one_oh with no BAR-FERRIC-* enforcement.
+    The three non-blocking findings are gaps the design itself acknowledges (DDR-C-001 and
+    DDR-C-002 are named in release-bar.md §5) or that fall outside the design's existing
+    DX requirements (DDR-C-003). None represent a capability entirely absent from the design;
+    all three are explicit deferrals or documentation omissions that can be resolved by
+    adding acceptance criteria to existing requirements without changing the 1.0 scope.
+    Verdict for this spoke: no BLOCKING finding — does not trigger REQUEST-CHANGES on its own.

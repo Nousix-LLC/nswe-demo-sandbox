@@ -1,0 +1,21 @@
+{"timestamp":"2026-10-01T23:34:44.009048216Z","action":{"Dispatch":{"task_ids":["ferric-foundation"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-01T23:36:08.836274511Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-foundation"]}},"reason":"task ferric-foundation transitioned to Ready"}
+{"timestamp":"2026-10-01T23:36:08.837587181Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-foundation"]}},"reason":"task ferric-foundation transitioned to Running"}
+{"timestamp":"2026-10-01T23:46:07.155504059Z","action":{"Dispatch":{"task_ids":["SUBTASK_scaffold"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-10-01T23:46:58.147163169Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_scaffold"]}},"reason":"task SUBTASK_scaffold transitioned to Ready"}
+{"timestamp":"2026-10-01T23:46:58.147357050Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_scaffold"]}},"reason":"task SUBTASK_scaffold transitioned to Running"}
+{"timestamp":"2026-10-01T23:47:02.608922799Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-foundation"]}},"reason":"task ferric-foundation suspended, waiting for subtree resolution"}
+{"timestamp":"2026-10-01T23:58:59.685429088Z","action":{"Dispatch":{"task_ids":["SUBTASK_reactive_core"],"group_index":1}},"reason":"task SUBTASK_scaffold completed, dispatching ready successors"}
+{"timestamp":"2026-10-02T00:00:04.126525796Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_reactive_core"]}},"reason":"task SUBTASK_reactive_core transitioned to Ready"}
+{"timestamp":"2026-10-02T00:00:04.126800878Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_reactive_core"]}},"reason":"task SUBTASK_reactive_core transitioned to Running"}
+{"timestamp":"2026-10-02T00:14:29.771534224Z","action":{"Dispatch":{"task_ids":["SUBTASK_view_and_diff"],"group_index":2}},"reason":"task SUBTASK_reactive_core completed, dispatching ready successors"}
+{"timestamp":"2026-10-02T00:19:07.427645359Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_view_and_diff"]}},"reason":"task SUBTASK_view_and_diff transitioned to Ready"}
+{"timestamp":"2026-10-02T00:19:07.428534427Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_view_and_diff"]}},"reason":"task SUBTASK_view_and_diff transitioned to Running"}
+{"timestamp":"2026-10-02T00:30:21.403154637Z","action":{"Dispatch":{"task_ids":["SUBTASK_dom_runtime"],"group_index":3}},"reason":"task SUBTASK_view_and_diff completed, dispatching ready successors"}
+{"timestamp":"2026-10-02T00:32:29.025528353Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_dom_runtime"]}},"reason":"task SUBTASK_dom_runtime transitioned to Ready"}
+{"timestamp":"2026-10-02T00:32:29.026362625Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_dom_runtime"]}},"reason":"task SUBTASK_dom_runtime transitioned to Running"}
+{"timestamp":"2026-10-02T00:46:49.714178119Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":4}},"reason":"task SUBTASK_dom_runtime completed, dispatching ready successors"}
+{"timestamp":"2026-10-02T00:47:43.335059249Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-10-02T00:47:43.335376781Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-10-02T00:53:20.005285253Z","action":{"SubtreeResolved":{"parent_task_id":"ferric-foundation","child_task_ids":["SUBTASK_scaffold","SUBTASK_reactive_core","SUBTASK_view_and_diff","SUBTASK_dom_runtime","SUBTASK_synthesis"],"success":true}},"reason":"all children of ferric-foundation reached terminal state (success=true)"}
+{"timestamp":"2026-10-02T00:53:20.005719035Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

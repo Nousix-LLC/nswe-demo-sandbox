@@ -1,0 +1,43 @@
+{
+  "sequence": 1,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T18:18:06.023622937Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_credential_hashing"
+      ],
+      "placement_parent_task_id": "security-persist-r1"
+    },
+    "resulting_version": 1,
+    "summary": "inject tasks: SUBTASK_credential_hashing",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing security-persist-r1 into three sequential tasks: (1) credential hashing (argon2id KDF + constant-time verify in Rust code), (2) SSL manifest fix (PGSSLMODE: require in CronJob), (3) synthesis gate + PR creation. All three are needed to close issue #120.",
+        "task_id": "security-persist-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_credential_hashing": [],
+      "security-persist-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_credential_hashing",
+          "security-persist-r1"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

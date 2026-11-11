@@ -1,0 +1,67 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T02:01:32.634334802Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_profile"
+      ],
+      "placement_parent_task_id": "chirp-frontend"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: SUBTASK_profile",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the profile feature spoke (Group 1): the /user/:id route with profile load and follow/like actions, composing the frozen seam.",
+        "task_id": "chirp-frontend"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_api_client": [
+        "SUBTASK_scaffold"
+      ],
+      "SUBTASK_compose": [
+        "SUBTASK_scaffold"
+      ],
+      "SUBTASK_profile": [
+        "SUBTASK_scaffold"
+      ],
+      "SUBTASK_scaffold": [],
+      "SUBTASK_timeline": [
+        "SUBTASK_scaffold"
+      ],
+      "chirp-frontend": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scaffold",
+          "chirp-frontend"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_api_client",
+          "SUBTASK_compose",
+          "SUBTASK_profile",
+          "SUBTASK_timeline"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

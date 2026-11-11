@@ -1,0 +1,111 @@
+# contracts/_MANIFEST.yaml — frozen seam for the `ferric-router` decomposition
+# Kind: rust_trait (an in-process Rust public-API surface; enforcement tool = the compiler/rustdoc).
+# Read-only for every descendant. Amendments are ADDITIVE ONLY (new public items may be added;
+# frozen public signatures must not be removed or changed in place — request a plan amendment).
+#
+# Why this contract exists: this decomposition splits ONE crate (`ferric-router`) into a serial
+# pipeline of layered modules that share the crate's public surface and its composition root
+# (src/lib.rs + prelude). The layers execute SERIALLY (each layer's work reads the REAL lower layer
+# in the shared clone — no layer mocks another, mock_depth L0), but they all compose into one public
+# API that the crate's own example and the later `chirp-frontend` work-item depend on. This manifest
+# freezes that public surface and assigns every owned file to exactly one child.
+
+kind: rust_trait
+artifact: ferric_router_api.rs   # the frozen public-API reference; implementers match these signatures
+mock_depth: L0                   # serial pipeline: every consumer reads its predecessor's REAL output
+
+# ---------------------------------------------------------------------------
+# Shared working tree: a single git clone at
+#   <subtree_root>/checkout/   (created by SUBTASK_scaffold; subtree_root is this contracts/ dir's parent:
+#   /home/user/nousix-runtime/nswe-demo/taskflow/dags/ferric-router/)
+# on branch work/ferric-router off main. Children operate on that clone via its absolute path.
+# Because the pipeline is serial, each owned file has a single writer at the time it runs.
+# ---------------------------------------------------------------------------
+ownership:
+  # Walking skeleton: owns the shared files every layer would otherwise fight over. Creates the
+  # clone + branch, the workspace member crate, lib.rs + the frozen prelude, and compiling `todo!()`
+  # stubs so `cargo build --workspace` is green before any layer is implemented. Each spoke then
+  # fills in the body of ITS module only.
+  SUBTASK_scaffold:
+    - checkout/                                               # the git clone + branch work/ferric-router
+    - checkout/crates/ferric-router/Cargo.toml                # the member crate manifest (path-dep on ferric)
+    - checkout/crates/ferric-router/src/lib.rs                # module decls + frozen prelude re-exports
+    - checkout/crates/ferric-router/src/matcher.rs            # STUB only (todo!()); impl owned by SUBTASK_matcher
+    - checkout/crates/ferric-router/src/router.rs             # STUB only; impl owned by SUBTASK_navigation
+    - checkout/crates/ferric-router/src/link.rs               # STUB only; impl owned by SUBTASK_view
+    - checkout/crates/ferric-router/examples/app.rs           # STUB only (compiles to wasm); filled by SUBTASK_view
+    # (scaffold may also touch the root Cargo.toml ONLY if the member glob does not already include the crate;
+    #  the workspace uses members = ["crates/*"], so no root edit should be needed — note if one is.)
+
+  SUBTASK_matcher:
+    - checkout/crates/ferric-router/src/matcher.rs            # final impl: Params, RoutePattern::new/match_path + tests
+
+  SUBTASK_navigation:
+    - checkout/crates/ferric-router/src/router.rs             # final impl: Router, route/fallback/mount_history/outlet, navigate, current_path
+
+  SUBTASK_view:
+    - checkout/crates/ferric-router/src/link.rs               # final impl: link() helper
+    - checkout/crates/ferric-router/examples/app.rs           # the 2-3 route wasm example (fills the scaffold stub)
+    - checkout/crates/ferric-router/README.md                 # example usage + architecture note
+
+  SUBTASK_synthesis:
+    - SYNTHESIS.md                                            # the gate verdict (at the subtree root)
+    # also: pushes work/ferric-router and opens the PR into main (delivery of the verified result).
+    # The synthesis task does NOT own any src/ file; it verifies, then delivers.
+
+# ---------------------------------------------------------------------------
+# Identities — invariants the combined output MUST satisfy. The synthesis gate enumerates each and
+# runs its `check` (exit code is the verdict). "Don't assert what you didn't freeze; don't freeze
+# what you can't assert." All checks run inside the clone (checkout/). Overall gate PASS requires:
+# workspace + ferric-router wasm build succeed, native tests pass, fmt + clippy clean.
+# ---------------------------------------------------------------------------
+identities:
+  - id: workspace_builds
+    check: "cargo build --workspace"
+    expect: exit 0
+
+  - id: router_wasm_builds
+    check: "cargo build -p ferric-router --target wasm32-unknown-unknown"
+    expect: exit 0
+
+  - id: native_tests_pass
+    check: "cargo test -p ferric-router"
+    expect: exit 0 (matcher + param-extraction unit tests included)
+
+  - id: matcher_param_extraction
+    owner: SUBTASK_matcher
+    check: "native #[test] in src/matcher.rs"
+    expect: >
+      RoutePattern::new("/user/:id").match_path("/user/42") is Some and params.get("id") == Some("42");
+      match_path("/user/42/extra") and match_path("/user") are None; RoutePattern::new("/").match_path("/") is Some.
+
+  - id: public_api_surface
+    check: "compile-only `use ferric_router::prelude::*;` naming each frozen item"
+    expect: >
+      exit 0 — all frozen items resolve: Params, RoutePattern (matcher); Router, navigate, current_path
+      (router); link (link). (A doctest or a dedicated test module satisfies this.)
+
+  - id: example_wasm_builds
+    check: "cargo build -p ferric-router --example app --target wasm32-unknown-unknown"
+    expect: exit 0
+
+  - id: fmt_clean
+    check: "cargo fmt --all --check"
+    expect: exit 0
+
+  - id: clippy_clean
+    check: "cargo clippy --all-targets -- -D warnings"
+    expect: exit 0
+
+  - id: wasm_bindgen_test_optional
+    owner: SUBTASK_view (or SUBTASK_navigation)
+    check: "at least one #[wasm_bindgen_test] behind cfg(all(test, target_arch = \"wasm32\"))"
+    expect: >
+      compiles for wasm32; RUN only if a headless-browser runner is available. If no runner, this is
+      NOT a FAIL — document it in SYNTHESIS.md; native tests + the wasm build remain the gate.
+
+# ---------------------------------------------------------------------------
+# Derived artifacts: none. mock_depth is L0 (serial pipeline; each child reads the real predecessor's
+# output in the shared clone), so no mocks/ directory is generated or required.
+# ---------------------------------------------------------------------------
+derived_artifacts: []

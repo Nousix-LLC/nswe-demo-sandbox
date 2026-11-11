@@ -1,0 +1,63 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T00:32:13.420184080Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_regression-check"
+      ],
+      "placement_parent_task_id": "SUBTASK_regression-quality-sec"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: SUBTASK_regression-check",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_regression-quality-sec: spoke 1 — verify 9 previously-clean acceptance criteria remain satisfied after ferric-ssr-r4 commits",
+        "task_id": "SUBTASK_regression-quality-sec"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1-verify": [],
+      "SUBTASK_b2-verify": [],
+      "SUBTASK_regression-check": [],
+      "SUBTASK_regression-quality-sec": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_b1-verify",
+        "SUBTASK_b2-verify",
+        "SUBTASK_regression-quality-sec"
+      ],
+      "review-ferric-ssr-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1-verify",
+          "SUBTASK_b2-verify",
+          "SUBTASK_regression-check",
+          "SUBTASK_regression-quality-sec",
+          "review-ferric-ssr-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

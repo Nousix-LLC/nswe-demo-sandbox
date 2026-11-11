@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T21:16:13.965218606Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "ferric-authoring-140-comp"
+      ],
+      "placement_parent_task_id": "ferric-epic-authoring-r1"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: ferric-authoring-140-comp",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing the ferric-epic-authoring-r1 hub: T03 implements the #[component] proc-macro plus Children, Slot, SlotFn<T> types per authoring-model.md §3, closing #140.",
+        "task_id": "ferric-epic-authoring-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "ferric-authoring-137-138": [],
+      "ferric-authoring-139-view": [
+        "ferric-authoring-137-138"
+      ],
+      "ferric-authoring-140-comp": [
+        "ferric-authoring-139-view"
+      ],
+      "ferric-epic-authoring-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-authoring-137-138",
+          "ferric-epic-authoring-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "ferric-authoring-139-view"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "ferric-authoring-140-comp"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

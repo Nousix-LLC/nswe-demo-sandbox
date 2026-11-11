@@ -1,0 +1,33 @@
+kind: markdown
+version: "1.0"
+description: >
+  Contract for the SUBTASK_sec_check decomposition.
+  Declares the per-concern finding format each spoke must produce so
+  SUBTASK_synthesis can assemble security_raw_findings.md mechanically.
+
+ownership:
+  - artifact: "SUBTASK_html_inj/html_inj_finding.md"
+    owner: "SUBTASK_html_inj"
+    description: "Finding for HTML Injection in ssr.rs"
+  - artifact: "SUBTASK_dom_spoof/dom_spoof_finding.md"
+    owner: "SUBTASK_dom_spoof"
+    description: "Finding for DOM Spoofing in app.rs"
+  - artifact: "SUBTASK_test_inj/test_inj_finding.md"
+    owner: "SUBTASK_test_inj"
+    description: "Finding for Test Injection Safety in hydrate_wasm.rs"
+  - artifact: "security_raw_findings.md"
+    owner: "SUBTASK_seccheck_synth"
+    note: "Written at parent workspace root (SUBTASK_sec_check/), not at synthesis workspace"
+  - artifact: "SYNTHESIS.md"
+    owner: "SUBTASK_seccheck_synth"
+    note: "Fold record at parent workspace root; folds SUBTASK_sec_check SUSPENDED -> COMPLETED"
+
+schema_file: "finding_format.md"
+
+identities:
+  - "security_raw_findings.md contains exactly 3 concern subsections"
+  - "Concern subsection names are verbatim: 'HTML Injection in ssr.rs', 'DOM Spoofing in app.rs', 'Test Injection Safety in hydrate_wasm.rs'"
+  - "Each subsection: Result field present (Clean or Finding)"
+  - "Each subsection: Evidence cites file + line at commit 75c1eef"
+  - "Finding field present if and only if Result is Finding"
+  - "security_raw_findings.md has ## What Was Examined and Found Clean section"

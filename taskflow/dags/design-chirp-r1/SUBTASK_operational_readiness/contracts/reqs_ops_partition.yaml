@@ -1,0 +1,57 @@
+# reqs_ops_partition.yaml — how the one REQ-OPS-* area is split across the five concern children,
+# and which child owns each of the seven required sections of design/operational-readiness.md.
+# READ-ONLY. Children compose against this; they MUST NOT renumber outside their own range,
+# write another child's section, or redefine the ancestor id scheme.
+
+# The ancestor schema assigns AREA=OPS to SUBTASK_operational_readiness as a whole.
+# This file sub-partitions that one number space so five children can mint REQ-OPS-* in
+# parallel without collision. It is an additive extension of the ancestor contract.
+
+req_id_format: "REQ-OPS-NNN"          # from ../contracts/id_and_traceability_schema.yaml; NNN zero-padded, unique across the whole OPS area
+each_requirement_has:                  # from the ancestor schema; restated for the children's convenience, not redefined
+  - id                                 # REQ-OPS-NNN, within this child's assigned range
+  - statement                          # what must be true in production, from the operator's/user's side
+  - acceptance_criteria                # testable by someone who never met the author
+  - release_gating                     # true | false
+  - verification_method                # one of the ancestor vocabulary (see below)
+  - traces_to                          # >=1 REQ-PROD-*/REQ-DOM-* where one applies (may be empty for an OPS-internal requirement)
+
+verification_methods:                  # the closed vocabulary from the ancestor schema; a REQ-OPS-* MUST choose from these
+  - manual_user_check
+  - automated_test
+  - inspection
+  - operational_check
+
+# Number-space partition. A child mints REQ-OPS-* ONLY within its range. Ranges are generous;
+# a child need not fill its range. Gaps are fine; collisions are not.
+number_space:
+  SUBTASK_ops_durable_data:      { range: "REQ-OPS-001..019", section: durable_data }
+  SUBTASK_ops_backups_recovery:  { range: "REQ-OPS-020..039", section: backups_and_recovery }
+  SUBTASK_ops_limits_quotas:     { range: "REQ-OPS-040..059", section: limits_and_quotas }
+  SUBTASK_ops_observability:     { range: "REQ-OPS-060..079", section: observability }
+  SUBTASK_ops_status_incident:   { range: "REQ-OPS-080..099", section: status_and_incident }
+
+# Section ownership for the final consolidated file. The five concern children own one section each
+# (their fragment prose + their REQ-OPS range). The synthesis gate owns the two cross-cutting sections.
+section_ownership:
+  durable_data:                        SUBTASK_ops_durable_data
+  backups_and_recovery:                SUBTASK_ops_backups_recovery
+  limits_and_quotas:                   SUBTASK_ops_limits_quotas
+  observability:                       SUBTASK_ops_observability
+  status_and_incident:                 SUBTASK_ops_status_incident
+  existing_followups:                  SUBTASK_ops_synthesis     # cross-cutting fold judgment over #23/#24/#25
+  requirements_and_acceptance_criteria: SUBTASK_ops_synthesis    # consolidated verbatim union of all five fragments' REQ-OPS-*
+
+# Per-concern output fragments (what each child writes; the synthesis gate reads these five and assembles the final file).
+output_fragments:
+  SUBTASK_ops_durable_data:      "outputs/durable-data.md"
+  SUBTASK_ops_backups_recovery:  "outputs/backups-recovery.md"
+  SUBTASK_ops_limits_quotas:     "outputs/limits-quotas.md"
+  SUBTASK_ops_observability:     "outputs/observability.md"
+  SUBTASK_ops_status_incident:   "outputs/status-incident.md"
+
+final_deliverable: "outputs/operational-readiness.md"   # assembled by SUBTASK_ops_synthesis; the subtree's declared output
+
+# A fragment states its section's prose AND its REQ-OPS-* requirements in full (every field above).
+# The synthesis gate concatenates the five section bodies in the design_artifact_map order, then appends
+# existing_followups and the consolidated requirements_and_acceptance_criteria register (verbatim union).

@@ -1,0 +1,99 @@
+# account_lifecycle_seam.yaml — the account-lifecycle subtree seam.
+# READ-ONLY. Spokes compose against this and MUST NOT redefine it (extend additively via amendment only).
+# It fixes WHICH spoke designs WHICH surfaces, WHICH REQ-UX sub-range each spoke mints from, HOW spokes
+# compose against the frozen upstream vocabularies, the per-screen<->global-pattern cross-reference, and
+# the trace rule every REQ-UX-* obeys. It EXTENDS ../../contracts/ and ../../../contracts/; never overrides.
+
+# --- The one owned section-part and how it splits across spokes -----------------------------------
+# This subtree owns the account_lifecycle part of the parent's screens_and_flows section. Assembled order
+# in screens-account-lifecycle.md follows the screen inventory's own order:
+# Onboarding, Edit profile, Settings hub, Account & contact, Notification preferences, Sessions & devices,
+# Export your data, Delete account.
+section_part:
+  screens_and_flows/account_lifecycle:
+    assembled_from_spokes_in_inventory_order:
+      - spoke: SUBTASK_onboarding_profile
+        source: "SUBTASK_onboarding_profile/outputs/screens-onboarding-profile.md"
+        surfaces: [onboarding_empty_state, edit_profile]
+      - spoke: SUBTASK_settings_management
+        source: "SUBTASK_settings_management/outputs/screens-settings-management.md"
+        surfaces: [settings_hub, account_and_contact, notification_preferences, sessions_and_devices]
+      - spoke: SUBTASK_leaving
+        source: "SUBTASK_leaving/outputs/screens-leaving.md"
+        surfaces: [data_export, account_deletion]
+
+# --- REQ-UX-065..077 sub-range partition (ancestor scheme: REQ-UX-NNN, 3-digit, unique within area) -
+req_ux_id_ranges:
+  SUBTASK_onboarding_profile:  { from: "REQ-UX-065", to: "REQ-UX-068" }   # 4 ids
+  SUBTASK_settings_management: { from: "REQ-UX-069", to: "REQ-UX-074" }   # 6 ids
+  SUBTASK_leaving:             { from: "REQ-UX-075", to: "REQ-UX-077" }   # 3 ids
+
+# Each REQ-UX-* carries exactly the ancestor field set (../../contracts/ then ../../../contracts/):
+req_ux_fields: [id, statement, acceptance_criteria, release_gating]
+
+# --- Surface -> owning spoke ---------------------------------------------------------------------
+# Covers every surface this node owns per the parent's surface map. Each owner designs the surface with
+# its happy path AND its empty/error/loading states, mapping it to the named journeys/REQ-PROD. Screen
+# names in parentheses are the IA screen-inventory names the spoke MUST use.
+surface_ownership:
+  # onboarding_profile — first run & self-presentation (J5, J6)
+  onboarding_empty_state:   SUBTASK_onboarding_profile   # Onboarding (/welcome) — J5 / REQ-PROD-032
+  edit_profile:             SUBTASK_onboarding_profile   # Edit profile (/settings/profile) — J6 / REQ-PROD-016
+  # settings_management — the account-settings surface and its sub-sections (J6)
+  settings_hub:             SUBTASK_settings_management  # Settings (/settings) — J6 / REQ-PROD-017
+  account_and_contact:      SUBTASK_settings_management  # Account & contact (/settings/account) — J6 / REQ-PROD-017,018,012
+  notification_preferences: SUBTASK_settings_management  # Notification preferences (/settings/notifications) — J6 / REQ-PROD-017,029
+  sessions_and_devices:     SUBTASK_settings_management  # Sessions & devices (/settings/sessions) — J6 / REQ-PROD-017,014
+  # leaving — export & deletion (J8)
+  data_export:              SUBTASK_leaving              # Export your data (/settings/export) — J8 / REQ-PROD-019
+  account_deletion:         SUBTASK_leaving              # Delete account (/settings/delete) — J8 / REQ-PROD-020,021,022
+
+# Surfaces explicitly NOT owned here (cross-reference, do not redesign):
+not_owned_cross_references:
+  notifications_activity_surface:
+    owner: "../SUBTASK_safety_notifications (sibling of this node, under screens_flows)"
+    note: "This subtree owns the notification PREFERENCES settings sub-section only; the notifications activity list itself (Notifications, /notifications) is designed there. The preferences screen references it, does not redesign it."
+  blocked_and_muted:
+    owner: "../SUBTASK_safety_notifications"
+    note: "Blocked & muted (/settings/blocks) is a settings sub-section owned by safety_notifications. The Settings hub here LINKS to it as a listed sub-section but does not design its contents."
+
+# --- Shared-vocabulary composition rule ----------------------------------------------------------
+shared_vocabulary_rule:
+  screen_inventory:
+    inherited_from: "../../../SUBTASK_ia_interaction/outputs/ia-interaction.md"
+    rule: "Every screen a spoke designs is a screen named in the inventory, referred to by that name and route. A spoke MUST NOT introduce a screen absent from the inventory; if one is genuinely needed, request an additive amendment to this contract rather than inventing it silently."
+  component_library:
+    inherited_from: "../../../SUBTASK_visual_system/outputs/visual-system.md"
+    rule: >
+      Every screen is described as an arrangement of named components (SettingRow, Toggle, TextField,
+      PrimaryButton, SecondaryButton, IconButton, NavShell, ListView, Dialog, Toast, InlineFeedback,
+      InlineError, EmptyState, LoadingState, Avatar, ProfileHeader). A screen's empty/error/loading states
+      are the relevant components' own named states, not new inventions. Refer to tokens and components by
+      name; introduce no ad-hoc value.
+
+# --- The per-screen <-> global-pattern cross-reference (the one external seam) --------------------
+states_cross_reference:
+  global_patterns_owner: "../SUBTASK_considered_states (sibling of this node, under screens_flows)"
+  rule: >
+    The product-wide empty / loading / error PATTERNS and the expired-session / transient-error recovery
+    (keep-the-draft) behaviour are owned by the sibling SUBTASK_considered_states as the
+    empty_error_loading_states section. The three spokes here design each screen's OWN empty/error/loading
+    states by composing the component library's named states and that global treatment — they do not invent
+    a conflicting per-screen pattern. Because all spokes compose against the same already-frozen component
+    library and IA session-expiry convention, the spokes run in parallel; SUBTASK_synthesis asserts
+    STATES_CONSISTENT across the assembled whole, and the parent's synthesis asserts it across the full
+    screens-&-flows deliverable.
+
+# --- The trace rule every REQ-UX-* obeys ---------------------------------------------------------
+trace_rule:
+  references_req_prod: ">=1"                 # every REQ-UX-* names at least one REQ-PROD-* it serves
+  acceptance_criteria: "testable by someone who never met the author, exercisable on the live product"
+  release_gating: "true | false  (false carries a one-line reason)"
+  product_requirements_source: "../../../../SUBTASK_product_requirements/outputs/product-requirements.md"
+  note: >
+    Honour the product requirements' own release_gating where a REQ-UX implements a non-gating REQ-PROD:
+    the handle-change position rides REQ-PROD-018 (release_gating:false — a first release may state handles
+    as fixed), and notification preferences ride REQ-PROD-029 (false — a first release may ship without
+    notifications). A gated screen that also exposes a non-gating behaviour gates the parts its gated
+    REQ-PROD requires. Onboarding (REQ-PROD-032), edit profile (016), the settings surface (017), export
+    (019), and deletion (020/021/022) are gated.

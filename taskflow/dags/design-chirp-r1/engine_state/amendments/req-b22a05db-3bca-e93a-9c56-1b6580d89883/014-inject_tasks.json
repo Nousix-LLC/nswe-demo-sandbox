@@ -1,0 +1,222 @@
+{
+  "sequence": 14,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T01:16:20.769085734Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_dad_synthesis"
+      ],
+      "placement_parent_task_id": "SUBTASK_domain_app_design"
+    },
+    "resulting_version": 14,
+    "summary": "inject tasks: SUBTASK_dad_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_domain_app_design: the synthesis gate consolidates the three parts into the one domain-application-design.md, asserts the subtree contract identities with recorded evidence, and folds this node. Distinct slug (dad_synthesis) avoids a clash with the root-level SUBTASK_synthesis.",
+        "task_id": "SUBTASK_domain_app_design"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_abuse_privacy": [],
+      "SUBTASK_accessibility": [
+        "SUBTASK_ia_interaction",
+        "SUBTASK_visual_system"
+      ],
+      "SUBTASK_accounts_lifecycle": [],
+      "SUBTASK_auth_sessions": [],
+      "SUBTASK_authorization": [],
+      "SUBTASK_dad_synthesis": [
+        "SUBTASK_domain_model",
+        "SUBTASK_module_structure",
+        "SUBTASK_persistence_state"
+      ],
+      "SUBTASK_delivery_backlog": [
+        "SUBTASK_design_pr",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_design_pr": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness",
+        "SUBTASK_release_bar"
+      ],
+      "SUBTASK_domain_app_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_domain_model": [],
+      "SUBTASK_experience_design": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_experience_synthesis": [
+        "SUBTASK_accessibility",
+        "SUBTASK_ia_interaction",
+        "SUBTASK_responsive",
+        "SUBTASK_screens_flows",
+        "SUBTASK_visual_system"
+      ],
+      "SUBTASK_ia_interaction": [],
+      "SUBTASK_identity_trust": [
+        "SUBTASK_product_requirements"
+      ],
+      "SUBTASK_module_structure": [
+        "SUBTASK_domain_model"
+      ],
+      "SUBTASK_operational_readiness": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design"
+      ],
+      "SUBTASK_persistence_state": [
+        "SUBTASK_domain_model"
+      ],
+      "SUBTASK_product_requirements": [],
+      "SUBTASK_product_requirements/SUBTASK_pr_synthesis": [
+        "SUBTASK_product_requirements/SUBTASK_product_definition",
+        "SUBTASK_product_requirements/SUBTASK_users_and_journeys",
+        "SUBTASK_product_requirements/SUBTASK_requirements"
+      ],
+      "SUBTASK_product_requirements/SUBTASK_product_definition": [],
+      "SUBTASK_product_requirements/SUBTASK_requirements": [
+        "SUBTASK_product_requirements/SUBTASK_product_definition",
+        "SUBTASK_product_requirements/SUBTASK_users_and_journeys"
+      ],
+      "SUBTASK_product_requirements/SUBTASK_users_and_journeys": [],
+      "SUBTASK_release_bar": [
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness"
+      ],
+      "SUBTASK_responsive": [
+        "SUBTASK_ia_interaction",
+        "SUBTASK_visual_system"
+      ],
+      "SUBTASK_screens_flows": [
+        "SUBTASK_ia_interaction",
+        "SUBTASK_visual_system"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_design_pr",
+        "SUBTASK_delivery_backlog",
+        "SUBTASK_release_bar",
+        "SUBTASK_product_requirements",
+        "SUBTASK_domain_app_design",
+        "SUBTASK_experience_design",
+        "SUBTASK_identity_trust",
+        "SUBTASK_operational_readiness"
+      ],
+      "SUBTASK_visual_system": [
+        "SUBTASK_ia_interaction"
+      ]
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_abuse_privacy",
+          "SUBTASK_accounts_lifecycle",
+          "SUBTASK_auth_sessions",
+          "SUBTASK_authorization",
+          "SUBTASK_domain_model",
+          "SUBTASK_ia_interaction",
+          "SUBTASK_product_requirements",
+          "SUBTASK_product_requirements/SUBTASK_product_definition",
+          "SUBTASK_product_requirements/SUBTASK_users_and_journeys"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_domain_app_design",
+          "SUBTASK_experience_design",
+          "SUBTASK_identity_trust",
+          "SUBTASK_module_structure",
+          "SUBTASK_persistence_state",
+          "SUBTASK_product_requirements/SUBTASK_requirements",
+          "SUBTASK_visual_system"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_accessibility",
+          "SUBTASK_dad_synthesis",
+          "SUBTASK_operational_readiness",
+          "SUBTASK_product_requirements/SUBTASK_pr_synthesis",
+          "SUBTASK_responsive",
+          "SUBTASK_screens_flows"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "SUBTASK_experience_synthesis",
+          "SUBTASK_release_bar"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "group_index": 4,
+        "task_ids": [
+          "SUBTASK_design_pr"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "group_index": 5,
+        "task_ids": [
+          "SUBTASK_delivery_backlog"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "group_index": 6,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

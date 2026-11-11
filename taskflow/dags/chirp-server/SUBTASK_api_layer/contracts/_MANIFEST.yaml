@@ -1,0 +1,91 @@
+# Sub-contract for the chirp-server API-layer subtree (decomposition of SUBTASK_api_layer).
+#
+# kind: yaml_schema — ownership + symbol-level seam + the identities the gate asserts. The cross-sibling
+# edges are SERIALIZED by the dependency chain (each spoke reads the real committed clone of its
+# predecessor), so the shared symbols are NOT frozen here as compilable Rust; the consumer reads the real
+# committed code. EXTENDS the parent ../../contracts/_MANIFEST.yaml (same error_mapping + repository_seam);
+# MUST NOT override it. READ-ONLY for every descendant.
+
+kind: yaml_schema
+extends: ../../contracts/_MANIFEST.yaml   # parent sub-contract: error_mapping table, repository_seam, crate conventions
+subtree: SUBTASK_api_layer
+crate: chirp-server
+clone_path: /home/user/nousix-runtime/nswe-demo/taskflow/dags/chirp-server/checkout
+branch: work/chirp-server
+
+# ---------------------------------------------------------------------------------------------------
+# Inherited bindings (from the predecessor's committed code + the parent contract) — compose against,
+# never re-declare.
+# ---------------------------------------------------------------------------------------------------
+inherited:
+  repository_trait: "ChirpRepository (async, #[async_trait], Send+Sync) — held as Arc<dyn ChirpRepository>; all ops return Result<_, ServerError>. See ../SUBTASK_scaffold_and_repository/IMPLEMENTATION_NOTES.md for the final signature."
+  error_enum: "ServerError { Validation(ValidationError), Unauthorized, Forbidden, NotFound, Conflict, Internal } with HTTP-free helpers code() -> chirp_types::api::ErrorCode and into_api_error() -> chirp_types::api::ApiError (owner: predecessor). The IntoResponse impl is THIS subtree's (transport_foundations)."
+  wire_types: "ALL DTOs imported from chirp-types (User, Chirp, CreateUserRequest, LoginRequest, AuthResponse, SessionToken, CreateChirpRequest, TimelineQuery, Page, FollowResponse, LikeResponse, ApiError, ErrorCode, ValidationError, UserId, ChirpId, ...). Never re-declare."
+  auth_wiring: "Bearer token resolved via repo.resolve_token(&SessionToken(raw)).await -> UserId; Err => 401 UNAUTHORIZED. No separate session store."
+  timeline_note: "repository exposes the HOME timeline (viewer self + followees, newest-first, limit clamp 1..=100 default 20, opaque last-id cursor). A per-user profile feed, if the surface wants one, is a thin api-layer derivation."
+
+# ---------------------------------------------------------------------------------------------------
+# Ownership — every artifact has exactly one producer (a hole has none; a race has two). Shared files
+# (src/lib.rs, src/error.rs, src/api/mod.rs) are edited SERIALLY along the dependency chain.
+# ---------------------------------------------------------------------------------------------------
+ownership:
+  SUBTASK_transport_foundations:
+    - "src/error.rs :: impl IntoResponse for ServerError (code()->StatusCode per error_mapping; body = into_api_error() as JSON; Internal logs msg but keeps body generic)"
+    - "src/api/ module creation incl. src/api/mod.rs; the AppState type { repo: Arc<dyn ChirpRepository> } (e.g. src/api/state.rs)"
+    - "the Authorization: Bearer auth extractor (FromRequestParts-style) resolving UserId"
+    - "src/lib.rs :: add `pub mod api;` (first creator of the api module)"
+  SUBTASK_handlers:
+    - "the axum handler fns for the full repository_seam surface (e.g. src/api/handlers.rs or per-resource modules users/chirps/social — internal names are the child's call)"
+  SUBTASK_router_and_bootstrap:
+    - "build_router(state) -> axum::Router mounting all handlers + GET /healthz + static ServeDir + SPA fallback"
+    - "src/lib.rs :: add `pub use api::build_router;` (and any re-export tests need)"
+    - "tracing init (tracing-subscriber env-filter) + request-trace layer (tower-http trace)"
+    - "static/ placeholder dir wiring (SPA fallback source) — document the placeholder"
+    - "src/main.rs binary entrypoint (init tracing, build state + router, bind, serve)"
+  SUBTASK_api_synthesis:
+    - "API_NOTES.md at the SUBTASK_api_layer/ workspace (the handoff ../SUBTASK_integration_tests_and_docs reads)"
+    - "SYNTHESIS.md at the SUBTASK_api_layer/ workspace (fold location / observation seam)"
+
+# ---------------------------------------------------------------------------------------------------
+# Symbol seam — what each child EXPOSES for the next so the serial pipeline composes with no gap.
+# ---------------------------------------------------------------------------------------------------
+seam:
+  transport_foundations_exposes:
+    - "AppState (Clone; holds repo: Arc<dyn ChirpRepository>) usable as axum State"
+    - "the auth extractor type yielding an authenticated UserId (401 on missing/invalid Bearer)"
+    - "impl IntoResponse for ServerError (so a handler may return Result<_, ServerError>)"
+  handlers_expose:
+    - "one async handler fn per repository_seam op, each shaped `async fn(State<AppState>, <extractors>) -> Result<impl IntoResponse, ServerError>`, delegating to the repo; route metadata (method, path, request DTO, response DTO, success status) recorded in HANDLERS_NOTES.md"
+  router_and_bootstrap_exposes:
+    - "pub fn build_router(state: AppState) -> axum::Router  (from lib.rs; mounts every handler + /healthz + static + SPA fallback) — the entrypoint ../SUBTASK_integration_tests_and_docs mounts"
+
+# ---------------------------------------------------------------------------------------------------
+# Endpoint surface the handlers child MUST cover (from the parent repository_seam). Method/path are the
+# handlers child's design call (record them in HANDLERS_NOTES.md); every op below MUST be routed.
+# ---------------------------------------------------------------------------------------------------
+endpoint_surface:
+  - "create_user  — POST a CreateUserRequest -> User (201; Conflict=409 on duplicate username)"
+  - "get_user     — GET a user profile by id -> User (404 if absent)"
+  - "login        — POST a LoginRequest -> AuthResponse { user, token } (404 unknown handle)"
+  - "create_chirp — authed POST a CreateChirpRequest -> Chirp (201; 404 if reply target absent)"
+  - "timeline     — authed GET a TimelineQuery -> Page<Chirp> (home timeline; limit clamp + cursor)"
+  - "follow       — authed follow a followee -> FollowResponse (idempotent; 403 self-follow; 404 absent)"
+  - "unfollow     — authed unfollow a followee -> FollowResponse (idempotent; 404 absent)"
+  - "like         — authed like a chirp -> LikeResponse (idempotent; 404 absent)"
+  - "unlike       — authed unlike a chirp -> LikeResponse (idempotent; 404 absent)"
+  - "healthz      — GET /healthz -> a health response (owner: router_and_bootstrap)"
+
+# ---------------------------------------------------------------------------------------------------
+# Identities — the synthesis gate evaluates these as assertions; no silent plug.
+# ---------------------------------------------------------------------------------------------------
+identities:
+  - { id: wiring,    assert: "every endpoint_surface op has exactly one routed, reachable handler delegating through ChirpRepository (no bypass); no detached dead code", command: "review build_router against the endpoint set" }
+  - { id: errors,    assert: "ServerError -> HTTP status + ErrorCode matches the parent error_mapping for every variant; validation details populated", command: "review impl IntoResponse against ../../contracts/_MANIFEST.yaml error_mapping" }
+  - { id: contract,  assert: "no DTO/trait/error re-declared in chirp-server; all wire types from chirp-types; trait/error from the predecessor modules", command: "grep/review: no struct/enum duplicating a chirp-types DTO or the ChirpRepository/ServerError" }
+  - { id: build,     assert: "crate builds",                      command: "cargo build -p chirp-server" }
+  - { id: clippy,    assert: "no clippy warnings",                command: "cargo clippy -p chirp-server --all-targets -- -D warnings" }
+  - { id: fmt,       assert: "formatting clean",                  command: "cargo fmt -p chirp-server --check" }
+  - { id: lib_api,   assert: "build_router exposed from lib.rs for integration testing", command: "grep 'pub use api::build_router' src/lib.rs" }
+
+derived_artifacts:
+  note: "None auto-generated. The serialized clone chain means each consumer reads the real committed code of its predecessor; no mocks/stubs are delivered into child workspaces."

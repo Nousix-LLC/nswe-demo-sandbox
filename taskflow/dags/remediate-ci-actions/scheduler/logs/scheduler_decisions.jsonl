@@ -1,0 +1,7 @@
+{"timestamp":"2026-10-08T02:45:36.879691695Z","action":{"Dispatch":{"task_ids":["remediate-ci-actions"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-10-08T02:46:57.394777947Z","action":{"WaitForCompletion":{"pending_task_ids":["remediate-ci-actions"]}},"reason":"task remediate-ci-actions transitioned to Ready"}
+{"timestamp":"2026-10-08T02:46:57.394892221Z","action":{"WaitForCompletion":{"pending_task_ids":["remediate-ci-actions"]}},"reason":"task remediate-ci-actions transitioned to Running"}
+{"timestamp":"2026-10-08T03:02:05.545181020Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}
+{"timestamp":"2026-10-22T00:36:05.760943972Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state during resume-time subtree-resolution fixpoint (Bug 5)"}
+{"timestamp":"2026-10-22T16:04:21.609341425Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state during resume-time subtree-resolution fixpoint (Bug 5)"}
+{"timestamp":"2026-10-22T16:41:27.613193615Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state during resume-time subtree-resolution fixpoint (Bug 5)"}

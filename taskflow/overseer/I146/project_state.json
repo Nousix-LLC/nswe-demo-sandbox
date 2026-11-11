@@ -1,0 +1,113 @@
+{
+  "current_pointer": "overseer/I146",
+  "checked_at": "2026-11-03T05:49:03Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "CLEARED",
+      "label": "Bug5 dispatch fault — frozen DAGs never real-dispatched",
+      "frozen_dags": [
+        "remediate-epic-persist-r1c",
+        "remediate-epic-persist-r1b",
+        "design-ferric-1_0-r2"
+      ],
+      "cleared_at": "2026-11-03T05:08:16Z",
+      "cleared_by": "review-epic-persist-r2 Dispatch entry in scheduler/logs/scheduler_decisions.jsonl",
+      "clearing_evidence": "scheduler_decisions.jsonl: {timestamp:2026-11-03T05:08:16Z, action:{Dispatch:{task_ids:[review-epic-persist-r2]}}, reason:dispatching ready tasks after recovery}",
+      "cleared_in": "overseer/I145",
+      "dag_confirmed_complete": "review-epic-persist-r2 COMPLETE.md + SYNTHESIS.md present (2026-11-02)",
+      "recorded_in": "overseer/I146",
+      "github_issue": "none filed",
+      "note": "review-epic-persist-r2 forked in I143, dispatched at 05:08:16Z (post-Bug5 recovery), completed and folded with APPROVE verdict by 05:35Z (I145 schedule wake). Bug5 dispatch fault pattern resolved. No GitHub issue was filed for this escalation."
+    }
+  },
+  "prs": {
+    "PR113": {
+      "status": "OPEN",
+      "mergeStateStatus": "CLEAN",
+      "head": "a129e2b87d8e32aa84d37e9806128ee523949bf1",
+      "ci_run": "41574641685",
+      "ci_status": "all_green",
+      "doc": "SUCCESS",
+      "fmt": "SUCCESS",
+      "clippy": "SUCCESS",
+      "test": "SUCCESS",
+      "wasm": "SUCCESS",
+      "image": "SUCCESS",
+      "image_completed_at": "2026-11-03T03:56:21Z",
+      "updated_at": "2026-11-03T03:52:52Z",
+      "eligible_for_landing": true,
+      "landing_gate": "human at gate (default) — awaiting user approve/reject/request-changes",
+      "review_result": "APPROVE",
+      "review_dag": "review-epic-persist-r2",
+      "review_r2_status": "COMPLETED",
+      "review_r2_launched_at": "2026-11-03T04:01:00Z",
+      "review_r2_dispatched_at": "2026-11-03T05:08:16Z",
+      "review_r2_completed_at": "2026-11-02",
+      "review_r2_comment_url": "https://github.com/Nousix-LLC/nswe-demo/pull/113#issuecomment-6596022077",
+      "review_r2_scope": "db1a5d6 + a129e2b only (doc-fix commits). No new non-blocking findings from r2.",
+      "review_r2_co_reviewer_note": "GitHub does not permit author to formally approve own PR. Review posted as comment. Co-reviewer formal approval required for branch-protection rule.",
+      "issues_closed": ["#65", "#66", "#67"],
+      "issues_staying_open": ["#64"],
+      "r1_non_blockers_on_board": ["#115", "#116", "#117", "#118", "#119", "#120", "#121"],
+      "note": "Machine PASS (all 6 CI checks green) + Review APPROVE. Eligible for landing gate. Human decision required. Co-reviewer approval needed for branch protection. Presented in I147."
+    },
+    "PR128": {
+      "status": "OPEN",
+      "branch": "work/design-ferric-1_0",
+      "title": "design: Ferric 1.0 framework design",
+      "mergeStateStatus": "CLEAN",
+      "head": "bbdeb480aacda3a20b3fdc582f235806ce3ee310",
+      "ci_all_green": true,
+      "updated_at": "2026-11-03T04:54:18Z",
+      "board_gap_resolved": true,
+      "board_gap_resolved_in": "overseer/I146",
+      "board_gap_issues": "#129-#164 (36 items added to board as Todo in I146)",
+      "review_dag": "design-ferric-1_0-r3",
+      "review_dag_status": "FORKED",
+      "review_dag_forked_in": "overseer/I146",
+      "note": "All CI green, CLEAN. Board gap resolved. design-ferric-1_0-r3 forked and running concurrently with epic-persist landing sequence."
+    }
+  },
+  "dags_in_flight": [
+    {
+      "slug": "design-ferric-1_0-r3",
+      "goal": "Design gap review of PR#128 (Ferric 1.0 design)",
+      "issues": [],
+      "kind": "review",
+      "state": "RUNNING",
+      "forked_in": "overseer/I146",
+      "forked_at": "2026-11-03T05:49:03Z",
+      "launch_agent": "swe-designer"
+    }
+  ],
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-11-03T05:49:03Z",
+    "board_gap": {
+      "issues": "#129-#164",
+      "count": 36,
+      "pr": "#128",
+      "status": "RESOLVED",
+      "resolved_in": "overseer/I146",
+      "resolved_at": "2026-11-03T05:49:03Z",
+      "action": "All 36 issues added to project board as Todo (epics + features)."
+    },
+    "total_items": 150
+  },
+  "main_sha": "276138f",
+  "deployment_check": "no drift (origin/main=276138fb049faaa946d253c4bb58e73fe09d5a54=276138f, checked I145 schedule-wake)",
+  "free_dag_slots": 3,
+  "persist_remediation_budget": {
+    "total": 2,
+    "spent": 0,
+    "note": "Review-epic-persist blocker (doc) resolved by commit a129e2b (not a remediation DAG). Budget untouched."
+  },
+  "dispatch_fault_watch": {
+    "resolved_in": "overseer/I145",
+    "note": "Watch cleared — dispatch evidence found in I145 (05:08:16Z), DAG completed with APPROVE by I145 schedule wake."
+  },
+  "forward_series": {
+    "I147": "Present for landing PR#113 (REVIEW_GATE + DELIVERABLES_GIT) — interactive, holds window",
+    "I148": "Execute landing decision: land or remediate PR#113 (DELIVERABLES_GIT + RETENTION or WORK_SESSION + BOARD)"
+  }
+}

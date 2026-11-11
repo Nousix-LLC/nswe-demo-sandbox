@@ -1,0 +1,47 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T05:55:17.792304518Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_ticket-review"
+      ],
+      "placement_parent_task_id": "design-ferric-1_0-r3"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_ticket-review",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing design-ferric-1_0-r3: spoke 3 evaluates ticket quality and wave plan coherence for the 36 issued tickets (concern 5).",
+        "task_id": "design-ferric-1_0-r3"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_design-doc-review": [],
+      "SUBTASK_foundation-buildability": [],
+      "SUBTASK_ticket-review": [],
+      "design-ferric-1_0-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_design-doc-review",
+          "SUBTASK_foundation-buildability",
+          "SUBTASK_ticket-review",
+          "design-ferric-1_0-r3"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

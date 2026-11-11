@@ -1,0 +1,29 @@
+kind: yaml_schema
+description: >
+  Verdict file contract for chirp-logged-out-r12 check tasks.
+  Both SUBTASK_backend_check and SUBTASK_frontend_check MUST produce
+  a verdict file conforming to this schema so SUBTASK_synthesis can
+  consume them mechanically.
+
+verdict_file_schema:
+  # Each verdict file is a Markdown document with this structure:
+  # - A top-level heading with the task name
+  # - A "## Summary" section with an overall verdict (PASS or FAIL)
+  # - One "## AC-N: <title>" section per acceptance criterion covered
+  #   Each AC section contains:
+  #     - verdict: PASS | FAIL
+  #     - evidence: list of concrete evidence items (file paths, lines, curl outputs)
+  #     - blockers: (only if FAIL) list of specific blocking issues
+  # - A "## Commits" section listing any commits pushed (or "None" if no changes needed)
+
+ownership:
+  SUBTASK_backend_check/backend_verdict.md: SUBTASK_backend_check
+  SUBTASK_frontend_check/frontend_verdict.md: SUBTASK_frontend_check
+  SYNTHESIS.md: SUBTASK_synthesis
+
+identities:
+  - Every AC covered in a verdict file has a "verdict: PASS | FAIL" statement
+  - Every AC covered in a verdict file has at least one concrete evidence item
+  - The synthesis SYNTHESIS.md references AC-1 through AC-5 with an overall verdict
+  - The synthesis SYNTHESIS.md is located at the root workspace
+    (taskflow/dags/chirp-logged-out-r12/SYNTHESIS.md)

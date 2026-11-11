@@ -1,0 +1,43 @@
+# contracts/synthesis_gate_contract.yaml — output-artifact seam for the fold
+# READ-ONLY for every child. The ONLY frozen thing here is WHERE each child writes and the MINIMAL
+# shape SUBTASK_fold relies on when composing. No behavioral interface/mock (serial pipeline).
+
+# Paths are relative to the SUBTASK_synthesis workspace root
+# (/home/user/nousix-runtime/nswe-demo/taskflow/dags/deploy-argocd/SUBTASK_synthesis).
+
+static_gate_report:
+  path: SUBTASK_static_gate/outputs/static_gate_report.md
+  produced_by: SUBTASK_static_gate
+  must_contain:
+    - "A per-identity table over the parent identities assigned to static_gate (see _MANIFEST.yaml identity_coverage), each row: identity id | PASS/FAIL | evidence (file:line / value compared)."
+    - "The static halves of the three runtime identities (service selector/targetPort diff; ingress backend/class diff; Application path/project diff)."
+    - "Wiring result (every object referenced/mounted; no dead manifest) and duplication result (exactly one producer per owned path; deploy/chirp vs deploy/argocd disjoint)."
+    - "A focused review note (k3s/ArgoCD idiom + security posture) and an overall static GO / NO-GO."
+
+reachability_evidence:
+  path: SUBTASK_deploy_reach/outputs/reachability_evidence.md
+  produced_by: SUBTASK_deploy_reach
+  must_contain:
+    - "The deploy mechanism used (ArgoCD sync and/or direct kubectl apply; any justified NodePort/port-forward fallback with justification)."
+    - "Rollout evidence: kubectl rollout status / argocd app status showing Synced+Healthy; kubectl get endpoints for the Service non-empty; pod NOT in ImagePullBackOff."
+    - "How the private-GHCR imagePullSecret was handled (out-of-band Secret or package made public) — WITHOUT committing any secret."
+    - "The actual HTTP request issued through localhost:8081 (method, URL, Host header if host-based) and the captured response (status + representative body) proving the SPA (/) or API health (/healthz) surface is served."
+    - "Per-identity PASS/FAIL for the runtime identities assigned to deploy_reach (see _MANIFEST.yaml identity_coverage)."
+
+pr_record:
+  path: SUBTASK_land_pr/outputs/pr_record.md
+  produced_by: SUBTASK_land_pr
+  must_contain:
+    - "The PR URL and number; base `main`; head `work/deploy-argocd` (based at ada3aa9); the commit SHA(s)."
+    - "Confirmation the PR body `Closes #13`, is accurate to what shipped, and carries NO attribution trailers (commits too)."
+    - "CI status (green) with the run reference; explicit confirmation the PR was NOT merged and `main` was NOT pushed."
+
+fold_output:
+  path: ../SYNTHESIS.md   # deploy-argocd subtree root, one level above SUBTASK_synthesis
+  produced_by: SUBTASK_fold
+  must_contain:
+    - "Machine-gate PASS/FAIL verdict over ALL parent identities (../../contracts/_MANIFEST.yaml)."
+    - "Per-identity results table (static half + runtime half where applicable), sourced from the three upstream outputs — no silent plug."
+    - "Reachability evidence (the request issued + the response captured)."
+    - "Decision record: ingress mechanism, AppProject scoping, imagePullSecret handling, and native-cluster divergences noted for #23 (HSO-1)."
+    - "The PR link."

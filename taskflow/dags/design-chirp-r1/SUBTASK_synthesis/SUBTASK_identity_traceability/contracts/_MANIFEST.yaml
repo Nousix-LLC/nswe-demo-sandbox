@@ -1,0 +1,90 @@
+# Contract manifest — SUBTASK_identity_traceability (identity-assertion + traceability-matrix subtree)
+# kind: yaml_schema. Extends ../contracts/_MANIFEST.yaml and ../../contracts/ ADDITIVELY.
+# MUST NOT override the inherited id scheme, traceability-matrix columns, live_status vocab,
+# verification-method vocab, or the eight identities. READ-ONLY for every descendant.
+
+kind: yaml_schema
+
+extends: "../contracts/_MANIFEST.yaml"          # the gate sub-contract (column ownership + join seam + gate identities)
+also_inherits:
+  - "../../contracts/_MANIFEST.yaml"             # the eight DAG identities; one-owner-per-file
+  - "../../contracts/id_and_traceability_schema.yaml"   # REQ/BAR/epic/issue ids; matrix columns; live_status + verification-method vocab
+  - "../../contracts/design_artifact_map.yaml"  # area -> design file
+
+# ---------------------------------------------------------------------------
+# The seam: ONE whole-DAG traceability-matrix SKELETON, columns split across the
+# children by SOURCE and joined by the synthesis child. The inherited column set is
+# authoritative and NOT redefined here:
+#   [req_id, release_gating, bar_ids, epic, issue_numbers, design_doc_ref, live_status]
+# This subtree owns every column EXCEPT live_status (that is the sibling
+# SUBTASK_live_measurement's, joined later by SUBTASK_fold). Row key: req_id.
+# ---------------------------------------------------------------------------
+
+matrix_skeleton_column_ownership:
+  # Design-side columns, partitioned by area (one owner per REQ area; no overlap).
+  # Each row carries: req_id, release_gating (from the design file's `release_gating` field),
+  # design_doc_ref (repo-relative design path from design_artifact_map.yaml + the REQ's section).
+  design_side_columns: [req_id, release_gating, design_doc_ref]
+  design_side_owners:
+    SUBTASK_matrix_prod_dom: [REQ-PROD, REQ-DOM]      # 42 + 111
+    SUBTASK_matrix_ux:       [REQ-UX]                 # 153
+    SUBTASK_matrix_id_ops:   [REQ-ID, REQ-OPS]        # 110 + 109
+  # bar_ids column: the inversion of each BAR-*'s `_Enforces REQ-*_` references -> REQ -> {bar_ids}.
+  bar_ids_owner: SUBTASK_bar_mapping
+  bar_ids_source: "release-bar.md: each `**BAR-NNN** (stage · method) — … _Enforces REQ-*._`, inverted to REQ -> bar_ids"
+  # epic + issue_numbers columns: the backlog trace map, inverted REQ/BAR -> (epic, issue_numbers).
+  epic_issue_owner: SUBTASK_backlog_pr
+  epic_issue_source: "backlog.md epic index + trace map -> REQ/BAR -> (epic, issue_numbers)"
+  # The join: the synthesis child assembles one row per REQ-* from the slices above.
+  join_owner: SUBTASK_assemble
+  join_rule: >
+    one matrix row per REQ-*; req_id/release_gating/design_doc_ref from the owning design spoke;
+    bar_ids from SUBTASK_bar_mapping's REQ->bar_ids; epic/issue_numbers from SUBTASK_backlog_pr's
+    REQ/BAR->(epic,issue_numbers); live_status left empty (owned by the sibling, joined by SUBTASK_fold).
+    Keyed so the fold can attach each BAR-*'s live_status by bar_id without re-deriving the mapping.
+
+# Artifact ownership. Every artifact has exactly one producer; none unowned, none double-written.
+ownership:
+  "SUBTASK_matrix_prod_dom/outputs/skeleton-prod-dom.md": SUBTASK_matrix_prod_dom
+  "SUBTASK_matrix_ux/outputs/skeleton-ux.md":             SUBTASK_matrix_ux
+  "SUBTASK_matrix_id_ops/outputs/skeleton-id-ops.md":     SUBTASK_matrix_id_ops
+  "SUBTASK_bar_mapping/outputs/bar-mapping.md":           SUBTASK_bar_mapping
+  "SUBTASK_backlog_pr/outputs/backlog-pr.md":             SUBTASK_backlog_pr
+  "SUBTASK_concern_surface/outputs/concern-surface.md":   SUBTASK_concern_surface
+  "outputs/identity-and-traceability.md (at subtree root)": SUBTASK_assemble   # the gate deliverable
+  "SYNTHESIS.md (at subtree root)":                       SUBTASK_assemble   # the fold record
+
+# Identity ownership: each of the eight inherited identities has EXACTLY ONE asserting owner, so none is
+# doubly asserted and none is a hole. Each owner records evidence (a mechanical check, a set-logic
+# computation, or an inspection); a FAIL is reported with what is missing and whether it is fixable —
+# never silently plugged. SUBTASK_assemble collects all eight into the deliverable and additionally
+# asserts the one identity that is inherently cross-source.
+identity_ownership:
+  ONE_OWNER_PER_FILE:       SUBTASK_backlog_pr        # PR #122 file-owner map vs design_artifact_map.yaml ownership
+  CONCERN_COVERAGE:         SUBTASK_concern_surface   # each of the six brief concerns covered by a design file or recorded out-of-scope w/ reason
+  SURFACE_COVERAGE:         SUBTASK_concern_surface   # each recurring account/operational surface designed or recorded out-of-scope w/ reason
+  BAR_TESTABLE:             SUBTASK_bar_mapping       # every BAR-* names a verification method in the vocab AND references >=1 REQ-*
+  ISSUE_TRACES:             SUBTASK_backlog_pr        # every issue cites >=1 REQ-*/BAR-*; sits under exactly one epic; each epic one coherent landable goal w/ stated deps
+  GAP_HAS_ISSUE:            SUBTASK_backlog_pr        # design/backlog half: every gap the backlog records/claims maps to >=1 filed issue/epic (live-measurement half is the sibling's)
+  GITHUB_HYGIENE:           SUBTASK_backlog_pr        # GitHub-posted artifacts (PR #122 body/commit per the PR record; filed epics/issues) carry no host/system/taskflow detail or attribution trailer
+  BAR_COVERS_GATING_REQS:   SUBTASK_assemble          # CROSS-SOURCE: every release-gating REQ-* (from the design spokes) is covered by >=1 BAR-* (from SUBTASK_bar_mapping)
+
+# Additive identity this subtree's synthesis asserts over the children's combined output.
+identities:
+  - id: SKELETON_COMPLETE
+    statement: "Every release-gating REQ-* appears as exactly one matrix row carrying bar_ids (>=1), covering epic + issue_numbers, and a design_doc_ref; non-gating REQ-* MAY appear; no REQ-* appears twice; no area is missing."
+  - id: ALL_EIGHT_ASSERTED
+    statement: "Each of the eight inherited identities carries a PASS/FAIL verdict with recorded evidence in the deliverable; none bare, none silently plugged; each FAIL states what is missing and whether it is fixable."
+
+derived_artifacts:
+  - name: traceability_matrix_skeleton
+    generated_from: "the three skeleton-*.md design slices joined with bar-mapping.md (REQ->bar_ids) and backlog-pr.md (REQ/BAR->epic,issue_numbers) per join_rule"
+    produced_by: SUBTASK_assemble
+    consumed_by: "outputs/identity-and-traceability.md, then SUBTASK_fold (which joins the sibling's per-BAR live_status)"
+
+# Fold wiring (described, not over-specified; the synthesis agent resolves exact syscalls at its runtime
+# against the kernel fold contract):
+#   - SUBTASK_assemble authors the gate deliverable at this subtree root: outputs/identity-and-traceability.md.
+#   - It authors the fold record SYNTHESIS.md at this subtree root (the SUSPENDED parent's directory) and
+#     resumes SUBTASK_identity_traceability (SUSPENDED -> COMPLETED) so the sibling SUBTASK_fold can read the
+#     deliverable and join live_status.

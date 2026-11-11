@@ -1,0 +1,56 @@
+# Contract manifest — SUBTASK_release_bar subtree
+# kind: yaml_schema. Extends the inherited ../../contracts/ ADDITIVELY (BAR number-space partition +
+# bar-fragment format + subtree identities). Redefines nothing inherited. READ-ONLY for every descendant.
+
+kind: yaml_schema
+
+extends: "../../contracts/"   # inherits id_and_traceability_schema.yaml (BAR-<NNN>, verification_methods,
+                              # stages usable_early|releasable) and design_artifact_map.yaml (release-bar.md
+                              # required sections). This sub-contract MUST NOT override any of it.
+
+artifacts:
+  - file: bar_partition.yaml
+    declares: "Disjoint BAR-<NNN> range per area spoke + synthesis cross-cutting range; per-BAR field set
+               (from the inherited schema); the proposed_stage convention; the bar-fragment layout each spoke emits."
+
+# One producer per artifact. An artifact with no owner is a hole; with two owners, a race.
+ownership:
+  "SUBTASK_bar_prod/outputs/bar-prod.md":   SUBTASK_bar_prod        # BAR-001..099 (from REQ-PROD-*)
+  "SUBTASK_bar_dom/outputs/bar-dom.md":     SUBTASK_bar_dom         # BAR-100..199 (from REQ-DOM-*)
+  "SUBTASK_bar_ux/outputs/bar-ux.md":       SUBTASK_bar_ux          # BAR-200..299 (from REQ-UX-*)
+  "SUBTASK_bar_id/outputs/bar-id.md":       SUBTASK_bar_id          # BAR-300..399 (from REQ-ID-*)
+  "SUBTASK_bar_ops/outputs/bar-ops.md":     SUBTASK_bar_ops         # BAR-400..499 (from REQ-OPS-*)
+  "outputs/release-bar.md":                 SUBTASK_bar_synthesis   # the parent's declared output (3 sections)
+  "BAR-900..999 (cross-cutting)":           SUBTASK_bar_synthesis   # only for a gap-review finding no single area owns
+  "SYNTHESIS.md":                           SUBTASK_bar_synthesis   # fold record at the SUBTASK_release_bar workspace
+
+# Invariants the combined outputs MUST satisfy. Asserted by SUBTASK_bar_synthesis (the gate) with recorded
+# evidence. A failing identity is reported and remediated (amend/decompose), NEVER silently plugged.
+identities:
+  - id: BAR_RANGE_RESPECTED
+    statement: "Every BAR-NNN lies within its owning spoke's assigned range; no spoke wrote outside its range."
+  - id: NO_BAR_COLLISION
+    statement: "All BAR-NNN ids across the five fragments plus the synthesis cross-cutting bars are distinct."
+  - id: GATING_REQ_COVERAGE
+    statement: "Every release-gating REQ-* in each area's design doc is referenced by >=1 BAR-* (inherited
+                BAR_COVERS_GATING_REQS, evaluated per area against that area's gating set)."
+  - id: BAR_TESTABLE
+    statement: "Every BAR-* names a verification_method from the frozen vocabulary and references >=1 REQ-*
+                (inherited BAR_TESTABLE)."
+  - id: BAR_STAGED
+    statement: "Every BAR-* carries a stage in {usable_early, releasable}; the mvp_vs_releasable_scoping section
+                agrees with the per-BAR stages (no criterion staged two ways)."
+  - id: SURFACE_GAP_RECORDED
+    statement: "completeness_and_gap_review records an in/out-of-scope judgment with a reason for each expected
+                account/operational surface: sign-up, sign-in, recovery, account deletion, data export,
+                onboarding, settings, notifications, admin/support, billing (inherited SURFACE_COVERAGE, this file)."
+  - id: THREE_SECTIONS_PRESENT
+    statement: "release-bar.md contains exactly the three sections required by ../../contracts/design_artifact_map.yaml:
+                mvp_vs_releasable_scoping, release_bar, completeness_and_gap_review."
+  - id: HYGIENE
+    statement: "release-bar.md carries no host/system/taskflow detail and no attribution trailer."
+
+derived_artifacts:
+  - name: bar_req_coverage_map
+    generated_from: "the five bar fragments (BAR-* -> REQ-* references) + each area's release-gating REQ set"
+    consumed_by: "SUBTASK_bar_synthesis (this subtree) then SUBTASK_synthesis (DAG-root traceability matrix)"

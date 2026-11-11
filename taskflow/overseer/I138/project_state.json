@@ -1,0 +1,77 @@
+{
+  "current_pointer": "overseer/I138",
+  "checked_at": "2026-11-03T03:54:00Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "CLEARING",
+      "label": "Bug5 dispatch fault — frozen DAGs never real-dispatched",
+      "frozen_dags": [
+        "remediate-epic-persist-r1c",
+        "remediate-epic-persist-r1b",
+        "design-ferric-1_0-r2"
+      ],
+      "clearing_evidence": {
+        "dag": "remediate-epic-persist-r1b",
+        "action": "Dispatch",
+        "timestamp": "2026-11-03T03:45:11Z",
+        "context": "Dispatch entry at 03:45:11Z post-Bug5 (last Bug5 at 02:48:57Z); DAG transitioned to Ready/Running at 03:45:50Z. DAG ran without producing content (no SUBTASK dirs, no SYNTHESIS.md) — different fault from Bug5."
+      },
+      "last_bug5_entry": "2026-11-03T02:48:57Z",
+      "last_checked_at": "2026-11-03T03:54:00Z",
+      "clearing_condition": "scheduler Dispatch entry post-Bug5",
+      "action_scheduled": "I139 (resolve escalation + board gap), I140 (launch persist remediation r2), I141 (launch ferric 1.0 design r3)"
+    }
+  },
+  "prs": {
+    "PR113": {
+      "status": "OPEN",
+      "mergeStateStatus": "UNSTABLE",
+      "head": "db1a5d6790803161e6d493647eb3fad93b9b0a4e",
+      "ci_run": "40920211148",
+      "ci_completed_at": "2026-10-29T17:19:54Z",
+      "doc": "FAILURE",
+      "fmt": "SUCCESS",
+      "clippy": "SUCCESS",
+      "test": "SUCCESS",
+      "wasm": "SUCCESS",
+      "image": "SKIPPED",
+      "updated_at": "2026-10-29T17:20:41Z",
+      "eligible_for_landing": false,
+      "note": "doc failure unchanged; persist remediation r2 scheduled to address"
+    },
+    "PR128": {
+      "status": "OPEN",
+      "branch": "work/design-ferric-1_0",
+      "title": "design: Ferric 1.0 framework design",
+      "mergeStateStatus": "CLEAN",
+      "updated_at": "2026-10-29T16:25:00Z",
+      "board_gap": true,
+      "note": "board gap being fixed in I139; design r3 launch in I141"
+    }
+  },
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-10-29T16:32:22Z",
+    "latest_pr_update": "2026-10-29T17:20:41Z",
+    "board_gap": {
+      "issues": "#129-#164",
+      "count": 36,
+      "pr": "#128",
+      "deferred": "fixing in I139 (escalation cleared)"
+    }
+  },
+  "main_sha": "276138f",
+  "deployment_check": "no drift (origin/main=276138f; local HEAD e63e607 is unpushed work, not GitHub main)",
+  "free_dag_slots": 4,
+  "persist_remediation_budget": {
+    "total": 2,
+    "spent": 0,
+    "note": "spend #1 in I140"
+  },
+  "action_series": [
+    "I139: resolve escalation + board gap (BOARD + RETENTION)",
+    "I140: launch persist remediation r2 (WORK_SESSION + DELIVERABLES_GIT)",
+    "I141: launch ferric 1.0 design r3 (PRODUCT_DESIGN + WORK_SESSION)",
+    "I142: board check"
+  ]
+}

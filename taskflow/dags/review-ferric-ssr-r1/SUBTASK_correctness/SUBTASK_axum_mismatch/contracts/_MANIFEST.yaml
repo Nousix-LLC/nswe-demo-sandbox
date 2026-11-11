@@ -1,0 +1,62 @@
+kind: yaml_schema
+description: >
+  Structural seam contract for the SUBTASK_axum_mismatch subtree.
+  Declares spoke ownership and the cross-check identity for hydration-marker
+  format between client-side (mismatch detection) and server-side (Axum) code.
+
+# --- Inherited schema (from parent ../_GLOBAL.md §Contract) ---
+# Each per-criterion entry in a spoke output must carry:
+#   id: REQ-XXX-NNN
+#   status: CLEAN | FINDING_BLOCKER | FINDING_NON_BLOCKER
+#   what_checked: <text>
+#   evidence: <"file:line" in Nousix-LLC/nswe-demo>
+#   finding: <text | null>
+#
+# The axum_server spoke additionally carries a non_goal entry:
+#   non_goal: REQ-SSR-007
+#   status: CONFIRMED_NON_GOAL
+#   what_checked: <text>
+#   evidence: <"file:line">
+
+per_child_ownership:
+  - subtask: SUBTASK_mismatch_detect
+    artifacts:
+      - mismatch_detect_findings.md
+    criteria_owned:
+      - REQ-SSR-006
+
+  - subtask: SUBTASK_axum_server
+    artifacts:
+      - axum_server_findings.md
+    criteria_owned:
+      - REQ-MIS-001
+      - REQ-MIS-002
+      - REQ-SSR-007   # non-goal confirmation
+
+  - subtask: SUBTASK_mismatch_synthesis
+    artifacts:
+      - axum_mismatch_findings.md   # written to parent workspace (SUBTASK_axum_mismatch/)
+      - SYNTHESIS.md                # fold record, also at parent workspace
+
+identities:
+  - id: all_criteria_present
+    description: >
+      axum_mismatch_findings.md must carry verdict entries for every criterion:
+      REQ-SSR-006, REQ-MIS-001, REQ-MIS-002, plus REQ-SSR-007 non-goal confirmation.
+      No criterion may be silently omitted.
+
+  - id: marker_format_agreement
+    description: >
+      The hydration-marker format documented by SUBTASK_mismatch_detect (REQ-SSR-006
+      context: what format the mismatch detection logic reads from the DOM) MUST agree
+      with the marker format documented by SUBTASK_axum_server (REQ-MIS-002: what format
+      the server writes into the HTML). The synthesis task verifies this identity and
+      MUST NOT silently plug a failure — if they disagree, that is itself a FINDING.
+
+  - id: no_host_paths
+    description: >
+      No evidence field in any findings file cites a host filesystem path, a taskflow
+      path, or a test assertion as a proxy for behavior. Evidence is source code at a
+      named file:line in Nousix-LLC/nswe-demo.
+
+derived_artifacts: []

@@ -1,0 +1,79 @@
+{
+  "sequence": 11,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T01:53:41.765978101Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_ac67_retention_failclosed"
+      ],
+      "placement_parent_task_id": "SUBTASK_correctness"
+    },
+    "resulting_version": 11,
+    "summary": "inject tasks: SUBTASK_ac67_retention_failclosed",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the #67 correctness area spoke (retention/capacity commitments and fail-closed-on-non-durable-write) from the SUBTASK_correctness decomposition.",
+        "task_id": "SUBTASK_correctness"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_ac65_invariants": [],
+      "SUBTASK_ac66_seam_migration": [],
+      "SUBTASK_ac67_retention_failclosed": [],
+      "SUBTASK_architecture_contract": [],
+      "SUBTASK_ci_doc_diagnosis": [],
+      "SUBTASK_code_quality": [],
+      "SUBTASK_correctness": [],
+      "SUBTASK_durability_proof": [],
+      "SUBTASK_operational_readiness": [],
+      "SUBTASK_security": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_architecture_contract",
+        "SUBTASK_ci_doc_diagnosis",
+        "SUBTASK_code_quality",
+        "SUBTASK_correctness",
+        "SUBTASK_durability_proof",
+        "SUBTASK_operational_readiness",
+        "SUBTASK_security"
+      ],
+      "review-epic-persist": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_ac65_invariants",
+          "SUBTASK_ac66_seam_migration",
+          "SUBTASK_ac67_retention_failclosed",
+          "SUBTASK_architecture_contract",
+          "SUBTASK_ci_doc_diagnosis",
+          "SUBTASK_code_quality",
+          "SUBTASK_correctness",
+          "SUBTASK_durability_proof",
+          "SUBTASK_operational_readiness",
+          "SUBTASK_security",
+          "review-epic-persist"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,61 @@
+# Contract manifest — SUBTASK_identity_trust subtree
+# kind: yaml_schema. EXTENDS the design-chirp-r1 root contract additively; never overrides it.
+# READ-ONLY for every descendant. Extend (additively) via plan amendment only.
+
+kind: yaml_schema
+
+extends:
+  - "../../contracts/_MANIFEST.yaml"
+  - "../../contracts/id_and_traceability_schema.yaml"   # REQ-<AREA>-NNN format, required fields, verification vocab, trace columns
+  - "../../contracts/design_artifact_map.yaml"          # design/identity-security.md owner + six required sections
+
+# What this subtree inherits and MUST NOT redefine:
+#  - requirement_id.format = "REQ-<AREA>-<NNN>"; this subtree's AREA = ID (owner = SUBTASK_identity_trust)
+#  - each_requirement_has: [id, statement, acceptance_criteria, release_gating]
+#  - verification_methods vocabulary: [manual_user_check, automated_test, inspection, operational_check]
+#  - identity-security.md required_sections: [accounts_and_lifecycle, authentication_and_sessions,
+#      authorization, abuse_and_privacy_basics, threat_model, requirements_and_acceptance_criteria]
+
+artifacts:
+  - file: req_id_partition.yaml
+    declares: "Per-child REQ-ID-NNN number range, the identity-security.md section each child owns, and the markdown partial-output format each spoke writes."
+
+# One producer per artifact. A hole (no owner) or a race (two owners) is a contract failure.
+ownership:
+  "SUBTASK_accounts_lifecycle/outputs/accounts-lifecycle.md": SUBTASK_accounts_lifecycle   # REQ-ID-001..029; section accounts_and_lifecycle
+  "SUBTASK_auth_sessions/outputs/auth-sessions.md":           SUBTASK_auth_sessions        # REQ-ID-030..059; section authentication_and_sessions
+  "SUBTASK_authorization/outputs/authorization.md":           SUBTASK_authorization        # REQ-ID-060..079; section authorization
+  "SUBTASK_abuse_privacy/outputs/abuse-privacy.md":           SUBTASK_abuse_privacy        # REQ-ID-080..099; section abuse_and_privacy_basics
+  "outputs/identity-security.md":                             SUBTASK_synthesis            # assembled file, six sections, consolidated register
+  "threat_model section + REQ-ID-100..119":                   SUBTASK_synthesis
+  "SYNTHESIS.md":                                             SUBTASK_synthesis            # fold record + identity evidence + REQ-ID<->REQ-PROD trace list
+
+# Invariants asserted by SUBTASK_synthesis (the gate) with recorded evidence. A failing identity is
+# reported and remediated by decomposing a remediation subtree — NEVER silently plugged.
+identities:
+  - id: REQ_ID_UNIQUE_IN_RANGE
+    statement: "Every REQ-ID-* is unique and within its owning child's declared number range (req_id_partition.yaml)."
+  - id: REQ_ID_TESTABLE_AND_TRACED
+    statement: "Every REQ-ID-* has a statement, testable acceptance_criteria, a release_gating flag, and traces to >=1 REQ-PROD-* that exists in the product-requirements register."
+  - id: GATING_REQ_NAMES_VERIFICATION
+    statement: "Every REQ-ID-* intended to anchor a BAR-* names a verification method from the inherited verification_methods vocabulary."
+  - id: SIX_SECTIONS_PRESENT
+    statement: "The assembled identity-security.md contains all six required sections from design_artifact_map.yaml."
+  - id: PROD_IDENTITY_NEEDS_COVERED
+    statement: "Every REQ-PROD-* identity/security need (008-014, 016-024, and the identity aspects of 025-028) is answered by >=1 REQ-ID-* OR explicitly recorded as carried by a sibling area (e.g. REQ-OPS-* for limits/quotas) with a stated reason."
+  - id: THREAT_MODEL_ANSWERS
+    statement: "The threat model names the threats chirp's public surface implies and, for each, what the design answers (which REQ-ID-* or recorded residual risk)."
+  - id: NO_SCHEMA_REDEFINITION
+    statement: "The id format, required fields, verification vocabulary, and design-artifact map are composed against, not redefined; subtree additions are additive only."
+  - id: DELIVERABLE_HYGIENE
+    statement: "identity-security.md contains no host/system/taskflow detail and no attribution trailer."
+
+derived_artifacts:
+  - name: consolidated_req_id_register
+    generated_from: "the four spoke partials + SUBTASK_synthesis threat-derived REQ-ID-*"
+    produced_by: SUBTASK_synthesis
+    consumed_by: "the identity-security.md requirements_and_acceptance_criteria section"
+  - name: req_id_to_req_prod_trace
+    generated_from: "each REQ-ID-*'s traces_to field"
+    produced_by: SUBTASK_synthesis
+    consumed_by: "the design-wide traceability matrix (parent SUBTASK_synthesis)"

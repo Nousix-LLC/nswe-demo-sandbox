@@ -1,0 +1,31 @@
+kind: markdown_sections
+description: >
+  Seam contract for the codebase-exploration subtree. Each reading child produces a
+  findings file with required sections; the synthesis task asserts identities before
+  writing analysis.md.
+
+ownership:
+  - artifact: "SUBTASK_git_branch/git_status.md"
+    owner: "SUBTASK_git_branch"
+  - artifact: "SUBTASK_design_analysis/design_findings.md"
+    owner: "SUBTASK_design_analysis"
+  - artifact: "SUBTASK_server_analysis/server_findings.md"
+    owner: "SUBTASK_server_analysis"
+  - artifact: "SUBTASK_frontend_analysis/frontend_findings.md"
+    owner: "SUBTASK_frontend_analysis"
+  - artifact: "SUBTASK_ferric_analysis/ferric_findings.md"
+    owner: "SUBTASK_ferric_analysis"
+  - artifact: "analysis.md"
+    owner: "SUBTASK_synthesis"
+  - artifact: "SYNTHESIS.md"
+    owner: "SUBTASK_synthesis"
+
+identities:
+  - "git_status.md MUST contain: branch name, HEAD commit SHA, created-or-existed status"
+  - "design_findings.md MUST contain: sign-in route name, sign-up route name, BAR-011 checklist items for AC-1..AC-5"
+  - "server_findings.md MUST contain: router registration file path, auth extractor type name, list of existing routes with auth requirements, API spec verdict (match/conflict/absent) for each public endpoint"
+  - "frontend_findings.md MUST contain: router registration file path, existing sign-in route path, existing sign-up route path (or not-found), existing home/landing route (or not-found), API call pattern"
+  - "ferric_findings.md MUST contain: Resource API usage pattern, Router API usage pattern, SSR recommendation with rationale"
+  - "analysis.md MUST contain all 7 sections: Branch Status, Design Requirements Summary, chirp-server Existing API Surface, chirp-frontend Existing Structure, Ferric Framework Relevant APIs, API Spec Verdict, Implementation Guidance for backend and frontend"
+
+derived_artifacts: []

@@ -1,0 +1,13 @@
+kind: markdown
+ownership:
+  - artifact: SUBTASK_app_quality/app_quality_raw.md
+    owner: SUBTASK_app_quality
+  - artifact: SUBTASK_test_quality/test_quality_raw.md
+    owner: SUBTASK_test_quality
+  - artifact: quality_raw_findings.md
+    owner: SUBTASK_synthesis
+identities:
+  - "app_quality_raw.md carries ## App.rs Code Quality Findings and ## App.rs Fresh Non-blockers sections"
+  - "test_quality_raw.md carries ## hydrate_wasm.rs Code Quality Findings and ## hydrate_wasm.rs Fresh Non-blockers sections"
+  - "quality_raw_findings.md carries ## Code Quality Findings and ## What Was Examined and Found Clean per parent spoke_output_schema.md"
+derived_artifacts: []

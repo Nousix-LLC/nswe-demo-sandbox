@@ -1,0 +1,45 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T05:55:12.982234352Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_foundation-buildability"
+      ],
+      "placement_parent_task_id": "design-ferric-1_0-r3"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_foundation-buildability",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing design-ferric-1_0-r3: spoke 2 evaluates whether the design is buildable on the existing ferric/router/http foundation (concern 4).",
+        "task_id": "design-ferric-1_0-r3"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_design-doc-review": [],
+      "SUBTASK_foundation-buildability": [],
+      "design-ferric-1_0-r3": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_design-doc-review",
+          "SUBTASK_foundation-buildability",
+          "design-ferric-1_0-r3"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

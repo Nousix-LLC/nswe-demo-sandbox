@@ -1,0 +1,51 @@
+kind: yaml_schema
+description: "Security review spoke output schema and ownership manifest for SUBTASK_security subtree"
+
+per_child_ownership:
+  - task: SUBTASK_sec_injection
+    outputs:
+      - path: SUBTASK_sec_injection/finding.md
+        kind: security_finding
+  - task: SUBTASK_sec_secrets
+    outputs:
+      - path: SUBTASK_sec_secrets/finding.md
+        kind: security_finding
+  - task: SUBTASK_sec_unsafe
+    outputs:
+      - path: SUBTASK_sec_unsafe/finding.md
+        kind: security_finding
+  - task: SUBTASK_sec_event
+    outputs:
+      - path: SUBTASK_sec_event/finding.md
+        kind: security_finding
+  - task: SUBTASK_sec_synthesis
+    outputs:
+      - path: findings.md
+        kind: compiled_findings
+
+schema:
+  security_finding:
+    description: "Per-spoke security finding; one finding per named concern area"
+    required_fields:
+      - severity      # blocker | non-blocker | clean
+      - concern       # name of the security concern area
+      - location      # repository-relative file:line, or N/A
+      - description   # what was found or verified clean
+    optional_sections:
+      - what_was_examined   # enumeration of files/diff sections reviewed
+
+  compiled_findings:
+    description: "Synthesis output: compiled findings.md at SUBTASK_security/"
+    must_contain:
+      - "## Findings"
+      - "## What was examined"
+    must_cover_areas:
+      - html_injection_escaping
+      - secrets_infrastructure_data
+      - unsafe_code
+      - event_handler_surface
+
+identities:
+  - "Every concern area (injection, secrets, unsafe, event_surface) must appear in findings.md with a verdict (clean or otherwise)"
+  - "findings.md must compile all 4 spoke findings in the format specified by the parent _BRIEF.md"
+  - "Any finding with severity=blocker must include a repository-relative location and an actionable description"

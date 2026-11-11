@@ -1,0 +1,46 @@
+kind: yaml_schema
+description: "Sub-task manifest for SUBTASK_sec_event decomposition — event handler security surface review"
+
+per_child_ownership:
+  - task: SUBTASK_sec_event_downcast
+    outputs:
+      - path: SUBTASK_sec_event_downcast/finding_downcast.md
+        kind: sub_finding
+  - task: SUBTASK_sec_event_forget
+    outputs:
+      - path: SUBTASK_sec_event_forget/finding_forget.md
+        kind: sub_finding
+  - task: SUBTASK_sec_event_synthesis
+    outputs:
+      - path: finding.md
+        kind: security_finding
+
+schema:
+  sub_finding:
+    description: "Per-spoke sub-finding; one specific security sub-question"
+    required_fields:
+      - severity      # blocker | non-blocker | clean
+      - concern       # name of the sub-question
+      - location      # repository-relative file:line, or N/A
+      - description   # what was found or verified clean
+    optional_sections:
+      - what_was_examined
+
+  security_finding:
+    description: "Compiled finding conforming to parent SUBTASK_security contract schema"
+    structure: |
+      ## Finding
+
+      - **severity**: blocker | non-blocker | clean
+      - **concern**: Event handler security surface / closure.forget() scope
+      - **location**: crates/ferric/src/file.rs:LINE (or N/A)
+      - **description**: [combined description from both sub-findings]
+
+      ## What was examined
+      [Files read, diff sections reviewed, and which sub-questions were answered]
+
+identities:
+  - "Both sub-questions (downcast reachability AND closure.forget() scope) must be answered with evidence"
+  - "finding.md must have a single severity verdict reflecting the combined finding"
+  - "finding.md must conform to the ../_GLOBAL.md §Contract schema"
+  - "Any blocker must include a repository-relative location and actionable description"

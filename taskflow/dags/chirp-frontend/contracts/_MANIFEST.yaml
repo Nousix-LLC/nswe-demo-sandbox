@@ -1,0 +1,136 @@
+# contracts/_MANIFEST.yaml — chirp-frontend (#9) decomposition contract
+#
+# The frozen structural seam every descendant composes against. READ-ONLY to all
+# descendants: a spoke IMPORTS these declarations from `crate::...` (the scaffold
+# realizes them in `src/`); it MUST NOT redefine them, and MUST NOT redefine any
+# chirp-types DTO (that is an external/ancestor contract, referenced below).
+#
+# Contract kind: rust_api (frozen Rust signatures in app_api.rs) + a REST endpoint
+# map (rest_endpoints.md). The in-process call boundary between the api-client spoke
+# and the three feature-view spokes is a trait/struct seam -> rust_api; the wire
+# boundary to chirp-server #8 is a schema/endpoint map -> rest_endpoints.md.
+
+kind: rust_api
+
+artifacts:
+  - path: app_api.rs
+    kind: rust_api
+    declares: >
+      The frozen in-crate public signatures the scaffold realizes in `src/` and the
+      spokes fill in: AppError, Session, AppContext (+ its `client()` and `session`
+      signal), the ApiClient struct and its 7 async methods, the three route-view fn
+      signatures (timeline_view / compose_view / profile_view), and the wasm mount
+      entry. Spokes import these from `crate::...`; they are signature-identical to
+      what the scaffold stubs compile against.
+  - path: rest_endpoints.md
+    kind: endpoint_map
+    declares: >
+      The REST method+path for each ApiClient method, the request/response chirp-types
+      DTO per endpoint, auth-header rule, and the configurable base URL. This is the
+      contract chirp-server #8 must honor at runtime; the synthesis gate records any
+      assumption #8 must satisfy.
+
+# External / ancestor contract this subtree composes against but MUST NOT redefine.
+inherited_contracts:
+  - name: chirp-types DTOs (the wire contract)
+    path: (workspace) crates/chirp-types  [chirp_types::prelude::*]
+    binds: >
+      User, Chirp, Follow, Like, Timeline, Username, ChirpText, ValidationError,
+      UserId, ChirpId, Timestamp, ApiError, ErrorCode, FieldError, AuthResponse,
+      LoginRequest, CreateUserRequest, CreateChirpRequest, TimelineQuery, Page<T>,
+      Cursor, SessionToken, FollowResponse, LikeResponse. Use these types directly as
+      the wire contract. Do NOT clone or redefine any DTO.
+  - name: ferric framework surface
+    path: (workspace) crates/ferric  [ferric::prelude::*, ferric::vdom]
+    binds: >
+      create_signal/Signal, create_memo/Memo, create_effect, batch, Component,
+      VNode, VElement, EventKind{Click,Input}, vdom::text, dom::mount(root: web_sys::Element, component).
+      Event handlers are zero-arg Rc<dyn Fn()>; to read an <input>'s current value a
+      handler must query the DOM element (e.g. web_sys by id). Compose against these;
+      do NOT re-implement reactivity or the DOM diff.
+  - name: ferric-router surface
+    path: (workspace) crates/ferric-router  [ferric_router::prelude::*]
+    binds: >
+      Router::new().route(path, Fn(&Params)->VNode).fallback(..).mount_history(),
+      router.outlet().render()->VNode, navigate(&str), current_path(), link(path,label)->VNode,
+      Params::get(&str)->Option<&str>, RoutePattern. "/user/:id" is the parameterised route.
+  - name: ferric-http client
+    path: (workspace) crates/ferric-http  [ferric_http::prelude::*]
+    binds: >
+      Client::builder().base_url(..).default_header(..).build(); verbs get/post/put/delete(path)
+      -> RequestBuilder; .query(&[(&str,&str)]) .header(&str,&str) .json(&B)->Result<Self>
+      .send()->Result<Response> .send_json::<T>()->Result<T>; Response::{status,ok,json::<T>,
+      error_for_status,body,text}; Error::{Builder,Network,Status{status,body,..},Serialize,
+      Deserialize,Body} with .is_network()/.is_status()/.status(). A non-2xx becomes Error::Status
+      whose `body` carries the server's JSON (decode chirp_types::ApiError from it).
+
+# Every artifact and source file has exactly ONE producing task.
+ownership:
+  SUBTASK_scaffold:
+    # The walking skeleton: composition root + mount points + compiling stubs.
+    - crates/chirp-frontend/Cargo.toml
+    - crates/chirp-frontend/src/lib.rs            # declares every module (api, app, error, timeline, compose, profile)
+    - crates/chirp-frontend/src/app.rs            # AppContext, Session, Router+route table, outlet, nav, mount entry (composition root)
+    - crates/chirp-frontend/src/error.rs          # AppError + From<ferric_http::Error> + ApiError decoding helper
+    - crates/chirp-frontend/src/bin/ (or [[example]]) wasm entry main   # thin mount entry
+    - crates/chirp-frontend/index.html            # static harness demonstrating the app mounts
+    - crates/chirp-frontend/README.md
+    - crates/chirp-frontend/src/api.rs  (INITIAL COMPILING STUB ONLY; owned & replaced by SUBTASK_api_client)
+    - crates/chirp-frontend/src/timeline.rs (INITIAL COMPILING STUB ONLY; owned & replaced by SUBTASK_timeline)
+    - crates/chirp-frontend/src/compose.rs  (INITIAL COMPILING STUB ONLY; owned & replaced by SUBTASK_compose)
+    - crates/chirp-frontend/src/profile.rs  (INITIAL COMPILING STUB ONLY; owned & replaced by SUBTASK_profile)
+    - (establishes checkout/ at main@25e90c0 on branch work/chirp-frontend; initial skeleton commit)
+  SUBTASK_api_client:
+    - crates/chirp-frontend/src/api.rs            # real ApiClient impl (replaces the scaffold stub)
+  SUBTASK_timeline:
+    - crates/chirp-frontend/src/timeline.rs       # real timeline view (replaces the scaffold stub)
+  SUBTASK_compose:
+    - crates/chirp-frontend/src/compose.rs        # real login+compose view (replaces the scaffold stub)
+  SUBTASK_profile:
+    - crates/chirp-frontend/src/profile.rs        # real profile + follow/like view (replaces the scaffold stub)
+  SUBTASK_synthesis_gate:
+    - SYNTHESIS.md                                # the fold verdict
+    - (all git: stage+commit feature work, final build/test/fmt/clippy, open PR Closes #9)
+
+# Stub-replacement is sequential single-ownership, NOT a concurrent-write violation:
+# SUBTASK_scaffold (Group 0) completes before Group 1; in Group 1 each stub file has
+# exactly ONE owning spoke that replaces it; siblings never touch another's file.
+# The scaffold stubs ARE the L1 (shape-only) mocks the feature spokes compile against.
+
+# git ownership (avoids concurrent index races across parallel spokes):
+#   - SUBTASK_scaffold: creates checkout + branch work/chirp-frontend + initial skeleton commit (sole in Group 0).
+#   - Group-1 spokes: WRITE FILES ONLY into the shared checkout working tree (disjoint files). NO git commands.
+#   - SUBTASK_synthesis_gate: the ONLY Group-2 task -> performs ALL remaining git (stage, commit, build, PR).
+
+identities:
+  - id: wasm_target_builds
+    must: "`cargo build -p chirp-frontend --target wasm32-unknown-unknown` succeeds on the combined tree."
+    check: "cd checkout && cargo build -p chirp-frontend --target wasm32-unknown-unknown"
+  - id: workspace_quality_clean
+    must: "fmt clean, clippy clean (-D warnings), chirp-frontend native tests pass."
+    check: "cd checkout && cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test -p chirp-frontend"
+  - id: dtos_used_not_redefined
+    must: "chirp-frontend uses chirp_types DTOs directly as the wire contract; it defines NO parallel DTO struct/enum mirroring a chirp-types type."
+    check: "grep the crate for struct/enum redefinitions of Chirp/User/CreateChirpRequest/Page/ApiError/etc.; MUST find none."
+  - id: every_client_method_one_endpoint
+    must: "each ApiClient method maps to exactly one REST method+path in rest_endpoints.md and uses the declared request/response DTO."
+    check: "synthesis gate reads api.rs against rest_endpoints.md; one-to-one."
+  - id: routes_bind_frozen_views
+    must: "the route table binds `/`->timeline_view, `/compose`->compose_view, `/user/:id`->profile_view, each to exactly one frozen view fn, plus a fallback."
+    check: "synthesis gate reads app.rs route table."
+  - id: no_panic_no_unsafe_in_runtime
+    must: "no unwrap()/expect()/panic!/todo!/unimplemented! and no unsafe in library/runtime modules (api.rs, timeline.rs, compose.rs, profile.rs, error.rs, app.rs view/logic). The thin wasm mount entry MAY use expect() for mount-point acquisition, mirroring the ferric/ferric-router examples (documented)."
+    check: "grep the runtime modules; MUST find none outside the documented entry point."
+  - id: errors_surface_to_ui
+    must: "ApiError/ErrorCode and network failures from ferric-http are surfaced to the UI as AppError state (loading/error views), never swallowed or panicked."
+    check: "synthesis gate reviews each view's loading/error handling."
+
+derived_artifacts:
+  - name: scaffold stubs as L1 mocks
+    from: app_api.rs signatures
+    consumed_by: SUBTASK_timeline, SUBTASK_compose, SUBTASK_profile (compile against crate::api stub), and the scaffold's own skeleton build.
+    note: >
+      L1 (shape-only) depth: stubs satisfy the frozen signatures and return empty/Err
+      (never panic), exactly deep enough to let feature spokes compile and the walking
+      skeleton mount. The real impls (api.rs etc.) replace them before the gate's
+      identity checks run against the combined tree.

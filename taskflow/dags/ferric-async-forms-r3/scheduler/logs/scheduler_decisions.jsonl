@@ -1,0 +1,23 @@
+{"timestamp":"2026-11-05T22:21:22.785952657Z","action":{"Dispatch":{"task_ids":["ferric-async-forms-r3"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-05T22:22:03.182612176Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r3"]}},"reason":"task ferric-async-forms-r3 transitioned to Ready"}
+{"timestamp":"2026-11-05T22:22:03.182790452Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r3"]}},"reason":"task ferric-async-forms-r3 transitioned to Running"}
+{"timestamp":"2026-11-05T22:33:05.229837720Z","action":{"Dispatch":{"task_ids":["SUBTASK_b1_reactive_resource"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-05T22:33:23.287837414Z","action":{"WaitForCompletion":{"pending_task_ids":["ferric-async-forms-r3"]}},"reason":"task ferric-async-forms-r3 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-05T22:33:56.344714302Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b1_reactive_resource"]}},"reason":"task SUBTASK_b1_reactive_resource transitioned to Ready"}
+{"timestamp":"2026-11-05T22:33:56.345156576Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b1_reactive_resource"]}},"reason":"task SUBTASK_b1_reactive_resource transitioned to Running"}
+{"timestamp":"2026-11-05T22:39:32.216461727Z","action":{"Dispatch":{"task_ids":["SUBTASK_b2_b3_event_dom"],"group_index":1}},"reason":"task SUBTASK_b1_reactive_resource completed, dispatching ready successors"}
+{"timestamp":"2026-11-05T22:40:15.113713087Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b2_b3_event_dom"]}},"reason":"task SUBTASK_b2_b3_event_dom transitioned to Ready"}
+{"timestamp":"2026-11-05T22:40:15.114084338Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b2_b3_event_dom"]}},"reason":"task SUBTASK_b2_b3_event_dom transitioned to Running"}
+{"timestamp":"2026-11-05T22:47:38.185822618Z","action":{"Dispatch":{"task_ids":["SUBTASK_b2_event_handler"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-05T22:47:50.264732047Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b2_b3_event_dom"]}},"reason":"task SUBTASK_b2_b3_event_dom suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-05T22:48:09.280583191Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b2_event_handler"]}},"reason":"task SUBTASK_b2_event_handler transitioned to Ready"}
+{"timestamp":"2026-11-05T22:48:09.280966628Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b2_event_handler"]}},"reason":"task SUBTASK_b2_event_handler transitioned to Running"}
+{"timestamp":"2026-11-05T22:54:14.168234748Z","action":{"Dispatch":{"task_ids":["SUBTASK_b3_bind_dom"],"group_index":1}},"reason":"task SUBTASK_b2_event_handler completed, dispatching ready successors"}
+{"timestamp":"2026-11-05T22:55:28.851191903Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b3_bind_dom"]}},"reason":"task SUBTASK_b3_bind_dom transitioned to Ready"}
+{"timestamp":"2026-11-05T22:55:28.851392554Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_b3_bind_dom"]}},"reason":"task SUBTASK_b3_bind_dom transitioned to Running"}
+{"timestamp":"2026-11-05T23:04:38.506578313Z","action":{"SubtreeResolved":{"parent_task_id":"SUBTASK_b2_b3_event_dom","child_task_ids":["SUBTASK_b2_event_handler","SUBTASK_b3_bind_dom"],"success":true}},"reason":"all children of SUBTASK_b2_b3_event_dom reached terminal state (success=true)"}
+{"timestamp":"2026-11-05T23:04:38.506852945Z","action":{"Dispatch":{"task_ids":["SUBTASK_synthesis"],"group_index":2}},"reason":"task SUBTASK_b3_bind_dom completed, dispatching ready successors"}
+{"timestamp":"2026-11-05T23:05:45.524241385Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Ready"}
+{"timestamp":"2026-11-05T23:05:45.524659673Z","action":{"WaitForCompletion":{"pending_task_ids":["SUBTASK_synthesis"]}},"reason":"task SUBTASK_synthesis transitioned to Running"}
+{"timestamp":"2026-11-05T23:11:24.967985726Z","action":{"SubtreeResolved":{"parent_task_id":"ferric-async-forms-r3","child_task_ids":["SUBTASK_b1_reactive_resource","SUBTASK_b2_b3_event_dom","SUBTASK_synthesis"],"success":true}},"reason":"all children of ferric-async-forms-r3 reached terminal state (success=true)"}
+{"timestamp":"2026-11-05T23:11:24.968222995Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

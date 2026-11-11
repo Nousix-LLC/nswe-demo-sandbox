@@ -1,0 +1,31 @@
+kind: findings_format
+version: "1.0"
+description: >
+  Shared partial-findings contract for the four concern spoke tasks reviewing
+  PR #193 (Ferric async forms). Each spoke produces a partial_findings.md
+  conforming to findings_format.md; the synthesis task combines them into
+  the final findings.md.
+
+schema_ref: findings_format.md
+
+ownership:
+  - artifact: "SUBTASK_concern2_code_quality/partial_findings.md"
+    owner: "SUBTASK_concern2_code_quality"
+  - artifact: "SUBTASK_concern3_tests/partial_findings.md"
+    owner: "SUBTASK_concern3_tests"
+  - artifact: "SUBTASK_concern6_idiom/partial_findings.md"
+    owner: "SUBTASK_concern6_idiom"
+  - artifact: "SUBTASK_concern7_api_stability/partial_findings.md"
+    owner: "SUBTASK_concern7_api_stability"
+  - artifact: "../findings.md"
+    owner: "SUBTASK_qti_synthesis"
+  - artifact: "../SYNTHESIS.md"
+    owner: "SUBTASK_qti_synthesis"
+
+identities:
+  - "Every partial_findings.md must contain ## Findings and ## What was examined sections"
+  - "severity values must be one of: blocker, non-blocker, clean"
+  - "concern value in each spoke must match its assigned concern label"
+  - "All paths in location fields are repository-relative"
+  - "No finding duplicates issues #196-#201"
+  - "Combined output addresses every sub-question in the parent brief's four concern sections"

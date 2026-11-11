@@ -1,0 +1,51 @@
+# ac_verdict_schema.yaml
+# Schema for ac-verdicts.yaml produced by SUBTASK_ac-verify-remediate.
+# Every field is required. The synthesis task imports this literally.
+
+type: object
+required:
+  - branch_head
+  - ci_status
+  - verdicts
+properties:
+  branch_head:
+    type: string
+    description: "Full SHA of the branch HEAD that was verified"
+  ci_status:
+    type: string
+    enum: [PASS, FAIL, UNKNOWN]
+    description: "Overall CI status at branch_head"
+  commits_added:
+    type: array
+    items:
+      type: string
+    description: "List of commit SHAs added during gap remediation (empty if no changes needed)"
+  verdicts:
+    type: object
+    required: [AC-1, AC-2, AC-3, AC-4, AC-5]
+    properties:
+      AC-1:
+        $ref: "#/$defs/ac_entry"
+      AC-2:
+        $ref: "#/$defs/ac_entry"
+      AC-3:
+        $ref: "#/$defs/ac_entry"
+      AC-4:
+        $ref: "#/$defs/ac_entry"
+      AC-5:
+        $ref: "#/$defs/ac_entry"
+
+$defs:
+  ac_entry:
+    type: object
+    required: [verdict, evidence]
+    properties:
+      verdict:
+        type: string
+        enum: [MET, NOT-MET]
+      evidence:
+        type: string
+        description: "One-paragraph explanation citing specific files/lines/tests"
+      gap_fix:
+        type: string
+        description: "Description of fix applied; absent if verdict is MET with no changes"

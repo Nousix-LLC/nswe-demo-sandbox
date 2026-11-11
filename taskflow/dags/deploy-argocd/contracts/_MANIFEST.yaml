@@ -1,0 +1,68 @@
+# contracts/_MANIFEST.yaml — deploy-argocd subtree contract manifest
+# READ-ONLY for every descendant. Authored by the decomposing agent (deploy-argocd root).
+# Kind: yaml_schema (shared-identity manifest) + cross-output identities.
+
+kind: yaml_schema
+
+artifacts:
+  - file: deploy_contract.yaml
+    kind: yaml_schema
+    declares: >
+      The shared identities both authoring spokes MUST agree on so the chirp manifests and the
+      ArgoCD Application mechanically compose: namespace, app name + label set, Service
+      name/port/targetPort, Ingress host/path and class source, container listen-port source,
+      ArgoCD Application + AppProject names, destination namespace, and the repo path layout.
+
+# Ownership — every produced artifact has exactly ONE producer. Disjoint by directory.
+ownership:
+  - artifact: "outputs/ground_truth.md"
+    owner: SUBTASK_discovery
+  - artifact: "deploy/chirp/*.yaml"      # Namespace, Deployment, Service, Ingress
+    owner: SUBTASK_app_manifests
+  - artifact: "deploy/argocd/*.yaml"     # Application, AppProject
+    owner: SUBTASK_argocd_gitops
+  - artifact: "SYNTHESIS.md"             # at the subtree root; plus the PR + reachability evidence
+    owner: SUBTASK_synthesis
+
+# Serialized precursor fact (NOT a frozen value — discovery resolves it):
+derived_facts:
+  source: "outputs/ground_truth.md"
+  produced_by: SUBTASK_discovery
+  consumed_by: [SUBTASK_app_manifests, SUBTASK_argocd_gitops, SUBTASK_synthesis]
+  fields:
+    - repo_checkout_path          # absolute path of the working git checkout of Nousix-LLC/nswe-demo
+    - image_digest                # ghcr.io/nousix-llc/chirp-server@sha256:<digest> (the ACTUAL published digest)
+    - container_listen_port       # the port chirp-server listens on (from Dockerfile/healthcheck.rs)
+    - health_path                 # the real health surface path (and whether SPA root vs API health)
+    - ingress_class               # the cluster's ingress class (k3s Traefik)
+    - argocd_application_apiversion   # e.g. argoproj.io/v1alpha1
+    - appproject_apiversion
+    - ghcr_package_private        # true/false -> whether an imagePullSecret is required
+    - storage_notes               # storageclass facts if any stateful need surfaces (expected: none)
+
+# Identities the synthesis gate MUST assert over the COMBINED outputs (runnable checks).
+identities:
+  - id: image-pinned-by-digest
+    must: "Deployment image == ghcr.io/nousix-llc/chirp-server@sha256:<image_digest from ground_truth.md>, never a movable tag"
+    check: "grep the Deployment manifest for '@sha256:' and compare to ground_truth.md; reject any ':<tag>' form"
+  - id: service-selector-matches-pods
+    must: "Service .spec.selector matches Deployment pod-template labels; targetPort == container_listen_port"
+    check: "kubectl get endpoints for the Service is non-empty after rollout; static label/port diff"
+  - id: ingress-wires-service
+    must: "Ingress backend references the Service name+port; ingress class == ground_truth.ingress_class"
+    check: "static manifest diff + live HTTP GET via localhost:8081 returns the SPA/API health response"
+  - id: resources-and-probes
+    must: "Deployment declares requests AND limits AND liveness + readiness probes on the real health surface"
+    check: "static manifest assertion: resources.requests, resources.limits, livenessProbe, readinessProbe all present"
+  - id: argocd-application-wired
+    must: "Application.spec.source.path == 'deploy/chirp', repoURL == nswe-demo, destination.namespace == 'chirp', spec.project == the AppProject (not 'default')"
+    check: "static manifest assertion + argocd app shows Synced/Healthy after apply"
+  - id: appproject-least-privilege
+    must: "AppProject restricts destinations to the chirp namespace (+ argocd only if required) and grants NO cluster-admin-equivalent '*/*/*'; narrowing is GitOps-managed"
+    check: "static assertion that project destinations/clusterResourceWhitelist are explicit and scoped; Application bound to it"
+  - id: namespace-isolation-no-secrets
+    must: "All chirp resources in namespace 'chirp'; a Namespace manifest exists; NO secrets committed to the tree"
+    check: "grep tree for committed Secret data / tokens; assert namespace on every resource"
+  - id: image-pull-works
+    must: "If ghcr_package_private, an imagePullSecret path is handled (or the package is documented pullable); no ImagePullBackOff"
+    check: "kubectl rollout status succeeds; pod not in ImagePullBackOff"

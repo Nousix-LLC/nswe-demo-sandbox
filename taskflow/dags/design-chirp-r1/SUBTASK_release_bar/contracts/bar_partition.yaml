@@ -1,0 +1,50 @@
+# bar_partition.yaml — the BAR-<NNN> number-space partition + bar-fragment format for this subtree.
+# READ-ONLY. Extends ../../contracts/id_and_traceability_schema.yaml additively; redefines nothing in it.
+
+# The inherited schema fixes: bar_id format BAR-<NNN> (3-digit), each_bar_criterion_has
+# [id, statement, references (>=1 REQ-*), verification_method, stage], the closed verification_methods
+# vocabulary, and stage in {usable_early, releasable}. This file ONLY partitions the number space across the
+# area spokes and fixes the fragment layout + the proposed/final stage split. It does not change any field.
+
+bar_number_space:
+  owner_by_range:               # one disjoint range per spoke; a spoke MUST mint BAR-* only within its range
+    SUBTASK_bar_prod:      "BAR-001 .. BAR-099"   # from release-gating REQ-PROD-*
+    SUBTASK_bar_dom:       "BAR-100 .. BAR-199"   # from release-gating REQ-DOM-*
+    SUBTASK_bar_ux:        "BAR-200 .. BAR-299"   # from release-gating REQ-UX-*
+    SUBTASK_bar_id:        "BAR-300 .. BAR-399"   # from release-gating REQ-ID-*
+    SUBTASK_bar_ops:       "BAR-400 .. BAR-499"   # from release-gating REQ-OPS-*
+    SUBTASK_bar_synthesis: "BAR-900 .. BAR-999"   # cross-cutting only: a gap-review finding no single area owns
+  rules:
+    - "A BAR-* may REFERENCE REQ-* from more than one area; it is OWNED by the spoke whose area most centrally
+       holds the gating requirement it enforces. Cross-area references are expected and fine."
+    - "If a release-gating requirement is best enforced jointly, one owning spoke authors the BAR-* and lists all
+       the REQ-* it references; siblings do not duplicate it."
+    - "The synthesis hub mints a BAR-900..999 ONLY when a completeness/gap-review finding requires a release
+       condition that no single area's gating requirements already cover (record the finding that motivated it)."
+
+bar_fragment:                   # what each spoke's outputs/bar-<area>.md MUST contain
+  format: markdown
+  per_bar_block_fields:         # one block per BAR-*, carrying exactly the inherited field set
+    - id                        # BAR-NNN, within the spoke's range
+    - statement                 # concrete, testable release condition in the user's/operator's terms
+    - references                # >=1 REQ-<AREA>-NNN it enforces (the gating requirement(s))
+    - verification_method       # one of: manual_user_check | automated_test | inspection | operational_check
+    - proposed_stage            # usable_early | releasable  -- the SPOKE's proposal (see staging split below)
+  also_required:
+    - "A coverage note: list every release-gating REQ-<AREA>-* found in the area doc and the BAR-* that covers it,
+       so the synthesis gate can assert GATING_REQ_COVERAGE without re-deriving the gating set."
+
+staging_split:                  # who decides the MVP-vs-releasable line
+  proposed_by_spoke: proposed_stage
+  finalized_by: SUBTASK_bar_synthesis
+  rule: "Spokes PROPOSE a stage per BAR-* from their area view. The synthesis hub owns the one coherent
+         cross-cutting MVP-vs-releasable line: it may move a BAR-* between stages for cross-area coherence and
+         records the final stage in release-bar.md. The final per-BAR stage in release-bar.md is authoritative;
+         BAR_STAGED is asserted against it."
+
+release_bar_md:                 # the single deliverable the synthesis hub assembles
+  path: "SUBTASK_release_bar/outputs/release-bar.md"   # the parent SUBTASK_release_bar's declared output
+  sections:                     # exactly the three from ../../contracts/design_artifact_map.yaml
+    - mvp_vs_releasable_scoping # usable-early vs releasable; what each stage includes and the honest cut line
+    - release_bar               # the consolidated BAR-* register (final stage), each -> REQ-*, each testable
+    - completeness_and_gap_review # Product Surfaces sweep; in/out-of-scope judgment + reason per expected surface

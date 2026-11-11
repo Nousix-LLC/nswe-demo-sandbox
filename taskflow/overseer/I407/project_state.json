@@ -1,0 +1,405 @@
+{
+ "current_pointer": "overseer/I407",
+ "checked_at": "2026-11-06T13:05:00Z",
+ "escalations": {
+  "escalation_i77_dispatch_fault": {
+   "status": "CLEARED",
+   "cleared_at": "2026-11-03T05:08:16Z",
+   "cleared_in": "overseer/I145"
+  },
+  "escalation_ferric_async_forms_budget_exhausted": {
+   "status": "CLEARED",
+   "label": "ferric-async-forms remediation budget exhausted — 3 unresolved blockers after 2 code DAG attempts + 1 full review cycle",
+   "pr": 193,
+   "cleared_at": "2026-11-05T22:00:00Z",
+   "cleared_reason": "Reclassified per corrected app policy: a REQUEST-CHANGES review with fixable blockers is ordinary remediation (two successful DAGs), not a budget-exhausted user-gate escalation.",
+   "cleared_in": "overseer/I279"
+  },
+  "escalation_review_ferric_http_r2_stall": {
+   "status": "CLEARED",
+   "cleared_at": "2026-11-04T21:35:16Z",
+   "cleared_in": "overseer/I245"
+  },
+  "escalation_ferric_ssr_budget_exhausted": {
+   "status": "CLEARED",
+   "label": "ferric-ssr remediation budget exhausted — 2 hard blockers after 2 code DAG attempts + 1 full review cycle",
+   "pr": 228,
+   "cleared_at": "2026-11-05T22:00:00Z",
+   "cleared_reason": "Reclassified per corrected app policy: ordinary remediation, not escalation.",
+   "cleared_in": "overseer/I279"
+  }
+ },
+ "prs": {
+  "PR113": { "status": "MERGED", "note": "Epic #56 and sub-issues Done." },
+  "PR128": { "status": "MERGED", "note": "Design: Ferric 1.0 framework design. All 10 design docs on main." },
+  "PR182": { "status": "MERGED" },
+  "PR183": { "status": "MERGED" },
+  "PR187": { "status": "MERGED" },
+  "PR188": { "status": "MERGED", "note": "#129 and authoring model sub-issues Done." },
+  "PR193": {
+   "status": "MERGED",
+   "branch": "work/ferric-async-forms-r2",
+   "merged_at": "2026-11-06T02:03:17Z",
+   "merge_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+   "head_sha": "838239e11f131484d4db617fb25dc6e5ea435be1",
+   "note": "ferric-async-forms-r3 PASS, review-ferric-async-forms-r3 APPROVE. Merged I294. Issue #130 closed, sub-issues #143/#144/#145 closed in I295. Board Done.",
+   "issues_closed": ["#130", "#143", "#144", "#145"]
+  },
+  "PR203": { "status": "MERGED", "note": "#131 and router sub-issues Done." },
+  "PR209": { "status": "MERGED", "note": "#206 Done." },
+  "PR210": { "status": "MERGED", "note": "#132 and #148 Done." },
+  "PR228": {
+   "status": "MERGED",
+   "branch": "work/ferric-ssr-r1",
+   "merged_at": "2026-11-06T00:15:41Z",
+   "merge_sha": "62febf5faf6023b3492358d246c7ac39c9f699a3",
+   "note": "ferric-ssr-r4 PASS, review-ferric-ssr-r2 APPROVE. Issues #223/#224/#226 closed, board Done. Non-blockers #245/#246/#247 filed.",
+   "issues": ["#223", "#224", "#226"],
+   "non_blockers_filed": ["#245", "#246", "#247"]
+  },
+  "PR263": {
+   "status": "OPEN",
+   "branch": "work/chirp-logged-out",
+   "created_at": "2026-11-06T04:25:19Z",
+   "title": "feat: logged-out public timeline and user profiles (#35)",
+   "issues": ["#35"],
+   "head_sha": "decb6196c2c1e6ed421d393a642f0c844cc333ba",
+   "mergeable": "MERGEABLE",
+   "ci_run": "42194072348",
+   "ci_status": "COMPLETE — run 42194072348 for head decb6196: ALL 6 PASS (confirmed I400/I402/I403/I404/I405/I406). No re-run triggered.",
+   "note": "r25 dispatched I407 as swe-coder. First priority: assess decb6196 against all 5 ACs and write SYNTHESIS.md."
+  }
+ },
+ "dags_in_flight": [
+  {
+   "slug": "chirp-logged-out-r25",
+   "kind": "code",
+   "state": "IN_FLIGHT",
+   "forked_in": "overseer/I407",
+   "forked_thread_id": "chirp-logged-out-r25",
+   "branch": "work/chirp-logged-out",
+   "pr": 263,
+   "issues": ["#35"],
+   "head_sha_at_dispatch": "decb6196c2c1e6ed421d393a642f0c844cc333ba",
+   "note": "First priority: assess decb6196 against all 5 ACs. If ACs met, write SYNTHESIS.md PASS immediately. If not, make changes then write SYNTHESIS.md."
+  }
+ ],
+ "dags_to_launch": [],
+ "dags_stalled": [
+  {
+   "slug": "chirp-logged-out",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I298",
+   "action": "Re-forked as chirp-logged-out-r2 in I298."
+  },
+  {
+   "slug": "chirp-logged-out-r2",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I302",
+   "action": "Re-forked as chirp-logged-out-r3 in I302. Comment posted on issue #35."
+  },
+  {
+   "slug": "chirp-logged-out-r3",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I306",
+   "action": "Re-forked as chirp-logged-out-r4 in I306. Comment posted on issue #35."
+  },
+  {
+   "slug": "chirp-logged-out-r4",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I310",
+   "action": "Re-forked as chirp-logged-out-r5 in I310. Comment posted on issue #35."
+  },
+  {
+   "slug": "chirp-logged-out-r5",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I314",
+   "action": "Re-forked as chirp-logged-out-r6 in I314. Comment posted on issue #35."
+  },
+  {
+   "slug": "chirp-logged-out-r6",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I318",
+   "action": "Re-forked as chirp-logged-out-r7 in I318. Comment posted on issue #35."
+  },
+  {
+   "slug": "chirp-logged-out-r7",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I322",
+   "action": "Re-forked as chirp-logged-out-r8 in I322."
+  },
+  {
+   "slug": "chirp-logged-out-r8",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I326",
+   "action": "Re-forked as chirp-logged-out-r9 in I326."
+  },
+  {
+   "slug": "chirp-logged-out-r9",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I330",
+   "action": "Re-forked as chirp-logged-out-r10 in I330."
+  },
+  {
+   "slug": "chirp-logged-out-r10",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I337",
+   "action": "Re-forked as chirp-logged-out-r11 in I337."
+  },
+  {
+   "slug": "chirp-logged-out-r11",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I345",
+   "action": "Re-forked as chirp-logged-out-r12 in I345."
+  },
+  {
+   "slug": "chirp-logged-out-r12",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I352",
+   "stall_evidence": "Head UNCHANGED at 21dca556 through all 4 new cycle checks. No SYNTHESIS.md. CI 6/6 ALL PASS on 21dca556.",
+   "action": "Re-forked as chirp-logged-out-r13 in I352."
+  },
+  {
+   "slug": "chirp-logged-out-r13",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I356",
+   "stall_evidence": "Head UNCHANGED at 21dca556 through all 4 stall checks. No SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r14 in I356."
+  },
+  {
+   "slug": "chirp-logged-out-r14",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I360",
+   "stall_evidence": "Head UNCHANGED at 21dca556 through all 4 stall checks. No SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r15 in I360."
+  },
+  {
+   "slug": "chirp-logged-out-r15",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I364",
+   "stall_evidence": "Head UNCHANGED at 21dca556 through all 4 stall checks. No SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r16 in I364."
+  },
+  {
+   "slug": "chirp-logged-out-r16",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I368",
+   "stall_evidence": "Head UNCHANGED at 21dca556 through all 4 stall checks. No SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r17 in I368."
+  },
+  {
+   "slug": "chirp-logged-out-r17",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I372",
+   "stall_evidence": "Head UNCHANGED at 21dca556 through all 4 stall checks. No SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r18 in I372."
+  },
+  {
+   "slug": "chirp-logged-out-r18",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I379",
+   "stall_evidence": "Head UNCHANGED at 617f2539 through all 4 stall checks. No SYNTHESIS.md. r18 advanced head from 21dca556 to 617f2539 but then stalled.",
+   "stall_comment": "https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6680286236",
+   "action": "Re-forked as chirp-logged-out-r19 in I380."
+  },
+  {
+   "slug": "chirp-logged-out-r19",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I384",
+   "stall_evidence": "Head UNCHANGED at 617f2539 through all 4 stall checks. No SYNTHESIS.md.",
+   "stall_comment": "https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6680541037",
+   "action": "Re-forked as chirp-logged-out-r20 in I384."
+  },
+  {
+   "slug": "chirp-logged-out-r20",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I388",
+   "stall_evidence": "Head UNCHANGED at 617f2539 through all 4 stall checks. No SYNTHESIS.md.",
+   "stall_comment": "https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6680772715",
+   "action": "Re-forked as chirp-logged-out-r21 in I388."
+  },
+  {
+   "slug": "chirp-logged-out-r21",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I392",
+   "stall_evidence": "Head UNCHANGED at 617f2539 through all 4 stall checks. No SYNTHESIS.md.",
+   "stall_comment": "https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6680995793",
+   "action": "Re-forked as chirp-logged-out-r22 in I392."
+  },
+  {
+   "slug": "chirp-logged-out-r22",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I396",
+   "stall_evidence": "Head UNCHANGED at 617f2539 through all 4 stall checks. No SYNTHESIS.md.",
+   "stall_comment": "https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6681283153",
+   "action": "Re-forked as chirp-logged-out-r23 in I396."
+  },
+  {
+   "slug": "chirp-logged-out-r23",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I402",
+   "stall_evidence": "Head UNCHANGED at decb6196 through all 4 stall checks (I399=1/4, I400=2/4, I401=3/4, I402=4/4). No SYNTHESIS.md produced. Only _BRIEF.md and _FORK.md in workspace — no child tasks started.",
+   "stall_comment": "https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6681734893",
+   "action": "Re-forked as chirp-logged-out-r24 in I402."
+  },
+  {
+   "slug": "chirp-logged-out-r24",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I406",
+   "stall_evidence": "Head UNCHANGED at decb6196 through all 4 stall checks (I403=1/4, I404=2/4, I405=3/4, I406=4/4). No SYNTHESIS.md produced. Only _BRIEF.md and _FORK.md in workspace — DAG dispatched I402 but not running.",
+   "stall_comment": "https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6681974435",
+   "action": "Re-forked as chirp-logged-out-r25 in I407."
+  }
+ ],
+ "dags_folded": [
+  {
+   "slug": "review-ferric-async-forms-r3",
+   "goal": "Review PR #193 after ferric-async-forms-r3 remediation",
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "APPROVE",
+   "synthesis_path": "taskflow/dags/review-ferric-async-forms-r3/SYNTHESIS.md",
+   "pr": 193,
+   "folded_confirmed_in": "overseer/I292",
+   "non_blockers": ["#248", "#249", "#250", "#251", "#252", "#253"]
+  },
+  {
+   "slug": "review-ferric-ssr-r2",
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "APPROVE",
+   "synthesis_path": "taskflow/dags/review-ferric-ssr-r2/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I285",
+   "non_blockers": ["#245", "#246", "#247"]
+  },
+  {
+   "slug": "ferric-ssr-r4",
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/ferric-ssr-r4/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I280"
+  },
+  {
+   "slug": "ferric-async-forms-r3",
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/ferric-async-forms-r3/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I281"
+  }
+ ],
+ "ferric_ssr_goal": {
+  "goal_slug": "ferric-ssr",
+  "issues": ["#223", "#224", "#226"],
+  "branch": "work/ferric-ssr-r1",
+  "pr": 228,
+  "status": "LANDED",
+  "merged_at": "2026-11-06T00:15:41Z",
+  "merge_sha": "62febf5faf6023b3492358d246c7ac39c9f699a3",
+  "code_verdict": "PASS (ferric-ssr-r4, 7 CI checks green)",
+  "review_verdict": "APPROVE (review-ferric-ssr-r2, confirmed I285)",
+  "board_status": "Done (issues #223/#224/#226 closed)"
+ },
+ "ferric_async_forms_goal": {
+  "goal_slug": "ferric-async-forms",
+  "issues": ["#130", "#143", "#144", "#145"],
+  "branch": "work/ferric-async-forms-r2",
+  "pr": 193,
+  "head_sha": "838239e11f131484d4db617fb25dc6e5ea435be1",
+  "status": "LANDED",
+  "merged_at": "2026-11-06T02:03:17Z",
+  "merge_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+  "code_verdict": "PASS (ferric-async-forms-r3, head 838239e, 6 CI checks green)",
+  "review_verdict": "APPROVE (review-ferric-async-forms-r3, confirmed I292)",
+  "non_blockers_filed": ["#248", "#249", "#250", "#251", "#252", "#253"],
+  "board_status": "Done (issue #130 closed, sub-issues #143/#144/#145 closed in I295, all board Done)"
+ },
+ "chirp_logged_out_goal": {
+  "goal_slug": "chirp-logged-out",
+  "issues": ["#35"],
+  "branch": "work/chirp-logged-out",
+  "pr": 263,
+  "current_dag": "chirp-logged-out-r25 (forked I407)",
+  "head_sha_at_r25_dispatch": "decb6196c2c1e6ed421d393a642f0c844cc333ba",
+  "head_sha_current": "decb6196c2c1e6ed421d393a642f0c844cc333ba",
+  "r24_stall_confirmed": "4/4 against decb6196 (I406). Stall comment posted: https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6681974435",
+  "r25_stall_check_count": 0,
+  "code_verdict": "PENDING — chirp-logged-out-r25 IN FLIGHT (forked I407). First priority: assess decb6196 and write SYNTHESIS.md. CI ALL 6 PASS on decb6196 (run 42194072348). PR #263 OPEN/MERGEABLE/CI-green.",
+  "review_verdict": "NOT YET",
+  "board_status": "In Progress (#35 OPEN/In Progress — PR #263 open, r25 in flight)"
+ },
+ "board": {
+  "project_id": "PVT_kwDOEB9jls4BlZH4",
+  "latest_issue_update": "2026-11-06T03:03:12Z",
+  "hygiene_check_I407": [
+   "I407: fork chirp-logged-out-r25 as swe-coder. r25 forked. Brief at taskflow/dags/chirp-logged-out-r25/_BRIEF.md.",
+   "r24 moved to dags_stalled (stall confirmed I406, comment posted).",
+   "r25 dispatched — first priority: assess decb6196 and write SYNTHESIS.md.",
+   "Free DAG slots: 3 (r25 in flight).",
+   "PR #263: OPEN/MERGEABLE (head decb6196). CI ALL 6 PASS. No reviews.",
+   "Issue #35: OPEN/In Progress/assigned (mattsmcknight).",
+   "ArgoCD: OutOfSync/Healthy/cb1ced3 — benign StatefulSet drift unchanged (since I303).",
+   "Open PRs: PR #263 only (work/chirp-logged-out).",
+   "Board hygiene: issues #254-#262 on board as Todo.",
+   "I408 scheduled as board check / stall check 1/4 for r25 (+15 min from fork or r25 completion)."
+  ]
+ },
+ "product_readiness": {
+  "issue_35": {
+   "title": "Logged-out reading and a useful landing with accurate states",
+   "dependencies": ["#56 (durable persistence) — DONE", "#228 (ferric SSR) — DONE"],
+   "status": "IN PROGRESS — chirp-logged-out-r25 IN FLIGHT (forked I407). Head decb6196. CI ALL 6 PASS — PR #263 CI-green and MERGEABLE.",
+   "note": "r10 pushed feature-complete code. r12 pushed AC-4 sign-up form (21dca556). r13-r17 stalled at 21dca556. r18 advanced to 617f2539. r19-r22 stalled at 617f2539. r23 advanced to decb6196 (I399) — CI ALL 6 PASS on decb6196 — then stalled (4/4, I402). r24 dispatched I402, stalled at decb6196 (4/4, I406). r25 forked I407 as swe-coder with explicit first priority: assess decb6196 and write SYNTHESIS.md."
+  },
+  "issue_130": {
+   "title": "Async resources, expanded events, form binding (async-forms epic)",
+   "status": "DONE — PR #193 merged I294, issues #130/#143/#144/#145 all closed I295",
+   "note": "Issues #36-#42 (features requiring #130) now unblocked from #130 dependency. Still depend on #83 (identity/sessions) for authenticated user features."
+  }
+ },
+ "deployment_check": {
+  "last_checked": "2026-11-06T10:35:00Z",
+  "checked_in": "overseer/I400",
+  "argocd_sync_status": "OutOfSync",
+  "argocd_health_status": "Healthy",
+  "argocd_synced_revision": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+  "main_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+  "out_of_sync_detail": "chirp-postgres StatefulSet only — benign k8s spec drift (auto-managed fields). Same as I303–I407. App is Healthy.",
+  "verdict": "EFFECTIVELY_SYNCED — ArgoCD at cb1ced3 (PR #193). OutOfSync status is benign StatefulSet drift only. App Healthy. No new commits to main since PR #193.",
+  "note": "OutOfSync status unchanged from I303–I407 — chirp-postgres StatefulSet drift only. No new main commits. Main HEAD = cb1ced3. Re-confirmed I406."
+ },
+ "forward_plan": {
+  "I407": "DONE — forked chirp-logged-out-r25 as swe-coder. Brief at taskflow/dags/chirp-logged-out-r25/_BRIEF.md. Full stall history carried. First priority: assess decb6196 and write SYNTHESIS.md.",
+  "I408": "board check / stall check 1/4 for r25 (+15 min from fork or r25 completion, whichever fires first).",
+  "after_r25_synthesis_pass": "Dispatch review DAG (swe-reviewer) for PR #263. PR is CLEAN/MERGEABLE/CI-green.",
+  "after_r25_synthesis_fail": "Dispatch chirp-logged-out-r26 remediation carrying blockers from SYNTHESIS.md."
+ },
+ "main_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+ "open_prs_check_I407": "PR #263 OPEN/MERGEABLE on work/chirp-logged-out (head decb6196). CI ALL 6 PASS (run 42194072348, confirmed I406). r25 forked I407.",
+ "free_dag_slots": 3
+}

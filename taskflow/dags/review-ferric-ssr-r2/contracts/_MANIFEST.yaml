@@ -1,0 +1,15 @@
+kind: yaml_schema
+description: Contract for review-ferric-ssr-r2 spokes to synthesis handoff
+
+ownership:
+  SUBTASK_b1_verify: SUBTASK_b1_verify/b1_verdict.md
+  SUBTASK_b2_verify: SUBTASK_b2_verify/b2_verdict.md
+  SUBTASK_regression: SUBTASK_regression/regression_verdict.md
+  SUBTASK_synthesis: SYNTHESIS.md
+
+identities:
+  - all_requirements_covered: "REQ-HYD-003, REQ-SSR-006, REQ-SSR-001..005, REQ-HYD-001..004, REQ-MIS-001..002 each appear in at least one spoke verdict"
+  - no_blocker_under_approve: "SYNTHESIS.md verdict APPROVE must not coexist with any blocker finding in any spoke"
+
+derived_artifacts:
+  - contracts/verdict_schema.md: template consumed by all three spoke tasks

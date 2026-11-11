@@ -1,0 +1,304 @@
+{
+ "current_pointer": "overseer/I341",
+ "checked_at": "2026-11-05T00:45:00Z",
+ "escalations": {
+  "escalation_i77_dispatch_fault": {
+   "status": "CLEARED",
+   "cleared_at": "2026-11-03T05:08:16Z",
+   "cleared_in": "overseer/I145"
+  },
+  "escalation_ferric_async_forms_budget_exhausted": {
+   "status": "CLEARED",
+   "label": "ferric-async-forms remediation budget exhausted — 3 unresolved blockers after 2 code DAG attempts + 1 full review cycle",
+   "pr": 193,
+   "cleared_at": "2026-11-05T22:00:00Z",
+   "cleared_reason": "Reclassified per corrected app policy: a REQUEST-CHANGES review with fixable blockers is ordinary remediation (two successful DAGs), not a budget-exhausted user-gate escalation.",
+   "cleared_in": "overseer/I279"
+  },
+  "escalation_review_ferric_http_r2_stall": {
+   "status": "CLEARED",
+   "cleared_at": "2026-11-04T21:35:16Z",
+   "cleared_in": "overseer/I245"
+  },
+  "escalation_ferric_ssr_budget_exhausted": {
+   "status": "CLEARED",
+   "label": "ferric-ssr remediation budget exhausted — 2 hard blockers after 2 code DAG attempts + 1 full review cycle",
+   "pr": 228,
+   "cleared_at": "2026-11-05T22:00:00Z",
+   "cleared_reason": "Reclassified per corrected app policy: ordinary remediation, not escalation.",
+   "cleared_in": "overseer/I279"
+  }
+ },
+ "prs": {
+  "PR113": { "status": "MERGED", "note": "Epic #56 and sub-issues Done." },
+  "PR128": { "status": "MERGED", "note": "Design: Ferric 1.0 framework design. All 10 design docs on main." },
+  "PR182": { "status": "MERGED" },
+  "PR183": { "status": "MERGED" },
+  "PR187": { "status": "MERGED" },
+  "PR188": { "status": "MERGED", "note": "#129 and authoring model sub-issues Done." },
+  "PR193": {
+   "status": "MERGED",
+   "branch": "work/ferric-async-forms-r2",
+   "merged_at": "2026-11-06T02:03:17Z",
+   "merge_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+   "head_sha": "838239e11f131484d4db617fb25dc6e5ea435be1",
+   "note": "ferric-async-forms-r3 PASS, review-ferric-async-forms-r3 APPROVE. Merged I294. Issue #130 closed, sub-issues #143/#144/#145 closed in I295. Board Done.",
+   "issues_closed": ["#130", "#143", "#144", "#145"]
+  },
+  "PR203": { "status": "MERGED", "note": "#131 and router sub-issues Done." },
+  "PR209": { "status": "MERGED", "note": "#206 Done." },
+  "PR210": { "status": "MERGED", "note": "#132 and #148 Done." },
+  "PR228": {
+   "status": "MERGED",
+   "branch": "work/ferric-ssr-r1",
+   "merged_at": "2026-11-06T00:15:41Z",
+   "merge_sha": "62febf5faf6023b3492365d246c7ac39c9f699a3",
+   "note": "ferric-ssr-r4 PASS, review-ferric-ssr-r2 APPROVE. Issues #223/#224/#226 closed, board Done. Non-blockers #245/#246/#247 filed.",
+   "issues": ["#223", "#224", "#226"],
+   "non_blockers_filed": ["#245", "#246", "#247"]
+  },
+  "PR263": {
+   "status": "OPEN",
+   "branch": "work/chirp-logged-out",
+   "created_at": "2026-11-06T04:25:19Z",
+   "title": "feat: logged-out reading and accurate landing states (#35)",
+   "issues": ["#35"],
+   "head_sha": "fed1fc8e187d2e706c0aa5d8a6a1f65fb5e92411",
+   "prev_head_sha_i340": "e02b1d8af69113e6a51ec8ccf1092f61f382c833",
+   "mergeable": "MERGEABLE",
+   "ci_status": "5/6 PASS in progress — run 42171295267 (clippy/doc/fmt/test/wasm PASS; image PENDING) against head fed1fc8e",
+   "ci_run": "42171295267",
+   "new_commit": "fed1fc8e — fix(chirp-frontend): align public API structs with backend wire format",
+   "note": "r11 4th check (I341): no SYNTHESIS.md. HEAD ADVANCED from e02b1d8a → fed1fc8e (new commit fed1fc8e). Stall concern DOWNGRADED — r11 is actively working. CI run 42171295267 in_progress (image pending). 5th check at I342 (+15 min)."
+  }
+ },
+ "dags_in_flight": [
+  {
+   "slug": "chirp-logged-out-r11",
+   "goal": "Complete the logged-out visitor experience: public timeline, public user profiles, accurate landing states (issue #35). Continue from r10 branch state (head e02b1d8a, CI all green). Verify AC-1–AC-5, complete gaps, produce SYNTHESIS.md.",
+   "issues": ["#35"],
+   "kind": "code",
+   "state": "IN_FLIGHT",
+   "dispatched_in": "overseer/I337",
+   "dag_process_id": "chirp-logged-out-r11",
+   "synthesis_path": "taskflow/dags/chirp-logged-out-r11/SYNTHESIS.md",
+   "pr": 263,
+   "branch": "work/chirp-logged-out",
+   "last_checked_in": "overseer/I341",
+   "last_check_result": "4th check (I341): no SYNTHESIS.md. HEAD ADVANCED to fed1fc8e (commit: fix(chirp-frontend): align public API structs with backend wire format). Stall concern DOWNGRADED. CI run 42171295267 in_progress (5/6 PASS, image pending).",
+   "check_cycles": 4,
+   "stall_concern": false,
+   "stall_concern_raised_at": "overseer/I340",
+   "stall_concern_downgraded_at": "overseer/I341",
+   "stall_threshold": "4th check (I341) — head advanced; stall concern downgraded",
+   "stall_confirmed": false,
+   "pr_open": true,
+   "head_sha": "fed1fc8e187d2e706c0aa5d8a6a1f65fb5e92411",
+   "ci_status": "5/6 PASS in_progress — run 42171295267 (image pending)",
+   "ci_blocker": null,
+   "new_commit": "fed1fc8e — fix(chirp-frontend): align public API structs with backend wire format"
+  }
+ ],
+ "dags_stalled": [
+  {
+   "slug": "chirp-logged-out",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I298",
+   "stall_evidence": "Directory contained only _BRIEF.md and _FORK.md after 6 check cycles (I285, I292, I295, I296, I297, I298). No child tasks, no branch push, no SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r2 in I298."
+  },
+  {
+   "slug": "chirp-logged-out-r2",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I302",
+   "stall_evidence": "Directory contained only _BRIEF.md and _FORK.md after 4 check cycles (I299, I300, I301, I302). No child tasks, no branch push, no SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r3 in I302. Comment posted on issue #35."
+  },
+  {
+   "slug": "chirp-logged-out-r3",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I306",
+   "stall_evidence": "Directory contained only _FORK.md after 4 check cycles (I303, I304, I305, I306). No child tasks, no branch push, no SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r4 in I306. Comment posted on issue #35."
+  },
+  {
+   "slug": "chirp-logged-out-r4",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I310",
+   "stall_evidence": "Directory contained only _FORK.md after 4 check cycles (I307, I308, I309, I310). No child tasks, no branch push, no SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r5 in I310. Comment posted on issue #35."
+  },
+  {
+   "slug": "chirp-logged-out-r5",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I314",
+   "stall_evidence": "Directory contained only _FORK.md after 4 check cycles (I311, I312, I313, I314). No child tasks, no branch push, no SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r6 in I314. Comment posted on issue #35 (https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6676485084)."
+  },
+  {
+   "slug": "chirp-logged-out-r6",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I318",
+   "stall_evidence": "Directory contained only _FORK.md at 4th check (I318). No child tasks, no branch push, no SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r7 in I318. Comment posted on issue #35 (https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6676692986)."
+  },
+  {
+   "slug": "chirp-logged-out-r7",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I322",
+   "stall_evidence": "Directory contained only _FORK.md at 4th check (I322). No child tasks, no branch push, no SYNTHESIS.md. Checks: I319 (no concern), I320 (no concern), I321 (STALL CONCERN), I322 (STALL CONFIRMED).",
+   "action": "Re-forked as chirp-logged-out-r8 in I322. Comment posted on issue #35 (https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6676838909)."
+  },
+  {
+   "slug": "chirp-logged-out-r8",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I326",
+   "stall_evidence": "Directory contained only _FORK.md at 4th check (I326). No child tasks, no branch push, no SYNTHESIS.md. Checks: I323 (not stalled — PR #263 opened), I324 (2nd check), I325 (3rd check, STALL CONCERN), I326 (4th check, STALL CONFIRMED). r8 opened PR #263 but then produced no SYNTHESIS.md.",
+   "action": "Re-forked as chirp-logged-out-r9 in I326. Stall comment posted on issue #35 (https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6677025157)."
+  },
+  {
+   "slug": "chirp-logged-out-r9",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I330",
+   "stall_evidence": "Directory contained only _FORK.md at 4th check (I330). No child tasks, no branch push, no SYNTHESIS.md. r9 DID push real code and fixed the wasm blocker; CI is ALL GREEN (run 42163921966, head 2615ba1d).",
+   "action": "Re-forked as chirp-logged-out-r10 in I330. Stall comment posted on issue #35 (https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6677215515)."
+  },
+  {
+   "slug": "chirp-logged-out-r10",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I337",
+   "stall_evidence": "Directory contained only _BRIEF.md and _FORK.md after 7 check cycles (I331–I337). No child tasks, no SYNTHESIS.md. Head e02b1d8a UNCHANGED from I330 dispatch (no new commits). r10 DID push real code: backend APIs (eaf96cf: GET /api/chirps + GET /api/users/:username/chirps) and frontend (e02b1d8a: landing/public_profile/sign_in/sign_up routes with states). CI ALL 6 PASS (run 42169201251).",
+   "action": "Re-forked as chirp-logged-out-r11 in I337. Stall comment posted on issue #35 (https://github.com/Nousix-LLC/nswe-demo/issues/35#issuecomment-6677962335)."
+  }
+ ],
+ "dags_folded": [
+  {
+   "slug": "review-ferric-async-forms-r3",
+   "goal": "Review PR #193 after ferric-async-forms-r3 remediation",
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "APPROVE",
+   "synthesis_path": "taskflow/dags/review-ferric-async-forms-r3/SYNTHESIS.md",
+   "pr": 193,
+   "folded_confirmed_in": "overseer/I292",
+   "non_blockers": ["#248", "#249", "#250", "#251", "#252", "#253"]
+  },
+  {
+   "slug": "review-ferric-ssr-r2",
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "APPROVE",
+   "synthesis_path": "taskflow/dags/review-ferric-ssr-r2/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I285",
+   "non_blockers": ["#245", "#246", "#247"]
+  },
+  {
+   "slug": "ferric-ssr-r4",
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/ferric-ssr-r4/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I280"
+  },
+  {
+   "slug": "ferric-async-forms-r3",
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/ferric-async-forms-r3/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I281"
+  }
+ ],
+ "ferric_ssr_goal": {
+  "goal_slug": "ferric-ssr",
+  "issues": ["#223", "#224", "#226"],
+  "branch": "work/ferric-ssr-r1",
+  "pr": 228,
+  "status": "LANDED",
+  "merged_at": "2026-11-06T00:15:41Z",
+  "merge_sha": "62febf5faf6023b3492365d246c7ac39c9f699a3",
+  "code_verdict": "PASS (ferric-ssr-r4, 7 CI checks green)",
+  "review_verdict": "APPROVE (review-ferric-ssr-r2, confirmed I285)",
+  "board_status": "Done (issues #223/#224/#226 closed)"
+ },
+ "ferric_async_forms_goal": {
+  "goal_slug": "ferric-async-forms",
+  "issues": ["#130", "#143", "#144", "#145"],
+  "branch": "work/ferric-async-forms-r2",
+  "pr": 193,
+  "head_sha": "838239e11f131484d4db617fb25dc6e5ea435be1",
+  "status": "LANDED",
+  "merged_at": "2026-11-06T02:03:17Z",
+  "merge_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+  "code_verdict": "PASS (ferric-async-forms-r3, head 838239e, 6 CI checks green)",
+  "review_verdict": "APPROVE (review-ferric-async-forms-r3, confirmed I292)",
+  "non_blockers_filed": ["#248", "#249", "#250", "#251", "#252", "#253"],
+  "board_status": "Done (issue #130 closed, sub-issues #143/#144/#145 closed in I295, all board Done)"
+ },
+ "chirp_logged_out_goal": {
+  "goal_slug": "chirp-logged-out",
+  "issues": ["#35"],
+  "branch": "work/chirp-logged-out",
+  "pr": 263,
+  "current_dag": "chirp-logged-out-r11",
+  "code_verdict": "PENDING — chirp-logged-out-r11 IN FLIGHT (dispatched I337, 4th check I341: no SYNTHESIS.md, HEAD ADVANCED to fed1fc8e, stall concern DOWNGRADED). CI run 42171295267 in_progress (5/6 PASS, image pending). 5th check at I342.",
+  "review_verdict": "NOT YET",
+  "board_status": "In Progress (#35 OPEN/In Progress — PR #263 open, r11 dispatched I337)"
+ },
+ "board": {
+  "project_id": "PVT_kwDOEB9jls4BlZH4",
+  "latest_issue_update": "2026-11-05T00:45:00Z",
+  "hygiene_check_I341": [
+   "r11 4th check (I341): no SYNTHESIS.md — r11 still running.",
+   "HEAD ADVANCED from e02b1d8a → fed1fc8e (commit: fix(chirp-frontend): align public API structs with backend wire format).",
+   "Stall concern DOWNGRADED — r11 is actively working.",
+   "CI PR #263: run 42171295267 in_progress — 5/6 PASS (image pending), against new head fed1fc8e.",
+   "ArgoCD: OutOfSync/Healthy/cb1ced3 — benign StatefulSet drift unchanged.",
+   "PR #263: OPEN/MERGEABLE. Issue #35: OPEN/In Progress.",
+   "5th check at I342 (+15 min)."
+  ]
+ },
+ "product_readiness": {
+  "issue_35": {
+   "title": "Logged-out reading and a useful landing with accurate states",
+   "dependencies": ["#56 (durable persistence) — DONE", "#228 (ferric SSR) — DONE"],
+   "status": "IN PROGRESS — chirp-logged-out-r11 dispatched (I337). r11 4th check (I341): no SYNTHESIS.md, HEAD ADVANCED to fed1fc8e (stall concern downgraded). 5th check at I342.",
+   "note": "r10 pushed feature-complete code (eaf96cf: backend APIs + e02b1d8a: frontend routes). r11 picked up from that state and pushed fix(chirp-frontend) commit fed1fc8e. Actively working."
+  },
+  "issue_130": {
+   "title": "Async resources, expanded events, form binding (async-forms epic)",
+   "status": "DONE — PR #193 merged I294, issues #130/#143/#144/#145 all closed I295",
+   "note": "Issues #36-#42 (features requiring #130) now unblocked from #130 dependency. Still depend on #83 (identity/sessions) for authenticated user features."
+  }
+ },
+ "deployment_check": {
+  "last_checked": "2026-11-05T00:45:00Z",
+  "checked_in": "overseer/I341",
+  "argocd_sync_status": "OutOfSync",
+  "argocd_health_status": "Healthy",
+  "argocd_synced_revision": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+  "main_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+  "out_of_sync_detail": "chirp-postgres StatefulSet only — benign k8s spec drift (auto-managed fields). Same as I303–I341. App is Healthy.",
+  "verdict": "EFFECTIVELY_SYNCED — ArgoCD at cb1ced3 (PR #193). OutOfSync status is benign StatefulSet drift only. App Healthy. No new commits to main since PR #193.",
+  "note": "OutOfSync status unchanged from I303–I341 — chirp-postgres StatefulSet drift only. No new main commits. Main HEAD = cb1ced3."
+ },
+ "forward_plan": {
+  "I341": "DONE — r11 4th check: no SYNTHESIS.md but HEAD ADVANCED to fed1fc8e (stall concern downgraded). CI run 42171295267 in_progress (5/6 PASS, image pending). ArgoCD OutOfSync/Healthy/cb1ced3 (benign). PR #263 OPEN/MERGEABLE. Scheduled I342 for 5th check (+15 min).",
+  "I342": "5th check of r11 (chirp-logged-out-r11): check SYNTHESIS.md, CI run 42171295267 (wait for image), head. Reset stall counter since head advanced. Apply 4-check stall rule fresh from this iteration.",
+  "after_chirp_logged_out_pass": "Dispatch review DAG (swe-reviewer) for PR #263.",
+  "after_chirp_logged_out_fail": "Dispatch chirp-logged-out-r12 (swe-coder) remediation carrying blockers from SYNTHESIS.md."
+ },
+ "main_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+ "open_prs_check_I341": "PR #263 OPEN/MERGEABLE on work/chirp-logged-out (head fed1fc8e — ADVANCED from e02b1d8a). CI run 42171295267 in_progress (5/6 PASS, image pending). r11 4th check: no SYNTHESIS.md, HEAD ADVANCED, stall concern DOWNGRADED. 5th check at I342.",
+ "free_dag_slots": 2
+}

@@ -1,0 +1,45 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T05:18:27.405469067Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_architecture_contract_review"
+      ],
+      "placement_parent_task_id": "review-chirp-server"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_architecture_contract_review",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the architecture/layering/frozen-contract-conformance review spoke (one of four parallel review lenses).",
+        "task_id": "review-chirp-server"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_architecture_contract_review": [],
+      "SUBTASK_rust_soundness_review": [],
+      "review-chirp-server": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_architecture_contract_review",
+          "SUBTASK_rust_soundness_review",
+          "review-chirp-server"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

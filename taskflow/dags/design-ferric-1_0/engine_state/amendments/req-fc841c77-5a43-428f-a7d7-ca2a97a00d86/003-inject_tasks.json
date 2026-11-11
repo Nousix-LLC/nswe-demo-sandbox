@@ -1,0 +1,59 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-22T02:20:26.458631595Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_authoring_model"
+      ],
+      "placement_parent_task_id": "design-ferric-1_0"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_authoring_model",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the authoring-model spoke (concern 3: view! macro, props/children/slots, context); depends on the scope/requirements spine.",
+        "task_id": "design-ferric-1_0"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_authoring_model": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "SUBTASK_scope_and_requirements": [],
+      "SUBTASK_ssr_hydration": [
+        "SUBTASK_scope_and_requirements"
+      ],
+      "design-ferric-1_0": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scope_and_requirements",
+          "design-ferric-1_0"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_authoring_model",
+          "SUBTASK_ssr_hydration"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "current_pointer": "overseer/I144",
+  "checked_at": "2026-11-03T04:08:00Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "OPEN",
+      "label": "Bug5 dispatch fault — frozen DAGs never real-dispatched",
+      "frozen_dags": [
+        "remediate-epic-persist-r1c",
+        "remediate-epic-persist-r1b",
+        "design-ferric-1_0-r2"
+      ],
+      "last_bug5_entry": "2026-11-03T02:48:57Z",
+      "unchanged_since": "I122",
+      "last_checked_at": "2026-11-03T04:08:00Z",
+      "clearing_condition": "a fresh fork that grows content / dispatches its root (SUBTASK_*, SYNTHESIS.md, or scheduler Dispatch entry post-Bug5)",
+      "note": "review-epic-persist-r2 forked in I143 at ~04:01Z. In I144 checks: workspace still only _BRIEF.md + _FORK.md, no SUBTASK_* files, no SYNTHESIS.md, no scheduler directory. Overseer scheduler log has no Dispatch entry for review-epic-persist-r2 since fork. Bug5 dispatch fault pattern continues. I145 must re-check. If still unresolved after I147, escalate to user."
+    }
+  },
+  "prs": {
+    "PR113": {
+      "status": "OPEN",
+      "mergeStateStatus": "CLEAN",
+      "head": "a129e2b87d8e32aa84d37e9806128ee523949bf1",
+      "ci_run": "41574641685",
+      "ci_status": "all_green",
+      "doc": "SUCCESS",
+      "fmt": "SUCCESS",
+      "clippy": "SUCCESS",
+      "test": "SUCCESS",
+      "wasm": "SUCCESS",
+      "image": "SUCCESS",
+      "image_completed_at": "2026-11-03T03:56:21Z",
+      "updated_at": "2026-11-03T03:52:52Z",
+      "eligible_for_landing": false,
+      "review_result": "REQUEST-CHANGES",
+      "review_dag": "review-epic-persist-r2",
+      "review_r2_status": "IN_FLIGHT",
+      "review_r2_launched_at": "2026-11-03T04:01:00Z",
+      "note": "Machine-PASS gate met (all CI green at a129e2b). review-epic-persist-r2 in flight but not dispatched by engine (Bug5 pattern). CI unchanged; no new PR comments or reviews since I143. Awaiting review fold for landing decision."
+    },
+    "PR128": {
+      "status": "OPEN",
+      "branch": "work/design-ferric-1_0",
+      "title": "design: Ferric 1.0 framework design",
+      "mergeStateStatus": "CLEAN",
+      "head": "9dcd978dcc002b6570ebb72a579dcd56c31068e5",
+      "ci_all_green": true,
+      "updated_at": "2026-10-29T16:25:00Z",
+      "board_gap": true,
+      "note": "All CI green, CLEAN. No review DAG dispatched. Board gap (36 Ferric 1.0 issues #129-#164) deferred until escalation clears."
+    }
+  },
+  "dags_in_flight": [
+    {
+      "id": "review-epic-persist-r2",
+      "kind": "review",
+      "launched_at": "2026-11-03T04:01:00Z",
+      "pr": "113",
+      "status": "FORKED",
+      "dispatch_evidence": "none",
+      "note": "Bug5 pattern — workspace shows no content growth since fork"
+    }
+  ],
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-10-29T16:32:22Z",
+    "latest_pr_update": "2026-11-03T03:52:52Z",
+    "board_gap": {
+      "issues": "#129-#164",
+      "count": 36,
+      "pr": "#128",
+      "deferred": "until escalation clears"
+    }
+  },
+  "main_sha": "276138f",
+  "deployment_check": "no drift (origin/main=276138fb049faaa946d253c4bb58e73fe09d5a54=276138f, not checked in I144 — no drift trigger)",
+  "free_dag_slots": 3,
+  "persist_remediation_budget": {
+    "total": 2,
+    "spent": 0,
+    "note": "Review-epic-persist blocker (doc) resolved by commit a129e2b (not a remediation DAG). Budget untouched."
+  },
+  "dispatch_fault_watch": {
+    "review_epic_persist_r2_no_dispatch_count": 1,
+    "first_check": "overseer/I144",
+    "escalate_after_iteration": "overseer/I147"
+  }
+}

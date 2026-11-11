@@ -1,0 +1,51 @@
+{
+  "sequence": 5,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T06:57:29.924152810Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_scope_verification"
+      ],
+      "placement_parent_task_id": "review-containerize"
+    },
+    "resulting_version": 5,
+    "summary": "inject tasks: SUBTASK_scope_verification",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize spoke 5: verification depth & scope conformance (concerns 7, 8) — cross-cutting review judgments over the whole diff.",
+        "task_id": "review-containerize"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_dockerfile_build": [],
+      "SUBTASK_operability_docs": [],
+      "SUBTASK_rustcode_sigterm": [],
+      "SUBTASK_scope_verification": [],
+      "SUBTASK_security_supplychain": [],
+      "review-containerize": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_dockerfile_build",
+          "SUBTASK_operability_docs",
+          "SUBTASK_rustcode_sigterm",
+          "SUBTASK_scope_verification",
+          "SUBTASK_security_supplychain",
+          "review-containerize"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

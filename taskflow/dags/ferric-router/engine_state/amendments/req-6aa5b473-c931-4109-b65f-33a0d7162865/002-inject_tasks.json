@@ -1,0 +1,55 @@
+{
+  "sequence": 2,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-06T19:45:25.126044650Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_matcher"
+      ],
+      "placement_parent_task_id": "ferric-router"
+    },
+    "resulting_version": 2,
+    "summary": "inject tasks: SUBTASK_matcher",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the route-matcher spoke: implements the pure, browser-free src/matcher.rs (Params, RoutePattern::new/match_path, param extraction) with native unit tests. Depends on scaffold (edits the stub it created).",
+        "task_id": "ferric-router"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_matcher": [
+        "SUBTASK_scaffold"
+      ],
+      "SUBTASK_scaffold": [],
+      "ferric-router": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scaffold",
+          "ferric-router"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_matcher"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

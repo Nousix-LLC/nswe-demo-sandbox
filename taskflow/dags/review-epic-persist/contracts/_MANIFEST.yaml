@@ -1,0 +1,79 @@
+kind: taxonomy
+purpose: >
+  Code-review finding taxonomy for the PR #113 review DAG. Fixes, before any concern spoke runs, the
+  structure every spoke's findings.md must have so the synthesis gate can fold seven reviews into one
+  verdict mechanically, without reconciling divergent finding formats after the fact.
+
+pinned_commit: "09fa453c3c40e39a9b4647e0de6e00dcf50ecb21"
+pr: "Nousix-LLC/nswe-demo#113"
+
+artifacts:
+  - path: contracts/finding_schema.md
+    kind: taxonomy
+    declares: >
+      The per-concern findings.md document structure, the per-finding field set, the severity rubric,
+      the location/citation format, and the concern sub-verdict vocabulary.
+
+ownership:
+  SUBTASK_correctness: [SUBTASK_correctness/outputs/findings.md]
+  SUBTASK_durability_proof: [SUBTASK_durability_proof/outputs/findings.md]
+  SUBTASK_code_quality: [SUBTASK_code_quality/outputs/findings.md]
+  SUBTASK_architecture_contract: [SUBTASK_architecture_contract/outputs/findings.md]
+  SUBTASK_security: [SUBTASK_security/outputs/findings.md]
+  SUBTASK_operational_readiness: [SUBTASK_operational_readiness/outputs/findings.md]
+  SUBTASK_ci_doc_diagnosis: [SUBTASK_ci_doc_diagnosis/outputs/findings.md]
+  SUBTASK_synthesis:
+    - SYNTHESIS.md              # root verdict at the fold location (observation seam)
+    - gh:pr-review/113          # the posted review comment + inline comments
+    - gh:backlog-issues         # filed non-blocking findings
+
+severity_rubric:
+  blocker: >
+    Blocks landing. An acceptance criterion (#65/#66/#67) or a design requirement (durable-persistence
+    requirement, an applicable BAR-*) that the change does not actually deliver or delivers incorrectly;
+    an unproven acceptance criterion; a security exposure or committed/loggable secret; an operational gap
+    that makes the store unsafe or unavailable in the running system; a failing REQUIRED CI check.
+    blocks_landing MUST be true.
+  major: >
+    A real defect or risk that does not by itself block landing (maintainability degradation, a weakened
+    but not broken contract, a test that proves less than it claims but still leaves the criterion proven
+    elsewhere). Filed as backlog. blocks_landing false.
+  minor: >
+    A smaller correctness/quality/idiom issue worth fixing. Filed as backlog. blocks_landing false.
+  nit: >
+    Style/preference with no behavioral impact. Filed as backlog only if it clusters usefully;
+    never inflated to a higher severity. blocks_landing false.
+
+identities:
+  - id: ID-SCHEMA
+    assert: Every spoke produced a findings.md conforming to finding_schema.md, stating both what it
+      checked and what it found clean.
+  - id: ID-PIN
+    assert: Every finding pins a repo-relative file + line range at commit
+      09fa453c3c40e39a9b4647e0de6e00dcf50ecb21, OR is an explicit whole-PR/design-level finding with
+      rationale.
+  - id: ID-SEVERITY
+    assert: Every finding carries a severity and an explicit blocks_landing boolean; the rubric is applied
+      honestly (no blocker downgraded to backlog, no preference inflated to blocker).
+  - id: ID-ACTIONABLE
+    assert: Every blocks_landing=true finding names a concrete change that would clear it.
+  - id: ID-DOC-GATE
+    assert: The failing required doc check is represented as a blocker; the verdict states landing is gated
+      on doc going green and the PR being mergeable and clean, even if all code concerns are clean.
+  - id: ID-VERDICT
+    assert: Verdict is REQUEST-CHANGES iff any concern carries a blocks_landing=true finding; otherwise
+      APPROVE with the explicit doc-gate / mergeable-and-clean note.
+  - id: ID-BACKLOG
+    assert: Blockers are named in the verdict (not filed as backlog); non-blocking findings are filed as
+      backlog, grouped, de-duplicated against existing issues, each linked to PR #113 and epic #56 / its
+      originating issue.
+  - id: ID-NO-HOST
+    assert: No posted artifact and no repo-reader-facing SYNTHESIS.md content contains host paths,
+      cluster/SSH/credential details, or taskflow/DAG internals.
+  - id: ID-PLAIN-VOICE
+    assert: All shipped prose passes the plain-voice / avoid-ai-writing bar.
+  - id: ID-64-OPEN
+    assert: Issue #64 is noted (its open framing confirmed or disputed) but NOT closed and NOT filed as
+      backlog.
+
+derived_artifacts: []

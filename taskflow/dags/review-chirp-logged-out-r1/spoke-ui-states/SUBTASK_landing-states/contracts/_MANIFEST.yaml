@@ -1,0 +1,42 @@
+kind: review_findings_per_concern
+description: >
+  Contract for the SUBTASK_landing-states sub-decomposition.
+  Three concern-checker spokes each produce one concern file; the synthesis task
+  combines them into FINDINGS.md conforming to the parent spoke-ui-states contract.
+
+inherited_from: ../contracts/_MANIFEST.yaml
+
+concern_file_schema:
+  # Each concern checker (ac2, ac3, ac4p) produces a markdown file following this shape.
+  required_sections:
+    - concern_id      # e.g. "AC-2"
+    - status          # "clean" or "has_findings"
+    - checked         # Narrative: what code was read and what criteria were applied
+    - findings        # List of findings (may be empty if status=clean)
+    - clean_notes     # What was found sound (present even when status=has_findings for clean parts)
+
+  finding_shape:
+    location: "crates/chirp-frontend/src/landing.rs:<line> at decb6196c2c1e6ed421d393a642f0c844cc333ba"
+    principle: "what principle is at stake"
+    rationale: "why it matters in this system"
+    severity: "blocker | non-blocking"
+    resolution: "what would satisfy this finding"
+
+ownership:
+  SUBTASK_check-ac2/concern_ac2.md: SUBTASK_check-ac2
+  SUBTASK_check-ac3/concern_ac3.md: SUBTASK_check-ac3
+  SUBTASK_check-ac4p/concern_ac4p.md: SUBTASK_check-ac4p
+  FINDINGS.md: SUBTASK_synthesis-findings
+
+identities:
+  - all_concerns_covered: >
+      concern_ac2.md, concern_ac3.md, and concern_ac4p.md each address their
+      respective concern; FINDINGS.md references all three.
+  - clean_partition: >
+      Each concern file covers exactly one concern (ac2, ac3, or ac4p); no
+      concern is claimed by more than one checker file.
+  - cite_pinned_commit: >
+      Every finding includes file path + line at decb6196c2c1e6ed421d393a642f0c844cc333ba
+  - findings_md_conforms: >
+      FINDINGS.md must follow the parent contract schema (../contracts/_MANIFEST.yaml):
+      sections concerns_checked, findings, clean_items — in that order.

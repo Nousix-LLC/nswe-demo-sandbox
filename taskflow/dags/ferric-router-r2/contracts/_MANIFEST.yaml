@@ -1,0 +1,33 @@
+kind: ownership_manifest
+version: "1"
+description: "ferric-router-r2 remediation DAG — thin seam between parallel spokes"
+
+# Each spoke owns one artifact; the synthesis gate verifies all three identities.
+
+ownership:
+  - artifact: "SUBTASK_router-branch/outputs/router-pr.md"
+    owner: SUBTASK_router-branch
+    description: "PR URL and confirmation that work/ferric-router-r2 contains exactly the 3 router commits"
+
+  - artifact: "SUBTASK_macros-assessment/outputs/macros-assessment.md"
+    owner: SUBTASK_macros-assessment
+    description: "Scope assessment of the 12 ferric-macros/context API commits with recommendations"
+
+  - artifact: "SYNTHESIS.md"
+    owner: SUBTASK_synthesis
+    description: "Fold record — verifies identities and reports remediation status"
+
+identities:
+  - id: router_branch_clean
+    description: "work/ferric-router-r2 on remote contains exactly commits 89687da, cab18b9, 3868b2c and NO ferric-macros commits"
+    verified_by: SUBTASK_synthesis
+
+  - id: router_pr_correct_issues
+    description: "The open PR from work/ferric-router-r2 closes issues #131, #146, and #147"
+    verified_by: SUBTASK_synthesis
+
+  - id: macros_assessment_complete
+    description: "macros-assessment.md covers all 12 macros/ferric commits and maps them to issues #137–#142"
+    verified_by: SUBTASK_synthesis
+
+derived_artifacts: []

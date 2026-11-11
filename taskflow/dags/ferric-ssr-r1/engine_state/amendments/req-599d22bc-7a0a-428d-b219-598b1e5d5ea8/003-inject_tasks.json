@@ -1,0 +1,59 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-04T22:14:24.482897239Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "ferric-ssr-r1-client-hydrate"
+      ],
+      "placement_parent_task_id": "ferric-ssr-r1"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: ferric-ssr-r1-client-hydrate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Client-hydrate spoke: fully implements hydrate in src/hydrate.rs on branch work/ferric-ssr-r1-client, addressing Issue #224 (BAR-004) and mismatch detection from Issue #226 (BAR-006).",
+        "task_id": "ferric-ssr-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "ferric-ssr-r1": [],
+      "ferric-ssr-r1-client-hydrate": [
+        "ferric-ssr-r1-skeleton"
+      ],
+      "ferric-ssr-r1-server-render": [
+        "ferric-ssr-r1-skeleton"
+      ],
+      "ferric-ssr-r1-skeleton": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "ferric-ssr-r1",
+          "ferric-ssr-r1-skeleton"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "ferric-ssr-r1-client-hydrate",
+          "ferric-ssr-r1-server-render"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

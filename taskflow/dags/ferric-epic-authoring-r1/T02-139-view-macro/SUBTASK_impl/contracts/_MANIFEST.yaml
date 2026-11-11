@@ -1,0 +1,108 @@
+# _MANIFEST.yaml — SUBTASK_impl decomposition contract
+#
+# Declares the structural seam between the four children of SUBTASK_impl.
+# SUBTASK_synthesis asserts all identities before creating the commit.
+
+hub: SUBTASK_impl
+branch: work/ferric-epic-authoring-r1
+
+kind: ownership_map
+
+# ---------------------------------------------------------------------------
+# Shared structural seam — fixed before any child runs
+# ---------------------------------------------------------------------------
+structural_seam:
+  cargo_package_name: ferric-macros
+  rust_crate_name: ferric_macros
+  macro_name: view
+  crate_path: crates/ferric-macros
+  ferric_dependency_line: 'ferric-macros = { path = "../ferric-macros", version = "0.1" }'
+  prelude_export_line: "pub use ferric_macros::view;"
+
+# ---------------------------------------------------------------------------
+# File ownership — exactly one producer per artifact.
+# ---------------------------------------------------------------------------
+ownership:
+
+  SUBTASK_scaffold:
+    description: >
+      Creates the ferric-macros crate infrastructure. Does NOT modify root Cargo.toml
+      (workspace uses members = ["crates/*"] glob which already covers ferric-macros).
+    artifacts:
+      - crates/ferric-macros/Cargo.toml      # proc-macro = true, deps on proc-macro2/quote/syn
+      - crates/ferric-macros/src/lib.rs      # stub — compiles but macro body is a placeholder
+
+  SUBTASK_macro_impl:
+    description: >
+      Replaces the stub lib.rs with the full view! implementation.
+      May add parser.rs, lower.rs sub-modules under crates/ferric-macros/src/.
+    artifacts:
+      - crates/ferric-macros/src/lib.rs      # full implementation (overwrites stub)
+      - crates/ferric-macros/src/**/*.rs     # any sub-modules: parser.rs, lower.rs, etc.
+
+  SUBTASK_wire:
+    description: >
+      Additive changes to the ferric crate only. No implementation code is written here.
+    artifacts:
+      - crates/ferric/Cargo.toml             # adds ferric-macros dependency line
+      - crates/ferric/src/lib.rs             # adds pub use ferric_macros::view; to prelude
+
+  SUBTASK_synthesis:
+    description: >
+      Verification gate + commit. Writes no implementation code; creates the git commit.
+    artifacts:
+      - git commit on work/ferric-epic-authoring-r1
+
+# ---------------------------------------------------------------------------
+# Identity assertions — SUBTASK_synthesis asserts ALL before creating the commit.
+# ---------------------------------------------------------------------------
+identity_assertions:
+
+  - id: I-BUILD-01
+    statement: >
+      `cargo build -p ferric-macros` succeeds with no errors on stable Rust 1.82.
+
+  - id: I-BUILD-02
+    statement: >
+      `cargo build -p ferric` succeeds with no errors (ferric depends on ferric-macros
+      and re-exports view! from its prelude).
+
+  - id: I-TEST-01
+    statement: >
+      `cargo test -p ferric --lib` produces all 37 pre-existing tests PASSED.
+      No new test failures introduced. (The test suite owned by SUBTASK_tests is not
+      yet written at this stage; this assertion covers only the pre-existing 37.)
+
+  - id: I-EXPORT-01
+    statement: >
+      `ferric::prelude::view!` is accessible after `use ferric::prelude::*;`.
+
+  - id: I-ADDITIVE-01
+    statement: >
+      No existing public export of crates/ferric is modified, removed, or renamed.
+
+  - id: I-LOWER-ALL
+    statement: >
+      All 8 construct rows in authoring-model.md §2.12 are covered by the macro
+      implementation. The macro handles: element open/close and self-closing, text
+      literals, {expr}->Into<String>, {expr}->VNode, {vec}/For, attributes (static
+      and dynamic), key={e}, on:event={handler}, and component invocation.
+
+  - id: I-DIAG-ALL
+    statement: >
+      All 7 diagnostic error cases from §2.9 produce span-accurate author-vocabulary
+      error messages via syn::Error.
+
+# ---------------------------------------------------------------------------
+# Notes for all children
+# ---------------------------------------------------------------------------
+notes:
+  - >
+    The root workspace Cargo.toml at repo root uses `members = ["crates/*"]` (a glob).
+    Creating crates/ferric-macros/ automatically makes it a workspace member.
+    SUBTASK_scaffold MUST NOT modify the root Cargo.toml.
+  - >
+    All SSH operations use: ssh -i ~/.ssh/nousix_server_ed25519 -o IdentitiesOnly=yes
+    -o BatchMode=yes mattm@100.90.75.93 'bash -lc "..."'
+    Never include the server address, SSH key path, user name, or host paths in
+    committed files.

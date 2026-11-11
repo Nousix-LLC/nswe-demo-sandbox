@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T18:18:14.791886608Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis"
+      ],
+      "placement_parent_task_id": "security-persist-r1"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Synthesis gate: verifies both security fixes are correct (four checks), opens the PR for work/security-persist-r1, and folds the parent SUSPENDED→COMPLETED via SYNTHESIS.md + engine_resume_suspended.",
+        "task_id": "security-persist-r1"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_credential_hashing": [],
+      "SUBTASK_ssl_manifest": [
+        "SUBTASK_credential_hashing"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_ssl_manifest"
+      ],
+      "security-persist-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_credential_hashing",
+          "security-persist-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_ssl_manifest"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

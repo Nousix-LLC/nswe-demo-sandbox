@@ -1,0 +1,15 @@
+{"timestamp":"2026-11-06T03:48:58.773345700Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-r2"],"group_index":0}},"reason":"dispatching ready tasks after recovery"}
+{"timestamp":"2026-11-06T03:49:39.478652429Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r2"]}},"reason":"task chirp-logged-out-r2 transitioned to Ready"}
+{"timestamp":"2026-11-06T03:49:39.478862199Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r2"]}},"reason":"task chirp-logged-out-r2 transitioned to Running"}
+{"timestamp":"2026-11-06T04:03:51.909900655Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-server"],"group_index":0}},"reason":"dispatching newly-ready tasks after amendment"}
+{"timestamp":"2026-11-06T04:04:12.991743214Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-r2"]}},"reason":"task chirp-logged-out-r2 suspended, waiting for subtree resolution"}
+{"timestamp":"2026-11-06T04:04:35.614090428Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-server"]}},"reason":"task chirp-logged-out-server transitioned to Ready"}
+{"timestamp":"2026-11-06T04:04:35.614452588Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-server"]}},"reason":"task chirp-logged-out-server transitioned to Running"}
+{"timestamp":"2026-11-06T04:07:48.615321236Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-frontend"],"group_index":1}},"reason":"task chirp-logged-out-server completed, dispatching ready successors"}
+{"timestamp":"2026-11-06T04:09:06.678604449Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-frontend"]}},"reason":"task chirp-logged-out-frontend transitioned to Ready"}
+{"timestamp":"2026-11-06T04:09:06.678937376Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-frontend"]}},"reason":"task chirp-logged-out-frontend transitioned to Running"}
+{"timestamp":"2026-11-06T04:17:38.993540097Z","action":{"Dispatch":{"task_ids":["chirp-logged-out-synthesis"],"group_index":2}},"reason":"task chirp-logged-out-frontend completed, dispatching ready successors"}
+{"timestamp":"2026-11-06T04:18:41.532040481Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-synthesis"]}},"reason":"task chirp-logged-out-synthesis transitioned to Ready"}
+{"timestamp":"2026-11-06T04:18:41.532310246Z","action":{"WaitForCompletion":{"pending_task_ids":["chirp-logged-out-synthesis"]}},"reason":"task chirp-logged-out-synthesis transitioned to Running"}
+{"timestamp":"2026-11-06T04:25:55.453281852Z","action":{"SubtreeResolved":{"parent_task_id":"chirp-logged-out-r2","child_task_ids":["chirp-logged-out-server","chirp-logged-out-frontend","chirp-logged-out-synthesis"],"success":true}},"reason":"all children of chirp-logged-out-r2 reached terminal state (success=true)"}
+{"timestamp":"2026-11-06T04:25:55.453970537Z","action":{"Complete":{"success":true}},"reason":"all tasks reached terminal state"}

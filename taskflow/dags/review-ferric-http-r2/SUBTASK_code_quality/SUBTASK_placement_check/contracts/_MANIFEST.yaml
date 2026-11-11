@@ -1,0 +1,53 @@
+kind: yaml_schema
+version: "1.0"
+task: SUBTASK_placement_check
+description: >
+  Ownership manifest and identity contracts for the SUBTASK_placement_check decomposition.
+  Two parallel analysis sub-spokes cover the two concern areas; SUBTASK_synthesis merges
+  them into placement_review_partial.md.
+
+  Extends ancestor contract at ../contracts/spoke_partial_schema.yaml, which defines
+  the shape of placement_review_partial.md. Does NOT override it.
+
+ownership:
+  - artifact: "SUBTASK_placement_analysis/placement_findings.md"
+    owner: SUBTASK_placement_analysis
+    concern:
+      id: 2
+      description: "placement correctness"
+
+  - artifact: "SUBTASK_duplication_analysis/duplication_findings.md"
+    owner: SUBTASK_duplication_analysis
+    concern:
+      id: 3
+      description: "duplication"
+
+  - artifact: "placement_review_partial.md"
+    owner: SUBTASK_synthesis
+    note: >
+      Written at the SUBTASK_placement_check workspace root.
+      This satisfies the SUBTASK_code_quality contracts/_MANIFEST.yaml ownership
+      declaration for SUBTASK_placement_check.
+
+  - artifact: "SYNTHESIS.md"
+    owner: SUBTASK_synthesis
+    note: >
+      Written at the SUBTASK_placement_check workspace root (the fold location).
+      Used by engine_resume_suspended to fold SUBTASK_placement_check SUSPENDED→COMPLETED.
+
+identities:
+  - "placement_review_partial.md MUST conform to ../contracts/spoke_partial_schema.yaml (required sections: Concerns Covered, Summary, Findings)"
+  - "placement_review_partial.md MUST cover Concern 2 (placement correctness) and Concern 3 (duplication)"
+  - "Every finding in SUBTASK_placement_analysis/placement_findings.md MUST appear in placement_review_partial.md"
+  - "Every finding in SUBTASK_duplication_analysis/duplication_findings.md MUST appear in placement_review_partial.md"
+  - "No finding may appear in placement_review_partial.md without derivation from a sub-spoke output"
+
+inherited_contracts:
+  - path: "../contracts/spoke_partial_schema.yaml"
+    kind: spoke_partial_schema
+    version: "1.0"
+    binds: "Final output placement_review_partial.md"
+  - path: "contracts/sub_spoke_findings_schema.yaml"
+    kind: sub_spoke_findings_schema
+    version: "1.0"
+    binds: "Intermediate outputs placement_findings.md and duplication_findings.md"

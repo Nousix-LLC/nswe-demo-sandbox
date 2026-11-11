@@ -1,0 +1,84 @@
+{
+  "sequence": 6,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T02:01:43.729363601Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis_gate"
+      ],
+      "placement_parent_task_id": "chirp-frontend"
+    },
+    "resulting_version": 6,
+    "summary": "inject tasks: SUBTASK_synthesis_gate",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the Group-2 synthesis verification gate: builds the combined crate (incl. wasm target), runs the four-check model against the frozen contract, emits the PASS/FAIL SYNTHESIS.md verdict, opens the PR (Closes #9), and folds the subtree.",
+        "task_id": "chirp-frontend"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_api_client": [
+        "SUBTASK_scaffold"
+      ],
+      "SUBTASK_compose": [
+        "SUBTASK_scaffold"
+      ],
+      "SUBTASK_profile": [
+        "SUBTASK_scaffold"
+      ],
+      "SUBTASK_scaffold": [],
+      "SUBTASK_synthesis_gate": [
+        "SUBTASK_api_client",
+        "SUBTASK_compose",
+        "SUBTASK_profile",
+        "SUBTASK_scaffold",
+        "SUBTASK_timeline"
+      ],
+      "SUBTASK_timeline": [
+        "SUBTASK_scaffold"
+      ],
+      "chirp-frontend": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_scaffold",
+          "chirp-frontend"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_api_client",
+          "SUBTASK_compose",
+          "SUBTASK_profile",
+          "SUBTASK_timeline"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis_gate"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

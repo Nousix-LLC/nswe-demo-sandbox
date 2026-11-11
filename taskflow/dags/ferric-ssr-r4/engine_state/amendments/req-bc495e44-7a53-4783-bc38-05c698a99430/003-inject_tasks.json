@@ -1,0 +1,68 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-05T21:59:16.004170449Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis_report"
+      ],
+      "placement_parent_task_id": "ferric-ssr-r4"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_synthesis_report",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing ferric-ssr-r4 into synthesis task: verify all 6 CI checks, update PR identity table, write SYNTHESIS.md",
+        "task_id": "ferric-ssr-r4"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1_hydrate_fix": [],
+      "SUBTASK_b2_wasm_tests": [
+        "SUBTASK_b1_hydrate_fix"
+      ],
+      "SUBTASK_synthesis_report": [
+        "SUBTASK_b2_wasm_tests"
+      ],
+      "ferric-ssr-r4": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1_hydrate_fix",
+          "ferric-ssr-r4"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_b2_wasm_tests"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis_report"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

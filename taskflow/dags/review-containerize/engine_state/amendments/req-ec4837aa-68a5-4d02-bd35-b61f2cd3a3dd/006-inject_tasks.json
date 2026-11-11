@@ -1,0 +1,67 @@
+{
+  "sequence": 6,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-07T06:57:43.144531069Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_verdict_synthesis"
+      ],
+      "placement_parent_task_id": "review-containerize"
+    },
+    "resulting_version": 6,
+    "summary": "inject tasks: SUBTASK_verdict_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Materialize the synthesis/verification gate: integrate the five spoke findings, evaluate contract identities I1-I6, map to the nine acceptance criteria, render the one APPROVE/REQUEST-CHANGES verdict in the root SYNTHESIS.md (fold location), and post the review on PR #22. Depends on all five spokes.",
+        "task_id": "review-containerize"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_dockerfile_build": [],
+      "SUBTASK_operability_docs": [],
+      "SUBTASK_rustcode_sigterm": [],
+      "SUBTASK_scope_verification": [],
+      "SUBTASK_security_supplychain": [],
+      "SUBTASK_verdict_synthesis": [
+        "SUBTASK_dockerfile_build",
+        "SUBTASK_operability_docs",
+        "SUBTASK_rustcode_sigterm",
+        "SUBTASK_scope_verification",
+        "SUBTASK_security_supplychain"
+      ],
+      "review-containerize": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_dockerfile_build",
+          "SUBTASK_operability_docs",
+          "SUBTASK_rustcode_sigterm",
+          "SUBTASK_scope_verification",
+          "SUBTASK_security_supplychain",
+          "review-containerize"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_verdict_synthesis"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

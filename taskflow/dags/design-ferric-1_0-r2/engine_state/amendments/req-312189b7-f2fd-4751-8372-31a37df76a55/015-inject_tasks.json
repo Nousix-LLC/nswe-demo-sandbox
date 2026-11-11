@@ -1,0 +1,104 @@
+{
+  "sequence": 15,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-03T04:24:12.984339604Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_req-reconciliation"
+      ],
+      "placement_parent_task_id": "SUBTASK_validate-crossrefs"
+    },
+    "resulting_version": 15,
+    "summary": "inject tasks: SUBTASK_req-reconciliation",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_validate-crossrefs into two parallel analysis spokes (REQ reconciliation and issue traceability) plus a synthesis gate, because the brief explicitly names two distinct analyses that can be performed by different specialists working in parallel.",
+        "task_id": "SUBTASK_validate-crossrefs"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_remediate": [
+        "SUBTASK_review-validate"
+      ],
+      "SUBTASK_req-reconciliation": [],
+      "SUBTASK_review-validate": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_validate-crossrefs"
+      ],
+      "SUBTASK_synthesize-root": [
+        "SUBTASK_remediate"
+      ],
+      "SUBTASK_validate-async": [],
+      "SUBTASK_validate-authoring": [],
+      "SUBTASK_validate-crossrefs": [
+        "SUBTASK_validate-async",
+        "SUBTASK_validate-authoring",
+        "SUBTASK_validate-docs",
+        "SUBTASK_validate-perf",
+        "SUBTASK_validate-plan",
+        "SUBTASK_validate-release",
+        "SUBTASK_validate-router",
+        "SUBTASK_validate-scope",
+        "SUBTASK_validate-ssr"
+      ],
+      "SUBTASK_validate-docs": [],
+      "SUBTASK_validate-perf": [],
+      "SUBTASK_validate-plan": [],
+      "SUBTASK_validate-release": [],
+      "SUBTASK_validate-router": [],
+      "SUBTASK_validate-scope": [],
+      "SUBTASK_validate-ssr": [],
+      "design-ferric-1_0-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_req-reconciliation",
+          "SUBTASK_review-validate",
+          "SUBTASK_validate-async",
+          "SUBTASK_validate-authoring",
+          "SUBTASK_validate-docs",
+          "SUBTASK_validate-perf",
+          "SUBTASK_validate-plan",
+          "SUBTASK_validate-release",
+          "SUBTASK_validate-router",
+          "SUBTASK_validate-scope",
+          "SUBTASK_validate-ssr",
+          "design-ferric-1_0-r2"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_remediate",
+          "SUBTASK_validate-crossrefs"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis",
+          "SUBTASK_synthesize-root"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

@@ -1,0 +1,460 @@
+{
+ "current_pointer": "overseer/I421",
+ "checked_at": "2026-11-06T16:50:00Z",
+ "escalations": {
+  "escalation_i77_dispatch_fault": {
+   "status": "CLEARED",
+   "cleared_at": "2026-11-03T05:08:16Z",
+   "cleared_in": "overseer/I145"
+  },
+  "escalation_ferric_async_forms_budget_exhausted": {
+   "status": "CLEARED",
+   "label": "ferric-async-forms remediation budget exhausted — 3 unresolved blockers after 2 code DAG attempts + 1 full review cycle",
+   "pr": 193,
+   "cleared_at": "2026-11-05T22:00:00Z",
+   "cleared_reason": "Reclassified per corrected app policy: a REQUEST-CHANGES review with fixable blockers is ordinary remediation (two successful DAGs), not a budget-exhausted user-gate escalation.",
+   "cleared_in": "overseer/I279"
+  },
+  "escalation_review_ferric_http_r2_stall": {
+   "status": "CLEARED",
+   "cleared_at": "2026-11-04T21:35:16Z",
+   "cleared_in": "overseer/I245"
+  },
+  "escalation_ferric_ssr_budget_exhausted": {
+   "status": "CLEARED",
+   "label": "ferric-ssr remediation budget exhausted — 2 hard blockers after 2 code DAG attempts + 1 full review cycle",
+   "pr": 228,
+   "cleared_at": "2026-11-05T22:00:00Z",
+   "cleared_reason": "Reclassified per corrected app policy: ordinary remediation, not escalation.",
+   "cleared_in": "overseer/I279"
+  }
+ },
+ "prs": {
+  "PR113": { "status": "MERGED", "note": "Epic #56 and sub-issues Done." },
+  "PR128": { "status": "MERGED", "note": "Design: Ferric 1.0 framework design. All 10 design docs on main." },
+  "PR182": { "status": "MERGED" },
+  "PR183": { "status": "MERGED" },
+  "PR187": { "status": "MERGED" },
+  "PR188": { "status": "MERGED", "note": "#129 and authoring model sub-issues Done." },
+  "PR193": {
+   "status": "MERGED",
+   "branch": "work/ferric-async-forms-r2",
+   "merged_at": "2026-11-06T02:03:17Z",
+   "merge_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+   "head_sha": "838239e11f131484d4db617fb25dc6e5ea435be1",
+   "note": "ferric-async-forms-r3 PASS, review-ferric-async-forms-r3 APPROVE. Merged I294. Issue #130 closed, sub-issues #143/#144/#145 closed in I295. Board Done.",
+   "issues_closed": ["#130", "#143", "#144", "#145"]
+  },
+  "PR203": { "status": "MERGED", "note": "#131 and router sub-issues Done." },
+  "PR209": { "status": "MERGED", "note": "#206 Done." },
+  "PR210": { "status": "MERGED", "note": "#132 and #148 Done." },
+  "PR228": {
+   "status": "MERGED",
+   "branch": "work/ferric-ssr-r1",
+   "merged_at": "2026-11-06T00:15:41Z",
+   "merge_sha": "62febf5faf6023b3492358d246c7ac39c9f699a3",
+   "note": "ferric-ssr-r4 PASS, review-ferric-ssr-r2 APPROVE. Issues #223/#224/#226 closed, board Done. Non-blockers #245/#246/#247 filed.",
+   "issues": ["#223", "#224", "#226"],
+   "non_blockers_filed": ["#245", "#246", "#247"]
+  },
+  "PR263": {
+   "status": "OPEN",
+   "branch": "work/chirp-logged-out",
+   "created_at": "2026-11-06T04:25:19Z",
+   "title": "feat: logged-out public timeline and user profiles (#35)",
+   "issues": ["#35"],
+   "head_sha": "7f4b684671cab7eb778f5ad7f54dfdc82d57b3c4",
+   "head_sha_prev": "decb6196c2c1e6ed421d393a642f0c844cc333ba",
+   "mergeable": "MERGEABLE",
+   "ci_run_prev": "42194072348",
+   "ci_run_r27": "42249419769",
+   "ci_status": "PASS — run 42249419769 for head 7f4b684: ALL 6 PASS. Both blockers fixed.",
+   "code_verdict": "PASS — chirp-logged-out-r27 folded PASS (I419 stall check). Both blockers fixed. All 5 ACs met. SYNTHESIS.md at taskflow/dags/chirp-logged-out-r27/SYNTHESIS.md.",
+   "remediation_dag": "chirp-logged-out-r27 — FOLDED PASS (confirmed I419 stall-check-1/4)",
+   "review_dag_current": "review-chirp-logged-out-r2 — IN-FLIGHT (forked I420, stall check 1/4 at I421 = progressing)",
+   "note": "review-chirp-logged-out-r2 progressing (I421 stall check 1/4). Stall check 2/4 at I422 (+15 min or DAG completion). verify-fixes COMPLETE, verify-acs 3/4 done."
+  }
+ },
+ "dags_in_flight": [
+  {
+   "slug": "review-chirp-logged-out-r2",
+   "goal": "Re-review PR #263 (work/chirp-logged-out, HEAD 7f4b684) after chirp-logged-out-r27 remediation — verify both blockers fixed, all 5 ACs met, produce APPROVE or REQUEST-CHANGES verdict",
+   "kind": "review",
+   "pr": 263,
+   "branch": "work/chirp-logged-out",
+   "head": "7f4b684671cab7eb778f5ad7f54dfdc82d57b3c4",
+   "forked_in": "overseer/I420",
+   "thread_id": "review-chirp-logged-out-r2",
+   "synthesis_path": "taskflow/dags/review-chirp-logged-out-r2/SYNTHESIS.md",
+   "stall_check_schedule": "I421 = stall check 1/4 (progressing); I422 = stall check 2/4 (+15 min or DAG completion)",
+   "progress_i421": {
+    "SUBTASK_verify-fixes": "COMPLETE — B1 (timeline.rs:218) and B2 (compose.rs:519) both PASS, diff clean",
+    "SUBTASK_verify-acs": "3/4 children COMPLETE (ac1-verify, ac4-verify, ac235-confirm); acs-gate READY",
+    "SUBTASK_synthesis": "PENDING (depends on verify-fixes + verify-acs)",
+    "root_SYNTHESIS.md": "NOT PRESENT"
+   }
+  }
+ ],
+ "dags_to_launch": [],
+ "dags_stalled": [
+  {
+   "slug": "chirp-logged-out",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I298",
+   "action": "Re-forked as chirp-logged-out-r2 in I298."
+  },
+  {
+   "slug": "chirp-logged-out-r2",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I302",
+   "action": "Re-forked as chirp-logged-out-r3 in I302."
+  },
+  {
+   "slug": "chirp-logged-out-r3",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I306",
+   "action": "Re-forked as chirp-logged-out-r4 in I306."
+  },
+  {
+   "slug": "chirp-logged-out-r4",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I310",
+   "action": "Re-forked as chirp-logged-out-r5 in I310."
+  },
+  {
+   "slug": "chirp-logged-out-r5",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I322",
+   "action": "Re-forked as chirp-logged-out-r6 in I314."
+  },
+  {
+   "slug": "chirp-logged-out-r6",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I318",
+   "action": "Re-forked as chirp-logged-out-r7 in I318."
+  },
+  {
+   "slug": "chirp-logged-out-r7",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I322",
+   "action": "Re-forked as chirp-logged-out-r8 in I322."
+  },
+  {
+   "slug": "chirp-logged-out-r8",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I326",
+   "action": "Re-forked as chirp-logged-out-r9 in I326."
+  },
+  {
+   "slug": "chirp-logged-out-r9",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I330",
+   "action": "Re-forked as chirp-logged-out-r10 in I330."
+  },
+  {
+   "slug": "chirp-logged-out-r10",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I337",
+   "action": "Re-forked as chirp-logged-out-r11 in I337."
+  },
+  {
+   "slug": "chirp-logged-out-r11",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I345",
+   "action": "Re-forked as chirp-logged-out-r12 in I345."
+  },
+  {
+   "slug": "chirp-logged-out-r12",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I352",
+   "action": "Re-forked as chirp-logged-out-r13 in I352."
+  },
+  {
+   "slug": "chirp-logged-out-r13",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I356",
+   "action": "Re-forked as chirp-logged-out-r14 in I356."
+  },
+  {
+   "slug": "chirp-logged-out-r14",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I360",
+   "action": "Re-forked as chirp-logged-out-r15 in I360."
+  },
+  {
+   "slug": "chirp-logged-out-r15",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I364",
+   "action": "Re-forked as chirp-logged-out-r16 in I364."
+  },
+  {
+   "slug": "chirp-logged-out-r16",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I368",
+   "action": "Re-forked as chirp-logged-out-r17 in I368."
+  },
+  {
+   "slug": "chirp-logged-out-r17",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I372",
+   "action": "Re-forked as chirp-logged-out-r18 in I372."
+  },
+  {
+   "slug": "chirp-logged-out-r18",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I379",
+   "action": "Re-forked as chirp-logged-out-r19 in I380."
+  },
+  {
+   "slug": "chirp-logged-out-r19",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I384",
+   "action": "Re-forked as chirp-logged-out-r20 in I384."
+  },
+  {
+   "slug": "chirp-logged-out-r20",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I388",
+   "action": "Re-forked as chirp-logged-out-r21 in I388."
+  },
+  {
+   "slug": "chirp-logged-out-r21",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I392",
+   "action": "Re-forked as chirp-logged-out-r22 in I392."
+  },
+  {
+   "slug": "chirp-logged-out-r22",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I396",
+   "action": "Re-forked as chirp-logged-out-r23 in I396."
+  },
+  {
+   "slug": "chirp-logged-out-r23",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I402",
+   "action": "Re-forked as chirp-logged-out-r24 in I402."
+  },
+  {
+   "slug": "chirp-logged-out-r24",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I406",
+   "action": "Re-forked as chirp-logged-out-r25 in I407."
+  },
+  {
+   "slug": "chirp-logged-out-r25",
+   "kind": "code",
+   "state": "STALLED",
+   "confirmed_stalled_in": "overseer/I411",
+   "action": "Re-forked as chirp-logged-out-r26 in I412."
+  }
+ ],
+ "dags_folded": [
+  {
+   "slug": "chirp-logged-out-r27",
+   "goal": "Remediate PR #263 — fix 2 blockers from review-chirp-logged-out-r1 (timeline.rs:218 + compose.rs:519), verify all 5 ACs, produce SYNTHESIS.md",
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/chirp-logged-out-r27/SYNTHESIS.md",
+   "pr": 263,
+   "new_head": "7f4b684671cab7eb778f5ad7f54dfdc82d57b3c4",
+   "folded_confirmed_in": "overseer/I419",
+   "blockers_fixed": [
+    "B1: timeline.rs:218 — reverted pub_timeline(&query) to timeline(&query) ✅",
+    "B2: compose.rs:519 — link(\"/compose\", \"Log in →\") changed to link(\"/signin\", \"Log in →\") ✅"
+   ],
+   "note": "All 5 ACs confirmed. CI 6/6 green on HEAD 7f4b684. PR OPEN/MERGEABLE. Ready for re-review."
+  },
+  {
+   "slug": "review-chirp-logged-out-r1",
+   "goal": "Review PR #263 (work/chirp-logged-out, head decb6196) against issue #35 ACs and codebase quality bar",
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "REQUEST-CHANGES",
+   "synthesis_path": "taskflow/dags/review-chirp-logged-out-r1/SYNTHESIS.md",
+   "pr": 263,
+   "folded_confirmed_in": "overseer/I417",
+   "blockers": [
+    "B1: timeline.rs:218 — ctx.client().pub_timeline() must revert to ctx.client().timeline() (authenticated users see global feed instead of personalized home feed)",
+    "B2: compose.rs:519 — link(\"/compose\", \"Log in →\") must become link(\"/signin\", \"Log in →\") (sign-up page CTA routes to compose view instead of sign-in)"
+   ],
+   "non_blockers_flagged": ["CQ-C", "CQ-D", "CQ-E", "CQ-G", "CQ-H", "CQ-I"],
+   "non_blockers_filed": {
+    "264": "CQ-H + CQ-I: error handler leaks serde error text and API endpoint URLs in UI banner",
+    "265": "CQ-C: pub_timeline_url_has_correct_path_and_no_auth test never calls pub_timeline()",
+    "266": "CQ-D: timeline cursor parameter documented as ISO 8601 but wire type is Option<i64>",
+    "267": "CQ-E: sign_up::sign_up_view unreachable — /signup route binds to compose::signup_view",
+    "268": "CQ-G: static_event_kinds() array lacks compile-time completeness guard",
+    "269": "SM-F1,F2,F3,F4: state machine view-tree tests missing for continuation-error and loading-more states",
+    "270": "UI-NB1, UI-NB2, CQ-A, CQ-B: minor test and annotation gaps",
+    "271": "CQ-F, CQ-J, CQ-K: framework/hydrate documentation and API restriction gaps"
+   },
+   "review_on_pr": "Posted as PR comment on #263 (formal GitHub review not possible from PR author; comment covers full findings)",
+   "processed_in": "overseer/I418"
+  },
+  {
+   "slug": "chirp-logged-out-r26",
+   "goal": "chirp-logged-out — assess PR #263 (head decb6196) against all 5 ACs, write SYNTHESIS.md",
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/chirp-logged-out-r26/SYNTHESIS.md",
+   "pr": 263,
+   "folded_confirmed_in": "overseer/I413",
+   "note": "All 5 ACs met. CI 6/6 green. PR #263 OPEN/MERGEABLE. No code changes needed."
+  },
+  {
+   "slug": "review-ferric-async-forms-r3",
+   "goal": "Review PR #193 after ferric-async-forms-r3 remediation",
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "APPROVE",
+   "synthesis_path": "taskflow/dags/review-ferric-async-forms-r3/SYNTHESIS.md",
+   "pr": 193,
+   "folded_confirmed_in": "overseer/I292",
+   "non_blockers": ["#248", "#249", "#250", "#251", "#252", "#253"]
+  },
+  {
+   "slug": "review-ferric-ssr-r2",
+   "kind": "review",
+   "state": "FOLDED",
+   "verdict": "APPROVE",
+   "synthesis_path": "taskflow/dags/review-ferric-ssr-r2/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I285",
+   "non_blockers": ["#245", "#246", "#247"]
+  },
+  {
+   "slug": "ferric-ssr-r4",
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/ferric-ssr-r4/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I280"
+  },
+  {
+   "slug": "ferric-async-forms-r3",
+   "kind": "code",
+   "state": "FOLDED",
+   "verdict": "PASS",
+   "synthesis_path": "taskflow/dags/ferric-async-forms-r3/SYNTHESIS.md",
+   "folded_confirmed_in": "overseer/I281"
+  }
+ ],
+ "ferric_ssr_goal": {
+  "goal_slug": "ferric-ssr",
+  "issues": ["#223", "#224", "#226"],
+  "branch": "work/ferric-ssr-r1",
+  "pr": 228,
+  "status": "LANDED",
+  "merged_at": "2026-11-06T00:15:41Z",
+  "merge_sha": "62febf5faf6023b3492358d246c7ac39c9f699a3",
+  "code_verdict": "PASS (ferric-ssr-r4, 7 CI checks green)",
+  "review_verdict": "APPROVE (review-ferric-ssr-r2, confirmed I285)",
+  "board_status": "Done (issues #223/#224/#226 closed)"
+ },
+ "ferric_async_forms_goal": {
+  "goal_slug": "ferric-async-forms",
+  "issues": ["#130", "#143", "#144", "#145"],
+  "branch": "work/ferric-async-forms-r2",
+  "pr": 193,
+  "head_sha": "838239e11f131484d4db617fb25dc6e5ea435be1",
+  "status": "LANDED",
+  "merged_at": "2026-11-06T02:03:17Z",
+  "merge_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+  "code_verdict": "PASS (ferric-async-forms-r3, head 838239e, 6 CI checks green)",
+  "review_verdict": "APPROVE (review-ferric-async-forms-r3, confirmed I292)",
+  "non_blockers_filed": ["#248", "#249", "#250", "#251", "#252", "#253"],
+  "board_status": "Done (issue #130 closed, sub-issues #143/#144/#145 closed in I295, all board Done)"
+ },
+ "chirp_logged_out_goal": {
+  "goal_slug": "chirp-logged-out",
+  "issues": ["#35"],
+  "branch": "work/chirp-logged-out",
+  "pr": 263,
+  "head_sha": "7f4b684671cab7eb778f5ad7f54dfdc82d57b3c4",
+  "head_sha_at_review_r1": "decb6196c2c1e6ed421d393a642f0c844cc333ba",
+  "code_verdict": "PASS — chirp-logged-out-r27 folded PASS (I419). Both blockers fixed. All 5 ACs met. CI 6/6 green on HEAD 7f4b684.",
+  "review_verdict_r1": "REQUEST-CHANGES — review-chirp-logged-out-r1 folded (I417). 2 blockers fixed by chirp-logged-out-r27.",
+  "review_verdict_r2": "IN-FLIGHT — review-chirp-logged-out-r2 progressing (I421 stall check 1/4). verify-fixes COMPLETE, verify-acs 3/4 done. Stall check 2/4 at I422.",
+  "board_status": "In Progress (#35 OPEN/In Progress — PR #263 OPEN, re-review review-chirp-logged-out-r2 IN-FLIGHT/progressing)",
+  "current_dag": "review-chirp-logged-out-r2 — IN-FLIGHT/PROGRESSING (I421 stall check 1/4 confirmed progress)",
+  "non_blockers_filed": ["#264", "#265", "#266", "#267", "#268", "#269", "#270", "#271"],
+  "blockers_fixed": [
+   "B1: crates/chirp-frontend/src/timeline.rs:218 — reverted pub_timeline(&query) to timeline(&query) ✅ (chirp-logged-out-r27)",
+   "B2: crates/chirp-frontend/src/compose.rs:519 — changed link(\"/compose\", \"Log in →\") to link(\"/signin\", \"Log in →\") ✅ (chirp-logged-out-r27)"
+  ],
+  "note": "review-chirp-logged-out-r2 progressing. I422 = stall check 2/4 (+15 min or DAG completion). After APPROVE: land PR #263, close issue #35, deployment check."
+ },
+ "board": {
+  "project_id": "PVT_kwDOEB9jls4BlZH4",
+  "latest_issue_update": "2026-11-06T16:50:00Z",
+  "hygiene_check_I421": [
+   "I421: stall check 1/4 — review-chirp-logged-out-r2 IN-FLIGHT/PROGRESSING. No root SYNTHESIS.md.",
+   "verify-fixes: COMPLETE (B1+B2 both PASS, diff clean).",
+   "verify-acs: 3/4 children COMPLETE (ac1, ac4, ac235); acs-gate READY.",
+   "SUBTASK_synthesis: PENDING (depends on both verify tasks).",
+   "I422 scheduled: stall check 2/4 for review-chirp-logged-out-r2 (+15 min or DAG completion).",
+   "Config: headless=true, landing_authority=delegated, auto_land=true.",
+   "dags_in_flight: [review-chirp-logged-out-r2]. dags_to_launch: [].",
+   "free_dag_slots: 3 (1 DAG in flight)."
+  ]
+ },
+ "product_readiness": {
+  "issue_35": {
+   "title": "Logged-out reading and a useful landing with accurate states",
+   "dependencies": ["#56 (durable persistence) — DONE", "#228 (ferric SSR) — DONE"],
+   "status": "IN RE-REVIEW — PR #263 machine PASS (chirp-logged-out-r27), new HEAD 7f4b684, all 5 ACs met. review-chirp-logged-out-r2 IN-FLIGHT/progressing (verify-fixes COMPLETE, verify-acs 3/4 done).",
+   "note": "After APPROVE: land PR #263 and close issue #35."
+  },
+  "issue_130": {
+   "title": "Async resources, expanded events, form binding (async-forms epic)",
+   "status": "DONE — PR #193 merged I294, issues #130/#143/#144/#145 all closed I295",
+   "note": "Issues #36-#42 (features requiring #130) now unblocked from #130 dependency. Still depend on #83 (identity/sessions) for authenticated user features."
+  }
+ },
+ "deployment_check": {
+  "last_checked": "2026-11-06T13:50:00Z",
+  "checked_in": "overseer/I410",
+  "argocd_sync_status": "OutOfSync",
+  "argocd_health_status": "Healthy",
+  "argocd_synced_revision": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+  "main_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+  "out_of_sync_detail": "chirp-postgres StatefulSet only — benign k8s spec drift. Same as I303–I420. App is Healthy.",
+  "verdict": "EFFECTIVELY_SYNCED — ArgoCD at cb1ced3 (PR #193). OutOfSync status is benign StatefulSet drift only. App Healthy.",
+  "note": "No new PRs merged since I419. Next deployment check due after PR #263 lands."
+ },
+ "forward_plan": {
+  "I421": "DONE — stall check 1/4: DAG progressing. verify-fixes COMPLETE, verify-acs 3/4 done. I422 stall check 2/4 scheduled.",
+  "I422": "Stall check 2/4 for review-chirp-logged-out-r2 — read SYNTHESIS.md if present, else check DAG progress.",
+  "after_review_approve": "Land PR #263. Close issue #35 → Done. Deployment check. Board check for next goal.",
+  "note": "review-chirp-logged-out-r2 progressing. APPROVE expected once synthesis completes."
+ },
+ "main_sha": "cb1ced3ffe6efc678d96a26ae16a63cb948d4237",
+ "open_prs_check_I421": "PR #263 OPEN/MERGEABLE on work/chirp-logged-out (HEAD 7f4b684). CI ALL 6 PASS. Both blockers fixed. review-chirp-logged-out-r2 IN-FLIGHT/PROGRESSING (I421 stall check 1/4). Stall check 2/4 at I422.",
+ "free_dag_slots": 3
+}

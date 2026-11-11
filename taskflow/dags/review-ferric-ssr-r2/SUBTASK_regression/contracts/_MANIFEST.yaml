@@ -1,0 +1,21 @@
+kind: yaml_schema
+description: >
+  Contract for the SUBTASK_regression sub-DAG. Declares ownership of intermediate
+  findings files and the final verdict, plus the structural schema each findings
+  file must satisfy for the synthesis task to assemble them mechanically.
+
+ownership:
+  SUBTASK_reg_criteria/criteria_findings.md: SUBTASK_reg_criteria
+  SUBTASK_sec_quality/sec_quality_findings.md: SUBTASK_sec_quality
+  regression_verdict.md: SUBTASK_verdict_synthesis
+
+identities:
+  - "Every REQ-ID in {REQ-SSR-001, REQ-SSR-002, REQ-SSR-003, REQ-SSR-005, REQ-HYD-001, REQ-HYD-002, REQ-HYD-004, REQ-MIS-001, REQ-MIS-002} appears with a PASS or FAIL verdict in criteria_findings.md"
+  - "regression_verdict.md carries the overall verdict (PASS or FAIL) and aggregates all findings from both spoke outputs"
+
+inherited_contracts:
+  - path: "../contracts/verdict_schema.md"
+    binds: "The final regression_verdict.md MUST follow this schema (Verdict, Requirements Covered, Evidence, Findings, What Was Examined and Found Clean sections)"
+
+structural_artifacts:
+  - contracts/findings_schema.md

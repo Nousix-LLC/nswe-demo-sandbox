@@ -1,0 +1,73 @@
+# SYNTHESIS — ferric-http relock/rebase (issue #6 / PR #15, iteration I15)
+
+## Verdict
+gate: **PASS**
+round: 1
+PR: **https://github.com/Nousix-LLC/nswe-demo/pull/15** — now **OPEN / MERGEABLE / CLEAN** (head `e27c2ac`, base `main`)
+action for a later overseer iteration (I16+): **LAND** (squash-merge PR #15, close #6, `--delete-branch`). This DAG did **not** land it.
+
+The sole blocker was a `Cargo.lock` merge conflict; it is resolved by a Cargo-authored relock on a
+merge of current `origin/main`. **No `ferric-http` feature code was modified** — the already-APPROVED
+diff is byte-for-byte intact. The prior machine gate (`../ferric-http/SYNTHESIS.md`) and review APPROVE
+(`../review-ferric-http/SYNTHESIS.md`) therefore still hold on the rebased tree.
+
+## What this rebased onto
+| Item | Value |
+|------|-------|
+| Base integrated | `origin/main` @ **`cb619e9`** — "ferric-router: client-side router (History API) (#16)" (the I13 squash-merge of ferric-router #5) |
+| PR #15 head before | `c8a58b8` — "ferric-http: fetch-based HTTP/JSON client" |
+| Merge base | `3c8d264` (both branches relocked `Cargo.lock` from here — the collision source) |
+| New PR #15 head | **`e27c2ac`** — merge commit, parents `c8a58b8` (ours) + `cb619e9` (origin/main). No attribution trailers (per brief). |
+| Method | `git merge origin/main` into `work/ferric-http` (merge, not rebase — preserves PR history). Pushed `work/ferric-http` only; `main` never touched, never force-pushed. |
+
+## Conflict scope — confirmed lockfile-only (brief's read-only prediction held)
+`git merge origin/main` produced **exactly one** conflicted path: `Cargo.lock` (`UU`). Every
+`crates/ferric-router/*` path auto-merged cleanly as a main-side **addition** (`A`), not a conflict —
+precisely as the I15 `git merge-tree` dry run predicted. **No non-lockfile conflict surfaced**, so the
+brief's STOP-and-FAIL escape (unexpected conflict) did not trigger.
+
+## How `Cargo.lock` was regenerated (Cargo relock — NOT hand-edited)
+1. Resolved the conflicted lockfile by taking `origin/main`'s `Cargo.lock` as the base
+   (`git checkout --theirs Cargo.lock`) — it already locks the full foundation + ferric-router graph.
+2. Ran **`cargo build --workspace`**, letting Cargo author the lockfile for the union of all three
+   members' manifests (`ferric`, `ferric-router`, `ferric-http`). No merge markers remained (0);
+   no manual lockfile edits.
+
+### Regenerated `Cargo.lock` — what changed
+- **vs `origin/main`'s lockfile:** `+13` lines, a single new entry — the `ferric-http` package node
+  (`version = "0.1.0"`, deps: `js-sys`, `serde`, `serde_json`, `wasm-bindgen`, `wasm-bindgen-futures`,
+  `wasm-bindgen-test`, `web-sys`). **Zero** new external/transitive crates were needed and **zero**
+  existing locked versions changed: ferric-http's entire dependency set was already locked by `main`
+  because `ferric-router` (#16) shares `serde`/`serde_json`/`wasm-bindgen-futures`. The relocked
+  lockfile is the exact minimal union of both sides' graphs — deterministic and coherent.
+- **vs PR #15's prior head `c8a58b8`:** the lockfile gains all of ferric-router's locked entries that
+  `main` introduced (the expected effect of integrating `main`).
+
+## Synthesis verification gate on the rebased tree (`work/ferric-http` @ `e27c2ac`)
+All commands run in an isolated fresh clone under this workspace's `checkout/`.
+
+| Check | Command | Result |
+|-------|---------|--------|
+| Workspace build | `cargo build --workspace` | ✅ exit 0 — `ferric`, `ferric-router`, `ferric-http` all compile |
+| ferric-http tests | `cargo test -p ferric-http` | ✅ exit 0 — **29** unit + **4** doctests pass; 0 failed (identical to the pre-rebase gate) |
+| fmt | `cargo fmt --all --check` | ✅ exit 0 (clean) |
+| clippy | `cargo clippy --workspace --all-targets -- -D warnings` | ✅ exit 0 (clean, all three crates) |
+| wasm build | `cargo build -p ferric-http --target wasm32-unknown-unknown` | ✅ exit 0 |
+
+The gate confirms the rebase/relock did not break the build; the ferric-http suite is green exactly as
+it was pre-rebase.
+
+## No feature code changed (integrity of the APPROVED diff)
+- `git diff c8a58b8 e27c2ac -- crates/ferric-http/` → **empty**. The entire ferric-http crate
+  (`Cargo.toml`, `README.md`, `src/{lib,error,request,response,client}.rs`) is byte-identical to the
+  reviewed/approved PR #15 head.
+- Root `Cargo.toml` **untouched** by the merge (`members = ["crates/*"]` already globs ferric-router in).
+- The merge commit `e27c2ac` adds only main-side `crates/ferric-router/*` files plus the Cargo-relocked
+  `Cargo.lock`; nothing under `crates/ferric-http/` is modified.
+
+## Boundary notes
+- Worked only in an isolated fresh clone (`checkout/`) on `work/ferric-http`; pushed `work/ferric-http`
+  only. `main` never checked out, edited, or force-pushed (`origin/main` stays `cb619e9`).
+- Did **NOT** merge/land PR #15 — that is the overseer's mechanical step at the human gate (I16+).
+- `Cargo.lock` was regenerated by Cargo, never hand-edited.
+- **PR #15: OPEN / MERGEABLE / CLEAN — overall verdict: PASS. Ready to land.**

@@ -1,0 +1,83 @@
+{
+  "current_pointer": "overseer/I158",
+  "checked_at": "2026-11-03T18:30:00Z",
+  "escalations": {
+    "escalation_i77_dispatch_fault": {
+      "status": "CLEARED",
+      "label": "Bug5 dispatch fault — frozen DAGs never real-dispatched",
+      "cleared_at": "2026-11-03T05:08:16Z",
+      "cleared_by": "review-epic-persist-r2 Dispatch entry in scheduler/logs/scheduler_decisions.jsonl",
+      "cleared_in": "overseer/I145",
+      "recorded_in": "overseer/I146",
+      "github_issue": "none filed"
+    }
+  },
+  "prs": {
+    "PR113": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T17:46:59Z",
+      "merge_commit": "0d5917dc6b10d25b15e47a867f41a450239007f6",
+      "issues_closed": ["#65", "#66", "#67", "#64", "#180"],
+      "review_dag": "review-epic-persist-r2",
+      "note": "Squash-merged. Epic #56 and issues #65/#66/#67 moved to Done. #64 closed 2026-11-03 after image digest pinned (commit a255baf). #180 closed by pin-image-digest-r1."
+    },
+    "PR128": {
+      "status": "MERGED",
+      "merged_at": "2026-11-03T18:11:07Z",
+      "merge_commit": "9a24c281f1380644801e246b79b85f13a11cb33d",
+      "branch": "work/design-ferric-1_0",
+      "title": "design: Ferric 1.0 framework design",
+      "head": "ade5bdde424638b9f993c5699219c638d02e0e59",
+      "review_dag": "review-design-ferric-1_0-r4",
+      "review_verdict": "APPROVE",
+      "blocking_findings_resolved": 5,
+      "non_blocking_follow_up": "#181 (release-bar.md §5 gap→deferred for REQ-FW-019 and REQ-FW-021)",
+      "note": "Design complete. Ten Ferric 1.0 design documents now on main. All 29 BAR-FERRIC-* criteria checked. Implementation tracked via epics #129–#136."
+    }
+  },
+  "dags_in_flight": [
+    {
+      "slug": "security-persist-r1",
+      "goal": "Persistence security hardening — KDF credential storage + CronJob TLS (#120)",
+      "issues": ["#120"],
+      "kind": "code",
+      "state": "RUNNING",
+      "forked_in": "overseer/I154",
+      "launch_agent": "swe-coder",
+      "branch": "work/security-persist-r1",
+      "note": "SUBTASK_credential_hashing running since 18:18:43Z. No SYNTHESIS.md yet as of I158 check (~18:30Z)."
+    },
+    {
+      "slug": "sweep-seam-r1",
+      "goal": "Sweep CronJob second source of truth — eliminate duplicate raw SQL / invoke Rust seam (#117)",
+      "issues": ["#117"],
+      "kind": "code",
+      "state": "RUNNING",
+      "forked_in": "overseer/I156",
+      "launch_agent": "swe-coder",
+      "branch": "work/sweep-seam-r1",
+      "note": "Only _BRIEF.md and _FORK.md present as of I158 check (~18:30Z). DAG not yet decomposed."
+    }
+  ],
+  "board": {
+    "project_id": "PVT_kwDOEB9jls4BlZH4",
+    "latest_issue_update": "2026-11-03T18:24:00Z",
+    "total_items": "~167",
+    "note": "No board changes this iteration. Both DAGs still in-flight."
+  },
+  "main_sha": "9a24c281f1380644801e246b79b85f13a11cb33d",
+  "deployment_check": {
+    "status": "Healthy",
+    "reason": "No new deployment since I154. chirp-server running; postgres running.",
+    "argocd_sync": "OutOfSync",
+    "argocd_health": "Healthy",
+    "argocd_operation": "Succeeded",
+    "argocd_out_of_sync_resource": "StatefulSet/chirp-postgres (health OK; annotation drift; non-blocking; persistent across I153–I158)",
+    "sweep_jobs": "Only chirp-transient-sweep-29895480 visible (Failed, 28m old at I158 check ~18:30Z). No 19:00Z hourly run appeared yet. No bug filed — first failure only; waiting for next run to confirm second failure.",
+    "checked_at": "2026-11-03T18:30:00Z"
+  },
+  "free_dag_slots": 0,
+  "forward_series": {
+    "I159": "Observe security-persist-r1 and sweep-seam-r1; check deployment (19:00Z sweep run should appear soon); decide next actions. Slots: 0 until a DAG folds. If security-persist-r1 folds, fork swe-reviewer and slot 1 opens for a Ferric 1.0 epic."
+  }
+}

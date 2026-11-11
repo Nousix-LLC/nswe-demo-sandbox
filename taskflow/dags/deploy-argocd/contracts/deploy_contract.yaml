@@ -1,0 +1,55 @@
+# contracts/deploy_contract.yaml — frozen shared identities for the chirp deploy
+# READ-ONLY for every descendant. Both authoring spokes compose against THESE values.
+# Discovery-dependent values (digest, ports, ingress class, apiVersions) are NOT frozen here —
+# they are resolved into outputs/ground_truth.md and referenced by the field name shown.
+
+app:
+  name: chirp-server            # workload / container name
+  namespace: chirp              # all chirp resources live here (isolated from other apps)
+  image_repo: ghcr.io/nousix-llc/chirp-server
+  image_ref_rule: "pin by immutable @sha256: digest == ground_truth.image_digest (never a tag)"
+
+# Standard recommended labels — every chirp resource carries these so Service selectors and
+# ArgoCD tracking are consistent across the two spokes.
+labels:
+  app.kubernetes.io/name: chirp-server
+  app.kubernetes.io/part-of: chirp
+  app.kubernetes.io/managed-by: argocd
+
+service:
+  name: chirp-server
+  port: 80                      # Service port (stable, external-facing within cluster)
+  target_port_source: ground_truth.container_listen_port   # == the container's real listen port
+  type: ClusterIP               # reachability is via Ingress, not Service type
+
+ingress:
+  # k3d serverlb maps host localhost:8081 -> 80 and 8444 -> 443 via the k3s Traefik ingress.
+  host: "chirp.localhost"       # authoring spoke MAY choose a host; if host-based, reachability test uses Host header
+  path: "/"
+  path_type: Prefix
+  class_source: ground_truth.ingress_class
+  backend_service: chirp-server     # must equal service.name
+  backend_port: 80                  # must equal service.port
+  tls: "k3d-appropriate (self-signed/none acceptable; justify TLS posture)"
+
+argocd:
+  application_name: chirp
+  appproject_name: chirp
+  source_path: deploy/chirp     # the Application tracks ONLY this path
+  destination_namespace: chirp
+  # AppProject MUST scope destinations to {namespace: chirp, server: in-cluster} and MUST NOT grant
+  # a cluster-admin-equivalent clusterResourceWhitelist of '*/*/*'. Application.spec.project == chirp.
+
+# Repo path layout — disjoint ownership between the two authoring spokes.
+layout:
+  app_manifests_dir: deploy/chirp      # owned by SUBTASK_app_manifests
+  gitops_dir: deploy/argocd            # owned by SUBTASK_argocd_gitops (OUTSIDE the synced path)
+  repo: Nousix-LLC/nswe-demo
+  base: "origin/main @ ada3aa9"
+  branch: work/deploy-argocd
+
+notes:
+  - "Values here are the agreed seam. If a spoke believes a frozen value is wrong, it requests an
+     ADDITIVE amendment (it does not edit this file — it is read-only)."
+  - "host-based vs path-based ingress is the app-manifests spoke's call; whichever it picks, it MUST
+     keep the Service name/port identities above and record how the synthesis gate should reach it."

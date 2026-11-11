@@ -1,0 +1,47 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T00:23:21.792751904Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_regression-quality-sec"
+      ],
+      "placement_parent_task_id": "review-ferric-ssr-r2"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_regression-quality-sec",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Register regression-quality-sec spoke: verify 9 previously-clean criteria plus quality and security of new commits",
+        "task_id": "review-ferric-ssr-r2"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_b1-verify": [],
+      "SUBTASK_b2-verify": [],
+      "SUBTASK_regression-quality-sec": [],
+      "review-ferric-ssr-r2": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_b1-verify",
+          "SUBTASK_b2-verify",
+          "SUBTASK_regression-quality-sec",
+          "review-ferric-ssr-r2"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

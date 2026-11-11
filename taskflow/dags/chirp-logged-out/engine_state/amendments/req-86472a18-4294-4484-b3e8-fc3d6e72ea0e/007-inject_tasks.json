@@ -1,0 +1,92 @@
+{
+  "sequence": 7,
+  "operation": "inject_tasks",
+  "applied_at": "2026-11-06T03:23:33.582862932Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "CHILD_tests"
+      ],
+      "placement_parent_task_id": "SUBTASK_server_public_timeline"
+    },
+    "resulting_version": 7,
+    "summary": "inject tasks: CHILD_tests",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "CHILD_tests writes the four integration test scenarios and verifies cargo fmt, clippy, and test all pass, then produces the parent COMPLETE.md.",
+        "task_id": "SUBTASK_server_public_timeline"
+      }
+    },
+    "updated_graph_edges": {
+      "CHILD_in_memory": [
+        "CHILD_skeleton"
+      ],
+      "CHILD_postgres": [
+        "CHILD_in_memory"
+      ],
+      "CHILD_skeleton": [],
+      "CHILD_tests": [
+        "CHILD_postgres"
+      ],
+      "SUBTASK_frontend_logged_out": [
+        "SUBTASK_server_public_timeline"
+      ],
+      "SUBTASK_server_public_timeline": [],
+      "SUBTASK_synthesis": [
+        "SUBTASK_frontend_logged_out"
+      ],
+      "chirp-logged-out": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "CHILD_skeleton",
+          "SUBTASK_server_public_timeline",
+          "chirp-logged-out"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "CHILD_in_memory",
+          "SUBTASK_frontend_logged_out"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "CHILD_postgres",
+          "SUBTASK_synthesis"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1,
+          2
+        ],
+        "group_index": 3,
+        "task_ids": [
+          "CHILD_tests"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}

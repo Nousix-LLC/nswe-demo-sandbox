@@ -1,0 +1,79 @@
+{
+  "sequence": 3,
+  "operation": "inject_tasks",
+  "applied_at": "2026-10-29T17:11:55.052781517Z",
+  "applied_by": "decompose",
+  "reason": null,
+  "payload": {
+    "operation": {
+      "blocked_by_injection": [],
+      "depends_on": [],
+      "kind": "inject_tasks",
+      "new_task_ids": [
+        "SUBTASK_synthesis"
+      ],
+      "placement_parent_task_id": "SUBTASK_verify_deliver"
+    },
+    "resulting_version": 3,
+    "summary": "inject tasks: SUBTASK_synthesis",
+    "trigger": {
+      "AgentDecompositionRequest": {
+        "rationale": "Decomposing SUBTASK_verify_deliver: this synthesis child reads CI_EVIDENCE.md and PR_UPDATE.md, asserts all contract identities, produces VERIFICATION.md at the parent workspace, and calls engine_resume_suspended to fold the parent SUBTASK_verify_deliver SUSPENDED→COMPLETED.",
+        "task_id": "SUBTASK_verify_deliver"
+      }
+    },
+    "updated_graph_edges": {
+      "SUBTASK_apply_fixes": [
+        "SUBTASK_assess"
+      ],
+      "SUBTASK_assess": [],
+      "SUBTASK_ci_verify": [],
+      "SUBTASK_pr_update": [
+        "SUBTASK_ci_verify"
+      ],
+      "SUBTASK_synthesis": [
+        "SUBTASK_ci_verify",
+        "SUBTASK_pr_update"
+      ],
+      "SUBTASK_verify_deliver": [
+        "SUBTASK_apply_fixes"
+      ],
+      "remediate-epic-persist-r1": []
+    },
+    "updated_groups": [
+      {
+        "depends_on_groups": [],
+        "group_index": 0,
+        "task_ids": [
+          "SUBTASK_assess",
+          "SUBTASK_ci_verify",
+          "remediate-epic-persist-r1"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0
+        ],
+        "group_index": 1,
+        "task_ids": [
+          "SUBTASK_apply_fixes",
+          "SUBTASK_pr_update"
+        ]
+      },
+      {
+        "depends_on_groups": [
+          0,
+          1
+        ],
+        "group_index": 2,
+        "task_ids": [
+          "SUBTASK_synthesis",
+          "SUBTASK_verify_deliver"
+        ]
+      }
+    ]
+  },
+  "result": {
+    "status": "applied"
+  }
+}
